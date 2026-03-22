@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Includes the get_property_price_for_display_in_lists.php function script. Identified as a function that is regularly modified by users, it is delivered in this format so that  you don't need to be a coder to create your own version of this function.
 	 *
@@ -37,14 +37,14 @@ class j00001functioncall_get_property_price_for_display_in_lists
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		require_once JOMRES_FUNCTIONS_ABSPATH.'get_property_price_for_display_in_lists.php';
+		require_once CASTOR_FUNCTIONS_ABSPATH.'get_property_price_for_display_in_lists.php';
 	}
 
 	public function getRetVals()
@@ -52,3 +52,4 @@ class j00001functioncall_get_property_price_for_display_in_lists
 		return null;
 	}
 }
+

@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,18 +36,18 @@ class j06005muremovefavourite
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 		if ($thisJRUser->userIsRegistered) {
-			$property_uid = jomresGetParam($_REQUEST, 'property_uid', 0);
+			$property_uid = castorGetParam($_REQUEST, 'property_uid', 0);
 			$pageoutput = array();
 			$output = array();
-			$query = "SELECT propertys_uid FROM #__jomres_propertys WHERE propertys_uid = '".(int) $property_uid."'";
+			$query = "SELECT propertys_uid FROM #__castor_propertys WHERE propertys_uid = '".(int) $property_uid."'";
 			$props = doSelectSql($query);
 			if (!empty($props)) {
 				$query = "SELECT property_uid FROM #__jomcomp_mufavourites WHERE property_uid = '".(int) $property_uid."' AND `my_id` = '".(int) $thisJRUser->id."'";
@@ -60,7 +60,7 @@ class j06005muremovefavourite
 					}
 				}
 			}
-			jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL.'&task=muviewfavourites'), '');
+			castorRedirect(castorURL(CASTOR_SITEPAGE_URL.'&task=muviewfavourites'), '');
 		}
 	}
 
@@ -70,3 +70,4 @@ class j06005muremovefavourite
 		return null;
 	}
 }
+

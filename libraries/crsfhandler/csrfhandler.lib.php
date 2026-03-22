@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 	
 	/*
 	
@@ -27,10 +27,10 @@
 				$key = bin2hex(mcrypt_create_iv(32, MCRYPT_DEV_URANDOM));
 			}
 			
-			if(empty($_SESSION["jomres_csrfTokenlist"]) || !isset($_SESSION["jomres_csrfTokenlist"])){
-				$_SESSION["jomres_csrfTokenlist"] = $key; 
+			if(empty($_SESSION["castor_csrfTokenlist"]) || !isset($_SESSION["castor_csrfTokenlist"])){
+				$_SESSION["castor_csrfTokenlist"] = $key; 
 			}else{
-				$_SESSION["jomres_csrfTokenlist"] = $_SESSION["jomres_csrfTokenlist"].",".$key;
+				$_SESSION["castor_csrfTokenlist"] = $_SESSION["castor_csrfTokenlist"].",".$key;
 			}
 
 			unset($keyset);
@@ -41,7 +41,7 @@
 			
 			csrf::startSession();
 			
-			$sessionSet = explode(",",$_SESSION["jomres_csrfTokenlist"]);
+			$sessionSet = explode(",",$_SESSION["castor_csrfTokenlist"]);
 			$keys = null;
 			$isMatch = false;
 			
@@ -57,7 +57,7 @@
 				}
 			}
 			
-			$_SESSION["jomres_csrfTokenlist"] = $keys;
+			$_SESSION["castor_csrfTokenlist"] = $keys;
 			
 			unset($sessionSet);
 			unset($sessionkey);
@@ -68,10 +68,11 @@
 		
 		public static function flushKeys(){
 			csrf::startSession();
-			if(!empty($_SESSION["jomres_csrfTokenlist"]) || isset($_SESSION["jomres_csrfTokenlist"])){
-				$_SESSION["jomres_csrfTokenlist"] = null;
+			if(!empty($_SESSION["castor_csrfTokenlist"]) || isset($_SESSION["castor_csrfTokenlist"])){
+				$_SESSION["castor_csrfTokenlist"] = null;
 			}
 		}
 	} 
 	
+
 

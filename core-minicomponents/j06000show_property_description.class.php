@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,15 +36,15 @@ class j06000show_property_description
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			$this->shortcode_data = array(
 				'task' => 'show_property_description',
-				'info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_DESCRIPTION',
+				'info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_DESCRIPTION',
 				'arguments' => array(0 => array(
 						'argument' => 'property_uid',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_DESCRIPTION_ARG_PROPERTY_UID',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_DESCRIPTION_ARG_PROPERTY_UID',
 						'arg_example' => '5',
 						)
 					)
@@ -58,7 +58,7 @@ class j06000show_property_description
 		if (isset($componentArgs[ 'property_uid' ])) {
 			$property_uid = (int)$componentArgs[ 'property_uid' ];
 		} else {
-			$property_uid = (int)jomresGetParam($_REQUEST, 'property_uid', 0);
+			$property_uid = (int)castorGetParam($_REQUEST, 'property_uid', 0);
 		}
 		
 		if ($property_uid == 0) {
@@ -75,19 +75,19 @@ class j06000show_property_description
 			$output_now = true;
 		}
 
-		jomres_set_page_title( $property_uid ,  jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_PROPDESCRIPTION', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_PROPDESCRIPTION', false) );
+		castor_set_page_title( $property_uid ,  jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_PROPDESCRIPTION', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_PROPDESCRIPTION', false) );
 
-		$current_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+		$current_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 		$current_property_details->gather_data($property_uid);
 		
-		jr_import('jomres_markdown');
-		$jomres_markdown = new jomres_markdown();
+		jr_import('castor_markdown');
+		$castor_markdown = new castor_markdown();
 		
-		$output['PROPERTY_DESCRIPTION'] = jomres_cmsspecific_parseByBots($jomres_markdown->get_markdown($current_property_details->property_description));
+		$output['PROPERTY_DESCRIPTION'] = castor_cmsspecific_parseByBots($castor_markdown->get_markdown($current_property_details->property_description));
 
 		$pageoutput = array($output);
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->readTemplatesFromInput('show_property_description.html');
 		$template = $tmpl->getParsedTemplate();
@@ -104,3 +104,4 @@ class j06000show_property_description
 		return $this->retVals;
 	}
 }
+

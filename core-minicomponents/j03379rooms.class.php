@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Used by the media centre to configure media uploading options for the room images
 	 *
@@ -37,7 +37,7 @@ class j03379rooms
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -61,25 +61,25 @@ class j03379rooms
 			$mrConfig[ 'is_real_estate_listing' ] = '0';
 		}
 
-		$preview_link = JOMRES_SITEPAGE_URL_AJAX.'&task=show_property_rooms&property_uid='.$property_uid;
+		$preview_link = CASTOR_SITEPAGE_URL_AJAX.'&task=show_property_rooms&property_uid='.$property_uid;
 			
 		if ($mrConfig[ 'singleRoomProperty' ] != '1' && $mrConfig['is_real_estate_listing'] != '1') {
 			$this->ret_vals = array(
 									'resource_type' => 'rooms',
 									'resource_id_required' => true,
-									'name' => jr_gettext('_JOMRES_MEDIA_CENTRE_RESOURCE_TYPES_ROOM', '_JOMRES_MEDIA_CENTRE_RESOURCE_TYPES_ROOM', false),
-									'upload_root_abs_path' => JOMRES_IMAGELOCATION_ABSPATH.$property_uid.JRDS,
-									'upload_root_rel_path' => JOMRES_IMAGELOCATION_RELPATH.$property_uid.'/',
+									'name' => jr_gettext('_CASTOR_MEDIA_CENTRE_RESOURCE_TYPES_ROOM', '_CASTOR_MEDIA_CENTRE_RESOURCE_TYPES_ROOM', false),
+									'upload_root_abs_path' => CASTOR_IMAGELOCATION_ABSPATH.$property_uid.JRDS,
+									'upload_root_rel_path' => CASTOR_IMAGELOCATION_RELPATH.$property_uid.'/',
 									'notes' => '',
 									'preview_link'=>$preview_link
 									);
 
-			if (!AJAXCALL && !defined('MEDIACENTRE_ROOMJS') && !defined('JOMRES_API_CMS_ROOT')) {
+			if (!AJAXCALL && !defined('MEDIACENTRE_ROOMJS') && !defined('CASTOR_API_CMS_ROOT')) {
 				define('MEDIACENTRE_ROOMJS', 1);
 				echo '
 				<script>
 				document.addEventListener(\'DOMContentLoaded\', function() {
-					jomresJquery("#resource_id_dropdown").change(function () {
+					castorJquery("#resource_id_dropdown").change(function () {
 						get_existing_images(); 
 						});
 					});
@@ -98,3 +98,4 @@ class j03379rooms
 		return $this->ret_vals;
 	}
 }
+

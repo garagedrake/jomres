@@ -1,10 +1,10 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 	<h2 class="page-header">{PAGETITLE}</h2>
 
 	<p>{INSTRUCTIONS}</p>
 
-	<form action="{JOMRES_SITEPAGE_URL_NOSEF}" method="post" name="adminForm" class="form-horizontal">
+	<form action="{CASTOR_SITEPAGE_URL_NOSEF}" method="post" name="adminForm" class="form-horizontal">
 		<fieldset>
 			<div class="control-group">
 				<label class="control-label" for="start">{BBDATESTARTS}</label>
@@ -33,7 +33,7 @@
 				<p class="{BBMESSAGE_CLASS}">{BBMESSAGE}{HIDDEN}</p>
 			</patTemplate:tmpl>
 			<div class="form-actions">
-				{JOMRESTOOLBAR}
+				{CASTORTOOLBAR}
 			</div>
 		</fieldset>
 		<input type="hidden" name="boxchecked" value="0">

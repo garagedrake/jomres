@@ -1,8 +1,8 @@
-<patTemplate:tmpl name="pageoutput" unusedvars="strip">
+﻿<patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <h2 class="page-header">{PAGETITLE}</h2>
 
-<form action="{JOMRES_SITEPAGE_URL_ADMIN}" method="post" name="adminForm" class="form-horizontal">
-	{JOMRESTOOLBAR}
+<form action="{CASTOR_SITEPAGE_URL_ADMIN}" method="post" name="adminForm" class="form-horizontal">
+	{CASTORTOOLBAR}
 	<fieldset>
 		<div class="control-group">
 			<label class="control-label" for="name">{HFEATUREABBV}</label>
@@ -21,7 +21,7 @@
 		</div>
 
 		<div class="control-group">
-			<label class="control-label" for="name">{_JOMRES_PROPERTY_TYPE_ASSIGNMENT}</label>
+			<label class="control-label" for="name">{_CASTOR_PROPERTY_TYPE_ASSIGNMENT}</label>
 	
 			<div class="controls">
 				<patTemplate:tmpl name="all_ptype_rows" type="simpleCondition" requiredVars="propertytype_id">
@@ -63,7 +63,7 @@
 		<input type="hidden" name="id" value="{PROPERTYFEATUREUID}">
 		<input type="hidden" name="property_uid" value="{PROPERTYUID}"/>
 		<input type="hidden" name="Itemid" value="{ITEMID}"/>
-		<input type="hidden" name="option" value="com_jomres"/>
+		<input type="hidden" name="option" value="com_castor"/>
 		<input type="hidden" name="task" value="savePropertyFeature"/>
 		{CSRF_TOKEN}
 	</fieldset>

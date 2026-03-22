@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,29 +36,29 @@ class j06001add_service_to_bill
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = true;
 
 			return;
 		}
 		$mrConfig = getPropertySpecificSettings();
-		$saveMessage = jr_gettext('_JOMRES_COM_ADDSERVICE_SAVEMESSAGE', '_JOMRES_COM_ADDSERVICE_SAVEMESSAGE');
-		$contract_uid = jomresGetParam($_REQUEST, 'contract_uid', 0);
+		$saveMessage = jr_gettext('_CASTOR_COM_ADDSERVICE_SAVEMESSAGE', '_CASTOR_COM_ADDSERVICE_SAVEMESSAGE');
+		$contract_uid = castorGetParam($_REQUEST, 'contract_uid', 0);
 
-		$jrportal_taxrate = jomres_singleton_abstract::getInstance('jrportal_taxrate');
+		$jrportal_taxrate = castor_singleton_abstract::getInstance('jrportal_taxrate');
 
 		if (!isset($_POST[ 'service_description' ])) {
-			$output[ 'PAGETITLE' ] = jr_gettext('_JOMRES_COM_ADDSERVICE_TITLE', '_JOMRES_COM_ADDSERVICE_TITLE');
+			$output[ 'PAGETITLE' ] = jr_gettext('_CASTOR_COM_ADDSERVICE_TITLE', '_CASTOR_COM_ADDSERVICE_TITLE');
 			
 			$defaultProperty = getDefaultProperty();
-			$current_contract_details = jomres_singleton_abstract::getInstance('basic_contract_details');
+			$current_contract_details = castor_singleton_abstract::getInstance('basic_contract_details');
 			$current_contract_details->gather_data($contract_uid, $defaultProperty);
 			
 			$output[ 'BOOKING_NUMBER' ] = $current_contract_details->contract[$contract_uid]['contractdeets']['tag'];
 			$output[ 'GUEST_NAME' ] = $current_contract_details->contract[$contract_uid]['guestdeets']['firstname']." ".$current_contract_details->contract[$contract_uid]['guestdeets']['surname'];
 		
-			$output[ 'HSERVICEDESCRIPTION' ] = jr_gettext('_JOMRES_COM_ADDSERVICE_DESCRIPTION', '_JOMRES_COM_ADDSERVICE_DESCRIPTION');
+			$output[ 'HSERVICEDESCRIPTION' ] = jr_gettext('_CASTOR_COM_ADDSERVICE_DESCRIPTION', '_CASTOR_COM_ADDSERVICE_DESCRIPTION');
 			$output[ 'HSERVICEVALUE' ] = jr_gettext('_JRPORTAL_INVOICES_LINEITEMS_INIT_PRICE', '_JRPORTAL_INVOICES_LINEITEMS_INIT_PRICE');
 			$output[ 'HTAXRATE' ] = jr_gettext('_JRPORTAL_INVOICES_LINEITEMS_TAX_RATE', '_JRPORTAL_INVOICES_LINEITEMS_TAX_RATE');
 			$output[ 'HQTY' ] = jr_gettext('_JRPORTAL_INVOICES_LINEITEMS_INIT_QTY', '_JRPORTAL_INVOICES_LINEITEMS_INIT_QTY');
@@ -67,30 +67,30 @@ class j06001add_service_to_bill
 
 			$output[ 'TAXRATEDROPDOWN' ] = $jrportal_taxrate->makeTaxratesDropdown(1);
 
-			$jrtbar = jomres_singleton_abstract::getInstance('jomres_toolbar');
+			$jrtbar = castor_singleton_abstract::getInstance('castor_toolbar');
 			$jrtb = $jrtbar->startTable();
-			$jrtb .= $jrtbar->toolbarItem('cancel', jomresURL(JOMRES_SITEPAGE_URL."&task=edit_booking&contract_uid=$contract_uid"), '');
+			$jrtb .= $jrtbar->toolbarItem('cancel', castorURL(CASTOR_SITEPAGE_URL."&task=edit_booking&contract_uid=$contract_uid"), '');
 			$jrtb .= $jrtbar->toolbarItem('save', '', '', true, 'add_service_to_bill');
 			$jrtb .= $jrtbar->endTable();
-			$output[ 'JOMRESTOOLBAR' ] = $jrtb;
+			$output[ 'CASTORTOOLBAR' ] = $jrtb;
 
 			$pageoutput[ ] = $output;
 			$tmpl = new patTemplate();
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 			$tmpl->readTemplatesFromInput('add_service_to_bill.html');
 			$tmpl->addRows('pageoutput', $pageoutput);
 			$tmpl->displayParsedTemplate();
 		} else {
-			$contract_uid = jomresGetParam($_POST, 'contract_uid', 0);
-			$service_description = ucfirst(jomresGetParam($_POST, 'service_description', ''));
+			$contract_uid = castorGetParam($_POST, 'contract_uid', 0);
+			$service_description = ucfirst(castorGetParam($_POST, 'service_description', ''));
 			
-			$sv = str_replace("&#45;", "-", jomresGetParam($_POST, 'service_value', 0.00));
+			$sv = str_replace("&#45;", "-", castorGetParam($_POST, 'service_value', 0.00));
 			$service_value = convert_entered_price_into_safe_float($sv);
 
-			$taxrate = jomresGetParam($_POST, 'taxrate', 0);
-			$service_qty = jomresGetParam($_POST, 'service_qty', 1.00);
+			$taxrate = castorGetParam($_POST, 'taxrate', 0);
+			$service_qty = castorGetParam($_POST, 'service_qty', 1.00);
 
-			$jrportal_taxrate = jomres_singleton_abstract::getInstance('jrportal_taxrate');
+			$jrportal_taxrate = castor_singleton_abstract::getInstance('jrportal_taxrate');
 			$jrportal_taxrate->gather_data($taxrate);
 			$tax_value = $jrportal_taxrate->rate;
 
@@ -101,8 +101,8 @@ class j06001add_service_to_bill
 			}
 
 			if ($contract_uid && $service_description) {
-				$query = "INSERT INTO #__jomres_extraservices (`service_description`,`service_value`,`contract_uid`,`tax_rate_val`,`tax_code`, `service_qty`) VALUES ('$service_description','".$service_value."','".(int) $contract_uid."',".$tax_value.','.$taxrate.','.$service_qty.')';
-				if (!doInsertSql($query, jr_gettext('_JOMRES_MR_AUDIT_ADDSERVICE', '_JOMRES_MR_AUDIT_ADDSERVICE', false))) {
+				$query = "INSERT INTO #__castor_extraservices (`service_description`,`service_value`,`contract_uid`,`tax_rate_val`,`tax_code`, `service_qty`) VALUES ('$service_description','".$service_value."','".(int) $contract_uid."',".$tax_value.','.$taxrate.','.$service_qty.')';
+				if (!doInsertSql($query, jr_gettext('_CASTOR_MR_AUDIT_ADDSERVICE', '_CASTOR_MR_AUDIT_ADDSERVICE', false))) {
 					trigger_error('Unable to insert into extraservices table, mysql db failure', E_USER_ERROR);
 				} else {
 					jr_import('jrportal_invoice');
@@ -129,7 +129,7 @@ class j06001add_service_to_bill
 
 						return;
 					}
-					jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL."&task=edit_booking&contract_uid=$contract_uid"), $saveMessage);
+					castorRedirect(castorURL(CASTOR_SITEPAGE_URL."&task=edit_booking&contract_uid=$contract_uid"), $saveMessage);
 				}
 			} else {
 				echo 'Ooops, no description or value entered. ';
@@ -141,9 +141,9 @@ class j06001add_service_to_bill
 	public function touch_template_language()
 	{
 		$output = array();
-		$output[ ] = jr_gettext('_JOMRES_COM_ADDSERVICE_TITLE', '_JOMRES_COM_ADDSERVICE_TITLE');
-		$output[ ] = jr_gettext('_JOMRES_COM_ADDSERVICE_DESCRIPTION', '_JOMRES_COM_ADDSERVICE_DESCRIPTION');
-		$output[ ] = jr_gettext('_JOMRES_COM_ADDSERVICE_VALUE', '_JOMRES_COM_ADDSERVICE_VALUE');
+		$output[ ] = jr_gettext('_CASTOR_COM_ADDSERVICE_TITLE', '_CASTOR_COM_ADDSERVICE_TITLE');
+		$output[ ] = jr_gettext('_CASTOR_COM_ADDSERVICE_DESCRIPTION', '_CASTOR_COM_ADDSERVICE_DESCRIPTION');
+		$output[ ] = jr_gettext('_CASTOR_COM_ADDSERVICE_VALUE', '_CASTOR_COM_ADDSERVICE_VALUE');
 		foreach ($output as $o) {
 			echo $o;
 			echo '<br/>';
@@ -156,3 +156,4 @@ class j06001add_service_to_bill
 		return null;
 	}
 }
+

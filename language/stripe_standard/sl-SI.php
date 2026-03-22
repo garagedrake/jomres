@@ -1,16 +1,16 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 //#################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 //#################################################################
 
 	jr_define('STRIPE_STANDARD_TITLE',"Stripe Standard");
@@ -38,3 +38,4 @@ defined('_JOMRES_INITCHECK') or die('');
 	jr_define('STRIPE_STANDARD_PAYMENT_FAILED',"Plačilo ni uspelo!");
 	jr_define('STRIPE_STANDARD_PAYMENT_FAILED_BLURB',"Na žalost ne moremo potrditi uspešnega plačila. Vrnite se na obrazec za rezervacijo in poskusite znova.");
 	jr_define('STRIPE_STANDARD_PAYMENT_FAILED_BUTTON',"Nazaj na obrazec za rezervacijo");
+

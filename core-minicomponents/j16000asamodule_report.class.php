@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,7 +35,7 @@ class j16000asamodule_report
 	 
 	public function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
@@ -43,34 +43,34 @@ class j16000asamodule_report
 			return;
 		}
 
-		$jomres_shortcode_parser = jomres_singleton_abstract::getInstance('jomres_shortcode_parser');
-		$jomres_shortcode_parser->get_shortcodes();
+		$castor_shortcode_parser = castor_singleton_abstract::getInstance('castor_shortcode_parser');
+		$castor_shortcode_parser->get_shortcodes();
 
-		$jomres_language = jomres_singleton_abstract::getInstance('jomres_language');
-		$jomres_language->get_language('shortcodes');
+		$castor_language = castor_singleton_abstract::getInstance('castor_language');
+		$castor_language->get_language('shortcodes');
 
 		$output = array();
 		$rows = array();
 		$pageoutput = array();
 
-		if (is_array($jomres_shortcode_parser->shortcodes)) {
-			$output[ 'PAGETITLE' ] = jr_gettext('_JOMRES_SHORTCODES', '_JOMRES_SHORTCODES', false);
+		if (is_array($castor_shortcode_parser->shortcodes)) {
+			$output[ 'PAGETITLE' ] = jr_gettext('_CASTOR_SHORTCODES', '_CASTOR_SHORTCODES', false);
 			$output[ 'SHORTCODE_TRIGGER' ] = jr_gettext('SHORTCODE_TRIGGER', 'SHORTCODE_TRIGGER', false);
 			$output[ 'SHORTCODE_TASK' ] = jr_gettext('SHORTCODE_TASK', 'SHORTCODE_TASK', false);
 			$output[ 'SHORTCODE_DESCRIPTION' ] = jr_gettext('SHORTCODE_DESCRIPTION', 'SHORTCODE_DESCRIPTION', false);
 			$output[ 'SHORTCODE_ARGUMENTS' ] = jr_gettext('SHORTCODE_ARGUMENTS', 'SHORTCODE_ARGUMENTS', false);
 			$output[ 'SHORTCODE_EXAMPLE' ] = jr_gettext('SHORTCODE_EXAMPLE', 'SHORTCODE_EXAMPLE', false);
 
-            $output[ 'SHORTCODE_INFO_JOMRES_V_JOMRES_SCRIPT' ] = jr_gettext('SHORTCODE_INFO_JOMRES_V_JOMRES_SCRIPT', 'SHORTCODE_INFO_JOMRES_V_JOMRES_SCRIPT', false);
+            $output[ 'SHORTCODE_INFO_CASTOR_V_CASTOR_SCRIPT' ] = jr_gettext('SHORTCODE_INFO_CASTOR_V_CASTOR_SCRIPT', 'SHORTCODE_INFO_CASTOR_V_CASTOR_SCRIPT', false);
 
 			if (this_cms_is_wordpress()) {
-				$output[ 'INFO' ] = jr_gettext('_JOMRES_SHORTCODES_INFO_WORDPRESS', '_JOMRES_SHORTCODES_INFO_WORDPRESS', false);
+				$output[ 'INFO' ] = jr_gettext('_CASTOR_SHORTCODES_INFO_WORDPRESS', '_CASTOR_SHORTCODES_INFO_WORDPRESS', false);
 			} else {
-				$output[ 'INFO' ] = jr_gettext('_JOMRES_SHORTCODES_INFO_JOOMLA', '_JOMRES_SHORTCODES_INFO_JOOMLA', false);
+				$output[ 'INFO' ] = jr_gettext('_CASTOR_SHORTCODES_INFO_JOOMLA', '_CASTOR_SHORTCODES_INFO_JOOMLA', false);
 			}
 
 			$rows = array();
-			foreach ($jomres_shortcode_parser->shortcodes as $key => $trigger) {
+			foreach ($castor_shortcode_parser->shortcodes as $key => $trigger) {
 				if (!empty($trigger)) {
 					foreach ($trigger as $task) {
 						$r = array();
@@ -96,7 +96,7 @@ class j16000asamodule_report
 
 								$po[ ] = $o;
 								$tmpl = new patTemplate();
-								$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+								$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 								$tmpl->readTemplatesFromInput('shortcode_snippet.html');
 								$tmpl->addRows('pageoutput', $po);
 								$r['ARGUMENTS'] .= $tmpl->getParsedTemplate();
@@ -115,9 +115,9 @@ class j16000asamodule_report
 						}
 
 						if (this_cms_is_wordpress()) {
-							$r['EXAMPLE'] = '[jomres task="'.$r['TASK'].'" '.$arg_str.']';
+							$r['EXAMPLE'] = '[castor task="'.$r['TASK'].'" '.$arg_str.']';
 						} else {
-							$r['EXAMPLE'] = '{jomres '.$r['TASK'].' '.$arg_str.'}';
+							$r['EXAMPLE'] = '{castor '.$r['TASK'].' '.$arg_str.'}';
 						}
 						$r['EXAMPLE'] = str_replace('&', '&amp;', $r['EXAMPLE']);
 
@@ -126,17 +126,17 @@ class j16000asamodule_report
 				}
 			}
 
-			$jrtbar = jomres_singleton_abstract::getInstance('jomres_toolbar');
+			$jrtbar = castor_singleton_abstract::getInstance('castor_toolbar');
 			$jrtb = $jrtbar->startTable();
-			$jrtb .= $jrtbar->toolbarItem('cancel', jomresURL(JOMRES_SITEPAGE_URL_ADMIN), '');
+			$jrtb .= $jrtbar->toolbarItem('cancel', castorURL(CASTOR_SITEPAGE_URL_ADMIN), '');
 
 			$jrtb .= $jrtbar->endTable();
-			$output[ 'JOMRESTOOLBAR' ] = $jrtb;
+			$output[ 'CASTORTOOLBAR' ] = $jrtb;
 
 			$pageoutput[ ] = $output;
 
 			$tmpl = new patTemplate();
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 			$tmpl->readTemplatesFromInput('list_shortcodes.html');
 			$tmpl->addRows('pageoutput', $pageoutput);
 			$tmpl->addRows('rows', $rows);
@@ -152,3 +152,4 @@ class j16000asamodule_report
 		return null;
 	}
 }
+

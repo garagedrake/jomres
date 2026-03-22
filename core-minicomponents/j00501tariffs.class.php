@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Property Configuration page tabs. Offers various tariff and charging related settings.
 	 *
@@ -38,7 +38,7 @@ class j00501tariffs
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			return;
@@ -49,8 +49,8 @@ class j00501tariffs
 		}
 
 		$configurationPanel = $componentArgs[ 'configurationPanel' ];
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 		$mrConfig = getPropertySpecificSettings();
 
@@ -58,22 +58,22 @@ class j00501tariffs
 		$tariffModelsDropdown = $componentArgs[ 'tariffModelsDropdown' ];
 
 		$this->outputConversionJavascript();
-		$currfmt = jomres_singleton_abstract::getInstance('jomres_currency_format');
+		$currfmt = castor_singleton_abstract::getInstance('castor_currency_format');
 		$cformatdropdown = $currfmt->get_currency_format_dropdowninput();
 
-		$jrportal_taxrate = jomres_singleton_abstract::getInstance('jrportal_taxrate');
+		$jrportal_taxrate = castor_singleton_abstract::getInstance('jrportal_taxrate');
 
 		if (!isset($mrConfig[ 'margin' ]) || empty($mrConfig[ 'margin' ])) {
 			$mrConfig[ 'margin' ] = '0.00';
 		}
 
-		$configurationPanel->startPanel(jr_gettext('_JOMRES_COM_A_TARIFFS', '_JOMRES_COM_A_TARIFFS', false));
+		$configurationPanel->startPanel(jr_gettext('_CASTOR_COM_A_TARIFFS', '_CASTOR_COM_A_TARIFFS', false));
 
 		if ($mrConfig[ 'is_real_estate_listing' ] == 0 && !get_showtime('is_jintour_property')) {
 			if ($mrConfig[ 'tariffmode' ] == '1') {
-				$configurationPanel->setleft(jr_gettext('_JOMRES_COM_A_TARIFFPRICESAREWEEKLY', '_JOMRES_COM_A_TARIFFPRICESAREWEEKLY', false));
+				$configurationPanel->setleft(jr_gettext('_CASTOR_COM_A_TARIFFPRICESAREWEEKLY', '_CASTOR_COM_A_TARIFFPRICESAREWEEKLY', false));
 				$configurationPanel->setmiddle($lists[ 'tariffChargesStoredWeeklyYesNo' ]);
-				$configurationPanel->setright(jr_gettext('_JOMRES_COM_A_TARIFFPRICESAREWEEKLY_DESC', '_JOMRES_COM_A_TARIFFPRICESAREWEEKLY_DESC', false));
+				$configurationPanel->setright(jr_gettext('_CASTOR_COM_A_TARIFFPRICESAREWEEKLY_DESC', '_CASTOR_COM_A_TARIFFPRICESAREWEEKLY_DESC', false));
 				$configurationPanel->insertSetting();
 			}
 		}
@@ -82,35 +82,35 @@ class j00501tariffs
 			if (!isset($mrConfig[ 'property_currencycode' ])) { // for v4.5 converting the old currencyCode value to property_currencycode
 				$mrConfig[ 'property_currencycode' ] = $mrConfig[ 'currencyCode' ];
 			}
-			$currency_codes = jomres_singleton_abstract::getInstance('currency_codes');
+			$currency_codes = castor_singleton_abstract::getInstance('currency_codes');
 			$currency_codes_dropdown = $currency_codes->makeCodesDropdown($mrConfig[ 'property_currencycode' ]);
 			
-			$configurationPanel->setleft(jr_gettext('_JOMRES_COM_A_CURRENCYCODE', '_JOMRES_COM_A_CURRENCYCODE', false));
+			$configurationPanel->setleft(jr_gettext('_CASTOR_COM_A_CURRENCYCODE', '_CASTOR_COM_A_CURRENCYCODE', false));
 			$configurationPanel->setmiddle($currency_codes_dropdown);
 			$configurationPanel->setright();
 			$configurationPanel->insertSetting();
 
-			$configurationPanel->setleft(jr_gettext('_JOMRES_COM_A_TARIFFS_SWAP', '_JOMRES_COM_A_TARIFFS_SWAP', false));
+			$configurationPanel->setleft(jr_gettext('_CASTOR_COM_A_TARIFFS_SWAP', '_CASTOR_COM_A_TARIFFS_SWAP', false));
 			$configurationPanel->setmiddle($lists[ 'currency_symbol_swap' ]);
-			$configurationPanel->setright(jr_gettext('_JOMRES_COM_A_TARIFFS_SWAP_DESC', '_JOMRES_COM_A_TARIFFS_SWAP_DESC', false));
+			$configurationPanel->setright(jr_gettext('_CASTOR_COM_A_TARIFFS_SWAP_DESC', '_CASTOR_COM_A_TARIFFS_SWAP_DESC', false));
 			$configurationPanel->insertSetting();
 		}
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_CURRENCYFORMAT', '_JOMRES_CURRENCYFORMAT', false));
+		$configurationPanel->setleft(jr_gettext('_CASTOR_CURRENCYFORMAT', '_CASTOR_CURRENCYFORMAT', false));
 		$configurationPanel->setmiddle($cformatdropdown);
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_CURRENCYFORMAT_STRIP_DECIMALS', '_JOMRES_CURRENCYFORMAT_STRIP_DECIMALS', false));
+		$configurationPanel->setleft(jr_gettext('_CASTOR_CURRENCYFORMAT_STRIP_DECIMALS', '_CASTOR_CURRENCYFORMAT_STRIP_DECIMALS', false));
 		$configurationPanel->setmiddle($lists[ 'cformat_strip_decimals' ]);
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
 		if ($mrConfig[ 'is_real_estate_listing' ] == 0) {
 			if (!get_showtime('is_jintour_property')) {
-				$configurationPanel->setleft(jr_gettext('_JOMRES_COM_A_TARIFFS_MODEL', '_JOMRES_COM_A_TARIFFS_MODEL', false));
+				$configurationPanel->setleft(jr_gettext('_CASTOR_COM_A_TARIFFS_MODEL', '_CASTOR_COM_A_TARIFFS_MODEL', false));
 				$configurationPanel->setmiddle($tariffModelsDropdown);
-				$configurationPanel->setright(jr_gettext('_JOMRES_COM_A_TARIFFS_MODEL_DESC', '_JOMRES_COM_A_TARIFFS_MODEL_DESC', false));
+				$configurationPanel->setright(jr_gettext('_CASTOR_COM_A_TARIFFS_MODEL_DESC', '_CASTOR_COM_A_TARIFFS_MODEL_DESC', false));
 				$configurationPanel->insertSetting();
 			}
 
@@ -119,9 +119,9 @@ class j00501tariffs
 			$configurationPanel->setright('');
 			$configurationPanel->insertSetting();
 
-			$configurationPanel->setleft(jr_gettext('_JOMRES_COM_A_TAXINCLUSIVE', '_JOMRES_COM_A_TAXINCLUSIVE', false));
+			$configurationPanel->setleft(jr_gettext('_CASTOR_COM_A_TAXINCLUSIVE', '_CASTOR_COM_A_TAXINCLUSIVE', false));
 			$configurationPanel->setmiddle($lists[ 'prices_inclusive' ]);
-			$configurationPanel->setright(jr_gettext('_JOMRES_COM_A_TAXINCLUSIVE_DESC', '_JOMRES_COM_A_TAXINCLUSIVE_DESC', false));
+			$configurationPanel->setright(jr_gettext('_CASTOR_COM_A_TAXINCLUSIVE_DESC', '_CASTOR_COM_A_TAXINCLUSIVE_DESC', false));
 			$configurationPanel->insertSetting();
 		}
 
@@ -209,3 +209,4 @@ class j00501tariffs
 		return null;
 	}
 }
+

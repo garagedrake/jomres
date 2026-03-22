@@ -1,4 +1,4 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <style>
 .REmail {
@@ -13,37 +13,37 @@
 
 <script language="javascript">
 	<!--
-	jomresJquery(function(){
-		jomresJquery("#country").change(function(){
-			var selectedValue = jomresJquery(this).find(":selected").val();
+	castorJquery(function(){
+		castorJquery("#country").change(function(){
+			var selectedValue = castorJquery(this).find(":selected").val();
 			clause = "&task=get_region_dropdown_for_country_code&country="+selectedValue;
-			jomresJquery.get(live_site_ajax + clause, function (data) {
+			castorJquery.get(live_site_ajax + clause, function (data) {
 				populateDiv("property_region",data);
 				});
 			});
 		});
 	
-	jomresJquery(document).ready(function () {
+	castorJquery(document).ready(function () {
 
-		jomresJquery('#adminForm').attr('novalidate', 'novalidate'); // Disable html5 validation
+		castorJquery('#adminForm').attr('novalidate', 'novalidate'); // Disable html5 validation
         jQuery.validator.setDefaults({
             highlight: function (element, errorClass, validClass) {
                 if (element.type === "radio") {
                     this.findByName(element.name).addClass(errorClass).removeClass(validClass);
                 } else {
-                    jomresJquery(element).closest('.form-group').removeClass('has-success has-feedback').addClass('has-error has-feedback');
+                    castorJquery(element).closest('.form-group').removeClass('has-success has-feedback').addClass('has-error has-feedback');
                 }
             },
             unhighlight: function (element, errorClass, validClass) {
                 if (element.type === "radio") {
                     this.findByName(element.name).removeClass(errorClass).addClass(validClass);
                 } else {
-                    jomresJquery(element).closest('.form-group').removeClass('has-error has-feedback').addClass('has-success has-feedback');
+                    castorJquery(element).closest('.form-group').removeClass('has-error has-feedback').addClass('has-success has-feedback');
                 }
             }
         });
 		
-		jomresJquery('#adminForm').validate(
+		castorJquery('#adminForm').validate(
 				{
 				rules: {
 					property_name: {
@@ -76,16 +76,16 @@
 					}
 				},
 				messages: {
-					property_name: "{_JOMRES_REQUIREDFIELDS}",
-					property_street: "{_JOMRES_REQUIREDFIELDS}",
-					property_town: "{_JOMRES_REQUIREDFIELDS}",
-					property_postcode: "{_JOMRES_REQUIREDFIELDS}",
-					property_tel: "{_JOMRES_REQUIREDFIELDS}",
-					property_description: "{_JOMRES_REQUIREDFIELDS}",
-					property_email: "{_JOMRES_REQUIREDFIELDS}",
+					property_name: "{_CASTOR_REQUIREDFIELDS}",
+					property_street: "{_CASTOR_REQUIREDFIELDS}",
+					property_town: "{_CASTOR_REQUIREDFIELDS}",
+					property_postcode: "{_CASTOR_REQUIREDFIELDS}",
+					property_tel: "{_CASTOR_REQUIREDFIELDS}",
+					property_description: "{_CASTOR_REQUIREDFIELDS}",
+					property_email: "{_CASTOR_REQUIREDFIELDS}",
 				}
 			});
-		jomresJquery("#adminForm").valid();
+		castorJquery("#adminForm").valid();
 	});
 	
 	//-->
@@ -171,10 +171,10 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-md-2 control-label" for="permit_number">{_JOMRES_PERMIT_NUMBER_TITLE}</label>
+				<label class="col-md-2 control-label" for="permit_number">{_CASTOR_PERMIT_NUMBER_TITLE}</label>
 				<div class="col-md-10">
-					<input id="permit_number" name="permit_number" type="text" value="{PERMIT_NUMBER}" class="form-control" placeholder="{_JOMRES_PERMIT_NUMBER_TITLE}"/>
-					<span id="helpBlock" class="help-block">{_JOMRES_PERMIT_NUMBER_DESCRIPTION}</span>
+					<input id="permit_number" name="permit_number" type="text" value="{PERMIT_NUMBER}" class="form-control" placeholder="{_CASTOR_PERMIT_NUMBER_TITLE}"/>
+					<span id="helpBlock" class="help-block">{_CASTOR_PERMIT_NUMBER_DESCRIPTION}</span>
 				</div>
 			</div>
 			<patTemplate:tmpl name="stars" type="simpleCondition" requiredVars="hstars">
@@ -266,21 +266,21 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<label class="col-md-2 control-label" for="metatitle">{_JOMRES_METATITLE}</label>
+		<label class="col-md-2 control-label" for="metatitle">{_CASTOR_METATITLE}</label>
 		<div class="col-md-10">
-			<input type="text" name="metatitle" value="{METATITLE}" class="form-control" placeholder="{_JOMRES_METATITLE}"/>
+			<input type="text" name="metatitle" value="{METATITLE}" class="form-control" placeholder="{_CASTOR_METATITLE}"/>
 		</div>
 	</div>
 	<div class="form-group">
-		<label class="col-md-2 control-label" for="metadescription">{_JOMRES_METADESCRIPTION}</label>
+		<label class="col-md-2 control-label" for="metadescription">{_CASTOR_METADESCRIPTION}</label>
 		<div class="col-md-10">
-			<input type="text" name="metadescription" value="{METADESCRIPTION}" class="form-control" placeholder="{_JOMRES_METADESCRIPTION}"/>
+			<input type="text" name="metadescription" value="{METADESCRIPTION}" class="form-control" placeholder="{_CASTOR_METADESCRIPTION}"/>
 		</div>
 	</div>
 	<div class="form-group">
-		<label class="col-md-2 control-label" for="metakeywords">{_JOMRES_METAKEYWORDS}</label>
+		<label class="col-md-2 control-label" for="metakeywords">{_CASTOR_METAKEYWORDS}</label>
 		<div class="col-md-10">
-			<input type="text" name="metakeywords" value="{METAKEYWORDS}" class="form-control" placeholder="{_JOMRES_METAKEYWORDS}"/>
+			<input type="text" name="metakeywords" value="{METAKEYWORDS}" class="form-control" placeholder="{_CASTOR_METAKEYWORDS}"/>
 		</div>
 	</div>
 	<patTemplate:tmpl name="multi" type="simpleCondition" requiredVars="multisites_select">

@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Creates the booking's invoice
 	 *
@@ -37,17 +37,17 @@ class j03025insertbooking_invoice
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
-		$tmpBookingHandler = jomres_singleton_abstract::getInstance('jomres_temp_booking_handler');
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$tmpBookingHandler = castor_singleton_abstract::getInstance('castor_temp_booking_handler');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 
 		$property_uid = (int)$tmpBookingHandler->getBookingFieldVal('property_uid');
 		$mrConfig = getPropertySpecificSettings($property_uid) ;
@@ -183,7 +183,7 @@ class j03025insertbooking_invoice
 
 			if (get_showtime('include_room_booking_functionality')) {
 				$line_items[] = array('tax_code_id' => (int) $mrConfig[ 'accommodation_tax_code' ],
-										'name' => '_JOMRES_AJAXFORM_BILLING_ROOM_TOTAL',
+										'name' => '_CASTOR_AJAXFORM_BILLING_ROOM_TOTAL',
 										'description' => '('.outputDate($arrivalDate).' - '.outputDate($departureDate).')',
 										'init_price' => $room_total_nodiscount,
 										'init_qty' => 1,
@@ -208,7 +208,7 @@ class j03025insertbooking_invoice
 				}
 				
 				$line_items[] = array('tax_code_id' => 0,
-									   'name' => '_JOMRES_COM_MR_EB_PAYM_DEPOSITREQUIRED',
+									   'name' => '_CASTOR_COM_MR_EB_PAYM_DEPOSITREQUIRED',
 									   'description' => '',
 									   'init_price' => 0 - $deposit_required,
 									   'init_qty' => 1,
@@ -227,7 +227,7 @@ class j03025insertbooking_invoice
 					{
 					$totalDiscountForRoom = (float) $d[ 'discountfrom' ] - (float) $d[ 'discountto' ];
 					$line_items[] = array ( 'tax_code_id' => 0,
-											'name' => jr_gettext( '_JOMRES_AJAXFORM_BILLING_DISCOUNT', '_JOMRES_AJAXFORM_BILLING_DISCOUNT', false, false ),
+											'name' => jr_gettext( '_CASTOR_AJAXFORM_BILLING_DISCOUNT', '_CASTOR_AJAXFORM_BILLING_DISCOUNT', false, false ),
 											'description' => '',
 											'init_price' => "-" . $totalDiscountForRoom,
 											'init_qty' => "1",
@@ -239,7 +239,7 @@ class j03025insertbooking_invoice
 			//Single Person Supplement line item
 			if ($single_person_suppliment != 0) {
 				$line_items[] = array('tax_code_id' => (int) $mrConfig[ 'accommodation_tax_code' ],
-										'name' => '_JOMRES_COM_A_SUPPLIMENTS_SINGLEPERSON_COST',
+										'name' => '_CASTOR_COM_A_SUPPLIMENTS_SINGLEPERSON_COST',
 										'description' => '',
 										'init_price' => $single_person_suppliment,
 										'init_qty' => 1,
@@ -248,10 +248,10 @@ class j03025insertbooking_invoice
 			}
 
 			//Extras and Extras taxes
-			$jrportal_taxrate = jomres_singleton_abstract::getInstance('jrportal_taxrate');
+			$jrportal_taxrate = castor_singleton_abstract::getInstance('jrportal_taxrate');
 			$extrasArray = explode(',', $extras);
 			foreach ($extrasArray as $extraUid) {
-				$query = "SELECT name,price,tax_rate FROM #__jomres_extras WHERE uid = '".(int) $extraUid."' ORDER BY name";
+				$query = "SELECT name,price,tax_rate FROM #__castor_extras WHERE uid = '".(int) $extraUid."' ORDER BY name";
 				$extrasList = doSelectSql($query);
 				foreach ($extrasList as $theExtras) {
 					$query = "SELECT `model` FROM #__jomcomp_extrasmodels_models WHERE extra_id = '".(int) $extraUid."'";
@@ -277,7 +277,7 @@ class j03025insertbooking_invoice
 					}
 
 					$line_items[] = array('tax_code_id' => $theExtras->tax_rate,
-						'name' =>  jr_gettext('_JOMRES_CUSTOMTEXT_EXTRANAME'.(string)$extraUid, '_JOMRES_CUSTOMTEXT_EXTRANAME'.(string)$extraUid, false, false),
+						'name' =>  jr_gettext('_CASTOR_CUSTOMTEXT_EXTRANAME'.(string)$extraUid, '_CASTOR_CUSTOMTEXT_EXTRANAME'.(string)$extraUid, false, false),
 						'description' => '',
 						'init_price' => $extra_price,
 						'init_qty' => $quantities,
@@ -288,7 +288,7 @@ class j03025insertbooking_invoice
 
 			if ($city_tax > 0) {
 				$line_items[] = array('tax_code_id' => 0,
-					'name' =>  jr_gettext('JOMRES_CITY_TAX_VALUE', 'JOMRES_CITY_TAX_VALUE', false, false),
+					'name' =>  jr_gettext('CASTOR_CITY_TAX_VALUE', 'CASTOR_CITY_TAX_VALUE', false, false),
 					'description' => '',
 					'init_price' => $city_tax,
 					'init_qty' => 1,
@@ -298,7 +298,7 @@ class j03025insertbooking_invoice
 
 			if ($cleaning_fee > 0) {
 				$line_items[] = array('tax_code_id' => 0,
-					'name' =>   jr_gettext('JOMRES_CLEANING_FEE_HEADING', 'JOMRES_CLEANING_FEE_HEADING', false, false),
+					'name' =>   jr_gettext('CASTOR_CLEANING_FEE_HEADING', 'CASTOR_CLEANING_FEE_HEADING', false, false),
 					'description' => '',
 					'init_price' => $cleaning_fee,
 					'init_qty' => 1,
@@ -308,7 +308,7 @@ class j03025insertbooking_invoice
 
 			if ($extra_guest_price > 0) {
 				$line_items[] = array('tax_code_id' => 0,
-					'name' =>   jr_gettext('JOMRES_COM_A_DAILY_EXTRA_GUEST_PRICE', 'JOMRES_COM_A_DAILY_EXTRA_GUEST_PRICE', false, false),
+					'name' =>   jr_gettext('CASTOR_COM_A_DAILY_EXTRA_GUEST_PRICE', 'CASTOR_COM_A_DAILY_EXTRA_GUEST_PRICE', false, false),
 					'description' => '',
 					'init_price' => $extra_guest_price,
 					'init_qty' => 1,
@@ -370,7 +370,7 @@ class j03025insertbooking_invoice
 			}
 		} else { //contract total is overridden by the manager
 			$line_items[] = array('tax_code_id' => (int) $mrConfig[ 'accommodation_tax_code' ],
-									'name' => '_JOMRES_AJAXFORM_BILLING_TOTAL',
+									'name' => '_CASTOR_AJAXFORM_BILLING_TOTAL',
 									'description' => '',
 									'init_price' => number_format($new_contract_total, 2, '.', ''),
 									'init_qty' => 1,
@@ -380,10 +380,10 @@ class j03025insertbooking_invoice
 
 		//amending the invoice
 		if ($amend_contract && $amend_contractuid != 0 && $thisJRUser->userIsManager) {
-			$query = 'SELECT id FROM #__jomresportal_invoices WHERE contract_id = '.$amend_contractuid;
+			$query = 'SELECT id FROM #__castorportal_invoices WHERE contract_id = '.$amend_contractuid;
 			$invoice_id = (int) doSelectSql($query, 1);
 
-			$query = 'SELECT service_description,service_value,tax_code,service_qty FROM  #__jomres_extraservices WHERE contract_uid = '.$amend_contractuid.'';
+			$query = 'SELECT service_description,service_value,tax_code,service_qty FROM  #__castor_extraservices WHERE contract_uid = '.$amend_contractuid.'';
 			$extra_services = doSelectSql($query);
 
 			if (!empty($extra_services)) {
@@ -432,7 +432,7 @@ class j03025insertbooking_invoice
 			if (!$secret_key_payment) {
 				$invoice->create_new_invoice($invoice_data, $line_items);
 
-				$query = 'UPDATE #__jomres_contracts SET invoice_uid = '.$invoice->id.' WHERE contract_uid = '.$contract_uid;
+				$query = 'UPDATE #__castor_contracts SET invoice_uid = '.$invoice->id.' WHERE contract_uid = '.$contract_uid;
 				doInsertSql($query, '');
 			} elseif ($depositPaid) {
 				//Deposit line item
@@ -451,7 +451,7 @@ class j03025insertbooking_invoice
 				}
 				
 				$deposit_paid_line_item_data = array('tax_code_id' => 0,
-														'name' => '_JOMRES_COM_MR_EB_PAYM_DEPOSITREQUIRED',
+														'name' => '_CASTOR_COM_MR_EB_PAYM_DEPOSITREQUIRED',
 														'description' => '',
 														'init_price' => 0 - $deposit_required,
 														'init_qty' => 1,
@@ -461,7 +461,7 @@ class j03025insertbooking_invoice
 														'transaction_id' => $transaction_id
 													  );
 													  
-				$query = 'SELECT id FROM #__jomresportal_invoices WHERE contract_id = '.$contract_uid;
+				$query = 'SELECT id FROM #__castorportal_invoices WHERE contract_id = '.$contract_uid;
 				$invoice->id = (int) doSelectSql($query, 1);
 
 				$invoice->getInvoice();
@@ -495,3 +495,4 @@ class j03025insertbooking_invoice
 		return $this->results;
 	}
 }
+

@@ -1,16 +1,16 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 //#################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 //#################################################################
 	jr_define('STRIPE_STANDARD_TITLE',"Stripe Standard");
 	jr_define('STRIPE_STANDARD_MARKETING',"Millionen von Unternehmen jeder Größe – von Startups bis hin zu großen Unternehmen – nutzen die Software und APIs von Stripe, um Zahlungen zu akzeptieren, Auszahlungen zu senden und ihre Geschäfte online zu verwalten. " );
@@ -37,4 +37,5 @@ defined('_JOMRES_INITCHECK') or die('');
 	jr_define('STRIPE_STANDARD_PAYMENT_FAILED',"Zahlung fehlgeschlagen!");
 	jr_define('STRIPE_STANDARD_PAYMENT_FAILED_BLURB',"Leider können wir die erfolgreiche Zahlung nicht bestätigen. Bitte gehen Sie zurück zum Buchungsformular und versuchen Sie es erneut.");
 	jr_define('STRIPE_STANDARD_PAYMENT_FAILED_BUTTON',"Zurück zum Buchungsformular");
+
 

@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,29 +36,29 @@ class j06001dashboard_get_guest_details_ajax
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		jr_import('jomres_encryption');
-		$jomres_encryption = new jomres_encryption();
+		jr_import('castor_encryption');
+		$castor_encryption = new castor_encryption();
 
-		$property_uid = jomresGetParam($_GET, 'property_uid', 0);
+		$property_uid = castorGetParam($_GET, 'property_uid', 0);
 		if ($property_uid == 0) {
 			$property_uid = getDefaultProperty();
 		}
 
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 		if (!in_array($property_uid, $thisJRUser->authorisedProperties)) {
 			return;
 		}
 
-		$existing_id = (int) jomresGetParam($_GET, 'existing_id', 0);
+		$existing_id = (int) castorGetParam($_GET, 'existing_id', 0);
 
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 
 		$guestDeets = array();
 
@@ -81,8 +81,8 @@ class j06001dashboard_get_guest_details_ajax
 						`enc_tel_landline`,
 						`enc_tel_mobile`,
 						`enc_email`
-					FROM #__jomres_guests 
-					WHERE `property_uid` IN (' .jomres_implode($thisJRUser->authorisedProperties).') 
+					FROM #__castor_guests 
+					WHERE `property_uid` IN (' .castor_implode($thisJRUser->authorisedProperties).') 
 						AND `guests_uid` = '.(int) $existing_id.'  
 					LIMIT 1 ';
 		$guestDeets = doSelectSql($query, 2);
@@ -90,7 +90,7 @@ class j06001dashboard_get_guest_details_ajax
 		foreach ($guestDeets as $key => $val) {
 			if (substr($key, 0, 4) == "enc_") {
 				$newkey = substr($key, 4);
-				$guestDeets[$newkey] = $jomres_encryption->decrypt($val);
+				$guestDeets[$newkey] = $castor_encryption->decrypt($val);
 				unset($guestDeets[$key]);
 			}
 		}
@@ -105,3 +105,4 @@ class j06001dashboard_get_guest_details_ajax
 		return null;
 	}
 }
+

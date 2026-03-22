@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,21 +35,21 @@ class j06000ui_availability_calendar
 	 
 	public function __construct($componentArgs)
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			$this->shortcode_data = array(
 				'task' => 'ui_availability_calendar',
-				'info' => '_JOMRES_SHORTCODES_06000UI_AVAILABILITY_CALENDAR',
+				'info' => '_CASTOR_SHORTCODES_06000UI_AVAILABILITY_CALENDAR',
 				'arguments' => array(
 					array(
 						'argument' => 'property_uid',
-						'arg_info' => '_JOMRES_SHORTCODES_06000UI_AVAILABILITY_CALENDAR_ARG_PROPERTY_UID',
+						'arg_info' => '_CASTOR_SHORTCODES_06000UI_AVAILABILITY_CALENDAR_ARG_PROPERTY_UID',
 						'arg_example' => '1',
 						),
 					array(
 						'argument' => 'noshowlegend',
-						'arg_info' => '_JOMRES_SHORTCODES_06000UI_AVAILABILITY_CALENDAR_ARG_NOSHOWLEGEND',
+						'arg_info' => '_CASTOR_SHORTCODES_06000UI_AVAILABILITY_CALENDAR_ARG_NOSHOWLEGEND',
 						'arg_example' => '1',
 						),
 					),
@@ -58,7 +58,7 @@ class j06000ui_availability_calendar
 			return;
 		}
 		$this->retVals = '';
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 
 		$show_legend = true;
@@ -71,7 +71,7 @@ class j06000ui_availability_calendar
 		if (isset($componentArgs[ 'property_uid' ])) {
 			$property_uid = (int)$componentArgs[ 'property_uid' ];
 		} else {
-			$property_uid = (int)jomresGetParam($_REQUEST, 'property_uid', 0);
+			$property_uid = (int)castorGetParam($_REQUEST, 'property_uid', 0);
 		}
 		
 		if ($property_uid == 0) {
@@ -106,11 +106,11 @@ class j06000ui_availability_calendar
 				$bookings[ ] = $o;
 			}
 		} else {
-			$query = 'SELECT COUNT(room_uid) FROM #__jomres_rooms WHERE propertys_uid = '.(int) $property_uid.' ';
+			$query = 'SELECT COUNT(room_uid) FROM #__castor_rooms WHERE propertys_uid = '.(int) $property_uid.' ';
 			$this->numberOfRoomsInProperty = (int) doSelectSql($query, 1);
 
 			$firstDayOfTheCurrentMonth = date('Y/m/d', strtotime(date('m').'/01/'.date('Y').' 00:00:00'));
-			$query = 'SELECT date FROM #__jomres_room_bookings WHERE property_uid = '.(int) $property_uid." AND DATE_FORMAT(`date`, '%Y/%m/%d') >= DATE_FORMAT('".$firstDayOfTheCurrentMonth."', '%Y/%m/%d') ";
+			$query = 'SELECT date FROM #__castor_room_bookings WHERE property_uid = '.(int) $property_uid." AND DATE_FORMAT(`date`, '%Y/%m/%d') >= DATE_FORMAT('".$firstDayOfTheCurrentMonth."', '%Y/%m/%d') ";
 			$bookings = doSelectSql($query);
 		}
 
@@ -156,7 +156,7 @@ class j06000ui_availability_calendar
 			}
 		}
 
-		$random_identifier = generateJomresRandomString(10);
+		$random_identifier = generateCastorRandomString(10);
 
 		$quarter_output = '';
 		if (!empty($quarter_dates)) {
@@ -263,31 +263,31 @@ class j06000ui_availability_calendar
 				
 				// is date in the specialDays?
 				if (\'undefined\'!=typeof(quarter_dates_' .$random_identifier.')){
-					if (jomresJquery.inArray(currDate, quarter_dates_' .$random_identifier.') >= 0) {
+					if (castorJquery.inArray(currDate, quarter_dates_' .$random_identifier.') >= 0) {
 						return [day_is_clickable, \'calendar_background_quarter\'];
 						}
 					}
 				if (\'undefined\'!=typeof(half_dates_' .$random_identifier.')){
 				
-					if (jomresJquery.inArray(currDate, half_dates_' .$random_identifier.') >= 0) {
+					if (castorJquery.inArray(currDate, half_dates_' .$random_identifier.') >= 0) {
 						return [day_is_clickable, \'calendar_background_half\'];
 						}
 					}
 				if (\'undefined\'!=typeof(threequarter_dates_' .$random_identifier.')){
-					if (jomresJquery.inArray(currDate, threequarter_dates_' .$random_identifier.') >= 0) {
+					if (castorJquery.inArray(currDate, threequarter_dates_' .$random_identifier.') >= 0) {
 						return [day_is_clickable, \'calendar_background_threequarter\'];
 						}
 					}
 				if (\'undefined\'!=typeof(full_dates_' .$random_identifier.')){
-					if (jomresJquery.inArray(currDate, full_dates_' .$random_identifier.') >= 0) {
+					if (castorJquery.inArray(currDate, full_dates_' .$random_identifier.') >= 0) {
 						return [false, \'calendar_background_full\'];
 						}
 					}
 				return [day_is_clickable, \'\'];
 				}
 
-			jomresJquery(document).ready(function(){
-				jomresJquery( "#' .$random_identifier.'" ).datepicker({
+			castorJquery(document).ready(function(){
+				castorJquery( "#' .$random_identifier.'" ).datepicker({
 					"dateFormat" : "yy/mm/dd",
 					"minDate": 0,
 					"defaultDate" : "'.$defaultDate.'",
@@ -304,43 +304,43 @@ class j06000ui_availability_calendar
 		if ($show_legend) {
 			$inline_calendar .= '
 			<script type="text/javascript">
-			jomresJquery(document).ready(function(){
-			  jomresJquery("#legend_dialog").dialog({
+			castorJquery(document).ready(function(){
+			  castorJquery("#legend_dialog").dialog({
 				autoOpen: false
 			});
-			jomresJquery( "#legend_dialog_opener" ).click(function() {
-				jomresJquery( "#legend_dialog" ).dialog( "open" );
+			castorJquery( "#legend_dialog_opener" ).click(function() {
+				castorJquery( "#legend_dialog" ).dialog( "open" );
 				return false;
 			});
 			});
 			</script>';
 			if ($mrConfig[ 'singleRoomProperty' ]) {
 				$inline_calendar .= '
-				<a href="#" id="legend_dialog_opener" title="Legend"><img src="' .JOMRES_IMAGES_RELPATH.'information.png" /></a>
+				<a href="#" id="legend_dialog_opener" title="Legend"><img src="' .CASTOR_IMAGES_RELPATH.'information.png" /></a>
 				<div id="legend_dialog" title="Legend">
 				<table width="100%" border="0">
 					<tr>
-						<td class="calendar_background_full" width="20">&nbsp;</td><td>' .jr_gettext('_JOMRES_AVLCAL_FULLYBOOKED', '_JOMRES_AVLCAL_FULLYBOOKED').'</td>
+						<td class="calendar_background_full" width="20">&nbsp;</td><td>' .jr_gettext('_CASTOR_AVLCAL_FULLYBOOKED', '_CASTOR_AVLCAL_FULLYBOOKED').'</td>
 					</tr>
 				</table>
 				</div>
 				';
 			} else {
 				$inline_calendar .= '
-				<a href="#" id="legend_dialog_opener" title="Legend"><img src="' .JOMRES_IMAGES_RELPATH.'information.png" /></a>
+				<a href="#" id="legend_dialog_opener" title="Legend"><img src="' .CASTOR_IMAGES_RELPATH.'information.png" /></a>
 				<div id="legend_dialog" title="Legend">
 				<table width="100%" border="0">
 					<tr>
-						<td class="calendar_background_quarter" width="20">&nbsp;</td><td>' .jr_gettext('_JOMRES_AVLCAL_QUARTER', '_JOMRES_AVLCAL_QUARTER').'</td>
+						<td class="calendar_background_quarter" width="20">&nbsp;</td><td>' .jr_gettext('_CASTOR_AVLCAL_QUARTER', '_CASTOR_AVLCAL_QUARTER').'</td>
 					</tr>
 					<tr>
-						<td class="calendar_background_half" width="20">&nbsp;</td><td>' .jr_gettext('_JOMRES_AVLCAL_HALF', '_JOMRES_AVLCAL_HALF').'</td>
+						<td class="calendar_background_half" width="20">&nbsp;</td><td>' .jr_gettext('_CASTOR_AVLCAL_HALF', '_CASTOR_AVLCAL_HALF').'</td>
 					</tr>
 					<tr>
-						<td class="calendar_background_threequarter" width="20">&nbsp;</td><td>' .jr_gettext('_JOMRES_AVLCAL_THREEQUARTER', '_JOMRES_AVLCAL_THREEQUARTER').'</td>
+						<td class="calendar_background_threequarter" width="20">&nbsp;</td><td>' .jr_gettext('_CASTOR_AVLCAL_THREEQUARTER', '_CASTOR_AVLCAL_THREEQUARTER').'</td>
 					</tr>
 					<tr>
-						<td class="calendar_background_full" width="20">&nbsp;</td><td>' .jr_gettext('_JOMRES_AVLCAL_FULLYBOOKED', '_JOMRES_AVLCAL_FULLYBOOKED').'</td>
+						<td class="calendar_background_full" width="20">&nbsp;</td><td>' .jr_gettext('_CASTOR_AVLCAL_FULLYBOOKED', '_CASTOR_AVLCAL_FULLYBOOKED').'</td>
 					</tr>
 				</table>
 				</div>
@@ -365,3 +365,4 @@ class j06000ui_availability_calendar
 		return $this->retVals;
 	}
 }
+

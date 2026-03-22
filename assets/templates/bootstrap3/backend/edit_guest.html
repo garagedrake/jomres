@@ -1,11 +1,11 @@
-<patTemplate:tmpl name="pageoutput" unusedvars="strip">
+﻿<patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <script language="JavaScript" type="text/javascript">
 <!--
-jomresJquery(function(){
-	jomresJquery("#guest_country").change(function(){
-		var selectedValue = jomresJquery(this).find(":selected").val();
+castorJquery(function(){
+	castorJquery("#guest_country").change(function(){
+		var selectedValue = castorJquery(this).find(":selected").val();
 		clause = "&task=get_region_dropdown_for_country_code&country="+selectedValue;
-		jomresJquery.get(live_site_ajax + clause, function (data) {
+		castorJquery.get(live_site_ajax + clause, function (data) {
 			populateDiv("guest_region_div",data);
 			});
 		});
@@ -84,9 +84,9 @@ jomresJquery(function(){
 	</div>
 	
 	<div class="form-group">
-		<label class="col-md-2 control-label" for="vat_number">{_JOMRES_COM_YOURBUSINESS_VATNO}</label>
+		<label class="col-md-2 control-label" for="vat_number">{_CASTOR_COM_YOURBUSINESS_VATNO}</label>
 		<div class="col-md-10">
-			<input id="vat_number" name="vat_number" type="text" value="{VAT_NUMBER}" class="form-control" placeholder="{_JOMRES_COM_YOURBUSINESS_VATNO}"/>
+			<input id="vat_number" name="vat_number" type="text" value="{VAT_NUMBER}" class="form-control" placeholder="{_CASTOR_COM_YOURBUSINESS_VATNO}"/>
 			<patTemplate:tmpl name="validation" type="simpleCondition" requiredVars="validation_class">
 			<span class="help-block">
 				<div class="alert {VALIDATION_CLASS}">
@@ -107,16 +107,16 @@ jomresJquery(function(){
     
     
 	<div class="form-group">
-		<label class="col-md-2 control-label" for="blacklisted">{_JOMRES_GUEST_BLACKLISTED}</label>
+		<label class="col-md-2 control-label" for="blacklisted">{_CASTOR_GUEST_BLACKLISTED}</label>
 		<div class="col-md-10">
 			{BLACKLISTED}
-            <span class="help-block">{_JOMRES_GUEST_BLACKLISTED_DESC}</span>
+            <span class="help-block">{_CASTOR_GUEST_BLACKLISTED_DESC}</span>
 		</div>
 	</div>
     
 	<div class="form-actions">
 		<div class="col-md-10 col-md-offset-2">
-			{JOMRESTOOLBAR}
+			{CASTORTOOLBAR}
 		</div>
 	</div>
 	<input type="hidden" name="id" value="{GUESTUID}"/>

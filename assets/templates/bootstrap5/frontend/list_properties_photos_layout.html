@@ -1,6 +1,6 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
-	{JOMRES_POPUPURL_GLOBALVAR}
+	{CASTOR_POPUPURL_GLOBALVAR}
 
 	{HEADER}
 
@@ -15,9 +15,9 @@
 	<div class="row">
 		<patTemplate:tmpl name="property_details" unusedvars="&nbsp;">
 
-			<div class="col-md-3 p-2  d-flex " {jomres_script animation_library}>
+			<div class="col-md-3 p-2  d-flex " {castor_script animation_library}>
 
-				<div class="jomres_property_list_propertywrapper card w-100 {BUDGET_BORDER_CLASS} border-0" id="{UID}">
+				<div class="castor_property_list_propertywrapper card w-100 {BUDGET_BORDER_CLASS} border-0" id="{UID}">
 					<div class="image-container ">
 						{PROPERTY_IMAGE_OR_SLIDESHOW}
 						{RIBBON}
@@ -48,7 +48,7 @@
 						<div class="hidden-xs hidden-sm ml-auto">
 							<label>
 								<input type="checkbox" name="compare" value="{UID}" autocomplete="off"/>
-								{_JOMRES_COMPARE}
+								{_CASTOR_COMPARE}
 							</label>
 						</div>
 						<patTemplate:comment>
@@ -73,17 +73,17 @@
 
 				<patTemplate:comment>
 					<div id="effect{UID}" class="quick-info ui-helper-hidden">
-						<div><strong>{_JOMRES_FRONT_ROOMTYPES}</strong></div>
+						<div><strong>{_CASTOR_FRONT_ROOMTYPES}</strong></div>
 						<div>{ROOMTYPES}</div>
 						<div style="clear:both;"></div>
-						<div><strong>{_JOMRES_COM_MR_VRCT_ROOM_HEADER_FEATURES}</strong></div>
+						<div><strong>{_CASTOR_COM_MR_VRCT_ROOM_HEADER_FEATURES}</strong></div>
 						<div>{FEATURELIST}</div>
 						<div style="clear:both;"></div>
 						<div>&nbsp;</div>
-						<div><strong>{_JOMRES_REVIEWS}</strong></div>
-						<div><strong>{_JOMRES_REVIEWS_TOTAL_VOTES}</strong> {NUMBER_OF_REVIEWS}</div>
-						<div><strong>{_JOMRES_REVIEWS_AVERAGE_RATING}</strong>{AVERAGE_RATING}</div>
-						<a href="#property_reviews{UID}" ajax_task="show_property_reviews" data-bs-toggle="modal" random_identifier="{UID}" property_name="{PROPERTYNAME}" property_uid="{UID}">{_JOMRES_REVIEWS_CLICKTOSHOW}</a>
+						<div><strong>{_CASTOR_REVIEWS}</strong></div>
+						<div><strong>{_CASTOR_REVIEWS_TOTAL_VOTES}</strong> {NUMBER_OF_REVIEWS}</div>
+						<div><strong>{_CASTOR_REVIEWS_AVERAGE_RATING}</strong>{AVERAGE_RATING}</div>
+						<a href="#property_reviews{UID}" ajax_task="show_property_reviews" data-bs-toggle="modal" random_identifier="{UID}" property_name="{PROPERTYNAME}" property_uid="{UID}">{_CASTOR_REVIEWS_CLICKTOSHOW}</a>
 
 						<div>&nbsp;</div>
 						<div class="{LASTBOOKING_STYLE}">{LASTBOOKED}</div>
@@ -94,7 +94,7 @@
 
 				<script>
 					document.addEventListener('DOMContentLoaded', function(){
-						jomresJquery('#module_{RANDOM_IDENTIFIER}_popup', '#property_reviews{UID}').appendTo("body");
+						castorJquery('#module_{RANDOM_IDENTIFIER}_popup', '#property_reviews{UID}').appendTo("body");
 					});
 				</script>
 				<div class="modal fade" tabindex="-1" role="dialog" id="module_{RANDOM_IDENTIFIER}_popup"></div><!-- /.modal info -->

@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Triggers the dobooking class that is used as the booking engine, supplied as a minicomponent to allow easy overriding
 	 *
@@ -39,7 +39,7 @@ class j05000bookingobject
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
@@ -79,9 +79,9 @@ class j05000bookingobject
 
 			if ((float) $mrConfig['tourist_tax'] > 0) {
 				if (using_bootstrap()) {
-					echo '<p class="alert">'.jr_gettext('_JOMRES_TOURIST_TAX_NOTE', '_JOMRES_TOURIST_TAX_NOTE').'</p>';
+					echo '<p class="alert">'.jr_gettext('_CASTOR_TOURIST_TAX_NOTE', '_CASTOR_TOURIST_TAX_NOTE').'</p>';
 				} else {
-					echo '<p class="ui-state-highlight">'.jr_gettext('_JOMRES_TOURIST_TAX_NOTE', '_JOMRES_TOURIST_TAX_NOTE').'</p>';
+					echo '<p class="ui-state-highlight">'.jr_gettext('_CASTOR_TOURIST_TAX_NOTE', '_CASTOR_TOURIST_TAX_NOTE').'</p>';
 				}
 			}
 		}
@@ -102,7 +102,7 @@ if (!class_exists('booking')) {
 		 */
 		public function generateDateInput($fieldName, $dateValue, $myID = false)
 		{
-			$tmpBookingHandler = jomres_getSingleton('jomres_temp_booking_handler');
+			$tmpBookingHandler = castor_getSingleton('castor_temp_booking_handler');
 			// We need to give the javascript date function a random name because it will be called by both the component and modules
 			$uniqueID = '';
 			// If this date picker is "arrivalDate" then we need to create a departure date input name too, then set it in showtime. With that we'll be able to tell this set of functionality what the id of the
@@ -131,8 +131,8 @@ if (!class_exists('booking')) {
 			$dateFormat = str_replace('m', 'mm', $dateFormat);
 			$dateFormat = str_replace('d', 'dd', $dateFormat);
 
-			if (!defined('_JOMRES_CALENDAR_RTL')) {
-				define('_JOMRES_CALENDAR_RTL', 'false');
+			if (!defined('_CASTOR_CALENDAR_RTL')) {
+				define('_CASTOR_CALENDAR_RTL', 'false');
 			}
 
 			$alt_field_string = '';
@@ -151,8 +151,8 @@ if (!class_exists('booking')) {
 					$onchange .= ' getResponse_particulars(\'arrivalDate\',this.value); ';
 				} else {
 					$onchange .= ' ajaxADate(this.value,\''.$this->cfg_cal_input.'\'); getResponse_particulars(\'arrivalDate\',this.value,\''.$uniqueID.'\'); ';
-					$onchange .= ' var departureMin = jomresJquery(this).datepicker(\'getDate\'); var result = new Date(departureMin); departureMin = departureMin.setDate(result.getDate() + '.$this->mininterval.'); ;  var newMin = new Date(departureMin); jomresJquery("#'.get_showtime('departure_date_unique_id').'").datepicker(\'option\', {minDate: newMin	}); ';
-					$onclose .= 'setTimeout(function(){ jomresJquery("#'.get_showtime('departure_date_unique_id').'").datepicker(\'show\');},0); ';
+					$onchange .= ' var departureMin = castorJquery(this).datepicker(\'getDate\'); var result = new Date(departureMin); departureMin = departureMin.setDate(result.getDate() + '.$this->mininterval.'); ;  var newMin = new Date(departureMin); castorJquery("#'.get_showtime('departure_date_unique_id').'").datepicker(\'option\', {minDate: newMin	}); ';
+					$onclose .= 'setTimeout(function(){ castorJquery("#'.get_showtime('departure_date_unique_id').'").datepicker(\'show\');},0); ';
 				}
 			} else {
 				$onchange .= ' getResponse_particulars(\'departureDate\',this.value); ';
@@ -167,8 +167,8 @@ if (!class_exists('booking')) {
 
 			$amend_contract = $tmpBookingHandler->getBookingFieldVal('amend_contract');
 			$output = '<script type="text/javascript">
-			jomresJquery(function() {
-				jomresJquery("#' .$uniqueID.'").datepicker( {
+			castorJquery(function() {
+				castorJquery("#' .$uniqueID.'").datepicker( {
 					dateFormat: "' .$dateFormat.'",';
 			if (!$amend_contract) {
 				$output .= 'minDate: 0, ';
@@ -186,8 +186,8 @@ if (!class_exists('booking')) {
 				$styles = 'input-group-addon input-group-text';
 			}
 			
-			if ((using_bootstrap() && jomres_bootstrap_version() == '2') || !using_bootstrap()) {
-				$output .= 'buttonImage: \''.JOMRES_IMAGES_RELPATH.'calendar.png\',';
+			if ((using_bootstrap() && castor_bootstrap_version() == '2') || !using_bootstrap()) {
+				$output .= 'buttonImage: \''.CASTOR_IMAGES_RELPATH.'calendar.png\',';
 				$bs3_icon = '';
 			} else {
 				$output .= 'buttonText: "",';
@@ -217,7 +217,7 @@ if (!class_exists('booking')) {
 							' .$onchange.'
 						}';
 
-			if ($fieldName == 'arrivalDate') { // Disabled for https://github.com/WoollyinWalesIT/jomres/issues/391
+			if ($fieldName == 'arrivalDate') { // Disabled for https://github.com/WoollyinWalesIT/castor/issues/391
 				$output .= ',beforeShowDay: isAvailable';
 
 				if ($onclose != '') {
@@ -229,9 +229,9 @@ if (!class_exists('booking')) {
 
 			});';
 
-			if (using_bootstrap() && (jomres_bootstrap_version() == '3' || jomres_bootstrap_version() == '4')) {
+			if (using_bootstrap() && (castor_bootstrap_version() == '3' || castor_bootstrap_version() == '4')) {
 				$output .= '
-				jomresJquery(function() {jomresJquery("#dp_trigger_'.$uniqueID.'").on("click", function() {jomresJquery("#'.$uniqueID.'").datepicker("show");})});
+				castorJquery(function() {castorJquery("#dp_trigger_'.$uniqueID.'").on("click", function() {castorJquery("#'.$uniqueID.'").datepicker("show");})});
 				';
 			}
 
@@ -254,3 +254,4 @@ if (!class_exists('booking')) {
 		}
 	}
 }
+

@@ -1,21 +1,21 @@
-<patTemplate:tmpl name="pageoutput">
+﻿<patTemplate:tmpl name="pageoutput">
 <script type="text/javascript">
-// Moves the menu to the content/component area (above the Jomres output), however that will be overriden by navbar-fixed-bottom or navbar-fixed-top
+// Moves the menu to the content/component area (above the Castor output), however that will be overriden by navbar-fixed-bottom or navbar-fixed-top
 document.addEventListener('DOMContentLoaded', function(){
-	var $content = jomresJquery('#jomres-menu-pinned').html();
-	jomresJquery('#{MENU_LOCATION}').html($content);
-	jomresJquery('#jomres-menu-pinned').empty(); // making sure that the old div doesn't have the accordion applied to it.
+	var $content = castorJquery('#castor-menu-pinned').html();
+	castorJquery('#{MENU_LOCATION}').html($content);
+	castorJquery('#castor-menu-pinned').empty(); // making sure that the old div doesn't have the accordion applied to it.
 }, false);
 
 </script>
 
-<div id="jomres-menu-pinned" style="display:none;">
+<div id="castor-menu-pinned" style="display:none;">
 	<nav class="navbar navbar-expand-sm navbar-light {NAVBAR_LOCATION} {NAVBAR_INVERSE} rounded" role="navigation">
 		<div class="container-fluid">
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarJomresMainMenu" aria-controls="navbarJomresMainMenu" aria-expanded="false" aria-label="Toggle navigation">
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCastorMainMenu" aria-controls="navbarCastorMainMenu" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-			<div class="collapse navbar-collapse" id="navbarJomresMainMenu">
+			<div class="collapse navbar-collapse" id="navbarCastorMainMenu">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0 bg-transparent ">
 					<patTemplate:tmpl name="menu_sections">
 						{SECTION}

@@ -1,4 +1,4 @@
-/*! DataTables 1.10.21
+﻿/*! DataTables 1.10.21
  * ©2008-2020 SpryMedia Ltd - datatables.net/license
  */
 
@@ -6463,7 +6463,7 @@
      */
     function _fnLog( settings, level, msg, tn )
     {
-        msg = 'There was an error performing an ajax query. The most likely cause is a setting in Administrator > Jomres > Settings > Site Configuration > Debugging tab : "Apply group by fix?" Try changing this option to see if this issue is resolved. If it has not, and if you have a support license, please contact us for support at https://tickets.jomres.net/';
+        msg = 'There was an error performing an ajax query. The most likely cause is a setting in Administrator > Castor > Settings > Site Configuration > Debugging tab : "Apply group by fix?" Try changing this option to see if this issue is resolved. If it has not, and if you have a support license, please contact us for support at https://tickets.castor.net/';
 
         if ( ! level  ) {
             // Backwards compatibility pre 1.10
@@ -15346,3 +15346,4 @@
 
     return $.fn.dataTable;
 }));
+

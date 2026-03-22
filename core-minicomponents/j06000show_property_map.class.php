@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 #[AllowDynamicProperties]
 /**
- * @package Jomres\Core\Minicomponents
+ * @package Castor\Core\Minicomponents
  *
  *
  */
@@ -36,20 +36,20 @@ class j06000show_property_map
     public function __construct($componentArgs)
     {
         // Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-        $MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+        $MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
         if ($MiniComponents->template_touch) {
             $this->template_touchable = false;
             $this->shortcode_data = array(
                 'task' => 'show_property_map',
-                'info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_MAP',
+                'info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_MAP',
                 'arguments' => array(0 => array(
                     'argument' => 'property_uid',
-                    'arg_info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_MAP_ARG_PROPERTY_UID',
+                    'arg_info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_MAP_ARG_PROPERTY_UID',
                     'arg_example' => '1',
                 ),
                     1 => array(
                         'argument' => 'map_zoom',
-                        'arg_info' => '_JOMRES_SHORTCODES_06005PROPERTY_MAP_ZOOM',
+                        'arg_info' => '_CASTOR_SHORTCODES_06005PROPERTY_MAP_ZOOM',
                         'arg_example' => '10',
                     ),
                 ),
@@ -60,18 +60,18 @@ class j06000show_property_map
 
         $this->retVals = '';
 
-        $siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+        $siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
         $jrConfig = $siteConfig->get();
 
         if (!isset($jrConfig["google_maps_api_key"]) || trim($jrConfig["google_maps_api_key"]) == '') {
-            echo "<div class='alert alert-danger'>Google maps api key is not set. Go to Administrator > Jomres > Settings > Site Configuration > Integrations tab and save your Google maps keys there.</div>";
+            echo "<div class='alert alert-danger'>Google maps api key is not set. Go to Administrator > Castor > Settings > Site Configuration > Integrations tab and save your Google maps keys there.</div>";
             return;
         }
 
         if (isset($componentArgs[ 'property_uid' ])) {
             $property_uid = (int)$componentArgs[ 'property_uid' ];
         } else {
-            $property_uid = (int)jomresGetParam($_REQUEST, 'property_uid', 0);
+            $property_uid = (int)castorGetParam($_REQUEST, 'property_uid', 0);
         }
 
         if ($property_uid == 0) {
@@ -90,11 +90,11 @@ class j06000show_property_map
 
         $mrConfig = getPropertySpecificSettings($property_uid);
 
-        jomres_set_page_title( $property_uid ,  jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_MAPPINGLINK', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_MAPPINGLINK', false) );
+        castor_set_page_title( $property_uid ,  jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_MAPPINGLINK', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_MAPPINGLINK', false) );
 
         $mw = 300;
         $mh = $jrConfig['map_height'];
-        if ((int)jomresGetParam($_REQUEST, 'property_uid', 0) > 0) {
+        if ((int)castorGetParam($_REQUEST, 'property_uid', 0) > 0) {
             if (isset($_REQUEST[ 'mw' ])) {
                 $mw = (int) $_REQUEST[ 'mw' ];
             }
@@ -102,7 +102,7 @@ class j06000show_property_map
                 $mh = (int) $_REQUEST[ 'mh' ];
             }
             if (isset($_REQUEST[ 'output_now' ])) {
-                $output_now = (bool) jomresGetParam($_REQUEST, 'output_now', 1);
+                $output_now = (bool) castorGetParam($_REQUEST, 'output_now', 1);
             }
         } else {
             if (isset($componentArgs[ 'mw' ])) {
@@ -132,3 +132,4 @@ class j06000show_property_map
         return $this->retVals;
     }
 }
+

@@ -1,23 +1,23 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 
 use function \PHP81_BC\strftime;
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -38,7 +38,7 @@ class j06002edit_tariffs_normal
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -53,15 +53,15 @@ class j06002edit_tariffs_normal
 			return;
 		}
 
-		$jomres_properties = jomres_singleton_abstract::getInstance('jomres_properties');
+		$castor_properties = castor_singleton_abstract::getInstance('castor_properties');
 
-		$basic_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+		$basic_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 		$basic_property_details->gather_data($defaultProperty);
 
-		$basic_room_details = jomres_singleton_abstract::getInstance('basic_room_details');
+		$basic_room_details = castor_singleton_abstract::getInstance('basic_room_details');
 		$basic_room_details->get_all_rooms($defaultProperty);
 		
-		$basic_rate_details = jomres_singleton_abstract::getInstance('basic_rate_details');
+		$basic_rate_details = castor_singleton_abstract::getInstance('basic_rate_details');
 		$basic_rate_details->get_rates($defaultProperty);
 
 		//we need the jrrportal_rates object to create a tarifftype id if none exists for the existing rate uids
@@ -77,15 +77,15 @@ class j06002edit_tariffs_normal
 
 		//check if this property type has room types assigned
 		if (empty($basic_property_details->this_property_room_classes)) {
-			throw new Exception('Error, there are no room types for this property type. You can assign room types to this property type by visiting Administrator -> Jomres -> Site Structure -> and editing the room/resource types.');
+			throw new Exception('Error, there are no room types for this property type. You can assign room types to this property type by visiting Administrator -> Castor -> Site Structure -> and editing the room/resource types.');
 			return;
 		}
 
 
 		//check for SRPs to make sure they don`t have more than one rooms created. TODO: may not be needed anymore
 		if ($mrConfig[ 'singleRoomProperty' ] == '1' && count($basic_room_details->rooms) > 1) { // Looks like property manager has changed from MRP to SRP. Let's clean things up and start anew
-			$jomres_properties->propertys_uid = $defaultProperty;
-			$jomres_properties->delete_rooms_tariffs_settings(true, true, false);
+			$castor_properties->propertys_uid = $defaultProperty;
+			$castor_properties->delete_rooms_tariffs_settings(true, true, false);
 			$basic_rate_details->rates = array();
 		}
 
@@ -138,21 +138,21 @@ class j06002edit_tariffs_normal
 		}
 		
 		//toolbar
-		$jrtbar = jomres_singleton_abstract::getInstance('jomres_toolbar');
+		$jrtbar = castor_singleton_abstract::getInstance('castor_toolbar');
 		$jrtb = $jrtbar->startTable();
 		$jrtb .= $jrtbar->toolbarItem('save', '', '', true, 'save_normalmode_tariffs');
 		$jrtb .= $jrtbar->endTable();
-		$output[ 'JOMRESTOOLBAR' ] = $jrtb;
+		$output[ 'CASTORTOOLBAR' ] = $jrtb;
 
 		//labels
-		$output[ 'PAGETITLE' ] = jr_gettext('_JOMRES_COM_MR_LISTTARIFF_TITLE', '_JOMRES_COM_MR_LISTTARIFF_TITLE', false).' &amp; '.jr_gettext('_JOMRES_COM_MR_VRCT_TAB_ROOM', '_JOMRES_COM_MR_VRCT_TAB_ROOM', false);
-		$output[ 'HROOMCLASS' ] = jr_gettext('_JOMRES_COM_MR_EB_ROOM_CLASS_ABBV', '_JOMRES_COM_MR_EB_ROOM_CLASS_ABBV', false);
-		$output[ 'HNUMBEROFROOMS' ] = jr_gettext('_JOMRES_NUMBEROFROOMSAVAILABLE', '_JOMRES_NUMBEROFROOMSAVAILABLE', false);
-		$output[ 'HROOMRATEPERDAY' ] = jr_gettext('_JOMRES_COM_MR_LISTTARIFF_ROOMRATEPERDAY', '_JOMRES_COM_MR_LISTTARIFF_ROOMRATEPERDAY', false);
-		$output[ 'HPROPERTYTYPE' ] = jr_gettext('_JOMRES_COM_MR_EB_ROOM_CLASS_ABBV', '_JOMRES_COM_MR_EB_ROOM_CLASS_ABBV', false);
-		$output[ 'HROOMTYPE' ] = jr_gettext('_JOMRES_COM_MR_QUICKRES_STEP2_ROOMTYPE', '_JOMRES_COM_MR_QUICKRES_STEP2_ROOMTYPE', false);
-		$output[ 'HMAXPEOPLE_ROOM' ] = jr_gettext('JOMRES_MAXPEOPLEINROOM', 'JOMRES_MAXPEOPLEINROOM', false);
-		$output[ 'HMAXPEOPLE_TARIFF' ] = jr_gettext('JOMRES_MAXPEOPLEINBOOKING', 'JOMRES_MAXPEOPLEINBOOKING', false);
+		$output[ 'PAGETITLE' ] = jr_gettext('_CASTOR_COM_MR_LISTTARIFF_TITLE', '_CASTOR_COM_MR_LISTTARIFF_TITLE', false).' &amp; '.jr_gettext('_CASTOR_COM_MR_VRCT_TAB_ROOM', '_CASTOR_COM_MR_VRCT_TAB_ROOM', false);
+		$output[ 'HROOMCLASS' ] = jr_gettext('_CASTOR_COM_MR_EB_ROOM_CLASS_ABBV', '_CASTOR_COM_MR_EB_ROOM_CLASS_ABBV', false);
+		$output[ 'HNUMBEROFROOMS' ] = jr_gettext('_CASTOR_NUMBEROFROOMSAVAILABLE', '_CASTOR_NUMBEROFROOMSAVAILABLE', false);
+		$output[ 'HROOMRATEPERDAY' ] = jr_gettext('_CASTOR_COM_MR_LISTTARIFF_ROOMRATEPERDAY', '_CASTOR_COM_MR_LISTTARIFF_ROOMRATEPERDAY', false);
+		$output[ 'HPROPERTYTYPE' ] = jr_gettext('_CASTOR_COM_MR_EB_ROOM_CLASS_ABBV', '_CASTOR_COM_MR_EB_ROOM_CLASS_ABBV', false);
+		$output[ 'HROOMTYPE' ] = jr_gettext('_CASTOR_COM_MR_QUICKRES_STEP2_ROOMTYPE', '_CASTOR_COM_MR_QUICKRES_STEP2_ROOMTYPE', false);
+		$output[ 'HMAXPEOPLE_ROOM' ] = jr_gettext('CASTOR_MAXPEOPLEINROOM', 'CASTOR_MAXPEOPLEINROOM', false);
+		$output[ 'HMAXPEOPLE_TARIFF' ] = jr_gettext('CASTOR_MAXPEOPLEINBOOKING', 'CASTOR_MAXPEOPLEINBOOKING', false);
 		
 		//MRPs
 		if ($mrConfig[ 'singleRoomProperty' ] == '0') {
@@ -163,10 +163,10 @@ class j06002edit_tariffs_normal
 				
 				$rw[ 'ROOM_CLASS_ABBV' ] = $r['abbv'];
 				
-				$rw[ 'ROOMNUMBERDROPDOWN' ] = jomresHTML::integerSelectList(00, 300, 1, "numberofRooms[$roomtype_id]", '', $this_roomtype_count, '%02d');
+				$rw[ 'ROOMNUMBERDROPDOWN' ] = castorHTML::integerSelectList(00, 300, 1, "numberofRooms[$roomtype_id]", '', $this_roomtype_count, '%02d');
 				$rw[ 'ROOMRATEPERDAY' ] = '<input class="input-mini" type="number" name="roomrateperday['.$roomtype_id.']" value="'.$existing_tariffs[ $roomtype_id ][ 'roomrateperday' ].'" />';
-				$rw[ 'MAX_PEOPLE_ROOM' ] = jomresHTML::integerSelectList(01, 100, 1, "max_people[$roomtype_id]", '', $existing_rooms[ $roomtype_id ][ 'max_people' ], '%02d');
-				$rw[ 'MAX_PEOPLE_TARIFF' ] = jomresHTML::integerSelectList(01, 100, 1, "maxpeople_tariff[$roomtype_id]", '', $existing_tariffs[ $roomtype_id ][ 'maxpeople_tariff' ], '%02d');
+				$rw[ 'MAX_PEOPLE_ROOM' ] = castorHTML::integerSelectList(01, 100, 1, "max_people[$roomtype_id]", '', $existing_rooms[ $roomtype_id ][ 'max_people' ], '%02d');
+				$rw[ 'MAX_PEOPLE_TARIFF' ] = castorHTML::integerSelectList(01, 100, 1, "maxpeople_tariff[$roomtype_id]", '', $existing_tariffs[ $roomtype_id ][ 'maxpeople_tariff' ], '%02d');
 
 				$rw[ 'EXISTINGROOMS' ] = '<input type="hidden" name="existingrooms['.$roomtype_id.']" value="'.implode(',', $existing_rooms[ $roomtype_id ][ 'room_uids' ]).'" />';
 				$rw[ 'TARIFFTYPEID' ] = '<input type="hidden" name="tarifftypeid['.$roomtype_id.']" value="'.$existing_tariffs[ $roomtype_id ][ 'tarifftype_id' ].'" />';
@@ -177,7 +177,7 @@ class j06002edit_tariffs_normal
 			
 			$pageoutput[] = $output;
 			$tmpl = new patTemplate();
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 			$tmpl->readTemplatesFromInput('list_normalmode_roomtariffs.html');
 			$tmpl->addRows('pageoutput', $pageoutput);
 			$tmpl->addRows('rows', $rows);
@@ -217,9 +217,9 @@ class j06002edit_tariffs_normal
 			}
 
 			if ($mrConfig[ 'tariffChargesStoredWeeklyYesNo' ] == '1') {
-				$output[ 'RATETEXT' ] = jr_gettext('_JOMRES_COM_MR_LISTTARIFF_ROOMRATEPERWEEK', '_JOMRES_COM_MR_LISTTARIFF_ROOMRATEPERWEEK', false);
+				$output[ 'RATETEXT' ] = jr_gettext('_CASTOR_COM_MR_LISTTARIFF_ROOMRATEPERWEEK', '_CASTOR_COM_MR_LISTTARIFF_ROOMRATEPERWEEK', false);
 			} else {
-				$output[ 'RATETEXT' ] = jr_gettext('_JOMRES_COM_MR_LISTTARIFF_ROOMRATEPERDAY', '_JOMRES_COM_MR_LISTTARIFF_ROOMRATEPERDAY', false);
+				$output[ 'RATETEXT' ] = jr_gettext('_CASTOR_COM_MR_LISTTARIFF_ROOMRATEPERDAY', '_CASTOR_COM_MR_LISTTARIFF_ROOMRATEPERDAY', false);
 			}
 
 			$output[ 'ROOMRATEPERDAY' ] = '<input class="input-mini" type="number" name="roomrateperday" value="'.$roomrateperday.'" />';
@@ -245,7 +245,7 @@ class j06002edit_tariffs_normal
 
 			$pageoutput[] = $output;
 			$tmpl = new patTemplate();
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 			$tmpl->readTemplatesFromInput('list_normalmode_roomtariffs_srp.html');
 			$tmpl->addRows('pageoutput', $pageoutput);
 			$tmpl->addRows('rows', $rows);
@@ -259,3 +259,4 @@ class j06002edit_tariffs_normal
 		return null;
 	}
 }
+

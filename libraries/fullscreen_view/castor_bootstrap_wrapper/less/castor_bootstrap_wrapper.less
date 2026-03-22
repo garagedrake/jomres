@@ -1,0 +1,112 @@
+﻿// bootstrap-namespaced.less
+
+// This less file is intended to be imported from other less files. 
+// Example usage:
+// my-custom-namespace {
+//  import 'bootstrap-namespaced.less';
+// }
+
+#castor_bootstrap_wrapper {
+	// Import bootstrap.css (but treat it as a less file) to avoid problems 
+	// with the way Bootstrap is using the parent operator (&).
+	
+	@import 'bootstrap/variables.less';
+	@import 'variables.less'; //override variables
+	@import 'bootstrap/bootstrap.less';
+	
+	@import 'icomoon.less';
+	
+	// RESPONSIVE CLASSES
+	// ------------------
+	@import "bootstrap/responsive-utilities.less";
+	
+	// MEDIA QUERIES
+	// ------------------
+	// Phones to portrait tablets and narrow desktops
+	@import "bootstrap/responsive-767px-max.less";
+	
+	// Tablets to regular desktops
+	@import "bootstrap/responsive-768px-979px.less";
+	
+	// Large desktops
+	@import "bootstrap/responsive-1200px-min.less";
+	
+	// RESPONSIVE NAVBAR
+	// ------------------
+	// From 979px and below, show a button to toggle navbar contents
+	@import "bootstrap/responsive-navbar.less";
+	
+	@import 'bootstrap-extended.less';
+	
+	// Manually include styles using selectors that will not work when namespaced.
+	
+	& {
+		// From normalize.less
+	
+		// Previously inside "html {"
+		// font-family: sans-serif; // Overridden below
+		-ms-text-size-adjust: 100%;
+		-webkit-text-size-adjust: 100%;
+	
+		// Previously inside "body {"
+		margin: 0;
+		padding:20px 20px 0px 0px;
+	
+		// From scaffolding.less
+	
+		// Previously inside "html {"
+		// font-size: 10px; // Overridden below
+		-webkit-tap-highlight-color: rgba(0,0,0,0);
+	
+		// Previously inside "body {"
+	}
+	
+	// Shared size and type resets
+	input, textarea {
+		box-sizing: unset;
+	}
+	
+	.btn-group:first-child {
+    	padding-left: 0;
+	}
+	
+	.radio.btn-group input[type="radio"] {
+		display: none;
+	}
+	
+	.radio.btn-group > label:first-of-type {
+		margin-left: 0;
+	}
+	
+	table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child, table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child {
+		padding-left:30px;
+	}
+	
+	.modal .modal-body {
+		width:auto;
+	}
+	
+	/*Site config overrides*/
+	#tabbable h3 {margin:20px 0px 10px;}
+	
+	//panel overrides
+	.panel { 
+		.border-radius(0);
+		
+		.panel-heading {
+			.border-radius(0);
+			padding:8px 12px;
+			
+			h3 {
+				font-size:14px;
+				line-height: 1.4;
+			}
+		}
+	}
+}
+
+/*Wordpress classes overrides*/
+#wpfooter {position:relative;}
+#adminmenuwrap, #wpadminbar {z-index:1010;}
+
+

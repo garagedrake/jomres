@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,15 +36,15 @@ class j16000list_taxrates
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
-		$editIcon = '<img src="'.JOMRES_IMAGES_RELPATH.'jomresimages/small/EditItem.png" border="0" alt="editicon" />';
+		$editIcon = '<img src="'.CASTOR_IMAGES_RELPATH.'castorimages/small/EditItem.png" border="0" alt="editicon" />';
 
-		$jrportal_taxrate = jomres_singleton_abstract::getInstance('jrportal_taxrate');
+		$jrportal_taxrate = castor_singleton_abstract::getInstance('jrportal_taxrate');
 
 		$output = array();
 		$pageoutput = array();
@@ -54,11 +54,11 @@ class j16000list_taxrates
 		$output[ 'HCODE' ] = jr_gettext('_JRPORTAL_TAXRATES_CODE', '_JRPORTAL_TAXRATES_CODE', false);
 		$output[ 'HDESCRIPTION' ] = jr_gettext('_JRPORTAL_TAXRATES_DESCRIPTION', '_JRPORTAL_TAXRATES_DESCRIPTION', false);
 		$output[ 'HRATE' ] = jr_gettext('_JRPORTAL_TAXRATES_RATE', '_JRPORTAL_TAXRATES_RATE', false);
-		$output[ '_JOMRES_IS_EU_COUNTRY' ] = jr_gettext('_JOMRES_IS_EU_COUNTRY', '_JOMRES_IS_EU_COUNTRY', false);
+		$output[ '_CASTOR_IS_EU_COUNTRY' ] = jr_gettext('_CASTOR_IS_EU_COUNTRY', '_CASTOR_IS_EU_COUNTRY', false);
 
-		$output[ '_JOMRES_TAX_RATES_IMPORT' ] = jr_gettext('_JOMRES_TAX_RATES_IMPORT', '_JOMRES_TAX_RATES_IMPORT', false);
-		$output[ '_JOMRES_TAX_RATES_IMPORT_INFO' ] = jr_gettext('_JOMRES_TAX_RATES_IMPORT_INFO', '_JOMRES_TAX_RATES_IMPORT_INFO', false);
-		$output[ 'IMPORT_LINK'] = JOMRES_SITEPAGE_URL_ADMIN.'&task=import_eu_tax_rates';
+		$output[ '_CASTOR_TAX_RATES_IMPORT' ] = jr_gettext('_CASTOR_TAX_RATES_IMPORT', '_CASTOR_TAX_RATES_IMPORT', false);
+		$output[ '_CASTOR_TAX_RATES_IMPORT_INFO' ] = jr_gettext('_CASTOR_TAX_RATES_IMPORT_INFO', '_CASTOR_TAX_RATES_IMPORT_INFO', false);
+		$output[ 'IMPORT_LINK'] = CASTOR_SITEPAGE_URL_ADMIN.'&task=import_eu_tax_rates';
 
 		foreach ($jrportal_taxrate->taxrates as $rate) {
 			$r = array();
@@ -67,18 +67,18 @@ class j16000list_taxrates
 			$r[ 'DESCRIPTION' ] = $rate[ 'description' ];
 			$r[ 'RATE' ] = $rate[ 'rate' ];
 
-			$r['IS_EU_COUNTRY'] = jr_gettext('_JOMRES_COM_MR_NO', '_JOMRES_COM_MR_NO', false);
+			$r['IS_EU_COUNTRY'] = jr_gettext('_CASTOR_COM_MR_NO', '_CASTOR_COM_MR_NO', false);
 			if ($rate[ 'is_eu_country' ] == '1') {
-				$r['IS_EU_COUNTRY'] = jr_gettext('_JOMRES_COM_MR_YES', '_JOMRES_COM_MR_YES', false);
+				$r['IS_EU_COUNTRY'] = jr_gettext('_CASTOR_COM_MR_YES', '_CASTOR_COM_MR_YES', false);
 			}
 
 			if (!using_bootstrap()) {
-				$r[ 'EDITLINK' ] = '<a href="'.JOMRES_SITEPAGE_URL_ADMIN.'&task=edit_taxrate&id='.$rate[ 'id' ].'">'.$editIcon.'</a>';
+				$r[ 'EDITLINK' ] = '<a href="'.CASTOR_SITEPAGE_URL_ADMIN.'&task=edit_taxrate&id='.$rate[ 'id' ].'">'.$editIcon.'</a>';
 			} else {
-				$toolbar = jomres_singleton_abstract::getInstance('jomresItemToolbar');
+				$toolbar = castor_singleton_abstract::getInstance('castorItemToolbar');
 				$toolbar->newToolbar();
-				$toolbar->addItem('fa fa-pencil-square-o', 'btn btn-info', '', jomresURL(JOMRES_SITEPAGE_URL_ADMIN.'&task=edit_taxrate&id='.$rate[ 'id' ]), jr_gettext('COMMON_EDIT', 'COMMON_EDIT', false));
-				$toolbar->addSecondaryItem('fa fa-trash-o', '', '', jomresURL(JOMRES_SITEPAGE_URL_ADMIN.'&task=delete_taxrate&id='.$rate[ 'id' ]), jr_gettext('COMMON_DELETE', 'COMMON_DELETE', false));
+				$toolbar->addItem('fa fa-pencil-square-o', 'btn btn-info', '', castorURL(CASTOR_SITEPAGE_URL_ADMIN.'&task=edit_taxrate&id='.$rate[ 'id' ]), jr_gettext('COMMON_EDIT', 'COMMON_EDIT', false));
+				$toolbar->addSecondaryItem('fa fa-trash-o', '', '', castorURL(CASTOR_SITEPAGE_URL_ADMIN.'&task=delete_taxrate&id='.$rate[ 'id' ]), jr_gettext('COMMON_DELETE', 'COMMON_DELETE', false));
 
 				$r['EDITLINK'] = $toolbar->getToolbar();
 			}
@@ -86,17 +86,17 @@ class j16000list_taxrates
 			$rows[ ] = $r;
 		}
 
-		$jrtbar = jomres_singleton_abstract::getInstance('jomres_toolbar');
+		$jrtbar = castor_singleton_abstract::getInstance('castor_toolbar');
 		$jrtb = $jrtbar->startTable();
-		$jrtb .= $jrtbar->toolbarItem('cancel', jomresURL(JOMRES_SITEPAGE_URL_ADMIN), '');
-		$jrtb .= $jrtbar->toolbarItem('new', jomresURL(JOMRES_SITEPAGE_URL_ADMIN.'&task=edit_taxrate'), '');
+		$jrtb .= $jrtbar->toolbarItem('cancel', castorURL(CASTOR_SITEPAGE_URL_ADMIN), '');
+		$jrtb .= $jrtbar->toolbarItem('new', castorURL(CASTOR_SITEPAGE_URL_ADMIN.'&task=edit_taxrate'), '');
 
 		$jrtb .= $jrtbar->endTable();
-		$output[ 'JOMRESTOOLBAR' ] = $jrtb;
+		$output[ 'CASTORTOOLBAR' ] = $jrtb;
 
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 		$tmpl->readTemplatesFromInput('list_taxrates.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->addRows('rows', $rows);
@@ -109,3 +109,4 @@ class j16000list_taxrates
 		return null;
 	}
 }
+

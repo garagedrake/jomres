@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,19 +36,19 @@ class j06001amendBooking
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = true;
 
 			return;
 		}
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 		if (!$thisJRUser->userIsManager) {
 			return;
 		}
 
 		$defaultProperty = getDefaultProperty();
-		$contract_uid = intval(jomresGetParam($_REQUEST, 'contractUid', 0));
+		$contract_uid = intval(castorGetParam($_REQUEST, 'contractUid', 0));
 
 		if (!can_modify_this_booking((int) $contract_uid)) {
 			return;
@@ -57,7 +57,7 @@ class j06001amendBooking
 		if ($contract_uid > 0) {
 			$tmpArray = array();
 
-			$basic_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+			$basic_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 
 			$basic_property_details->gather_data_multi($thisJRUser->authorisedProperties);
 			$current_property_property_type = $basic_property_details->multi_query_result[$defaultProperty]['ptype_id'];
@@ -72,7 +72,7 @@ class j06001amendBooking
 			}
 			$propertysList = $tmpArray;
 			if (count($propertysList) == 1) {
-				jomresRedirect(get_booking_url($defaultProperty, '', '&amend=1&contractuid='.$contract_uid), '');
+				castorRedirect(get_booking_url($defaultProperty, '', '&amend=1&contractuid='.$contract_uid), '');
 			}
 			
 			$counter = 0;
@@ -82,24 +82,24 @@ class j06001amendBooking
 				}
 				++$counter;
 				$pname = $property->property_name;
-				$propertyOptions[ ] = jomresHTML::makeOption($property->propertys_uid, stripslashes($pname));
+				$propertyOptions[ ] = castorHTML::makeOption($property->propertys_uid, stripslashes($pname));
 			}
 
-			$propertyDropdown = jomresHTML::selectList($propertyOptions, 'selectedProperty', '', 'value', 'text', $defaultProperty);
+			$propertyDropdown = castorHTML::selectList($propertyOptions, 'selectedProperty', '', 'value', 'text', $defaultProperty);
 
 			$output[ 'PROPERTYDROPDOWN' ] = ''.$propertyDropdown.'';
 
-			$cancelText = jr_gettext('_JOMRES_COM_A_CANCEL', '_JOMRES_COM_A_CANCEL', false);
-			$jrtbar = jomres_singleton_abstract::getInstance('jomres_toolbar');
+			$cancelText = jr_gettext('_CASTOR_COM_A_CANCEL', '_CASTOR_COM_A_CANCEL', false);
+			$jrtbar = castor_singleton_abstract::getInstance('castor_toolbar');
 			$jrtb = $jrtbar->startTable();
-			$jrtb .= $jrtbar->toolbarItem('cancel', jomresURL(JOMRES_SITEPAGE_URL.'&task=edit_booking&contract_uid='.$contract_uid), $cancelText);
+			$jrtb .= $jrtbar->toolbarItem('cancel', castorURL(CASTOR_SITEPAGE_URL.'&task=edit_booking&contract_uid='.$contract_uid), $cancelText);
 			$jrtb .= $jrtbar->endTable();
-			$output[ 'JOMRESTOOLBAR' ] = $jrtb;
+			$output[ 'CASTORTOOLBAR' ] = $jrtb;
 
 			$output[ 'PAGETITLE' ] = jr_gettext('_JOMCOMP_AMEND', '_JOMCOMP_AMEND');
 			$output[ 'SELECTPROPERTY' ] = jr_gettext('_JOMCOMP_AMEND_SELECTPROPERTY', '_JOMCOMP_AMEND_SELECTPROPERTY');
 			$output[ 'CONTRACTUID' ] = $contract_uid;
-			$output[ '_JOMRES_CONFIRMATION_AMEND' ] = jr_gettext('_JOMRES_CONFIRMATION_AMEND', '_JOMRES_CONFIRMATION_AMEND');
+			$output[ '_CASTOR_CONFIRMATION_AMEND' ] = jr_gettext('_CASTOR_CONFIRMATION_AMEND', '_CASTOR_CONFIRMATION_AMEND');
 			
 			$output[ 'BOOKING_FORM_URL' ] = get_booking_url($defaultProperty, 'nosef');
 			
@@ -107,7 +107,7 @@ class j06001amendBooking
 			$pageoutput[ ] = $output;
 			$tmpl = new patTemplate();
 
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 			$tmpl->readTemplatesFromInput('amend_booking.html');
 			$tmpl->addRows('pageoutput', $pageoutput);
 			$tmpl->displayParsedTemplate();
@@ -122,7 +122,7 @@ class j06001amendBooking
 
 		$output[ ] = jr_gettext('_JOMCOMP_AMEND', '_JOMCOMP_AMEND');
 		$output[ ] = jr_gettext('_JOMCOMP_AMEND_SELECTPROPERTY', '_JOMCOMP_AMEND_SELECTPROPERTY');
-		$output[ ] = jr_gettext('_JOMRES_COM_A_CANCEL', '_JOMRES_COM_A_CANCEL');
+		$output[ ] = jr_gettext('_CASTOR_COM_A_CANCEL', '_CASTOR_COM_A_CANCEL');
 
 		foreach ($output as $o) {
 			echo $o;
@@ -140,3 +140,4 @@ class j06001amendBooking
 		return null;
 	}
 }
+

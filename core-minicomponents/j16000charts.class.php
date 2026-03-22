@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,7 +36,7 @@ class j16000charts
 	 
 	public function __construct($componentArgs)
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -53,15 +53,15 @@ class j16000charts
 
 		//set selected jr chart showtime
 		if (isset($_POST['jr_chart'])) {
-			set_showtime('jr_chart', jomresGetParam($_POST, 'jr_chart', 'chart_bookings'));
+			set_showtime('jr_chart', castorGetParam($_POST, 'jr_chart', 'chart_bookings'));
 		} elseif (isset($_REQUEST['jr_chart'])) {
-			set_showtime('jr_chart', jomresGetParam($_REQUEST, 'jr_chart', 'chart_bookings'));
+			set_showtime('jr_chart', castorGetParam($_REQUEST, 'jr_chart', 'chart_bookings'));
 		} else {
 			set_showtime('jr_chart', 'chart_bookings');
 		}
 
 		//chart type
-		$chart_type = jomresGetParam($_POST, 'jr_chart_type', 'line');
+		$chart_type = castorGetParam($_POST, 'jr_chart_type', 'line');
 
 		$output = array();
 		$pageoutput = array();
@@ -70,21 +70,21 @@ class j16000charts
 		//get all charts for the dropdown menu
 		$MiniComponents->triggerEvent('13600'); // All charting minicomponents
 
-		$all_jomres_charts = get_showtime('all_jomres_charts');
+		$all_castor_charts = get_showtime('all_castor_charts');
 
 		$options = array();
-		$options[] = jomresHTML::makeOption('0', jr_gettext('_JOMRES_CHARTS_SELECT', '_JOMRES_CHARTS_SELECT', false));
-		foreach ($all_jomres_charts as $k) {
-			$options[] = jomresHTML::makeOption($k['id'], $k['title'].' - '.$k['description']);
+		$options[] = castorHTML::makeOption('0', jr_gettext('_CASTOR_CHARTS_SELECT', '_CASTOR_CHARTS_SELECT', false));
+		foreach ($all_castor_charts as $k) {
+			$options[] = castorHTML::makeOption($k['id'], $k['title'].' - '.$k['description']);
 		}
-		$output['CHARTS_DROPDOWN'] = jomresHTML::selectList($options, 'jr_chart', '', 'value', 'text', get_showtime('jr_chart'));
+		$output['CHARTS_DROPDOWN'] = castorHTML::selectList($options, 'jr_chart', '', 'value', 'text', get_showtime('jr_chart'));
 
 		//chart types dropdown
 		$options = array();
-		$options[] = jomresHTML::makeOption('line', 'Line');
-		$options[] = jomresHTML::makeOption('bar', 'Bar');
-		$options[] = jomresHTML::makeOption('radar', 'Radar');
-		$output['CHART_TYPES_DROPDOWN'] = jomresHTML::selectList($options, 'jr_chart_type', '', 'value', 'text', $chart_type);
+		$options[] = castorHTML::makeOption('line', 'Line');
+		$options[] = castorHTML::makeOption('bar', 'Bar');
+		$options[] = castorHTML::makeOption('radar', 'Radar');
+		$output['CHART_TYPES_DROPDOWN'] = castorHTML::selectList($options, 'jr_chart_type', '', 'value', 'text', $chart_type);
 
 		//get selected jr chart
 		if (get_showtime('jr_chart') == '0') {
@@ -95,11 +95,11 @@ class j16000charts
 			}
 		}
 
-		$output['PAGETITLE'] = jr_gettext('_JOMRES_CHARTS', '_JOMRES_CHARTS', false, false);
+		$output['PAGETITLE'] = jr_gettext('_CASTOR_CHARTS', '_CASTOR_CHARTS', false, false);
 
 		$pageoutput[] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 		$tmpl->readTemplatesFromInput('charts.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->displayParsedTemplate();
@@ -110,3 +110,4 @@ class j16000charts
 		return null;
 	}
 }
+

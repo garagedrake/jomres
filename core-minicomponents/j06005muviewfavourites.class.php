@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,16 +36,16 @@ class j06005muviewfavourites
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = true;
 
 			return;
 		}
 
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 
-		$tmpBookingHandler = jomres_singleton_abstract::getInstance('jomres_temp_booking_handler');
+		$tmpBookingHandler = castor_singleton_abstract::getInstance('castor_temp_booking_handler');
 
 		if (isset($tmpBookingHandler->tmpsearch_data[ 'shortlist_items' ])) {
 			$shortlist_items = $tmpBookingHandler->tmpsearch_data[ 'shortlist_items' ];
@@ -80,7 +80,7 @@ class j06005muviewfavourites
 
 		$output[ 'H1' ] = jr_gettext('_JOMCOMP_MYUSER_VIEWFAVOURITES_NONE', '_JOMCOMP_MYUSER_VIEWFAVOURITES_NONE');
 		$output[ 'HPTYPES' ] = jr_gettext('_JOMCOMP_MYUSER_PROPERTYTYPE', '_JOMCOMP_MYUSER_PROPERTYTYPE');
-		$output[ 'HPNAME' ] = jr_gettext('_JOMRES_COM_MR_QUICKRES_STEP2_PROPERTYNAME', '_JOMRES_COM_MR_QUICKRES_STEP2_PROPERTYNAME');
+		$output[ 'HPNAME' ] = jr_gettext('_CASTOR_COM_MR_QUICKRES_STEP2_PROPERTYNAME', '_CASTOR_COM_MR_QUICKRES_STEP2_PROPERTYNAME');
 		$r[ 'REMOVETEXT' ] = jr_gettext('_JOMCOMP_MYUSER_REMOVE', '_JOMCOMP_MYUSER_REMOVE');
 		foreach ($output as $o) {
 			echo $o;
@@ -94,3 +94,4 @@ class j06005muviewfavourites
 		return null;
 	}
 }
+

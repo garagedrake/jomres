@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,19 +36,19 @@ class j06000dobooking
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 		
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 		
 		$mrConfig = getPropertySpecificSettings();
 
 		if ($mrConfig[ 'visitorscanbookonline' ] == '0' && $thisJRUser->userIsManager != true) {
-			jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL.'&task=contactowner&amp;selectedProperty='.get_showtime('property_uid')));
+			castorRedirect(castorURL(CASTOR_SITEPAGE_URL.'&task=contactowner&amp;selectedProperty='.get_showtime('property_uid')));
 		}
 
 		if ($thisJRUser->userIsManager) {
@@ -72,3 +72,4 @@ class j06000dobooking
 		return null;
 	}
 }
+

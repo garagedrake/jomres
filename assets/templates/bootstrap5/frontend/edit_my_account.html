@@ -1,18 +1,18 @@
-<patTemplate:tmpl name="pageoutput" unusedvars="strip">
+﻿<patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <script type="text/javascript">
 document.addEventListener('DOMContentLoaded', function(){
-	jomresJquery("#guest_country").change(function(){
+	castorJquery("#guest_country").change(function(){
 		populateDiv("guest_region_div" , '<div class="spinner-border text-info" role="status">\n' +
 				'  <span class="visually-hidden">Loading...</span>\n' +
 				'</div>');
-		var selectedValue = jomresJquery(this).find(":selected").val();
+		var selectedValue = castorJquery(this).find(":selected").val();
 		clause = "&task=get_region_dropdown_for_country_code&country="+selectedValue;
-		jomresJquery.get(live_site_ajax + clause, function (data) {
+		castorJquery.get(live_site_ajax + clause, function (data) {
 			populateDiv("guest_region_div",data);
 			});
 		});
 
-	jomresJquery("#reviewForm").validate({
+	castorJquery("#reviewForm").validate({
 		rules: {
 			firstname: "required",
 			surname: "required",
@@ -23,13 +23,13 @@ document.addEventListener('DOMContentLoaded', function(){
 			region: "required",
 		},
 		messages: {
-			firstname: "{_JOMRES_BOOKINGFORM_MONITORING_REQUIRED_FIRSTNAME}",
-			surname: "{_JOMRES_BOOKINGFORM_MONITORING_REQUIRED_SURNAME}",
-			house: "{_JOMRES_BOOKINGFORM_MONITORING_REQUIRED_HOUSENO}",
-			street: "{_JOMRES_BOOKINGFORM_MONITORING_REQUIRED_STREET}",
-			postcode: "{_JOMRES_BOOKINGFORM_MONITORING_REQUIRED_POSTCODE}",
-			town: "{_JOMRES_BOOKINGFORM_MONITORING_REQUIRED_TOWN}",
-			region: "{_JOMRES_BOOKINGFORM_MONITORING_REQUIRED_REGION}",
+			firstname: "{_CASTOR_BOOKINGFORM_MONITORING_REQUIRED_FIRSTNAME}",
+			surname: "{_CASTOR_BOOKINGFORM_MONITORING_REQUIRED_SURNAME}",
+			house: "{_CASTOR_BOOKINGFORM_MONITORING_REQUIRED_HOUSENO}",
+			street: "{_CASTOR_BOOKINGFORM_MONITORING_REQUIRED_STREET}",
+			postcode: "{_CASTOR_BOOKINGFORM_MONITORING_REQUIRED_POSTCODE}",
+			town: "{_CASTOR_BOOKINGFORM_MONITORING_REQUIRED_TOWN}",
+			region: "{_CASTOR_BOOKINGFORM_MONITORING_REQUIRED_REGION}",
 		},
 		errorLabelContainer: "#messageBox",
 		wrapper: "p",
@@ -38,26 +38,26 @@ document.addEventListener('DOMContentLoaded', function(){
 		},
 	});
 	
-	jomresJquery.validator.setDefaults({
+	castorJquery.validator.setDefaults({
 		highlight: function (input) {
-			jomresJquery(input).addClass("alert alert-warning");
+			castorJquery(input).addClass("alert alert-warning");
 		},
 		unhighlight: function (input) {
-			jomresJquery(input).removeClass("alert alert-warning");
+			castorJquery(input).removeClass("alert alert-warning");
 		}
 	});
 	
-	jomresJquery("#messageBox").hide();
+	castorJquery("#messageBox").hide();
 }, false);
 
 
 </script>
 
 <style>
-    .iti__flag {background-image: url("{JOMRES_IMAGES_RELPATH}flags.png");}
+    .iti__flag {background-image: url("{CASTOR_IMAGES_RELPATH}flags.png");}
 
     @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-        .iti__flag {background-image: url("{JOMRES_IMAGES_RELPATH}flags@2x.png");}
+        .iti__flag {background-image: url("{CASTOR_IMAGES_RELPATH}flags@2x.png");}
     }
 </style>
 
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
 <p class="alert alert-info">{GUEST_PROFILE_INFORMATION}</p>
 
-<form action="{JOMRES_SITEPAGE_URL_NOSEF}" method="post" id="reviewForm" name="adminform" enctype="multipart/form-data" role="form" class="form-horizontal">
+<form action="{CASTOR_SITEPAGE_URL_NOSEF}" method="post" id="reviewForm" name="adminform" enctype="multipart/form-data" role="form" class="form-horizontal">
 
 	<div class="row">
 		<div class="col-md-6 bg-success">
@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function(){
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-md-2 control-label" for="vat_number">{_JOMRES_COM_YOURBUSINESS_VATNO}</label>
+				<label class="col-md-2 control-label" for="vat_number">{_CASTOR_COM_YOURBUSINESS_VATNO}</label>
 				<div class="col-md-10">
 					<input id="vat_number" name="vat_number" type="text" value="{VAT_NUMBER}" class="form-control" placeholder="NNNNNNNNNN"/>
 					<patTemplate:tmpl name="validation" type="simpleCondition" requiredVars="validation_class">
@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function(){
 			</div>
 
 			<div class="form-group">
-				<label class="col-md-2 control-label" for="preferences">{_JOMRES_COM_MR_EB_ROOM_BOOKINGSPECIALREQ}</label>
+				<label class="col-md-2 control-label" for="preferences">{_CASTOR_COM_MR_EB_ROOM_BOOKINGSPECIALREQ}</label>
 				<div class="col-md-10">
 					<input id="text" name="preferences" type="preferences" value="{PREFERENCES}" class=" form-control" placeholder=""/><p class="help-block">{GUEST_PROFILE_PREFERENCES}</p>
 				</div>
@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	<div class="form-actions fixed-bottom bg-light text-center pt-1 border-top border-success">
 		<div class="col-md-10 col-md-offset-2">
 			<button type="submit" class="btn btn-primary" id="submit_button"><i class="fa fa-check"></i> {COMMON_SUBMIT}</button>
-			<a href="{JOMRES_SITEPAGE_URL}" class="btn btn-secondary"><i class="fa fa-times"></i> {COMMON_CANCEL}</a>
+			<a href="{CASTOR_SITEPAGE_URL}" class="btn btn-secondary"><i class="fa fa-times"></i> {COMMON_CANCEL}</a>
 		</div>
 	</div>
 	<input type="hidden" name="no_html" value="1"/>
@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', function(){
             // separateDialCode: true,
             initialCountry: '{COUNTRY_CODE}',
             placeholderNumberType: 'MOBILE',
-            utilsScript: "{LIVE_SITE}/{JOMRES_ROOT_DIRECTORY}/assets/js/intlTelInputUtils.js?{MOBILE}",
+            utilsScript: "{LIVE_SITE}/{CASTOR_ROOT_DIRECTORY}/assets/js/intlTelInputUtils.js?{MOBILE}",
         });
 		
 		// on blur: convert

@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,14 +36,14 @@ class j10521api_core
 	function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		$siteConfig		 = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig		 = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig		   = $siteConfig->get();
 
 		if (!isset($jrConfig[ 'admin_options_level' ])) {
@@ -62,13 +62,13 @@ class j10521api_core
 		
 		// make a standard yes/no list
 		$yesno	= array ();
-		$yesno[ ] = jomresHTML::makeOption('0', jr_gettext('_JOMRES_COM_MR_NO', '_JOMRES_COM_MR_NO', false));
-		$yesno[ ] = jomresHTML::makeOption('1', jr_gettext('_JOMRES_COM_MR_YES', '_JOMRES_COM_MR_YES', false));
+		$yesno[ ] = castorHTML::makeOption('0', jr_gettext('_CASTOR_COM_MR_NO', '_CASTOR_COM_MR_NO', false));
+		$yesno[ ] = castorHTML::makeOption('1', jr_gettext('_CASTOR_COM_MR_YES', '_CASTOR_COM_MR_YES', false));
 
 		$configurationPanel->insertHeading(jr_gettext("_OAUTH_CONFIG", '_OAUTH_CONFIG', false));
 			
 		$configurationPanel->setleft(jr_gettext('_OAUTH_CONFIG_SHOW', '_OAUTH_CONFIG_SHOW', false));
-		$configurationPanel->setmiddle(jomresHTML::selectList($yesno, 'cfg_api_core_show', '', 'value', 'text', $jrConfig[ 'api_core_show' ]));
+		$configurationPanel->setmiddle(castorHTML::selectList($yesno, 'cfg_api_core_show', '', 'value', 'text', $jrConfig[ 'api_core_show' ]));
 		$configurationPanel->setright(jr_gettext('_OAUTH_CONFIG_SHOW_DESC', '_OAUTH_CONFIG_SHOW_DESC', false));
 		$configurationPanel->insertSetting();
 		
@@ -88,3 +88,4 @@ class j10521api_core
 		return null;
 	}
 }
+

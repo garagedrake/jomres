@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,14 +36,14 @@ class j10501business_details
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 
 		$configurationPanel = $componentArgs[ 'configurationPanel' ];
@@ -54,73 +54,73 @@ class j10501business_details
 
 		$this->addCountryRegionJs();
 
-		$configurationPanel->startPanel(jr_gettext('_JOMRES_COM_YOURBUSINESS', '_JOMRES_COM_YOURBUSINESS', false));
+		$configurationPanel->startPanel(jr_gettext('_CASTOR_COM_YOURBUSINESS', '_CASTOR_COM_YOURBUSINESS', false));
 
-		$configurationPanel->insertDescription(jr_gettext('_JOMRES_COM_YOURBUSINESS_INSTRUCTIONS', '_JOMRES_COM_YOURBUSINESS_INSTRUCTIONS', false));
+		$configurationPanel->insertDescription(jr_gettext('_CASTOR_COM_YOURBUSINESS_INSTRUCTIONS', '_CASTOR_COM_YOURBUSINESS_INSTRUCTIONS', false));
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_COM_YOURBUSINESS_NAME', '_JOMRES_COM_YOURBUSINESS_NAME', false));
-		$configurationPanel->setmiddle('<input type="text" class="input-large" name="cfg_business_name" value="'.jomres_decode($jrConfig[ 'business_name' ]).'" />');
+		$configurationPanel->setleft(jr_gettext('_CASTOR_COM_YOURBUSINESS_NAME', '_CASTOR_COM_YOURBUSINESS_NAME', false));
+		$configurationPanel->setmiddle('<input type="text" class="input-large" name="cfg_business_name" value="'.castor_decode($jrConfig[ 'business_name' ]).'" />');
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_COM_YOURBUSINESS_VATNO', '_JOMRES_COM_YOURBUSINESS_VATNO', false));
+		$configurationPanel->setleft(jr_gettext('_CASTOR_COM_YOURBUSINESS_VATNO', '_CASTOR_COM_YOURBUSINESS_VATNO', false));
 		$configurationPanel->setmiddle('<input type="text" class="input-large" name="cfg_business_vat_number" value="'.$jrConfig[ 'business_vat_number' ].'" />');
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_COM_YOURBUSINESSADDRESS', '_JOMRES_COM_YOURBUSINESSADDRESS', false));
-		$configurationPanel->setmiddle('<input type="text" class="input-large" name="cfg_business_address" value="'.jomres_decode($jrConfig[ 'business_address' ]).'" />');
+		$configurationPanel->setleft(jr_gettext('_CASTOR_COM_YOURBUSINESSADDRESS', '_CASTOR_COM_YOURBUSINESSADDRESS', false));
+		$configurationPanel->setmiddle('<input type="text" class="input-large" name="cfg_business_address" value="'.castor_decode($jrConfig[ 'business_address' ]).'" />');
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_STREET', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_STREET', false));
-		$configurationPanel->setmiddle('<input type="text" class="input-large" name="cfg_business_street" value="'.jomres_decode($jrConfig[ 'business_street' ]).'" />');
+		$configurationPanel->setleft(jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_STREET', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_STREET', false));
+		$configurationPanel->setmiddle('<input type="text" class="input-large" name="cfg_business_street" value="'.castor_decode($jrConfig[ 'business_street' ]).'" />');
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TOWN', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TOWN', false));
-		$configurationPanel->setmiddle('<input type="text" class="input-large" name="cfg_business_town" value="'.jomres_decode($jrConfig[ 'business_town' ]).'" />');
+		$configurationPanel->setleft(jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TOWN', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TOWN', false));
+		$configurationPanel->setmiddle('<input type="text" class="input-large" name="cfg_business_town" value="'.castor_decode($jrConfig[ 'business_town' ]).'" />');
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_REGION', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_REGION', false));
+		$configurationPanel->setleft(jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_REGION', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_REGION', false));
 		$configurationPanel->setmiddle('<div id="business_region_div">'.$region_dropdown.' </div>');
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', false));
+		$configurationPanel->setleft(jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', false));
 		$configurationPanel->setmiddle($country_dropdown);
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_POSTCODE', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_POSTCODE', false));
-		$configurationPanel->setmiddle('<input type="text" class="input-large" name="cfg_business_postcode" value="'.jomres_decode($jrConfig[ 'business_postcode' ]).'" />');
+		$configurationPanel->setleft(jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_POSTCODE', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_POSTCODE', false));
+		$configurationPanel->setmiddle('<input type="text" class="input-large" name="cfg_business_postcode" value="'.castor_decode($jrConfig[ 'business_postcode' ]).'" />');
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE', false));
-		$configurationPanel->setmiddle('<input type="text" class="input-large" name="cfg_business_telephone" value="'.jomres_decode($jrConfig[ 'business_telephone' ]).'" />');
+		$configurationPanel->setleft(jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE', false));
+		$configurationPanel->setmiddle('<input type="text" class="input-large" name="cfg_business_telephone" value="'.castor_decode($jrConfig[ 'business_telephone' ]).'" />');
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_COM_MR_EB_GUEST_JOMRES_EMAIL_EXPL', '_JOMRES_COM_MR_EB_GUEST_JOMRES_EMAIL_EXPL', false));
-		$configurationPanel->setmiddle('<input type="text" class="input-large" name="cfg_business_email" value="'.jomres_decode($jrConfig[ 'business_email' ]).'" />');
+		$configurationPanel->setleft(jr_gettext('_CASTOR_COM_MR_EB_GUEST_CASTOR_EMAIL_EXPL', '_CASTOR_COM_MR_EB_GUEST_CASTOR_EMAIL_EXPL', false));
+		$configurationPanel->setmiddle('<input type="text" class="input-large" name="cfg_business_email" value="'.castor_decode($jrConfig[ 'business_email' ]).'" />');
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
 		if (!isset($jrConfig[ 'business_languages' ])) {
 			$jrConfig[ 'business_languages' ] = '';
 		}
-		$configurationPanel->setleft(jr_gettext('_JOMRES_CUSTOMCODE_MENUCATEGORIES_LANGUAGES', '_JOMRES_CUSTOMCODE_MENUCATEGORIES_LANGUAGES', false));
-		$configurationPanel->setmiddle('<input type="text" class="input-large" name="cfg_business_languages" value="'.jomres_decode($jrConfig[ 'business_languages' ]).'" />');
-		$configurationPanel->setright(jr_gettext('JOMRES_ORGANISATIION_LANGUGES_DESC', 'JOMRES_ORGANISATIION_LANGUGES_DESC', false));
+		$configurationPanel->setleft(jr_gettext('_CASTOR_CUSTOMCODE_MENUCATEGORIES_LANGUAGES', '_CASTOR_CUSTOMCODE_MENUCATEGORIES_LANGUAGES', false));
+		$configurationPanel->setmiddle('<input type="text" class="input-large" name="cfg_business_languages" value="'.castor_decode($jrConfig[ 'business_languages' ]).'" />');
+		$configurationPanel->setright(jr_gettext('CASTOR_ORGANISATIION_LANGUGES_DESC', 'CASTOR_ORGANISATIION_LANGUGES_DESC', false));
 		$configurationPanel->insertSetting();
 
 		if (!isset($jrConfig[ 'business_logo' ])) {
 			$jrConfig[ 'business_logo' ] = '';
 		}
-		$configurationPanel->setleft(jr_gettext('JOMRES_ORGANISATIION_LOGO_URL', 'JOMRES_ORGANISATIION_LOGO_URL', false));
-		$configurationPanel->setmiddle('<input type="text" class="input-large" name="cfg_business_logo" value="'.jomres_decode($jrConfig[ 'business_logo' ]).'" />');
+		$configurationPanel->setleft(jr_gettext('CASTOR_ORGANISATIION_LOGO_URL', 'CASTOR_ORGANISATIION_LOGO_URL', false));
+		$configurationPanel->setmiddle('<input type="text" class="input-large" name="cfg_business_logo" value="'.castor_decode($jrConfig[ 'business_logo' ]).'" />');
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
@@ -136,9 +136,9 @@ class j10501business_details
 		?>
 <script type="text/javascript">
 	document.addEventListener('DOMContentLoaded', function(){
-	jomresJquery("#cfg_business_country").change(function(){
-		var selectedValue = jomresJquery(this).val();
-		jomresJquery.ajax({
+	castorJquery("#cfg_business_country").change(function(){
+		var selectedValue = castorJquery(this).val();
+		castorJquery.ajax({
 			type: 'GET',
 			url: live_site_ajax + '&task=get_region_dropdown_for_country_code',
 			data: {
@@ -162,3 +162,4 @@ class j10501business_details
 		return null;
 	}
 }
+

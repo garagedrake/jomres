@@ -1,21 +1,21 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <script type="text/javascript">
-	var jomres_target_language = '{CURRENT_LANGUAGE}';
+	var castor_target_language = '{CURRENT_LANGUAGE}';
 
 	function change_target_language() {
-		jomres_target_language = document.getElementById("target_language").value;
+		castor_target_language = document.getElementById("target_language").value;
 	}
 	</script>
-<h2 class="page-header">{JOMRES_TRANSLATIONS_TITLE}</h2>
+<h2 class="page-header">{CASTOR_TRANSLATIONS_TITLE}</h2>
 
-<p class="alert alert-info">{JOMRES_TRANSLATIONS_LEAD}</p>
+<p class="alert alert-info">{CASTOR_TRANSLATIONS_LEAD}</p>
 
 <p class="mb-2">{MARKDOWN_BUTTON}</p>
 
 <div class="row alert alert-success">
 	<div class="col-sm-4">
-		<label for="target_language">{JOMRES_TARGET_LANGUAGE}</label>
+		<label for="target_language">{CASTOR_TARGET_LANGUAGE}</label>
 	</div>
 	<div class="col-sm-8">
 		<select name="languages" id="target_language" onchange='change_target_language()' autocomplete="off">

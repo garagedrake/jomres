@@ -1,15 +1,15 @@
-<patTemplate:tmpl name="pageoutput">
+﻿<patTemplate:tmpl name="pageoutput">
 	
 	</div> <patTemplate:comment> Opened in top.html </patTemplate:comment>
 	<patTemplate:comment> </div> Container in top.html </patTemplate:comment>
 	{RADIO_BUTTON_JAVASCRIPT}
 	
-	<patTemplate:comment> {jomres_script disable_main_menu} </patTemplate:comment>
-	{jomres_script show_main_menu &menu_location_div_id=jomres_alternate_menu_position}
+	<patTemplate:comment> {castor_script disable_main_menu} </patTemplate:comment>
+	{castor_script show_main_menu &menu_location_div_id=castor_alternate_menu_position}
 	
-	<patTemplate:comment> We want to run the show_main_menu script in bottom because that's towards the end of the run. This gives other templates the opportunity to set {jomres_script disable_main_menu} if required, before it appears. It also allows other scripts, for example access control, to remove menu options or some other tasks, before the menu is displayed.
+	<patTemplate:comment> We want to run the show_main_menu script in bottom because that's towards the end of the run. This gives other templates the opportunity to set {castor_script disable_main_menu} if required, before it appears. It also allows other scripts, for example access control, to remove menu options or some other tasks, before the menu is displayed.
 	
-	When the menu is rendered then menu_location_div_id will determine where the menu should be placed (if it hasn't been disabled). jomres_alternate_menu_position is the default and it's in top.html
+	When the menu is rendered then menu_location_div_id will determine where the menu should be placed (if it hasn't been disabled). castor_alternate_menu_position is the default and it's in top.html
 	
 	Added benefit : Saves designers from needing to edit code to enable/disable the menu, they can do it through a simple shortcode. I've used it in 10.7 to prevent the menu from showing on the property details page.
 	

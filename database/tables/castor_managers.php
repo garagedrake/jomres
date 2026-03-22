@@ -1,0 +1,45 @@
+﻿<?php
+/**
+ * Core file.
+ *
+ * @author Vince Wooll <sales@castor.net>
+ *
+ *  @version Castor 10.7.2
+ *
+ * @copyright	2005-2023 Vince Wooll
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ **/
+
+// ################################################################
+defined('_CASTOR_INITCHECK') or die('');
+// ################################################################
+/**
+ *
+ * @package Castor\Core\Database
+ *
+ * Database creation during installation
+ *
+ **/
+$query = "
+CREATE TABLE IF NOT EXISTS `#__castor_managers` (
+	`manager_uid` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`userid` INT UNSIGNED NOT NULL DEFAULT 0,
+	`access_level` SMALLINT(2) UNSIGNED NOT NULL DEFAULT 0,
+	`currentproperty` INT UNSIGNED NOT NULL DEFAULT 0,
+	`apikey` VARCHAR(255),
+	`suspended` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	`simple_configuration` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	`users_timezone` VARCHAR(100) NOT NULL DEFAULT 'Europe/Berlin',
+	`last_active` DATETIME NOT NULL DEFAULT '1970-01-01 00:00:01',
+	PRIMARY KEY	(`manager_uid`),
+	INDEX `userid` (`userid`)
+	)
+	ENGINE = MyISAM 
+	DEFAULT CHARSET = utf8mb4 
+	COLLATE = utf8mb4_unicode_ci;
+";
+
+if (!doInsertSql($query)) {
+	$this->setMessage('Error, unable to create the #__castor_managers table', 'danger');
+}
+

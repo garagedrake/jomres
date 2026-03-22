@@ -1,0 +1,117 @@
+﻿<?php
+/**
+ * Core file.
+ *
+ * @author Vince Wooll <sales@castor.net>
+ *
+ *  @version Castor 10.7.2
+ *
+ * @copyright	2005-2023 Vince Wooll
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ **/
+
+// ################################################################
+defined('_CASTOR_INITCHECK') or die('');
+// ################################################################
+
+	/**
+	 *
+	 * @package Castor\Core\Classes
+	 *
+	 */
+
+	#[AllowDynamicProperties]
+
+class basic_subscription_package_details
+{
+	/**
+	 *
+	 *
+	 *
+	 */
+
+	public function __construct()
+	{
+		$this->allPackages = array();
+		$this->getAllSubscriptionPackages();
+	}
+
+	/**
+	 *
+	 *
+	 *
+	 */
+
+	public function gatherData($package_id = 0)
+	{
+		if ($package_id == 0) {
+			throw new Exception('Error: Package id not set.');
+		}
+
+		if (array_key_exists($package_id, $this->allPackages)) {
+			$this->id = $this->allPackages[ $package_id ][ 'id' ];
+			$this->name = $this->allPackages[ $package_id ][ 'name' ];
+			$this->description = $this->allPackages[ $package_id ][ 'description' ];
+			$this->published = $this->allPackages[ $package_id ][ 'published' ];
+			$this->frequency = $this->allPackages[ $package_id ][ 'frequency' ];
+			$this->full_amount = $this->allPackages[ $package_id ][ 'full_amount' ];
+			$this->tax_code_id = $this->allPackages[ $package_id ][ 'tax_code_id' ];
+			$this->currencycode = $this->allPackages[ $package_id ][ 'currencycode' ];
+			$this->renewal_price = $this->allPackages[ $package_id ][ 'renewal_price' ];
+			$this->params = $this->allPackages[ $package_id ][ 'params' ];
+
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	//Get all subscription packages
+	/**
+	 *
+	 *
+	 *
+	 */
+
+	public function getAllSubscriptionPackages()
+	{
+		//check if we already got them
+		if (!empty($this->allPackages)) {
+			return true;
+		}
+
+		$query = 'SELECT 
+						`id`,
+						`name`,
+						`description`,
+						`published`,
+						`frequency`,
+						`full_amount`,
+						`tax_code_id`,
+						`currencycode`,
+						`renewal_price`,
+						`params` 
+					FROM #__castorportal_subscriptions_packages ';
+		$result = doSelectSql($query);
+
+		if (!empty($result)) {
+			foreach ($result as $r) {
+				$this->allPackages[ $r->id ][ 'id' ] = $r->id;
+				$this->allPackages[ $r->id ][ 'name' ] = $r->name;
+				$this->allPackages[ $r->id ][ 'description' ] = $r->description;
+				$this->allPackages[ $r->id ][ 'published' ] = $r->published;
+				$this->allPackages[ $r->id ][ 'frequency' ] = $r->frequency;
+				$this->allPackages[ $r->id ][ 'full_amount' ] = $r->full_amount;
+				$this->allPackages[ $r->id ][ 'tax_code_id' ] = $r->tax_code_id;
+				$this->allPackages[ $r->id ][ 'currencycode' ] = $r->currencycode;
+				$this->allPackages[ $r->id ][ 'renewal_price' ] = $r->renewal_price;
+				$this->allPackages[ $r->id ][ 'params' ] = unserialize($r->params);
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+}
+

@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,7 +36,7 @@ class j06002save_child_policies
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -46,14 +46,14 @@ class j06002save_child_policies
 
 		$defaultProperty = getDefaultProperty();
 
-		$child_min_age				= (int) jomresGetParam($_POST, 'child_min_age', 0);
+		$child_min_age				= (int) castorGetParam($_POST, 'child_min_age', 0);
 
-		jr_import('jomres_child_policies');
-		$jomres_child_policies = new jomres_child_policies($defaultProperty);
+		jr_import('castor_child_policies');
+		$castor_child_policies = new castor_child_policies($defaultProperty);
 
-		$jomres_child_policies->child_policies['child_min_age'] = $child_min_age;
+		$castor_child_policies->child_policies['child_min_age'] = $child_min_age;
 
-		$jomres_child_policies->save_child_policies();
+		$castor_child_policies->save_child_policies();
 
 		$webhook_notification						   	= new stdClass();
 		$webhook_notification->webhook_event			= 'property_state_change';
@@ -62,7 +62,7 @@ class j06002save_child_policies
 		$webhook_notification->data->property_uid	   	= $defaultProperty;
 		add_webhook_notification($webhook_notification);
 
-		jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL.'&task=child_policies'), '');
+		castorRedirect(castorURL(CASTOR_SITEPAGE_URL.'&task=child_policies'), '');
 	}
 
 	public function convert_greaterthans($string)
@@ -78,3 +78,4 @@ class j06002save_child_policies
 		return null;
 	}
 }
+

@@ -1,11 +1,11 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <script type="text/javascript">
 var count=60;
 var counter=setInterval(timer, 1000); //1000 will  run it every 1 second
 var message = '<h2>{THANKS}</h2><div class="row-fluid"><div class="span12"><strong>{UPGRADING}</strong></div></div><div class="row-fluid"><div class="span12">{RATIONAL}</div></div><div class="row-fluid"><div class="span12"><h2>{REVIEW_URL}</h2></div></div><div class="row-fluid muted"><div class="span12">{REDIRECT1} <span id="timer"></span> {REDIRECT2}</div></div>';
 
-jomresJquery(document).ready(function () { block(); });
+castorJquery(document).ready(function () { block(); });
 
 function timer()
 {
@@ -18,12 +18,12 @@ function timer()
 	 return;
   }
 
-jomresJquery("#timer").html(count) ; 
+castorJquery("#timer").html(count) ; 
 }
 
 function block()
 	{
-	jomresJquery.blockUI({ 
+	castorJquery.blockUI({ 
 			message: message,
 			baseZ: 1030,
 			css: { 

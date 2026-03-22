@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 	/**
 	 * Core file.
 	 *
-	 * @author Vince Wooll <sales@jomres.net>
+	 * @author Vince Wooll <sales@castor.net>
 	 *
-	 *  @version Jomres 10.2.2
+	 *  @version Castor 10.2.2
 	 *
 	 * @copyright	2005-2023 Vince Wooll
-	 * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+	 * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
 	 **/
 
 // ################################################################
-	defined('_JOMRES_INITCHECK') or die('');
+	defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 */
 
 class j16000updates
@@ -28,17 +28,17 @@ class j16000updates
 
 	public function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			return;
 		}
 
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
-		$this->updateServer = 'http://updates.jomres.net';
-		$this->updateFolder = JOMRESPATH_BASE.JRDS.'updates';
-		$this->nightly_url = 'http://updates.jomres.net/nightly/';
+		$this->updateServer = 'http://updates.castor.net';
+		$this->updateFolder = CASTORPATH_BASE.JRDS.'updates';
+		$this->nightly_url = 'http://updates.castor.net/nightly/';
 		$this->development_production = $jrConfig['development_production'];
 		$this->test_download = false;
 
@@ -51,7 +51,7 @@ class j16000updates
 			throw new Exception("Can't create update folder $this->updateFolder");
 		}
 
-		$local_archive = $this->updateFolder.'/jomres.zip';
+		$local_archive = $this->updateFolder.'/castor.zip';
 
 		$out = fopen($local_archive, 'wb');
 		if ($out == false) {
@@ -59,40 +59,40 @@ class j16000updates
 		}
 
 		if (!isset($_REQUEST['do_update'])) {
-			$this_version = get_jomres_current_version();
-			$latest_version = get_latest_jomres_version();
+			$this_version = get_castor_current_version();
+			$latest_version = get_latest_castor_version();
 
 			$output[ 'NIGHTLY_WARNING' ] = '';
 			if ($this->development_production == 'development') {
-				$output[ 'NIGHTLY_WARNING' ] = simple_template_output(JOMRES_TEMPLATEPATH_ADMINISTRATOR, $template = 'update_nightly_warning.html', jr_gettext('JOMRES_ADMIN_UPDATE_NIGHTLY_WARNING', 'JOMRES_ADMIN_UPDATE_NIGHTLY_WARNING', false));
+				$output[ 'NIGHTLY_WARNING' ] = simple_template_output(CASTOR_TEMPLATEPATH_ADMINISTRATOR, $template = 'update_nightly_warning.html', jr_gettext('CASTOR_ADMIN_UPDATE_NIGHTLY_WARNING', 'CASTOR_ADMIN_UPDATE_NIGHTLY_WARNING', false));
 			}
 
-			$output[ '_JOMRES_VERSIONCHECK_THISJOMRESVERSION' ]		= jr_gettext('_JOMRES_VERSIONCHECK_THISJOMRESVERSION', '_JOMRES_VERSIONCHECK_THISJOMRESVERSION', false);
-			$output[ '_JOMRES_VERSIONCHECK_LATESTJOMRESVERSION' ]	= jr_gettext('_JOMRES_VERSIONCHECK_LATESTJOMRESVERSION', '_JOMRES_VERSIONCHECK_LATESTJOMRESVERSION', false);
-			$output[ 'JOMRES_UPDATE_MESSAGE_LINK' ]					= jr_gettext('JOMRES_UPDATE_MESSAGE_LINK', 'JOMRES_UPDATE_MESSAGE_LINK', false);
-			$output[ 'JOMRES_UPDATES_TITLE' ]						= jr_gettext('JOMRES_UPDATES_TITLE', 'JOMRES_UPDATES_TITLE', false);
-			$output[ 'JOMRES_UPDATES_INFO' ]						= jr_gettext('JOMRES_UPDATES_INFO', 'JOMRES_UPDATES_INFO', false);
+			$output[ '_CASTOR_VERSIONCHECK_THISCASTORVERSION' ]		= jr_gettext('_CASTOR_VERSIONCHECK_THISCASTORVERSION', '_CASTOR_VERSIONCHECK_THISCASTORVERSION', false);
+			$output[ '_CASTOR_VERSIONCHECK_LATESTCASTORVERSION' ]	= jr_gettext('_CASTOR_VERSIONCHECK_LATESTCASTORVERSION', '_CASTOR_VERSIONCHECK_LATESTCASTORVERSION', false);
+			$output[ 'CASTOR_UPDATE_MESSAGE_LINK' ]					= jr_gettext('CASTOR_UPDATE_MESSAGE_LINK', 'CASTOR_UPDATE_MESSAGE_LINK', false);
+			$output[ 'CASTOR_UPDATES_TITLE' ]						= jr_gettext('CASTOR_UPDATES_TITLE', 'CASTOR_UPDATES_TITLE', false);
+			$output[ 'CASTOR_UPDATES_INFO' ]						= jr_gettext('CASTOR_UPDATES_INFO', 'CASTOR_UPDATES_INFO', false);
 
 			$output['THIS_VERSION']		= $this_version;
 			$output['LATEST_VERSION']	= $latest_version;
-			$output['URL']	= JOMRES_SITEPAGE_URL_ADMIN.'&task=updates&do_update=1';
+			$output['URL']	= CASTOR_SITEPAGE_URL_ADMIN.'&task=updates&do_update=1';
 
 			if (isset($_REQUEST['echo'])) {
-				echo $output[ '_JOMRES_VERSIONCHECK_THISJOMRESVERSION' ].' '.$output['THIS_VERSION'].'<br/>';
-				echo $output[ '_JOMRES_VERSIONCHECK_LATESTJOMRESVERSION' ].' '.$output['LATEST_VERSION'].'<br/>';
+				echo $output[ '_CASTOR_VERSIONCHECK_THISCASTORVERSION' ].' '.$output['THIS_VERSION'].'<br/>';
+				echo $output[ '_CASTOR_VERSIONCHECK_LATESTCASTORVERSION' ].' '.$output['LATEST_VERSION'].'<br/>';
 
-				echo '<a href="'.$output['URL'].'" class="btn btn-primary" >'.$output[ 'JOMRES_UPDATE_MESSAGE_LINK' ].'</a>';
+				echo '<a href="'.$output['URL'].'" class="btn btn-primary" >'.$output[ 'CASTOR_UPDATE_MESSAGE_LINK' ].'</a>';
 			} else {
 				$pageoutput[ ] = $output;
 				$tmpl = new patTemplate();
-				$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+				$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 				$tmpl->addRows('pageoutput', $pageoutput);
 				$tmpl->readTemplatesFromInput('upgrade_warning.html');
 				$tmpl->displayParsedTemplate();
 			}
 		} else {
-			//emptyDir(JOMRES_LIBRARIES_ABSPATH.'packages');
-			//rmdir(JOMRES_LIBRARIES_ABSPATH.'packages');
+			//emptyDir(CASTOR_LIBRARIES_ABSPATH.'packages');
+			//rmdir(CASTOR_LIBRARIES_ABSPATH.'packages');
 
 			$this->do_download_and_unzip($local_archive);
 			if (!$this->test_download) {
@@ -104,23 +104,23 @@ class j16000updates
 			unlink($local_archive);
 
 			if (!$this->test_download) {
-				// jomres_install handles database updates,
-				jr_import('jomres_install');
-				$jomres_install = new jomres_install('update');
+				// castor_install handles database updates,
+				jr_import('castor_install');
+				$castor_install = new castor_install('update');
 			}
-			jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL_ADMIN), '');
+			castorRedirect(castorURL(CASTOR_SITEPAGE_URL_ADMIN), '');
 		}
 	}
 
 	private function do_dir_move()
 	{
-		dirmv($this->updateFolder.JRDS.'unpacked'.JRDS, JOMRESPATH_BASE, true);
+		dirmv($this->updateFolder.JRDS.'unpacked'.JRDS, CASTORPATH_BASE, true);
 	}
 
 	private function do_download_and_unzip($local_archive)
 	{
-		$latest_version = get_latest_jomres_version();
-		$remote_archive = $this->updateServer.'/jomres/'.$latest_version.'/ioncube';
+		$latest_version = get_latest_castor_version();
+		$remote_archive = $this->updateServer.'/castor/'.$latest_version.'/ioncube';
 
 		if ($this->development_production == 'development') {
 			$remote_archive = $this->nightly_url;
@@ -203,3 +203,4 @@ class j16000updates
 		return null;
 	}
 }
+

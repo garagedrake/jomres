@@ -1,0 +1,82 @@
+﻿<?php
+	/**
+	 * Core file.
+	 *
+	 * @author Vince Wooll <sales@castor.net>
+	 *
+	 *  @version Castor 10.7.2
+	 *
+	 * @copyright	2005-2023 Vince Wooll
+	 * Castor is currently available for use in all personal or commercial projects under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+	 **/
+	defined('_JEXEC') or die('Direct Access to this location is not allowed.');
+
+	/**
+	 *
+	 * @package Castor\Core\CMS_Specific
+	 *
+	 */
+
+	if (!defined('_CASTOR_INITCHECK')) {
+		define('_CASTOR_INITCHECK', 1);
+	}
+
+	if (isset($_REQUEST ['layout'])) {
+		switch ($_REQUEST ['layout']) {
+			case 'countries':
+				$_REQUEST ['task'] = 'search';
+				$_REQUEST ['calledByModule'] = 'mod_jomsearch_m0';
+				$_REQUEST ['country'] = $_REQUEST ['selected_country'];
+				break;
+			case 'regions':
+				$_REQUEST ['task'] = 'search';
+				$_REQUEST ['calledByModule'] = 'mod_jomsearch_m0';
+				$_REQUEST ['region'] = (int)$_REQUEST ['selected_region'];
+				break;
+			case 'towns':
+				$_REQUEST ['task'] = 'search';
+				$_REQUEST ['calledByModule'] = 'mod_jomsearch_m0';
+				$_REQUEST ['town'] = $_REQUEST ['selected_town'];
+				break;
+			case 'propertytypes':
+				$_REQUEST ['task'] = 'search';
+				$_REQUEST ['calledByModule'] = 'mod_jomsearch_m0';
+				$_REQUEST ['ptype'] = (int)$_REQUEST ['selected_ptype'];
+				break;
+			case 'propertydetails':
+				$_REQUEST ['task'] = 'viewproperty';
+				$_REQUEST ['property_uid'] = $_REQUEST ['selected_property'];
+				break;
+			case 'propertycategories':
+				$_REQUEST ['task'] = 'search';
+				$_REQUEST ['calledByModule'] = 'mod_jomsearch_m0';
+				$_REQUEST ['cat_id'] = (int)$_REQUEST ['selected_category'];
+				break;
+			case 'propertyfeatures':
+				$_REQUEST ['task'] = 'search';
+				$_REQUEST ['calledByModule'] = 'mod_jomsearch_m0';
+				$_REQUEST ['feature_uids'] = (int)$_REQUEST ['feature_abbv'];
+				break;
+			case 'guestbookings':
+				$_REQUEST ['task'] = 'mulistbookings';
+				$_REQUEST ['calledByModule'] = 'mod_jomsearch_m0';
+				break;
+			case 'myprofile':
+				$_REQUEST ['task'] = 'show_user_profile';
+				$_REQUEST ['calledByModule'] = 'mod_jomsearch_m0';
+				break;
+			default:
+				break;
+		}
+	}
+
+	if (!defined('CASTOR_ROOT_DIRECTORY')) {
+		if (file_exists(dirname(__FILE__).'/../../castor_root.php')) {
+			require_once dirname(__FILE__).'/../../castor_root.php';
+		} else {
+			define('CASTOR_ROOT_DIRECTORY', 'castor');
+		}
+	}
+
+	require_once dirname(__FILE__).'/../../'.CASTOR_ROOT_DIRECTORY.'/castor.php';
+

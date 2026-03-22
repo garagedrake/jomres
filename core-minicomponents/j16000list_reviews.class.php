@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,7 +36,7 @@ class j16000list_reviews
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -50,20 +50,20 @@ class j16000list_reviews
 		$all_properties_in_system = get_showtime('all_properties_in_system');
 
 		//get all property names
-		$basic_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+		$basic_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 		$basic_property_details->get_property_name_multi($all_properties_in_system);
 
-		$output[ '_JOMRES_REVIEWS_ADMIN_PROPERTYLISTINFO' ] = jr_gettext('_JOMRES_REVIEWS_ADMIN_PROPERTYLISTINFO', '_JOMRES_REVIEWS_ADMIN_PROPERTYLISTINFO', false);
-		$output[ '_JOMRES_REVIEWS_ADMIN_NUMBERUNPUBLISHED' ] = jr_gettext('_JOMRES_REVIEWS_ADMIN_NUMBERUNPUBLISHED', '_JOMRES_REVIEWS_ADMIN_NUMBERUNPUBLISHED', false);
-		$output[ '_JOMRES_REVIEWS_ADMIN_NUMBERTOTAL' ] = jr_gettext('_JOMRES_REVIEWS_ADMIN_NUMBERTOTAL', '_JOMRES_REVIEWS_ADMIN_NUMBERTOTAL', false);
-		$output[ '_JOMRES_REVIEWS_REPORT_REVIEW_TITLE' ] = jr_gettext('_JOMRES_REVIEWS_REPORT_REVIEW_TITLE', '_JOMRES_REVIEWS_REPORT_REVIEW_TITLE', false);
-		$output[ '_JOMRES_REVIEWS' ] = jr_gettext('_JOMRES_REVIEWS', '_JOMRES_REVIEWS', false);
-		$output[ 'HPROPERTYNAME' ] = jr_gettext('_JOMRES_COM_A_INTEGRATEDSEARCH_PROPERTYNAME', '_JOMRES_COM_A_INTEGRATEDSEARCH_PROPERTYNAME', false);
+		$output[ '_CASTOR_REVIEWS_ADMIN_PROPERTYLISTINFO' ] = jr_gettext('_CASTOR_REVIEWS_ADMIN_PROPERTYLISTINFO', '_CASTOR_REVIEWS_ADMIN_PROPERTYLISTINFO', false);
+		$output[ '_CASTOR_REVIEWS_ADMIN_NUMBERUNPUBLISHED' ] = jr_gettext('_CASTOR_REVIEWS_ADMIN_NUMBERUNPUBLISHED', '_CASTOR_REVIEWS_ADMIN_NUMBERUNPUBLISHED', false);
+		$output[ '_CASTOR_REVIEWS_ADMIN_NUMBERTOTAL' ] = jr_gettext('_CASTOR_REVIEWS_ADMIN_NUMBERTOTAL', '_CASTOR_REVIEWS_ADMIN_NUMBERTOTAL', false);
+		$output[ '_CASTOR_REVIEWS_REPORT_REVIEW_TITLE' ] = jr_gettext('_CASTOR_REVIEWS_REPORT_REVIEW_TITLE', '_CASTOR_REVIEWS_REPORT_REVIEW_TITLE', false);
+		$output[ '_CASTOR_REVIEWS' ] = jr_gettext('_CASTOR_REVIEWS', '_CASTOR_REVIEWS', false);
+		$output[ 'HPROPERTYNAME' ] = jr_gettext('_CASTOR_COM_A_INTEGRATEDSEARCH_PROPERTYNAME', '_CASTOR_COM_A_INTEGRATEDSEARCH_PROPERTYNAME', false);
 
-		$editIcon = '<img src="'.JOMRES_IMAGES_RELPATH.'jomresimages/small/EditItem.png" border="0" alt="editicon" />';
+		$editIcon = '<img src="'.CASTOR_IMAGES_RELPATH.'castorimages/small/EditItem.png" border="0" alt="editicon" />';
 
-		jr_import('jomres_reviews');
-		$Reviews = new jomres_reviews();
+		jr_import('castor_reviews');
+		$Reviews = new castor_reviews();
 		$all_reviews = $Reviews->get_all_reviews_index_by_property_uid();
 		$all_reports = $Reviews->get_all_reports_index_by_rating_id();
 		$total_number_of_reports = count($all_reports);
@@ -73,11 +73,11 @@ class j16000list_reviews
 			$r[ 'PROPERTYNAME' ] = $basic_property_details->property_names[$property_uid];
 
 			if (!using_bootstrap()) {
-				$r[ 'VIEWLINK' ] = '<a href="'.JOMRES_SITEPAGE_URL_ADMIN.'&task=view_property_reviews&property_uid='.(int) $property_uid.'">'.$editIcon.'</a>';
+				$r[ 'VIEWLINK' ] = '<a href="'.CASTOR_SITEPAGE_URL_ADMIN.'&task=view_property_reviews&property_uid='.(int) $property_uid.'">'.$editIcon.'</a>';
 			} else {
-				$toolbar = jomres_singleton_abstract::getInstance('jomresItemToolbar');
+				$toolbar = castor_singleton_abstract::getInstance('castorItemToolbar');
 				$toolbar->newToolbar();
-				$toolbar->addItem('fa fa-list', 'btn btn-info', '', jomresURL(JOMRES_SITEPAGE_URL_ADMIN.'&task=view_property_reviews&property_uid='.$property_uid), jr_gettext('_JOMRES_REVIEWS_CLICKTOSHOW', '_JOMRES_REVIEWS_CLICKTOSHOW', false));
+				$toolbar->addItem('fa fa-list', 'btn btn-info', '', castorURL(CASTOR_SITEPAGE_URL_ADMIN.'&task=view_property_reviews&property_uid='.$property_uid), jr_gettext('_CASTOR_REVIEWS_CLICKTOSHOW', '_CASTOR_REVIEWS_CLICKTOSHOW', false));
 
 				$r['VIEWLINK'] = $toolbar->getToolbar();
 			}
@@ -126,7 +126,7 @@ class j16000list_reviews
 
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 		$tmpl->readTemplatesFromInput('list_reviews_propertys.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->addRows('rows', $rows);
@@ -139,3 +139,4 @@ class j16000list_reviews
 		return null;
 	}
 }
+

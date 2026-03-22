@@ -1,8 +1,8 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <script type="text/javascript">
 	<!--
-	jomresJquery(document).ready(function () {
+	castorJquery(document).ready(function () {
 		make_datatable('list_pfeatures_categories', '{PAGETITLE}', '{LIVESITE}');
 	});
 	//-->
@@ -10,8 +10,8 @@
 
 <h2 class="page-header">{PAGETITLE}</h2>
 
-<form action="{JOMRES_SITEPAGE_URL_ADMIN}" method="post" name="adminForm">
-	{JOMRESTOOLBAR}
+<form action="{CASTOR_SITEPAGE_URL_ADMIN}" method="post" name="adminForm">
+	{CASTORTOOLBAR}
 	<table id="list_pfeatures_categories" width="100%" class="table table-striped">
 		<thead>
 		<tr>
@@ -30,7 +30,7 @@
 		</patTemplate:tmpl>
 		</tbody>
 	</table>
-	<input type="hidden" name="option" value="com_jomres"/>
+	<input type="hidden" name="option" value="com_castor"/>
 	<input type="hidden" name="task" value="editPfeatureCategory"/>
 	{CSRF_TOKEN}
 </form>

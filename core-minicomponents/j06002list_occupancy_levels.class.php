@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,7 +36,7 @@ class j06002list_occupancy_levels
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -45,26 +45,26 @@ class j06002list_occupancy_levels
 		
 		$property_uid = getDefaultProperty();
 
-		jr_import('jomres_occupancy_levels');
-		$jomres_occupancy_levels = new jomres_occupancy_levels($property_uid);
+		jr_import('castor_occupancy_levels');
+		$castor_occupancy_levels = new castor_occupancy_levels($property_uid);
 
-		$output[ 'JOMRES_OCCUPANCY_LEVELS_TITLE' ] = jr_gettext('JOMRES_OCCUPANCY_LEVELS_TITLE', 'JOMRES_OCCUPANCY_LEVELS_TITLE', false);
+		$output[ 'CASTOR_OCCUPANCY_LEVELS_TITLE' ] = jr_gettext('CASTOR_OCCUPANCY_LEVELS_TITLE', 'CASTOR_OCCUPANCY_LEVELS_TITLE', false);
 
-		$output[ '_JOMRES_COM_MR_VRCT_TAB_ROOMTYPES' ] = jr_gettext('_JOMRES_COM_MR_VRCT_TAB_ROOMTYPES', '_JOMRES_COM_MR_VRCT_TAB_ROOMTYPES', false);
-		$output[ 'JOMRES_OCCUPANCY_LEVELS_MAX_ADULTS' ] = jr_gettext('JOMRES_OCCUPANCY_LEVELS_MAX_ADULTS', 'JOMRES_OCCUPANCY_LEVELS_MAX_ADULTS', false);
-		$output[ 'JOMRES_OCCUPANCY_LEVELS_MAX_CHILDREN' ] = jr_gettext('JOMRES_OCCUPANCY_LEVELS_MAX_CHILDREN', 'JOMRES_OCCUPANCY_LEVELS_MAX_CHILDREN', false);
-		$output[ 'JOMRES_OCCUPANCY_LEVELS_MAX_OCCUPANCY' ] = jr_gettext('JOMRES_OCCUPANCY_LEVELS_MAX_OCCUPANCY', 'JOMRES_OCCUPANCY_LEVELS_MAX_OCCUPANCY', false);
-		$output[ 'JOMRES_OCCUPANCY_LEVELS_INFO' ] = jr_gettext('JOMRES_OCCUPANCY_LEVELS_INFO', 'JOMRES_OCCUPANCY_LEVELS_INFO', false);
+		$output[ '_CASTOR_COM_MR_VRCT_TAB_ROOMTYPES' ] = jr_gettext('_CASTOR_COM_MR_VRCT_TAB_ROOMTYPES', '_CASTOR_COM_MR_VRCT_TAB_ROOMTYPES', false);
+		$output[ 'CASTOR_OCCUPANCY_LEVELS_MAX_ADULTS' ] = jr_gettext('CASTOR_OCCUPANCY_LEVELS_MAX_ADULTS', 'CASTOR_OCCUPANCY_LEVELS_MAX_ADULTS', false);
+		$output[ 'CASTOR_OCCUPANCY_LEVELS_MAX_CHILDREN' ] = jr_gettext('CASTOR_OCCUPANCY_LEVELS_MAX_CHILDREN', 'CASTOR_OCCUPANCY_LEVELS_MAX_CHILDREN', false);
+		$output[ 'CASTOR_OCCUPANCY_LEVELS_MAX_OCCUPANCY' ] = jr_gettext('CASTOR_OCCUPANCY_LEVELS_MAX_OCCUPANCY', 'CASTOR_OCCUPANCY_LEVELS_MAX_OCCUPANCY', false);
+		$output[ 'CASTOR_OCCUPANCY_LEVELS_INFO' ] = jr_gettext('CASTOR_OCCUPANCY_LEVELS_INFO', 'CASTOR_OCCUPANCY_LEVELS_INFO', false);
 
 		$rows = array();
-		if (!empty($jomres_occupancy_levels->occupancy_levels)) {
-			foreach ($jomres_occupancy_levels->occupancy_levels as $id => $occupancy_level) {
+		if (!empty($castor_occupancy_levels->occupancy_levels)) {
+			foreach ($castor_occupancy_levels->occupancy_levels as $id => $occupancy_level) {
 				$r = array();
 
-				$toolbar = jomres_singleton_abstract::getInstance('jomresItemToolbar');
+				$toolbar = castor_singleton_abstract::getInstance('castorItemToolbar');
 				$toolbar->newToolbar();
-				$toolbar->addItem('fa fa-pencil-square-o', 'btn btn-info', '', jomresURL(JOMRES_SITEPAGE_URL_NOSEF.'&task=edit_occupancy_level&id='.(int) $occupancy_level['room_type_id']), jr_gettext('COMMON_EDIT', 'COMMON_EDIT', false));
-				//$toolbar->addSecondaryItem('fa fa-trash-o', '', '', jomresURL(JOMRES_SITEPAGE_URL_NOSEF.'&task=delete_child_rate&id='.(int) $id ), jr_gettext('COMMON_DELETE', 'COMMON_DELETE', false));
+				$toolbar->addItem('fa fa-pencil-square-o', 'btn btn-info', '', castorURL(CASTOR_SITEPAGE_URL_NOSEF.'&task=edit_occupancy_level&id='.(int) $occupancy_level['room_type_id']), jr_gettext('COMMON_EDIT', 'COMMON_EDIT', false));
+				//$toolbar->addSecondaryItem('fa fa-trash-o', '', '', castorURL(CASTOR_SITEPAGE_URL_NOSEF.'&task=delete_child_rate&id='.(int) $id ), jr_gettext('COMMON_DELETE', 'COMMON_DELETE', false));
 
 				$r['EDITLINK'] = $toolbar->getToolbar();
 
@@ -79,7 +79,7 @@ class j06002list_occupancy_levels
 
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 		$tmpl->readTemplatesFromInput('occupancy_levels.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->addRows('rows', $rows);
@@ -92,3 +92,4 @@ class j06002list_occupancy_levels
 		return null;
 	}
 }
+

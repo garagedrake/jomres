@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.4.0 (Platty Joobs edition)
+ *  @version Castor 10.4.0 (Platty Joobs edition)
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * 
 	 */
@@ -35,85 +35,85 @@ class j10501animation_library
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 
 		$configurationPanel = $componentArgs[ 'configurationPanel' ];
 
 		$animation = array();
-		$animation[] = jomresHTML::makeOption( 'fade', 'fade');
-		$animation[] = jomresHTML::makeOption( 'fade-up', 'fade-up');
-		$animation[] = jomresHTML::makeOption( 'fade-down', 'fade-down');
-		$animation[] = jomresHTML::makeOption( 'fade-left', 'fade-left');
-		$animation[] = jomresHTML::makeOption( 'fade-right', 'fade-right');
-		$animation[] = jomresHTML::makeOption( 'fade-up-right', 'fade-up-right');
-		$animation[] = jomresHTML::makeOption( 'fade-up-left', 'fade-up-left');
-		$animation[] = jomresHTML::makeOption( 'fade-down-right', 'fade-down-right');
-		$animation[] = jomresHTML::makeOption( 'fade-down-left', 'fade-down-left');
-		$animation[] = jomresHTML::makeOption( 'flip-up', 'flip-up');
-		$animation[] = jomresHTML::makeOption( 'flip-down', 'flip-down');
-		$animation[] = jomresHTML::makeOption( 'flip-left', 'flip-left');
-		$animation[] = jomresHTML::makeOption( 'flip-right', 'flip-right');
-		$animation[] = jomresHTML::makeOption( 'slide-up', 'slide-up');
-		$animation[] = jomresHTML::makeOption( 'slide-down', 'slide-down');
-		$animation[] = jomresHTML::makeOption( 'slide-left', 'slide-left');
-		$animation[] = jomresHTML::makeOption( 'slide-right', 'slide-right');
-		$animation[] = jomresHTML::makeOption( 'zoom-in', 'zoom-in');
-		$animation[] = jomresHTML::makeOption( 'zoom-in-up', 'zoom-in-up');
-		$animation[] = jomresHTML::makeOption( 'zoom-in-down', 'zoom-in-down');
-		$animation[] = jomresHTML::makeOption( 'zoom-in-left', 'zoom-in-left');
-		$animation[] = jomresHTML::makeOption( 'zoom-in-right', 'zoom-in-right');
-		$animation[] = jomresHTML::makeOption( 'zoom-out', 'zoom-out');
-		$animation[] = jomresHTML::makeOption( 'zoom-out-up', 'zoom-out-up');
-		$animation[] = jomresHTML::makeOption( 'zoom-out-down', 'zoom-out-down');
-		$animation[] = jomresHTML::makeOption( 'zoom-out-left', 'zoom-out-left');
-		$animation[] = jomresHTML::makeOption( 'zoom-out-right', 'zoom-out-right');
+		$animation[] = castorHTML::makeOption( 'fade', 'fade');
+		$animation[] = castorHTML::makeOption( 'fade-up', 'fade-up');
+		$animation[] = castorHTML::makeOption( 'fade-down', 'fade-down');
+		$animation[] = castorHTML::makeOption( 'fade-left', 'fade-left');
+		$animation[] = castorHTML::makeOption( 'fade-right', 'fade-right');
+		$animation[] = castorHTML::makeOption( 'fade-up-right', 'fade-up-right');
+		$animation[] = castorHTML::makeOption( 'fade-up-left', 'fade-up-left');
+		$animation[] = castorHTML::makeOption( 'fade-down-right', 'fade-down-right');
+		$animation[] = castorHTML::makeOption( 'fade-down-left', 'fade-down-left');
+		$animation[] = castorHTML::makeOption( 'flip-up', 'flip-up');
+		$animation[] = castorHTML::makeOption( 'flip-down', 'flip-down');
+		$animation[] = castorHTML::makeOption( 'flip-left', 'flip-left');
+		$animation[] = castorHTML::makeOption( 'flip-right', 'flip-right');
+		$animation[] = castorHTML::makeOption( 'slide-up', 'slide-up');
+		$animation[] = castorHTML::makeOption( 'slide-down', 'slide-down');
+		$animation[] = castorHTML::makeOption( 'slide-left', 'slide-left');
+		$animation[] = castorHTML::makeOption( 'slide-right', 'slide-right');
+		$animation[] = castorHTML::makeOption( 'zoom-in', 'zoom-in');
+		$animation[] = castorHTML::makeOption( 'zoom-in-up', 'zoom-in-up');
+		$animation[] = castorHTML::makeOption( 'zoom-in-down', 'zoom-in-down');
+		$animation[] = castorHTML::makeOption( 'zoom-in-left', 'zoom-in-left');
+		$animation[] = castorHTML::makeOption( 'zoom-in-right', 'zoom-in-right');
+		$animation[] = castorHTML::makeOption( 'zoom-out', 'zoom-out');
+		$animation[] = castorHTML::makeOption( 'zoom-out-up', 'zoom-out-up');
+		$animation[] = castorHTML::makeOption( 'zoom-out-down', 'zoom-out-down');
+		$animation[] = castorHTML::makeOption( 'zoom-out-left', 'zoom-out-left');
+		$animation[] = castorHTML::makeOption( 'zoom-out-right', 'zoom-out-right');
 
 
 		$easing = array();
-		$easing[] = jomresHTML::makeOption( 'linear', 'linear');
-		$easing[] = jomresHTML::makeOption( 'ease', 'ease');
-		$easing[] = jomresHTML::makeOption( 'ease-in', 'ease-in');
-		$easing[] = jomresHTML::makeOption( 'ease-out', 'ease-out');
-		$easing[] = jomresHTML::makeOption( 'ease-in-out', 'ease-in-out');
-		$easing[] = jomresHTML::makeOption( 'ease-in-back', 'ease-in-back');
-		$easing[] = jomresHTML::makeOption( 'ease-out-back', 'ease-out-back');
-		$easing[] = jomresHTML::makeOption( 'ease-in-out-back', 'ease-in-out-back');
-		$easing[] = jomresHTML::makeOption( 'ease-in-sine', 'ease-in-sine');
-		$easing[] = jomresHTML::makeOption( 'ease-out-sine', 'ease-out-sine');
-		$easing[] = jomresHTML::makeOption( 'ease-in-out-sine', 'ease-in-out-sine');
-		$easing[] = jomresHTML::makeOption( 'ease-in-quad', 'ease-in-quad');
-		$easing[] = jomresHTML::makeOption( 'ease-out-quad', 'ease-out-quad');
-		$easing[] = jomresHTML::makeOption( 'ease-in-out-quad', 'ease-in-out-quad');
-		$easing[] = jomresHTML::makeOption( 'ease-in-cubic', 'ease-in-cubic');
-		$easing[] = jomresHTML::makeOption( 'ease-out-cubic', 'ease-out-cubic');
-		$easing[] = jomresHTML::makeOption( 'ease-in-out-cubic', 'ease-in-out-cubic');
-		$easing[] = jomresHTML::makeOption( 'ease-in-quart', 'ease-in-quart');
-		$easing[] = jomresHTML::makeOption( 'ease-out-quart', 'ease-out-quart');
-		$easing[] = jomresHTML::makeOption( 'ease-in-out-quart', 'ease-in-out-quart');
+		$easing[] = castorHTML::makeOption( 'linear', 'linear');
+		$easing[] = castorHTML::makeOption( 'ease', 'ease');
+		$easing[] = castorHTML::makeOption( 'ease-in', 'ease-in');
+		$easing[] = castorHTML::makeOption( 'ease-out', 'ease-out');
+		$easing[] = castorHTML::makeOption( 'ease-in-out', 'ease-in-out');
+		$easing[] = castorHTML::makeOption( 'ease-in-back', 'ease-in-back');
+		$easing[] = castorHTML::makeOption( 'ease-out-back', 'ease-out-back');
+		$easing[] = castorHTML::makeOption( 'ease-in-out-back', 'ease-in-out-back');
+		$easing[] = castorHTML::makeOption( 'ease-in-sine', 'ease-in-sine');
+		$easing[] = castorHTML::makeOption( 'ease-out-sine', 'ease-out-sine');
+		$easing[] = castorHTML::makeOption( 'ease-in-out-sine', 'ease-in-out-sine');
+		$easing[] = castorHTML::makeOption( 'ease-in-quad', 'ease-in-quad');
+		$easing[] = castorHTML::makeOption( 'ease-out-quad', 'ease-out-quad');
+		$easing[] = castorHTML::makeOption( 'ease-in-out-quad', 'ease-in-out-quad');
+		$easing[] = castorHTML::makeOption( 'ease-in-cubic', 'ease-in-cubic');
+		$easing[] = castorHTML::makeOption( 'ease-out-cubic', 'ease-out-cubic');
+		$easing[] = castorHTML::makeOption( 'ease-in-out-cubic', 'ease-in-out-cubic');
+		$easing[] = castorHTML::makeOption( 'ease-in-quart', 'ease-in-quart');
+		$easing[] = castorHTML::makeOption( 'ease-out-quart', 'ease-out-quart');
+		$easing[] = castorHTML::makeOption( 'ease-in-out-quart', 'ease-in-out-quart');
 
 		$duration = array();
-		$duration[] = jomresHTML::makeOption( '1000', '1000');
-		$duration[] = jomresHTML::makeOption( '2000', '2000');
-		$duration[] = jomresHTML::makeOption( '3000', '3000');
-		$duration[] = jomresHTML::makeOption( '4000', '4000');
-		$duration[] = jomresHTML::makeOption( '5000', '5000');
-		$duration[] = jomresHTML::makeOption( '6000', '6000');
+		$duration[] = castorHTML::makeOption( '1000', '1000');
+		$duration[] = castorHTML::makeOption( '2000', '2000');
+		$duration[] = castorHTML::makeOption( '3000', '3000');
+		$duration[] = castorHTML::makeOption( '4000', '4000');
+		$duration[] = castorHTML::makeOption( '5000', '5000');
+		$duration[] = castorHTML::makeOption( '6000', '6000');
 
 		$delay = array();
-		$delay[] = jomresHTML::makeOption( '50', '50');
-		$delay[] = jomresHTML::makeOption( '2000', '2000');
-		$delay[] = jomresHTML::makeOption( '3000', '3000');
-		$delay[] = jomresHTML::makeOption( '4000', '4000');
-		$delay[] = jomresHTML::makeOption( '5000', '5000');
-		$delay[] = jomresHTML::makeOption( '6000', '6000');
+		$delay[] = castorHTML::makeOption( '50', '50');
+		$delay[] = castorHTML::makeOption( '2000', '2000');
+		$delay[] = castorHTML::makeOption( '3000', '3000');
+		$delay[] = castorHTML::makeOption( '4000', '4000');
+		$delay[] = castorHTML::makeOption( '5000', '5000');
+		$delay[] = castorHTML::makeOption( '6000', '6000');
 
 		if (!isset($jrConfig['animation_library_enabled'])) {
 			$jrConfig['animation_library_enabled'] = 1;
@@ -136,30 +136,30 @@ class j10501animation_library
 		}
 
 		$yesno = array();
-		$yesno[] = jomresHTML::makeOption( '0', jr_gettext("_JOMRES_COM_MR_NO",'_JOMRES_COM_MR_NO',false) );
-		$yesno[] = jomresHTML::makeOption( '1', jr_gettext("_JOMRES_COM_MR_YES",'_JOMRES_COM_MR_YES',false) );
+		$yesno[] = castorHTML::makeOption( '0', jr_gettext("_CASTOR_COM_MR_NO",'_CASTOR_COM_MR_NO',false) );
+		$yesno[] = castorHTML::makeOption( '1', jr_gettext("_CASTOR_COM_MR_YES",'_CASTOR_COM_MR_YES',false) );
 
 
 		$configurationPanel->startPanel('Animation Library');
 
 		$configurationPanel->setleft('Enabled?');
-		$configurationPanel->setmiddle( jomresHTML::selectList( $yesno, 'cfg_animation_library_enabled', '', 'value', 'text', $jrConfig['animation_library_enabled'] ) );
+		$configurationPanel->setmiddle( castorHTML::selectList( $yesno, 'cfg_animation_library_enabled', '', 'value', 'text', $jrConfig['animation_library_enabled'] ) );
 		$configurationPanel->setright('');
 		$configurationPanel->insertSetting();
 
 
 		$configurationPanel->setleft('Animation');
-		$configurationPanel->setmiddle( jomresHTML::selectList( $animation, 'cfg_animation_library_animation', '', 'value', 'text', $jrConfig['animation_library_animation'] ) );
+		$configurationPanel->setmiddle( castorHTML::selectList( $animation, 'cfg_animation_library_animation', '', 'value', 'text', $jrConfig['animation_library_animation'] ) );
 		$configurationPanel->setright('');
 		$configurationPanel->insertSetting();
 
 		$configurationPanel->setleft('Duration');
-		$configurationPanel->setmiddle( jomresHTML::selectList( $duration, 'cfg_animation_library_duration', '', 'value', 'text', $jrConfig['animation_library_duration'] ) );
+		$configurationPanel->setmiddle( castorHTML::selectList( $duration, 'cfg_animation_library_duration', '', 'value', 'text', $jrConfig['animation_library_duration'] ) );
 		$configurationPanel->setright('');
 		$configurationPanel->insertSetting();
 
 		$configurationPanel->setleft('Easing');
-		$configurationPanel->setmiddle( jomresHTML::selectList( $easing, 'cfg_animation_library_easing', '', 'value', 'text', $jrConfig['animation_library_easing'] ) );
+		$configurationPanel->setmiddle( castorHTML::selectList( $easing, 'cfg_animation_library_easing', '', 'value', 'text', $jrConfig['animation_library_easing'] ) );
 		$configurationPanel->setright('');
 		$configurationPanel->insertSetting();
 		$configurationPanel->endPanel();
@@ -171,3 +171,4 @@ class j10501animation_library
 		return null;
 	}
 }
+

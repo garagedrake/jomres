@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,7 +36,7 @@ class j16000listproperties_ajax
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -46,11 +46,11 @@ class j16000listproperties_ajax
 		$ePointFilepath = get_showtime('ePointFilepath');
 		$lang = get_showtime('lang');
 
-		$published = (int) jomresGetParam($_GET, 'published', '2');
-		$approved = (int) jomresGetParam($_GET, 'approved', '2');
-		$ptype_id = (int) jomresGetParam($_GET, 'ptype', '0');
+		$published = (int) castorGetParam($_GET, 'published', '2');
+		$approved = (int) castorGetParam($_GET, 'approved', '2');
+		$ptype_id = (int) castorGetParam($_GET, 'ptype', '0');
 
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 
 		$rows = array();
@@ -95,7 +95,7 @@ class j16000listproperties_ajax
 		 * on very large tables, and MySQL's regex functionality is very limited
 		 */
 		$sWhere = '';
-		$search = jomresGetParam($_GET, 'jr_search', array());
+		$search = castorGetParam($_GET, 'jr_search', array());
 		if (isset($search['value']) && $search['value'] != '') {
 			$sWhere = 'AND (';
 			for ($i = 0; $i < $n; ++$i) {
@@ -155,7 +155,7 @@ class j16000listproperties_ajax
 						a.last_changed,
 						a.completed,
 						(CASE WHEN (a.propertys_uid = b.property_uid 
-									AND b.constant = '_JOMRES_CUSTOMTEXT_PROPERTY_NAME' 
+									AND b.constant = '_CASTOR_CUSTOMTEXT_PROPERTY_NAME' 
 									AND b.language = '".$lang."' 
 									AND b.language_context != '') 
 							THEN b.customtext 
@@ -163,17 +163,17 @@ class j16000listproperties_ajax
 						END) AS property_name,
 						c.crate_id,
 						d.title
-					FROM #__jomres_propertys a 
-						LEFT JOIN #__jomres_custom_text b ON (a.propertys_uid = b.property_uid 
-																AND b.constant = '_JOMRES_CUSTOMTEXT_PROPERTY_NAME' 
+					FROM #__castor_propertys a 
+						LEFT JOIN #__castor_custom_text b ON (a.propertys_uid = b.property_uid 
+																AND b.constant = '_CASTOR_CUSTOMTEXT_PROPERTY_NAME' 
 																AND b.language = '".$lang."') 
-						LEFT JOIN #__jomresportal_properties_crates_xref c ON a.propertys_uid = c.property_id 
-						LEFT JOIN #__jomresportal_c_rates d ON c.crate_id = d.id "
+						LEFT JOIN #__castorportal_properties_crates_xref c ON a.propertys_uid = c.property_id 
+						LEFT JOIN #__castorportal_c_rates d ON c.crate_id = d.id "
 					.$clause
 					.' '.$sWhere
 					.' '.$sOrder
 					.' '.$sLimit;
-		$jomresPropertyList = doSelectSql($query);
+		$castorPropertyList = doSelectSql($query);
 
 		/*
 		 * Total number of rows
@@ -205,22 +205,22 @@ class j16000listproperties_ajax
 		$jrportal_commissions = new jrportal_commissions();
 		$jrportal_commissions->getAllCrates();
 
-		foreach ($jomresPropertyList as $p) {
+		foreach ($castorPropertyList as $p) {
 			$r = array();
 
 			//properties toolbar
 			if (!using_bootstrap()) {
-				$jrtbar = jomres_singleton_abstract::getInstance('jomres_toolbar');
+				$jrtbar = castor_singleton_abstract::getInstance('castor_toolbar');
 				$jrtb = $jrtbar->startTable();
-				$jrtb .= $jrtbar->toolbarItem('preview', jomresURL(JOMRES_SITEPAGE_URL_NOSEF.'&task=cpanel'.'&thisProperty='.$p->propertys_uid), jr_gettext('_JOMRES_FRONT_MR_MENU_ADMIN_HOME', '_JOMRES_FRONT_MR_MENU_ADMIN_HOME', false));
+				$jrtb .= $jrtbar->toolbarItem('preview', castorURL(CASTOR_SITEPAGE_URL_NOSEF.'&task=cpanel'.'&thisProperty='.$p->propertys_uid), jr_gettext('_CASTOR_FRONT_MR_MENU_ADMIN_HOME', '_CASTOR_FRONT_MR_MENU_ADMIN_HOME', false));
 				$r[] = $jrtb .= $jrtbar->endTable();
 			} else {
-				$toolbar = jomres_singleton_abstract::getInstance('jomresItemToolbar');
+				$toolbar = castor_singleton_abstract::getInstance('castorItemToolbar');
 				$toolbar->newToolbar();
 
-				$url = jomresURL(JOMRES_SITEPAGE_URL_NOSEF.'&task=cpanel&thisProperty='.$p->propertys_uid);
-				$toolbar->addItem('fa fa-tachometer', 'btn btn-info', '', $url, jr_gettext('_JOMRES_FRONT_MR_MENU_ADMIN_HOME', '_JOMRES_FRONT_MR_MENU_ADMIN_HOME', false), false, 'target="_blank"');
-				$toolbar->addSecondaryItem('fa fa-tachometer', '', '', jomresURL(JOMRES_SITEPAGE_URL_ADMIN.'&task=view_property_reviews&property_uid='.$p->propertys_uid), jr_gettext('_JOMRES_REVIEWS', '_JOMRES_REVIEWS', false));
+				$url = castorURL(CASTOR_SITEPAGE_URL_NOSEF.'&task=cpanel&thisProperty='.$p->propertys_uid);
+				$toolbar->addItem('fa fa-tachometer', 'btn btn-info', '', $url, jr_gettext('_CASTOR_FRONT_MR_MENU_ADMIN_HOME', '_CASTOR_FRONT_MR_MENU_ADMIN_HOME', false), false, 'target="_blank"');
+				$toolbar->addSecondaryItem('fa fa-tachometer', '', '', castorURL(CASTOR_SITEPAGE_URL_ADMIN.'&task=view_property_reviews&property_uid='.$p->propertys_uid), jr_gettext('_CASTOR_REVIEWS', '_CASTOR_REVIEWS', false));
 
 				$r[] = $toolbar->getToolbar();
 			}
@@ -228,7 +228,7 @@ class j16000listproperties_ajax
 
 			$r[] = $p->propertys_uid;
 
-			if (jomres_bootstrap_version() == 5) {
+			if (castor_bootstrap_version() == 5) {
 				$text_highlight_danger = "badge bg-danger";
 				$text_highlight_warning = "badge bg-warning text-dark";
 			} else {
@@ -238,39 +238,39 @@ class j16000listproperties_ajax
 
 			if ($p->completed == 1) {
 				if ($p->approved == 1) {
-					$r[] = jomres_decode($p->property_name);
+					$r[] = castor_decode($p->property_name);
 				} else {
-					$r[] = '<span class="'.$text_highlight_warning.'">'.jomres_decode($p->property_name).'</span>';
+					$r[] = '<span class="'.$text_highlight_warning.'">'.castor_decode($p->property_name).'</span>';
 				}
 			} else {
-				$r[] = '<span class="'.$text_highlight_danger.'">'.jomres_decode($p->property_name).'</span>';
+				$r[] = '<span class="'.$text_highlight_danger.'">'.castor_decode($p->property_name).'</span>';
 			}
 
 			//approval dropdown
 			$options = array();
-			$options[] = jomresHTML::makeOption('0', jr_gettext('_JOMRES_COM_MR_NO', '_JOMRES_COM_MR_NO', false));
-			$options[] = jomresHTML::makeOption('1', jr_gettext('_JOMRES_COM_MR_YES', '_JOMRES_COM_MR_YES', false));
-			$r[] = jomresHTML::selectList($options, 'approved', ' size="1" onchange="setApproval(\''.$p->propertys_uid.'\', this.value );"', 'value', 'text', $p->approved, false);
+			$options[] = castorHTML::makeOption('0', jr_gettext('_CASTOR_COM_MR_NO', '_CASTOR_COM_MR_NO', false));
+			$options[] = castorHTML::makeOption('1', jr_gettext('_CASTOR_COM_MR_YES', '_CASTOR_COM_MR_YES', false));
+			$r[] = castorHTML::selectList($options, 'approved', ' size="1" onchange="setApproval(\''.$p->propertys_uid.'\', this.value );"', 'value', 'text', $p->approved, false);
 
-			$r[] = jomres_decode($p->property_street);
-			$r[] = jomres_decode($p->property_town);
-			$r[] = jomres_decode(find_region_name($p->property_region));
+			$r[] = castor_decode($p->property_street);
+			$r[] = castor_decode($p->property_town);
+			$r[] = castor_decode(find_region_name($p->property_region));
 			$r[] = $p->property_postcode;
 			$r[] = $p->property_country;
 			$r[] = $p->property_tel;
 			$r[] = $p->property_fax;
-			$r[] = jomres_decode($p->property_email);
+			$r[] = castor_decode($p->property_email);
 
 			$stars = '';
 			for ($i = 1; $i <= (int) $p->stars; ++$i) {
-				$stars .= '<img src="'.JOMRES_IMAGES_RELPATH.'star.png" border="0" alt="star" />';
+				$stars .= '<img src="'.CASTOR_IMAGES_RELPATH.'star.png" border="0" alt="star" />';
 			}
 			$r[] = $stars;
 
 			if ((int) $p->superior == 1) {
-				$r[] = jr_gettext('_JOMRES_COM_MR_YES', '_JOMRES_COM_MR_YES', false);
+				$r[] = jr_gettext('_CASTOR_COM_MR_YES', '_CASTOR_COM_MR_YES', false);
 			} else {
-				$r[] = jr_gettext('_JOMRES_COM_MR_NO', '_JOMRES_COM_MR_NO', false);
+				$r[] = jr_gettext('_CASTOR_COM_MR_NO', '_CASTOR_COM_MR_NO', false);
 			}
 
 			$r[] = $p->lat;
@@ -302,3 +302,4 @@ class j16000listproperties_ajax
 		return null;
 	}
 }
+

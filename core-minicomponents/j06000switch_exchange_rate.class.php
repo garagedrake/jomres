@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,14 +36,14 @@ class j06000switch_exchange_rate
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
-		$tmpBookingHandler = jomres_singleton_abstract::getInstance('jomres_temp_booking_handler');
-		$current_exchange_rate = jomresGetParam($_REQUEST, 'currency_code', '');
+		$tmpBookingHandler = castor_singleton_abstract::getInstance('castor_temp_booking_handler');
+		$current_exchange_rate = castorGetParam($_REQUEST, 'currency_code', '');
 		if ($current_exchange_rate != '') {
 			$tmpBookingHandler->user_settings[ 'current_exchange_rate' ] = $current_exchange_rate;
 		}
@@ -51,9 +51,9 @@ class j06000switch_exchange_rate
 			$tmpBookingHandler->user_settings[ 'current_exchange_rate' ] = 'GBP';
 		}
 		
-		$jomres_currency_conversion = jomres_singleton_abstract::getInstance('jomres_currency_conversion');
+		$castor_currency_conversion = castor_singleton_abstract::getInstance('castor_currency_conversion');
 
-		if (!$jomres_currency_conversion->check_currency_code_valid($tmpBookingHandler->user_settings[ 'current_exchange_rate' ])) {
+		if (!$castor_currency_conversion->check_currency_code_valid($tmpBookingHandler->user_settings[ 'current_exchange_rate' ])) {
 			$tmpBookingHandler->user_settings[ 'current_exchange_rate' ] = 'GBP';
 		}
 	}
@@ -64,3 +64,4 @@ class j06000switch_exchange_rate
 		return null;
 	}
 }
+

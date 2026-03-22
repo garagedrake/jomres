@@ -1,10 +1,10 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 	<h2 class="page-header">{PAGETITLE}</h2>
 
 	<p class="alert alert-warning">{SUPPLIMENT_DESC}</p>
 
-	<form action="{JOMRES_SITEPAGE_URL_NOSEF}" method="post" name="adminForm" class="form-horizontal">
+	<form action="{CASTOR_SITEPAGE_URL_NOSEF}" method="post" name="adminForm" class="form-horizontal">
 		<fieldset>
 			<div class="control-group">
 				<label class="control-label" for="roomClasses">{HTYPE}</label>
@@ -35,13 +35,13 @@
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for="max_adults">{JOMRES_OCCUPANCY_LEVELS_MAX_ADULTS}</label>
+				<label class="control-label" for="max_adults">{CASTOR_OCCUPANCY_LEVELS_MAX_ADULTS}</label>
 				<div class="controls">
 					{MAXADULTS_DROPDOWN}
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for="max_children">{JOMRES_OCCUPANCY_LEVELS_MAX_CHILDREN}</label>
+				<label class="control-label" for="max_children">{CASTOR_OCCUPANCY_LEVELS_MAX_CHILDREN}</label>
 				<div class="controls">
 					{MAXCHILDREN_DROPDOWN}
 				</div>
@@ -55,9 +55,9 @@
 			</div>
 			
 			<div class="control-group">
-				<label class="control-label" for="surcharge">{_JOMRES_SURCHARGE_TITLE}</label>
+				<label class="control-label" for="surcharge">{_CASTOR_SURCHARGE_TITLE}</label>
 				<div class="controls">
-					<input type="number" name="surcharge" value="{SURCHARGE}" placeholder="{_JOMRES_SURCHARGE_TITLE}"/> {_JOMRES_SURCHARGE_DESC}
+					<input type="number" name="surcharge" value="{SURCHARGE}" placeholder="{_CASTOR_SURCHARGE_TITLE}"/> {_CASTOR_SURCHARGE_DESC}
 				</div>
 			</div>
 	
@@ -69,7 +69,7 @@
 				</div>
 			</div>
 			<div class="form-actions">
-				{JOMRESTOOLBAR}
+				{CASTORTOOLBAR}
 			</div>
 		</fieldset>
 		<input type="hidden" name="roomUid" value="{ROOMUID}"/>
@@ -78,7 +78,7 @@
 	</form>
 	<patTemplate:comment>
 	<h3 class="page-header">{UPLOADIMAGE}</h3>
-	<form enctype="multipart/form-data" action="{JOMRES_SITEPAGE_URL}&amp;task=uploadRoomImage" method="post"
+	<form enctype="multipart/form-data" action="{CASTOR_SITEPAGE_URL}&amp;task=uploadRoomImage" method="post"
 		  name="upload" class="form-horizontal">
 		<fieldset>
 			<div class="control-group">

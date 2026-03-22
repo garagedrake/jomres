@@ -1,23 +1,23 @@
-<?php
+﻿<?php
 	/**
 	 * Core file.
 	 *
-	 * @author Vince Wooll <sales@jomres.net>
+	 * @author Vince Wooll <sales@castor.net>
 	 *
-	  *  @version Jomres 10.7.2
+	  *  @version Castor 10.7.2
 	 *
 	 * @copyright	2005-2023 Vince Wooll
-	 * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+	 * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
 	 **/
 
 // ################################################################
-	defined('_JOMRES_INITCHECK') or die('');
+	defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
-	 * The script makes sure that the jomres_bootstrap_version is set before any other scripts are called, due to changes how J4 calls web assets we need to prioritise that variable
+	 * The script makes sure that the castor_bootstrap_version is set before any other scripts are called, due to changes how J4 calls web assets we need to prioritise that variable
 	 *
 	 */
 
@@ -36,7 +36,7 @@ class j00004a_set_bootstrap_version_js
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -47,13 +47,13 @@ class j00004a_set_bootstrap_version_js
 			return;
 		}
 
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
-		$ls = jomresGetDomain();
+		$ls = castorGetDomain();
 
 		$template_dir = find_plugin_template_directory();
-		if (jomres_cmsspecific_areweinadminarea()) {
-			if (_JOMRES_DETECTED_CMS != 'joomla4') {
+		if (castor_cmsspecific_areweinadminarea()) {
+			if (_CASTOR_DETECTED_CMS != 'joomla4') {
 				$template_dir = 'bootstrap';
 			} else {
 				$template_dir = 'bootstrap5';
@@ -61,7 +61,7 @@ class j00004a_set_bootstrap_version_js
 		}
 
 		$misc_url_defs = '
-			var jomres_template_version = "'.$template_dir.'";
+			var castor_template_version = "'.$template_dir.'";
 			';
 
 		if (!isset($_SERVER[ "SERVER_PORT" ])) { // CLI not isset variable fix
@@ -70,25 +70,25 @@ class j00004a_set_bootstrap_version_js
 			$SERVER_PORT = $_SERVER[ "SERVER_PORT" ];
 		}
 
-		if ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $SERVER_PORT == 443) {// We need to include some javascript which could normally be echo'd into the page, but due to the fact that it might be included by Jomres proper, as well as plugins, we'll instead create it's own .js file, and use the host CMS to insert it into the head.
+		if ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $SERVER_PORT == 443) {// We need to include some javascript which could normally be echo'd into the page, but due to the fact that it might be included by Castor proper, as well as plugins, we'll instead create it's own .js file, and use the host CMS to insert it into the head.
 			$temp_file = $ls.'_ssl_'.get_showtime('lang');
 		} else {
 			$temp_file = $ls.'_'.get_showtime('lang');
 		}
 
-		if (jomres_cmsspecific_areweinadminarea()) {
+		if (castor_cmsspecific_areweinadminarea()) {
 			$temp_file .= '_bootstrap_version_misc_url_defs_admin.js';
 		} else {
 			$temp_file .= '_bootstrap_version_misc_url_defs.js';
 		}
-		if (!file_exists(JOMRES_TEMP_ABSPATH.$temp_file)) {
-			$result = file_put_contents(JOMRES_TEMP_ABSPATH.$temp_file, $misc_url_defs);
+		if (!file_exists(CASTOR_TEMP_ABSPATH.$temp_file)) {
+			$result = file_put_contents(CASTOR_TEMP_ABSPATH.$temp_file, $misc_url_defs);
 			if (!$result) {
-				throw new Exception('Tried to write  '.JOMRES_TEMP_ABSPATH.$temp_file.' but was not succcessful');
+				throw new Exception('Tried to write  '.CASTOR_TEMP_ABSPATH.$temp_file.' but was not succcessful');
 			}
 		}
 
-		jomres_cmsspecific_addheaddata('javascript', JOMRES_ROOT_DIRECTORY.'/temp/', $temp_file);
+		castor_cmsspecific_addheaddata('javascript', CASTOR_ROOT_DIRECTORY.'/temp/', $temp_file);
 	}
 
 
@@ -97,3 +97,4 @@ class j00004a_set_bootstrap_version_js
 		return null;
 	}
 }
+

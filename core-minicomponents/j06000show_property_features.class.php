@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,15 +35,15 @@ class j06000show_property_features
 	 
 	public function __construct($componentArgs)
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			$this->shortcode_data = array(
 				'task' => 'show_property_features',
-				'info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_FEATURES',
+				'info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_FEATURES',
 				'arguments' => array(0 => array(
 						'argument' => 'property_uid',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_FEATURES_ARG_PROPERTY_UID',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_FEATURES_ARG_PROPERTY_UID',
 						'arg_example' => '1',
 						),
 					),
@@ -56,7 +56,7 @@ class j06000show_property_features
 		if (isset($componentArgs[ 'property_uid' ])) {
 			$property_uid = (int)$componentArgs[ 'property_uid' ];
 		} else {
-			$property_uid = (int)jomresGetParam($_REQUEST, 'property_uid', 0);
+			$property_uid = (int)castorGetParam($_REQUEST, 'property_uid', 0);
 		}
 		
 		if ($property_uid == 0) {
@@ -75,10 +75,10 @@ class j06000show_property_features
 		$mrConfig = getPropertySpecificSettings($property_uid);
 
 		if (get_showtime('task') != 'dobooking') {
-			jomres_set_page_title( $property_uid ,  jr_gettext('_JOMRES_SEARCH_FEATURE_INFO', '_JOMRES_SEARCH_FEATURE_INFO', false) );
+			castor_set_page_title( $property_uid ,  jr_gettext('_CASTOR_SEARCH_FEATURE_INFO', '_CASTOR_SEARCH_FEATURE_INFO', false) );
 		}
 
-		$basic_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+		$basic_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 		$basic_property_details->gather_data($property_uid);
 
 		$output = array();
@@ -91,17 +91,17 @@ class j06000show_property_features
 			if ((int) $mrConfig['showPfeaturesCategories'] == 0 || $componentArgs[ 'show_feature_categories' ] == false) {
 				$pFeatures = array();
 
-				$output[ 'HFEATURES' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_FEATURES', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_FEATURES', false);
+				$output[ 'HFEATURES' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_FEATURES', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_FEATURES', false);
 
 				foreach ($basic_property_details->features as $feature_id => $f) {
-					$url = jomresURL(JOMRES_SITEPAGE_URL.'&send=Search&calledByModule=mod_jomsearch_m0&feature_uids='.$feature_id);
-					$pFeature[ 'FEATURE' ] = jomres_makeTooltip($f[ 'abbv' ], $f[ 'abbv' ], $f[ 'desc' ], JOMRES_IMAGELOCATION_RELPATH.'pfeatures/'.$f[ 'image' ], '', 'property_feature', array(), $url);
+					$url = castorURL(CASTOR_SITEPAGE_URL.'&send=Search&calledByModule=mod_jomsearch_m0&feature_uids='.$feature_id);
+					$pFeature[ 'FEATURE' ] = castor_makeTooltip($f[ 'abbv' ], $f[ 'abbv' ], $f[ 'desc' ], CASTOR_IMAGELOCATION_RELPATH.'pfeatures/'.$f[ 'image' ], '', 'property_feature', array(), $url);
 					$pFeatures[] = $pFeature;
 				}
 
 				$pageoutput[] = $output;
 				$tmpl = new patTemplate();
-				$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+				$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 				$tmpl->addRows('pageoutput', $pageoutput);
 				$tmpl->addRows('pfeatures', $pFeatures);
 				$tmpl->readTemplatesFromInput('show_property_features.html');
@@ -130,26 +130,26 @@ class j06000show_property_features
 					if ($k > 0) {
 						$output[ 'HFEATURES' ] = $v[0]['cat_title'];
 					} else {
-						$output[ 'HFEATURES' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_FEATURES', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_FEATURES', false);
+						$output[ 'HFEATURES' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_FEATURES', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_FEATURES', false);
 					}
 
 					foreach ($v as $f) {
-						$url = jomresURL(JOMRES_SITEPAGE_URL.'&send=Search&calledByModule=mod_jomsearch_m0&feature_uids='.$f['feature_uid']);
-						if (jomres_bootstrap_version() == '5') {
+						$url = castorURL(CASTOR_SITEPAGE_URL.'&send=Search&calledByModule=mod_jomsearch_m0&feature_uids='.$f['feature_uid']);
+						if (castor_bootstrap_version() == '5') {
 							$p = [ 0 => [
-								'IMAGE' 				=> JOMRES_IMAGELOCATION_RELPATH.'pfeatures/'.$f[ 'image' ] ,
+								'IMAGE' 				=> CASTOR_IMAGELOCATION_RELPATH.'pfeatures/'.$f[ 'image' ] ,
 								'FEATURE_DESCRIPTION'	=> $f[ 'abbv' ],
 								'URL'					=> $url,
-								'TOOLTIP'				=> $pFeature[ 'FEATURE' ] = jomres_makeTooltip($f[ 'abbv' ], $f[ 'abbv' ], $f[ 'desc' ], JOMRES_IMAGELOCATION_RELPATH.'pfeatures/'.$f[ 'image' ], '', 'property_feature', array(), $url)
+								'TOOLTIP'				=> $pFeature[ 'FEATURE' ] = castor_makeTooltip($f[ 'abbv' ], $f[ 'abbv' ], $f[ 'desc' ], CASTOR_IMAGELOCATION_RELPATH.'pfeatures/'.$f[ 'image' ], '', 'property_feature', array(), $url)
 							]];
 
 							$tmpl = new patTemplate();
 							$tmpl->addRows('pageoutput', $p);
-							$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+							$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 							$tmpl->readTemplatesFromInput('show_property_feature.html');
 							$pFeature[ 'FEATURE' ] = $tmpl->getParsedTemplate();
 						} else {
-							$pFeature[ 'FEATURE' ] = jomres_makeTooltip($f[ 'abbv' ], $f[ 'abbv' ], $f[ 'desc' ], JOMRES_IMAGELOCATION_RELPATH.'pfeatures/'.$f[ 'image' ], '', 'property_feature', array(), $url);
+							$pFeature[ 'FEATURE' ] = castor_makeTooltip($f[ 'abbv' ], $f[ 'abbv' ], $f[ 'desc' ], CASTOR_IMAGELOCATION_RELPATH.'pfeatures/'.$f[ 'image' ], '', 'property_feature', array(), $url);
 						}
 
 						$pFeatures[] = $pFeature;
@@ -157,7 +157,7 @@ class j06000show_property_features
 
 					$pageoutput[] = $output;
 					$tmpl = new patTemplate();
-					$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+					$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 					$tmpl->addRows('pageoutput', $pageoutput);
 					$tmpl->addRows('pfeatures', $pFeatures);
 					$tmpl->readTemplatesFromInput('show_property_features.html');
@@ -165,7 +165,7 @@ class j06000show_property_features
 				}
 
 				$tmpl = new patTemplate();
-				$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+				$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 				$tmpl->addRows('features_template', $features_template);
 				$tmpl->readTemplatesFromInput('show_property_features_wrapper.html');
 				$features_template = $tmpl->getParsedTemplate();
@@ -186,3 +186,4 @@ class j06000show_property_features
 		return $this->retVals;
 	}
 }
+

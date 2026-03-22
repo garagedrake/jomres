@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,7 +36,7 @@ class j09997menu
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -56,29 +56,29 @@ class j09997menu
 
 		$menu_sections = array();
 		
-		$management_view = jomresGetParam($_REQUEST, 'tmpl', false);
+		$management_view = castorGetParam($_REQUEST, 'tmpl', false);
 		
-		$jomres_menu = jomres_singleton_abstract::getInstance('jomres_menu');
-		$jomres_menu->generate_menu();
+		$castor_menu = castor_singleton_abstract::getInstance('castor_menu');
+		$castor_menu->generate_menu();
 		
-		if (empty($jomres_menu->menu)) {
+		if (empty($castor_menu->menu)) {
 			return;
 		}
 
 
-		//section params are in $jomres_menu->sections[section_id]
-		//menu items params are in $jomres_menu->items[task]
+		//section params are in $castor_menu->sections[section_id]
+		//menu items params are in $castor_menu->items[task]
 		//now let`s generate the menu output
 		
-		foreach ($jomres_menu->menu as $section_id => $tasks) {
+		foreach ($castor_menu->menu as $section_id => $tasks) {
 			foreach ($tasks as $key => $task) {
 				if (!is_channel_safe_task($task)) {
-					unset($jomres_menu->menu[$section_id] [$key]) ;
+					unset($castor_menu->menu[$section_id] [$key]) ;
 				}
 			}
 		}
 
-		foreach ($jomres_menu->menu as $section_id => $tasks) {
+		foreach ($castor_menu->menu as $section_id => $tasks) {
 			$pageoutput = array();
 			$rows = array();
 			$output = array();
@@ -87,29 +87,29 @@ class j09997menu
 				$r = array();
 				
 				//menu item name
-				$r['MENU_NAME'] = str_replace("&Amp;", "&", jr_ucwords($jomres_menu->items[$task]['title']));
+				$r['MENU_NAME'] = str_replace("&Amp;", "&", jr_ucwords($castor_menu->items[$task]['title']));
 
 				//menu item url
-				if ($jomres_menu->items[$task]['is_url']) {
+				if ($castor_menu->items[$task]['is_url']) {
 					$r['LINK'] = $task;
 				} elseif ($task != 'blank') {
-					$r['LINK'] = jomresUrl(JOMRES_SITEPAGE_URL.'&task='.$task);
+					$r['LINK'] = castorUrl(CASTOR_SITEPAGE_URL.'&task='.$task);
 				} else {
-					$r['LINK'] = jomresUrl(JOMRES_SITEPAGE_URL.'&task=cpanel');
+					$r['LINK'] = castorUrl(CASTOR_SITEPAGE_URL.'&task=cpanel');
 				}
 				
 				//menu item icon
-				$r['ICON_CLASS'] = $jomres_menu->items[$task]['icon'];
+				$r['ICON_CLASS'] = $castor_menu->items[$task]['icon'];
 
 				//menu item target
 				$r[ 'TARGET' ] = '';
-				if ($jomres_menu->items[$task]['external']) {
+				if ($castor_menu->items[$task]['external']) {
 					$r[ 'TARGET' ] = ' target="_blank" ';
 				}
 				
 				//menu item disabled class
 				$r[ 'DISABLED_CLASS' ] = '';
-				if ($jomres_menu->items[$task]['disabled']) {
+				if ($castor_menu->items[$task]['disabled']) {
 					$r[ 'LINK' ] = '#';
 					$r[ 'DISABLED_CLASS' ] = 'disabled';
 				}
@@ -118,14 +118,14 @@ class j09997menu
 				//menu item badges TODO: find a better way or remove this completely
 				$r[ 'BADGES' ] = '';
 				
-				/* if (!$jomres_menu->items[$task]['is_url']) {
+				/* if (!$castor_menu->items[$task]['is_url']) {
 					$items_requiring_attention = get_number_of_items_requiring_attention_for_menu_option($task);
 
 					if (!empty($items_requiring_attention)) {
 						foreach ($items_requiring_attention as $colour => $number) {
 							if ($number > 0) {
 								$tmpl = new patTemplate();
-								$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+								$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 								$tmpl->readTemplatesFromInput('frontend_menu_badge_'.$colour.'.html');
 								$tmpl->addRows('items_requiring_attention', array(array('NUMBER' => $number)));
 								$r[ 'BADGES' ] = $tmpl->getParsedTemplate();
@@ -139,7 +139,7 @@ class j09997menu
 				
 				if (get_showtime('task') == $task) {
 					$r[ 'ACTIVE' ] = 'active';
-				} elseif (get_showtime('task') == '' && $task == 'blank' && !$jomres_menu->items[$task]['external']) {
+				} elseif (get_showtime('task') == '' && $task == 'blank' && !$castor_menu->items[$task]['external']) {
 					$r[ 'ACTIVE' ] = 'active';
 				}
 				
@@ -147,13 +147,13 @@ class j09997menu
 			}
 			
 			if (!empty($rows)) {
-				$output[ 'CATEGORY' ] = jr_ucwords($jomres_menu->sections[$section_id]['title']);
+				$output[ 'CATEGORY' ] = jr_ucwords($castor_menu->sections[$section_id]['title']);
 				$output[ 'ID_CATEGORY' ] = 'cpanel-category-'.$section_id;
-				$output[ 'RANDOM_ID' ] = generateJomresRandomString(10);
+				$output[ 'RANDOM_ID' ] = generateCastorRandomString(10);
 
 				$pageoutput[ ] = $output;
 				$tmpl = new patTemplate();
-				$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+				$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 				if (!$management_view) {
 					$tmpl->readTemplatesFromInput('mainmenu_options_alternate.html');
 				} else {
@@ -177,18 +177,18 @@ class j09997menu
 		$output[ 'MENUITEM_LANGDROPDOWN' ] = get_showtime('menuitem_langdropdown');
 		
 		//labels
-		$output[ '_JOMRES_CONTROLPANEL' ] = jr_gettext('_JOMRES_CONTROLPANEL', '_JOMRES_CONTROLPANEL', false);
-		$output[ '_JOMRES_MENU_SHOW' ] = jr_gettext('_JOMRES_MENU_SHOW', '_JOMRES_MENU_SHOW', false);
-		$output[ '_JOMRES_MENU_HIDE' ] = jr_gettext('_JOMRES_MENU_HIDE', '_JOMRES_MENU_HIDE', false);
-		$output['_JOMRES_BOOKING_NUMBER'] = jr_gettext('_JOMRES_BOOKING_NUMBER', '_JOMRES_BOOKING_NUMBER', false);
+		$output[ '_CASTOR_CONTROLPANEL' ] = jr_gettext('_CASTOR_CONTROLPANEL', '_CASTOR_CONTROLPANEL', false);
+		$output[ '_CASTOR_MENU_SHOW' ] = jr_gettext('_CASTOR_MENU_SHOW', '_CASTOR_MENU_SHOW', false);
+		$output[ '_CASTOR_MENU_HIDE' ] = jr_gettext('_CASTOR_MENU_HIDE', '_CASTOR_MENU_HIDE', false);
+		$output['_CASTOR_BOOKING_NUMBER'] = jr_gettext('_CASTOR_BOOKING_NUMBER', '_CASTOR_BOOKING_NUMBER', false);
 		
 		//booking number search
-		$output['TAG_SEARCH_URL'] = jomresUrl(JOMRES_SITEPAGE_URL_NOSEF.'&task=list_bookings');
+		$output['TAG_SEARCH_URL'] = castorUrl(CASTOR_SITEPAGE_URL_NOSEF.'&task=list_bookings');
 		
 		//user feedback
 		$output['USER_FEEDBACK'] = get_showtime('user_feedback');
 
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig   = $siteConfig->get();
 
 		//navbar location
@@ -211,8 +211,8 @@ class j09997menu
 			$output['NAVBAR_INVERSE'] = 'navbar-inverse';
 		}
 
-		//jomres menu div id
-		$output['MENU_LOCATION'] = 'jomres_alternate_menu_position';
+		//castor menu div id
+		$output['MENU_LOCATION'] = 'castor_alternate_menu_position';
 		if (get_showtime('menu_location_div_id')) {
 			 $output['MENU_LOCATION'] = trim(get_showtime('menu_location_div_id'));
 		}
@@ -220,7 +220,7 @@ class j09997menu
 		$pageoutput[] = $output;
 
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 		if (!$management_view) {
 			$tmpl->readTemplatesFromInput('mainmenu_wrapper_alternate.html');
 		} else {
@@ -237,3 +237,4 @@ class j09997menu
 		return $this->ret_vals;
 	}
 }
+

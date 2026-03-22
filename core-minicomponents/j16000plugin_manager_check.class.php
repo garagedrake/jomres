@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,7 +36,7 @@ class j16000plugin_manager_check
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -59,7 +59,7 @@ class j16000plugin_manager_check
 		
 		$this->retVals = '';
 
-		if (!file_exists(JOMRES_COREPLUGINS_ABSPATH.'plugin_manager'.JRDS.'plugin_info.php')) {
+		if (!file_exists(CASTOR_COREPLUGINS_ABSPATH.'plugin_manager'.JRDS.'plugin_info.php')) {
 			if (isset($componentArgs[ 'output_now' ])) {
 				$output_now = $componentArgs[ 'output_now' ];
 			} else {
@@ -70,13 +70,13 @@ class j16000plugin_manager_check
 			$pageoutput = array();
 			
 			if ($ioncube_found) {
-				/*$output['INTRO'] = 'The Plugin Manager is required to install and use Jomres plugins. If you do not intend to install any plugins then do not install the manager.';
+				/*$output['INTRO'] = 'The Plugin Manager is required to install and use Castor plugins. If you do not intend to install any plugins then do not install the manager.';
 
-				$output['MESSAGE'] = 'The Plugin Manager is not installed, you must install it through the Plugin Manager page to use Jomres Core plugins or install third party plugins. You do not need a Jomres license to install third party plugins.';
+				$output['MESSAGE'] = 'The Plugin Manager is not installed, you must install it through the Plugin Manager page to use Castor Core plugins or install third party plugins. You do not need a Castor license to install third party plugins.';
 
 				$pageoutput[ ] = $output;
 				$tmpl = new patTemplate();
-				$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+				$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 				$tmpl->addRows('pageoutput', $pageoutput);
 				$tmpl->readTemplatesFromInput('plugin_manager_warning.html');*/
 
@@ -84,13 +84,13 @@ class j16000plugin_manager_check
 			} else {
 				$output['INTRO'] = 'Ioncube loaders are not installed on this system.';
 				
-				$output['MESSAGE'] = 'Ioncube loaders are required to be installed to download plugins or connect to the Jomres Platform. You do NOT need the plugin manager to use Jomres Core. <strong>Without plugins the Core system is still a functional booking system</strong>, but you will not be able to install any plugins.';
+				$output['MESSAGE'] = 'Ioncube loaders are required to be installed to download plugins or connect to the Castor Platform. You do NOT need the plugin manager to use Castor Core. <strong>Without plugins the Core system is still a functional booking system</strong>, but you will not be able to install any plugins.';
 
-				$output['MESSAGE2'] = 'If you attempt to install the plugin manager without the loaders installed, you will not be able to use Jomres at all until you manually delete the files in /jomres/core-plugins/plugin_manager and delete the contents of the /jomres/temp/ directory. In many cases you can install the ioncube loaders through your cPanel php settings area, but if you can\'t or if you are in any doubt, please contact your hosting service who will be able to talk you through the process. <strong>If you have an older (Essential one-off, Developer, Developer Renewal or Lifetime) license you do not need the loaders to install the plugin manager.</strong>';
+				$output['MESSAGE2'] = 'If you attempt to install the plugin manager without the loaders installed, you will not be able to use Castor at all until you manually delete the files in /castor/core-plugins/plugin_manager and delete the contents of the /castor/temp/ directory. In many cases you can install the ioncube loaders through your cPanel php settings area, but if you can\'t or if you are in any doubt, please contact your hosting service who will be able to talk you through the process. <strong>If you have an older (Essential one-off, Developer, Developer Renewal or Lifetime) license you do not need the loaders to install the plugin manager.</strong>';
 
 				$pageoutput[ ] = $output;
 				$tmpl = new patTemplate();
-				$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+				$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 				$tmpl->addRows('pageoutput', $pageoutput);
 				$tmpl->readTemplatesFromInput('plugin_manager_no_ioncube.html');
 			}
@@ -111,3 +111,4 @@ class j16000plugin_manager_check
 		return $this->retVals;
 	}
 }
+

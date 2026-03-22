@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,7 +36,7 @@ class j07310watcher_authmethod_process_app_server
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			return;
@@ -92,7 +92,7 @@ class j07310watcher_authmethod_process_app_server
 
 					$this_plugin_tasks = array ( 'booking_added' , 'booking_marked_noshow' );
 					if (in_array($data->task, $this_plugin_tasks)) {
-						$current_contract_details = jomres_singleton_abstract::getInstance('basic_contract_details');
+						$current_contract_details = castor_singleton_abstract::getInstance('basic_contract_details');
 						$current_contract_details->gather_data($data->contract_uid, $data->property_uid);
 						
 						if (!array_key_exists($data->contract_uid, $current_contract_details->contract)) { // The contract uid is wrong. Was it for a different property?
@@ -128,16 +128,16 @@ class j07310watcher_authmethod_process_app_server
 		try {
 			$client = new GuzzleHttp\Client();
 		
-			$url = "https://app.jomres.net/jomres/api/".$context."/".$endpoint;
+			$url = "https://app.castor.net/castor/api/".$context."/".$endpoint;
 
 			$response = $client->request('POST', $url, [
 			'form_params' => [
-				'api_url' => urlencode(get_showtime('live_site').'/'.JOMRES_ROOT_DIRECTORY.'/api/'),
+				'api_url' => urlencode(get_showtime('live_site').'/'.CASTOR_ROOT_DIRECTORY.'/api/'),
 				'data' => json_encode($data)
 				]
 			]);
 		} catch (\Exception $e) {
-			logging::log_message('Failed to update app.jomres.net Received response '.$e->getMessage(), 'API', 'WARNING')  ;
+			logging::log_message('Failed to update app.castor.net Received response '.$e->getMessage(), 'API', 'WARNING')  ;
 		}
 	}
 	
@@ -147,3 +147,4 @@ class j07310watcher_authmethod_process_app_server
 		return $this->retVals;
 	}
 }
+

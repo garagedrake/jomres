@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 /**
  *
- * @package Jomres\Core\Database
+ * @package Castor\Core\Database
  *
  * Database modification during updates
  *
@@ -23,8 +23,8 @@ defined('_JOMRES_INITCHECK') or die('');
 // Must do this here, because if we cannot create the encryption key, we cannot encode the user's data
 try 
 	{
-	jr_import('jomres_encryption');
-	$jomres_encryption = new jomres_encryption();
+	jr_import('castor_encryption');
+	$castor_encryption = new castor_encryption();
 	}
 	catch (Exception $e) 
 	{
@@ -34,66 +34,66 @@ try
 
 $profiles_cols_added = false;
 
-$query = "SHOW COLUMNS FROM #__jomres_guest_profile LIKE 'enc_firstname'";
+$query = "SHOW COLUMNS FROM #__castor_guest_profile LIKE 'enc_firstname'";
 $colExists = doSelectSql( $query );
 if (count($colExists) < 1)
 	{
 		
 	// It's about time we got rid of these old columns
-	$query = "ALTER TABLE `#__jomres_guest_profile` DROP `car_regno`";
+	$query = "ALTER TABLE `#__castor_guest_profile` DROP `car_regno`";
 	doInsertSql($query,"");
-	$query = "ALTER TABLE `#__jomres_guest_profile` DROP `ccard_no`";
+	$query = "ALTER TABLE `#__castor_guest_profile` DROP `ccard_no`";
 	doInsertSql($query,"");
-	$query = "ALTER TABLE `#__jomres_guest_profile` DROP `ccard_issued`";
+	$query = "ALTER TABLE `#__castor_guest_profile` DROP `ccard_issued`";
 	doInsertSql($query,"");
-	$query = "ALTER TABLE `#__jomres_guest_profile` DROP `ccard_expiry`";
+	$query = "ALTER TABLE `#__castor_guest_profile` DROP `ccard_expiry`";
 	doInsertSql($query,"");
-	$query = "ALTER TABLE `#__jomres_guest_profile` DROP `ccard_iss_no`";
+	$query = "ALTER TABLE `#__castor_guest_profile` DROP `ccard_iss_no`";
 	doInsertSql($query,"");
-	$query = "ALTER TABLE `#__jomres_guest_profile` DROP `ccard_name`";
+	$query = "ALTER TABLE `#__castor_guest_profile` DROP `ccard_name`";
 	doInsertSql($query,"");
-	$query = "ALTER TABLE `#__jomres_guest_profile` DROP `ccv`";
+	$query = "ALTER TABLE `#__castor_guest_profile` DROP `ccv`";
 	doInsertSql($query,"");
-	$query = "ALTER TABLE `#__jomres_guest_profile` DROP `type`";
-	doInsertSql($query,"");
-	
-	$query = "ALTER TABLE `#__jomres_guest_profile` ADD `enc_firstname` BLOB ";
+	$query = "ALTER TABLE `#__castor_guest_profile` DROP `type`";
 	doInsertSql($query,"");
 	
-	$query = "ALTER TABLE `#__jomres_guest_profile` ADD `enc_surname` BLOB ";
+	$query = "ALTER TABLE `#__castor_guest_profile` ADD `enc_firstname` BLOB ";
 	doInsertSql($query,"");
 	
-	$query = "ALTER TABLE `#__jomres_guest_profile` ADD `enc_house` BLOB ";
+	$query = "ALTER TABLE `#__castor_guest_profile` ADD `enc_surname` BLOB ";
 	doInsertSql($query,"");
 	
-	$query = "ALTER TABLE `#__jomres_guest_profile` ADD `enc_street` BLOB ";
+	$query = "ALTER TABLE `#__castor_guest_profile` ADD `enc_house` BLOB ";
 	doInsertSql($query,"");
 	
-	$query = "ALTER TABLE `#__jomres_guest_profile` ADD `enc_town` BLOB ";
+	$query = "ALTER TABLE `#__castor_guest_profile` ADD `enc_street` BLOB ";
 	doInsertSql($query,"");
 	
-	$query = "ALTER TABLE `#__jomres_guest_profile` ADD `enc_county` BLOB ";
+	$query = "ALTER TABLE `#__castor_guest_profile` ADD `enc_town` BLOB ";
 	doInsertSql($query,"");
 	
-	$query = "ALTER TABLE `#__jomres_guest_profile` ADD `enc_country` BLOB ";
+	$query = "ALTER TABLE `#__castor_guest_profile` ADD `enc_county` BLOB ";
 	doInsertSql($query,"");
 	
-	$query = "ALTER TABLE `#__jomres_guest_profile` ADD `enc_postcode` BLOB ";
+	$query = "ALTER TABLE `#__castor_guest_profile` ADD `enc_country` BLOB ";
 	doInsertSql($query,"");
 	
-	$query = "ALTER TABLE `#__jomres_guest_profile` ADD `enc_tel_landline` BLOB ";
+	$query = "ALTER TABLE `#__castor_guest_profile` ADD `enc_postcode` BLOB ";
 	doInsertSql($query,"");
 	
-	$query = "ALTER TABLE `#__jomres_guest_profile` ADD `enc_tel_mobile` BLOB ";
+	$query = "ALTER TABLE `#__castor_guest_profile` ADD `enc_tel_landline` BLOB ";
+	doInsertSql($query,"");
+	
+	$query = "ALTER TABLE `#__castor_guest_profile` ADD `enc_tel_mobile` BLOB ";
 	doInsertSql($query,"");
 	 
-	$query = "ALTER TABLE `#__jomres_guest_profile` ADD `enc_email` BLOB ";
+	$query = "ALTER TABLE `#__castor_guest_profile` ADD `enc_email` BLOB ";
 	doInsertSql($query,"");
 	
-	$query = "ALTER TABLE `#__jomres_guest_profile` ADD `enc_vat_number` BLOB ";
+	$query = "ALTER TABLE `#__castor_guest_profile` ADD `enc_vat_number` BLOB ";
 	doInsertSql($query,"");
 	
-	$query = "ALTER TABLE `#__jomres_guest_profile` ADD `enc_preferences` BLOB ";
+	$query = "ALTER TABLE `#__castor_guest_profile` ADD `enc_preferences` BLOB ";
 	doInsertSql($query,"");
 	
 	$profiles_cols_added = true;
@@ -102,66 +102,66 @@ if (count($colExists) < 1)
 
 $guests_cols_added = false;
 
-$query = "SHOW COLUMNS FROM #__jomres_guests LIKE 'enc_firstname'";
+$query = "SHOW COLUMNS FROM #__castor_guests LIKE 'enc_firstname'";
 $colExists = doSelectSql( $query );
 if (count($colExists) < 1)
 	{
 	// It's about time we got rid of these old columns
-	$query = "ALTER TABLE `#__jomres_guests` DROP `car_regno`";
+	$query = "ALTER TABLE `#__castor_guests` DROP `car_regno`";
 	doInsertSql($query,"");
-	$query = "ALTER TABLE `#__jomres_guests` DROP `ccard_no`";
+	$query = "ALTER TABLE `#__castor_guests` DROP `ccard_no`";
 	doInsertSql($query,"");
-	$query = "ALTER TABLE `#__jomres_guests` DROP `ccard_issued`";
+	$query = "ALTER TABLE `#__castor_guests` DROP `ccard_issued`";
 	doInsertSql($query,"");
-	$query = "ALTER TABLE `#__jomres_guests` DROP `ccard_expiry`";
+	$query = "ALTER TABLE `#__castor_guests` DROP `ccard_expiry`";
 	doInsertSql($query,"");
-	$query = "ALTER TABLE `#__jomres_guests` DROP `ccard_iss_no`";
+	$query = "ALTER TABLE `#__castor_guests` DROP `ccard_iss_no`";
 	doInsertSql($query,"");
-	$query = "ALTER TABLE `#__jomres_guests` DROP `ccard_name`";
+	$query = "ALTER TABLE `#__castor_guests` DROP `ccard_name`";
 	doInsertSql($query,"");
-	$query = "ALTER TABLE `#__jomres_guests` DROP `ccv`";
+	$query = "ALTER TABLE `#__castor_guests` DROP `ccv`";
 	doInsertSql($query,"");
-	$query = "ALTER TABLE `#__jomres_guests` DROP `type`";
+	$query = "ALTER TABLE `#__castor_guests` DROP `type`";
 	doInsertSql($query,"");
 
 	
-	$query = "ALTER TABLE `#__jomres_guests` ADD `enc_firstname` BLOB ";
+	$query = "ALTER TABLE `#__castor_guests` ADD `enc_firstname` BLOB ";
 	doInsertSql($query,"");
 	
-	$query = "ALTER TABLE `#__jomres_guests` ADD `enc_surname` BLOB ";
+	$query = "ALTER TABLE `#__castor_guests` ADD `enc_surname` BLOB ";
 	doInsertSql($query,"");
 	
-	$query = "ALTER TABLE `#__jomres_guests` ADD `enc_house` BLOB ";
+	$query = "ALTER TABLE `#__castor_guests` ADD `enc_house` BLOB ";
 	doInsertSql($query,"");
 	
-	$query = "ALTER TABLE `#__jomres_guests` ADD `enc_street` BLOB ";
+	$query = "ALTER TABLE `#__castor_guests` ADD `enc_street` BLOB ";
 	doInsertSql($query,"");
 	
-	$query = "ALTER TABLE `#__jomres_guests` ADD `enc_town` BLOB ";
+	$query = "ALTER TABLE `#__castor_guests` ADD `enc_town` BLOB ";
 	doInsertSql($query,"");
 	
-	$query = "ALTER TABLE `#__jomres_guests` ADD `enc_county` BLOB ";
+	$query = "ALTER TABLE `#__castor_guests` ADD `enc_county` BLOB ";
 	doInsertSql($query,"");
 	
-	$query = "ALTER TABLE `#__jomres_guests` ADD `enc_country` BLOB ";
+	$query = "ALTER TABLE `#__castor_guests` ADD `enc_country` BLOB ";
 	doInsertSql($query,"");
 	
-	$query = "ALTER TABLE `#__jomres_guests` ADD `enc_postcode` BLOB ";
+	$query = "ALTER TABLE `#__castor_guests` ADD `enc_postcode` BLOB ";
 	doInsertSql($query,"");
 	
-	$query = "ALTER TABLE `#__jomres_guests` ADD `enc_tel_landline` BLOB ";
+	$query = "ALTER TABLE `#__castor_guests` ADD `enc_tel_landline` BLOB ";
 	doInsertSql($query,"");
 	
-	$query = "ALTER TABLE `#__jomres_guests` ADD `enc_tel_mobile` BLOB ";
+	$query = "ALTER TABLE `#__castor_guests` ADD `enc_tel_mobile` BLOB ";
 	doInsertSql($query,"");
 	 
-	$query = "ALTER TABLE `#__jomres_guests` ADD `enc_email` BLOB ";
+	$query = "ALTER TABLE `#__castor_guests` ADD `enc_email` BLOB ";
 	doInsertSql($query,"");
 	
-	$query = "ALTER TABLE `#__jomres_guests` ADD `enc_vat_number` BLOB ";
+	$query = "ALTER TABLE `#__castor_guests` ADD `enc_vat_number` BLOB ";
 	doInsertSql($query,"");
 	
-	$query = "ALTER TABLE `#__jomres_guests` ADD `enc_preferences` BLOB ";
+	$query = "ALTER TABLE `#__castor_guests` ADD `enc_preferences` BLOB ";
 	doInsertSql($query,"");
 
 	$guests_cols_added = true;
@@ -169,13 +169,13 @@ if (count($colExists) < 1)
 	
 // Guest profiles table
 if ($profiles_cols_added) {
-	$query = "SELECT `id` , `firstname` , `surname` , `house` , `street` , `town` , `county` , `country` , `postcode` , `tel_landline` , `tel_mobile` , `email` , `vat_number` , `preferences`  FROM `#__jomres_guest_profile` ";
+	$query = "SELECT `id` , `firstname` , `surname` , `house` , `street` , `town` , `county` , `country` , `postcode` , `tel_landline` , `tel_mobile` , `email` , `vat_number` , `preferences`  FROM `#__castor_guest_profile` ";
 	$all_guests = doSelectSql($query);
 	if (!empty($all_guests)) {
 		foreach ($all_guests as $guest ) {
 			try 
 			{
-				$query = "UPDATE #__jomres_guest_profile SET 
+				$query = "UPDATE #__castor_guest_profile SET 
 					`firstname` = '', 
 					`surname` = '', 
 					`house` = '', 
@@ -190,18 +190,18 @@ if ($profiles_cols_added) {
 					`tel_fax` = '', 
 					`vat_number` = '', 
 					`preferences` = '',
-					`enc_firstname`='".$jomres_encryption->encrypt($guest->firstname)."',
-					`enc_surname`='".$jomres_encryption->encrypt($guest->surname)."',
-					`enc_house`='".$jomres_encryption->encrypt($guest->house)."',
-					`enc_street`='".$jomres_encryption->encrypt($guest->street)."',
-					`enc_town`='".$jomres_encryption->encrypt($guest->town)."',
-					`enc_county`='".$jomres_encryption->encrypt($guest->county)."',
-					`enc_country`='".$jomres_encryption->encrypt($guest->country)."',
-					`enc_postcode`='".$jomres_encryption->encrypt($guest->postcode)."',
-					`enc_tel_landline`='".$jomres_encryption->encrypt($guest->tel_landline)."',
-					`enc_tel_mobile`='".$jomres_encryption->encrypt($guest->tel_mobile)."',
-					`enc_email`='".$jomres_encryption->encrypt($guest->email)."',
-					`enc_vat_number`='".$jomres_encryption->encrypt($guest->vat_number)."'
+					`enc_firstname`='".$castor_encryption->encrypt($guest->firstname)."',
+					`enc_surname`='".$castor_encryption->encrypt($guest->surname)."',
+					`enc_house`='".$castor_encryption->encrypt($guest->house)."',
+					`enc_street`='".$castor_encryption->encrypt($guest->street)."',
+					`enc_town`='".$castor_encryption->encrypt($guest->town)."',
+					`enc_county`='".$castor_encryption->encrypt($guest->county)."',
+					`enc_country`='".$castor_encryption->encrypt($guest->country)."',
+					`enc_postcode`='".$castor_encryption->encrypt($guest->postcode)."',
+					`enc_tel_landline`='".$castor_encryption->encrypt($guest->tel_landline)."',
+					`enc_tel_mobile`='".$castor_encryption->encrypt($guest->tel_mobile)."',
+					`enc_email`='".$castor_encryption->encrypt($guest->email)."',
+					`enc_vat_number`='".$castor_encryption->encrypt($guest->vat_number)."'
 					WHERE id = ".(int)$guest->id;
 				$result = doInsertSql($query , '' );
 			}
@@ -218,7 +218,7 @@ if ($profiles_cols_added) {
 jr_import( 'jrportal_guests' );
 
 if ($guests_cols_added) {
-	$query = "SELECT `guests_uid` , `firstname` , `surname` , `house` , `street` , `town` , `county` , `country` , `postcode` , `tel_landline` , `tel_mobile` , `email` , `property_uid` , `vat_number` , `preferences`  FROM `#__jomres_guests` ";
+	$query = "SELECT `guests_uid` , `firstname` , `surname` , `house` , `street` , `town` , `county` , `country` , `postcode` , `tel_landline` , `tel_mobile` , `email` , `property_uid` , `vat_number` , `preferences`  FROM `#__castor_guests` ";
 	$all_guests = doSelectSql($query);
 	if (!empty($all_guests)) {
 		foreach ($all_guests as $guest ) {
@@ -253,5 +253,6 @@ if ($guests_cols_added) {
 		}
 	}
 }
+
 
 

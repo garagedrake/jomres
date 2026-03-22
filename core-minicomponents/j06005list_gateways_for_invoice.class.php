@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,17 +35,17 @@ class j06005list_gateways_for_invoice
 	 
 	public function __construct($invoice_id = null)
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 
 		if (is_null($invoice_id)) {
-			$this->invoice_id = intval(jomresGetParam($_REQUEST, 'invoice_id', 0));
+			$this->invoice_id = intval(castorGetParam($_REQUEST, 'invoice_id', 0));
 		} else {
 			$this->invoice_id = (int) $invoice_id;
 		}
@@ -54,7 +54,7 @@ class j06005list_gateways_for_invoice
 			return;
 		}
 
-		$invoice = jomres_singleton_abstract::getInstance('basic_invoice_details');
+		$invoice = castor_singleton_abstract::getInstance('basic_invoice_details');
 		$invoice->gatherData($this->invoice_id);
 
 		if (!$thisJRUser->superPropertyManager) {
@@ -75,20 +75,20 @@ class j06005list_gateways_for_invoice
 			if ((bool)$settings ['balance_payments_supported'] == true) {
 				if (isset($settings['active']) && $settings['active'] == '1') {
 					$r = array();
-					$r['FRIENDLYNAME'] = jr_gettext('_JOMRES_CUSTOMTEXT_GATEWAYNAME'.$gateway_name, $gateway_name, false, false);
+					$r['FRIENDLYNAME'] = jr_gettext('_CASTOR_CUSTOMTEXT_GATEWAYNAME'.$gateway_name, $gateway_name, false, false);
 					$r['IMAGE'] = $settings['config_links'] ['button'];
-					$r['LINK'] = JOMRES_SITEPAGE_URL.'&task=invoice_payment_send&gateway='.$gateway_name.'&invoice_id='.$this->invoice_id;
+					$r['LINK'] = CASTOR_SITEPAGE_URL.'&task=invoice_payment_send&gateway='.$gateway_name.'&invoice_id='.$this->invoice_id;
 					$r['PAYNOW'] = jr_gettext('_JRPORTAL_INVOICES_PAYNOW', '_JRPORTAL_INVOICES_PAYNOW', false);
 					$rows[] = $r;
 				}
 			}
 		}
 		if (!empty($rows)) {
-			$output['PAGETITLE'] = jr_gettext('_JOMRES_COM_A_GATEWAY_BOOKING_CHOOSE', '_JOMRES_COM_A_GATEWAY_BOOKING_CHOOSE', false);
+			$output['PAGETITLE'] = jr_gettext('_CASTOR_COM_A_GATEWAY_BOOKING_CHOOSE', '_CASTOR_COM_A_GATEWAY_BOOKING_CHOOSE', false);
 
 			$pageoutput[ ] = $output;
 			$tmpl = new patTemplate();
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 			$tmpl->readTemplatesFromInput('list_gateways_for_invoice.html');
 			$tmpl->addRows('pageoutput', $pageoutput);
 			$tmpl->addRows('rows', $rows);
@@ -108,3 +108,4 @@ class j06005list_gateways_for_invoice
 		return null;
 	}
 }
+

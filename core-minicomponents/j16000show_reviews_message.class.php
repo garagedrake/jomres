@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,7 +36,7 @@ class j16000show_reviews_message
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			return;
@@ -44,13 +44,13 @@ class j16000show_reviews_message
 		
 		$this->retVals = '';
 		
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 		
-		$jr_review_left = (int)jomresGetParam($_REQUEST, 'jr_review_left', 0);
+		$jr_review_left = (int)castorGetParam($_REQUEST, 'jr_review_left', 0);
 		
 		if ($jr_review_left == 1) {
-			$siteConfig->update_setting('jomres_review_left', '1');
+			$siteConfig->update_setting('castor_review_left', '1');
 		}
 
 		if (isset($componentArgs[ 'output_now' ])) {
@@ -60,25 +60,25 @@ class j16000show_reviews_message
 		}
 
 		$review_sites = array (
-			"capterra" => array ( "url" => 'https://www.capterra.com/p/134469/Jomres/' , "site_name" => "Capterra" )
+			"capterra" => array ( "url" => 'https://www.capterra.com/p/134469/Castor/' , "site_name" => "Capterra" )
 		);
 
 		if (this_cms_is_joomla()) {
-			$review_sites['joomla'] = array ( "url" => 'https://extensions.joomla.org/extensions/extension/vertical-markets/booking-a-reservations/jomres/' , "site_name" => "Joomla Extension Directory" );
+			$review_sites['joomla'] = array ( "url" => 'https://extensions.joomla.org/extensions/extension/vertical-markets/booking-a-reservations/castor/' , "site_name" => "Joomla Extension Directory" );
 		} else {
-			$review_sites['wordpress'] = array ( "url" => 'https://wordpress.org/support/plugin/jomres/reviews/' , "site_name" => "Wordpress repository" );
+			$review_sites['wordpress'] = array ( "url" => 'https://wordpress.org/support/plugin/castor/reviews/' , "site_name" => "Wordpress repository" );
 		}
 		
 		$message = '';
 
-		if (get_showtime("task") == "cpanel" && $jrConfig['jomres_review_left'] == '0' && $jr_review_left == 0) {
+		if (get_showtime("task") == "cpanel" && $jrConfig['castor_review_left'] == '0' && $jr_review_left == 0) {
 			$message = '
-<p class="alert alert-success"> '.jr_gettext('_REVIEW_JOMRES_PLEASEREVIEW', '_REVIEW_JOMRES_PLEASEREVIEW', false, false);
+<p class="alert alert-success"> '.jr_gettext('_REVIEW_CASTOR_PLEASEREVIEW', '_REVIEW_CASTOR_PLEASEREVIEW', false, false);
 			foreach ($review_sites as $site) {
 				$message .= '<a href="'.$site['url'].'" class="btn btn-default" target="_blank">'.$site['site_name'].'</a>&nbsp;';
 			}
 			
-			$message .= '<a href="'.jomresUrl(JOMRES_SITEPAGE_URL_ADMIN.'&jr_review_left=1').'" class="btn btn-success">'.jr_gettext('_REVIEW_JOMRES_ALREADYREVIEWED', '_REVIEW_JOMRES_ALREADYREVIEWED', false, false).'</a>';
+			$message .= '<a href="'.castorUrl(CASTOR_SITEPAGE_URL_ADMIN.'&jr_review_left=1').'" class="btn btn-success">'.jr_gettext('_REVIEW_CASTOR_ALREADYREVIEWED', '_REVIEW_CASTOR_ALREADYREVIEWED', false, false).'</a>';
 			$message .= '</p>';
 		} else {
 			$message = '';
@@ -97,3 +97,4 @@ class j16000show_reviews_message
 		return $this->retVals;
 	}
 }
+

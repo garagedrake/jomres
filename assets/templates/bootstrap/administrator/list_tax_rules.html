@@ -1,16 +1,16 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 	<script type="text/javascript">
 		<!--
-		jomresJquery(document).ready(function () {
+		castorJquery(document).ready(function () {
 			make_datatable('list_taxrules', '{PAGETITLE}', '{LIVESITE}');
 		});
 		//-->
 	</script>
 	<h2 class="page-header">{PAGETITLE}</h2>
-	<p>{_JOMRES_TAX_RULE_INFO}</p>
-	<form action="{JOMRES_SITEPAGE_URL_ADMIN}" method="post" name="adminForm">
-		{JOMRESTOOLBAR}
+	<p>{_CASTOR_TAX_RULE_INFO}</p>
+	<form action="{CASTOR_SITEPAGE_URL_ADMIN}" method="post" name="adminForm">
+		{CASTORTOOLBAR}
 		<table id="list_taxrules" width="100%" class="table table-striped">
 			<thead>
 				<tr>
@@ -18,8 +18,8 @@
 					<th class="hidden-phone">ID</th>
 					<th>{_JRPORTAL_TAXRATES_CODE}</th>
 					<th>{_JRPORTAL_TAXRATES_DESCRIPTION}</th>
-					<th>{_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY}</th>
-					<th>{_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_REGION}</th>
+					<th>{_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY}</th>
+					<th>{_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_REGION}</th>
 					<th>{_JRPORTAL_TAXRATES_RATE}</th>
 				</tr>
 			</thead>
@@ -41,3 +41,4 @@
 		{CSRF_TOKEN}
 	</form>
 </patTemplate:tmpl>
+

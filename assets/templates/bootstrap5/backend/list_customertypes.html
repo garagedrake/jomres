@@ -1,4 +1,4 @@
-<patTemplate:tmpl name="pageoutput" unusedvars="strip">
+﻿<patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <script type="text/javascript">
 	<!--
 	document.addEventListener('DOMContentLoaded', function(){
@@ -10,12 +10,12 @@
 <h2 class="page-header">{PAGETITLE}</h2>
 
 
-<p class="lead">{_JOMRES_GUESTTYPES_INTRO}<p>
-<p>{_JOMRES_GUESTTYPES_INSTRUCTIONS}<p>
+<p class="lead">{_CASTOR_GUESTTYPES_INTRO}<p>
+<p>{_CASTOR_GUESTTYPES_INSTRUCTIONS}<p>
 
-<form action="{JOMRES_SITEPAGE_URL_NOSEF}" method="post" name="adminForm">
+<form action="{CASTOR_SITEPAGE_URL_NOSEF}" method="post" name="adminForm">
 	<div class="well">
-		{JOMRESTOOLBAR}
+		{CASTORTOOLBAR}
 	</div>
 	<table id="list_customertypes" width="100%" class="table table-striped">
 		<thead>
@@ -46,7 +46,7 @@
 		</tbody>
 	</table>
 	<input type="hidden" name="task" value="newExtra"/>
-	<input type="hidden" name="option" value="com_jomres"/>
+	<input type="hidden" name="option" value="com_castor"/>
 	{CSRF_TOKEN}
 </form>
 </patTemplate:tmpl>

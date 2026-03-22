@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,7 +35,7 @@ class j06000cron_syndication_get_syndicate_properties
 	 
 	public function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			return;
@@ -43,7 +43,7 @@ class j06000cron_syndication_get_syndicate_properties
 
 		return;
 
-		$query = "SELECT `id` , `domain` , `api_url` , `last_checked` , `approved` FROM #__jomres_syndication_domains WHERE approved = 1";
+		$query = "SELECT `id` , `domain` , `api_url` , `last_checked` , `approved` FROM #__castor_syndication_domains WHERE approved = 1";
 		$result = doSelectSql($query);
 
 		$existing_domains = array();
@@ -71,7 +71,7 @@ class j06000cron_syndication_get_syndicate_properties
 					$syndication_domain_id = $r->id;
 						
 
-					$query = "SELECT propertys_uid FROM #__jomres_syndication_properties WHERE syndication_domain_id = ".(int)$syndication_domain_id;
+					$query = "SELECT propertys_uid FROM #__castor_syndication_properties WHERE syndication_domain_id = ".(int)$syndication_domain_id;
 					$domain_properties = doSelectSql($query);
 						
 					$local_domain_properties = array();
@@ -86,7 +86,7 @@ class j06000cron_syndication_get_syndicate_properties
 						$response = $client->request('GET', $r->api_url.'core/get_properties'.'/', ['connect_timeout' => 4 , 'read_timeout' => 30, 'verify' => false , 'http_errors' => false]);
 
 						if ((string)$response->getStatusCode() == "404") {
-							$query = "UPDATE  #__jomres_syndication_domains SET 
+							$query = "UPDATE  #__castor_syndication_domains SET 
 								`last_checked` = '".date("Y-m-d H:i:s", strtotime("+1 year"))."' ,
 								`approved` = 0 ,
 								`unapproval_reason` = 'system'
@@ -134,7 +134,7 @@ class j06000cron_syndication_get_syndicate_properties
 									if ($row_str != '') {
 										$row_str = substr($row_str, 0, -1);
 											
-										$query = "INSERT INTO #__jomres_syndication_properties (
+										$query = "INSERT INTO #__castor_syndication_properties (
 												`syndication_domain_id`,
 												`view_property_url`,
 												`booking_form_url`,
@@ -154,7 +154,7 @@ class j06000cron_syndication_get_syndicate_properties
 										doInsertSql($query);
 									} else {
 										$query = "
-												UPDATE #__jomres_syndication_domains SET
+												UPDATE #__castor_syndication_domains SET
 													`last_checked` =  '".$now."'
 													WHERE id = ".(int)$r->id."
 													";
@@ -166,7 +166,7 @@ class j06000cron_syndication_get_syndicate_properties
 					} catch (GuzzleHttp\Exception\RequestException $e) {
 						if (!in_array($domain['host'], $existing_domains)) {
 							$query = "
-										INSERT INTO #__jomres_syndication_domains SET
+										INSERT INTO #__castor_syndication_domains SET
 											`domain` = '".$domain['host']."',
 											`last_checked` =  '".$now."'
 											`approved` = 0,
@@ -174,7 +174,7 @@ class j06000cron_syndication_get_syndicate_properties
 											";
 						} else {
 							$query = "
-										UPDATE #__jomres_syndication_domains SET
+										UPDATE #__castor_syndication_domains SET
 											`last_checked` =  '".$now."',
 											`approved` = 0,
 											`unapproval_reason` = 'system'
@@ -208,3 +208,4 @@ class j06000cron_syndication_get_syndicate_properties
 		return null;
 	}
 }
+

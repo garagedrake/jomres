@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 	/**
 	 * Core file.
 	 *
-	 * @author Vince Wooll <sales@jomres.net>
+	 * @author Vince Wooll <sales@castor.net>
 	 *
-	 *  @version Jomres 10.7.2
+	 *  @version Castor 10.7.2
 	 *
 	 * @copyright	2005-2023 Vince Wooll
-	 * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+	 * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
 	 **/
 
 // ################################################################
-	defined('_JOMRES_INITCHECK') or die('');
+	defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,13 +35,13 @@
 
 		public function __construct($componentArgs)
 		{
-			$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+			$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 			if ($MiniComponents->template_touch) {
 				$this->template_touchable = false;
 				$this->shortcode_data = array(
 					'task' => 'dashboard',
 					'arguments' => array(),
-					'info' => '_JOMRES_SHORTCODES_06001DASHBOARD',
+					'info' => '_CASTOR_SHORTCODES_06001DASHBOARD',
 				);
 
 				return;
@@ -56,7 +56,7 @@
 				$property_uid = getDefaultProperty();
 			}
 
-			$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+			$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 			if (!in_array($property_uid, $thisJRUser->authorisedProperties)) {
 				return;
 			}
@@ -78,20 +78,20 @@
 				$is_widget = false;
 			}
 
-			$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+			$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 			$jrConfig = $siteConfig->get();
 
 			$output = array();
 			$pageoutput = array();
 
-			$output[ '_JOMRES_OVERALL_ROOMS_BOOKED' ] = jr_gettext('_JOMRES_OVERALL_ROOMS_BOOKED', '_JOMRES_OVERALL_ROOMS_BOOKED', false);
+			$output[ '_CASTOR_OVERALL_ROOMS_BOOKED' ] = jr_gettext('_CASTOR_OVERALL_ROOMS_BOOKED', '_CASTOR_OVERALL_ROOMS_BOOKED', false);
 
-			if (jomres_bootstrap_version() < 5) {
-				jomres_cmsspecific_addheaddata('css', JOMRES_CSS_RELPATH, 'css-circular-prog-bar.css');
+			if (castor_bootstrap_version() < 5) {
+				castor_cmsspecific_addheaddata('css', CASTOR_CSS_RELPATH, 'css-circular-prog-bar.css');
 			}
 
 
-			$current_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+			$current_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 			$current_property_details->gather_data($property_uid);
 
 			if (isset($current_property_details->multi_query_result[$property_uid]['rooms'])) {
@@ -119,7 +119,7 @@
 				$dates[$date->format("Y/m/d")]['month_name']=$date->format("M");
 			}
 
-			$query = "SELECT room_bookings_uid,date FROM #__jomres_room_bookings WHERE property_uid = $property_uid AND (";
+			$query = "SELECT room_bookings_uid,date FROM #__castor_room_bookings WHERE property_uid = $property_uid AND (";
 
 			foreach ($dates as $date => $val) {
 				$query .= "`date` = '".$date."' OR ";
@@ -147,7 +147,7 @@
 
 			$pageoutput[] = $output;
 			$tmpl = new patTemplate();
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 			$tmpl->addRows('pageoutput', $pageoutput);
 			$tmpl->addRows('rows', $dates);
 
@@ -170,3 +170,4 @@
 			return $this->retVals;
 		}
 	}
+

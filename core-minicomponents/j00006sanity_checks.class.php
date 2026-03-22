@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Calls the sanity checks class and displays any TODO notifications that the class determines should be shown.
 	 *
@@ -37,39 +37,39 @@ class j00006sanity_checks
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
-		if (!defined('JOMRES_NOHTML') || JOMRES_NOHTML == 0) {
-			$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		if (!defined('CASTOR_NOHTML') || CASTOR_NOHTML == 0) {
+			$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 
 			
 			//if ($thisJRUser->accesslevel > 50) { //higher than receptionist
 				$output = array();
-				jr_import('jomres_sanity_check');
-				$sanity_checks = new jomres_sanity_check();
+				jr_import('castor_sanity_check');
+				$sanity_checks = new castor_sanity_check();
 				$output[ 'WARNINGS' ] = $sanity_checks->do_sanity_checks();
 				$pageoutput[ ] = $output;
 				$tmpl = new patTemplate();
 				$tmpl->addRows('pageoutput', $pageoutput);
-				$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+				$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 				$tmpl->readTemplatesFromInput('sanity_checks.html');
 				set_showtime('sanity_check_warnings', $tmpl->getParsedTemplate());
 			//}
 
 			if ($thisJRUser->is_partner == true) {
 				$output = array();
-				jr_import('jomres_partner_sanity_check');
-				$jomres_partner_sanity_check = new jomres_partner_sanity_check();
-				$output[ 'WARNINGS' ] = $jomres_partner_sanity_check->do_sanity_checks();
+				jr_import('castor_partner_sanity_check');
+				$castor_partner_sanity_check = new castor_partner_sanity_check();
+				$output[ 'WARNINGS' ] = $castor_partner_sanity_check->do_sanity_checks();
 
 				$pageoutput[ ] = $output;
 				$tmpl = new patTemplate();
 				$tmpl->addRows('pageoutput', $pageoutput);
-				$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+				$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 				$tmpl->readTemplatesFromInput('sanity_checks.html');
 				set_showtime('sanity_check_warnings', $tmpl->getParsedTemplate());
 			}
@@ -87,3 +87,4 @@ class j00006sanity_checks
 		return null;
 	}
 }
+

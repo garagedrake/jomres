@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,7 +36,7 @@ class j06000selectcombo
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -46,7 +46,7 @@ class j06000selectcombo
 		/*
 		if( !function_exists('json_encode') )
 			{
-			require_once(JOMRES_LIBRARIES_ABSPATH.'json'.JRDS.'JSON.php');
+			require_once(CASTOR_LIBRARIES_ABSPATH.'json'.JRDS.'JSON.php');
 			function json_encode($data)
 				{
 				$json = new Services_JSON();
@@ -55,9 +55,9 @@ class j06000selectcombo
 			}
 		*/
 		$allPropertyLocations = prepGeographicSearch();
-		$filter = jomresGetParam($_REQUEST, '_name', '');
-		$q = jomresGetParam($_REQUEST, '_value', '');
-		$searchAll = jr_gettext('_JOMRES_SEARCH_ALL', '_JOMRES_SEARCH_ALL', false, false);
+		$filter = castorGetParam($_REQUEST, '_name', '');
+		$q = castorGetParam($_REQUEST, '_value', '');
+		$searchAll = jr_gettext('_CASTOR_SEARCH_ALL', '_CASTOR_SEARCH_ALL', false, false);
 
 		if ($filter == 'country') {
 			$regions = array();
@@ -66,7 +66,7 @@ class j06000selectcombo
 				foreach ($locations as $location) {
 					$t = $location[ 'region' ];
 					if ($location[ 'country' ] == $q) {
-						$regions[ $t ] = jomres_decode($t);
+						$regions[ $t ] = castor_decode($t);
 					}
 					// else if ($q==$searchAll)
 					// $regions[$t]=$t;
@@ -110,3 +110,4 @@ class j06000selectcombo
 		return null;
 	}
 }
+

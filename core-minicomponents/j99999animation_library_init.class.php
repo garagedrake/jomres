@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,7 +35,7 @@ class j99999animation_library_init
 	 
 	public function __construct($componentArgs)
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -51,13 +51,13 @@ class j99999animation_library_init
 			return;
 		}
 
-		if (jomres_cmsspecific_areweinadminarea()) {
+		if (castor_cmsspecific_areweinadminarea()) {
 			return;
 		}
 
 
 		if (!defined('AOS_INITIALISED')) {
-			$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+			$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 			$jrConfig = $siteConfig->get();
 
 			if (!isset($jrConfig['animation_library_enabled'])) {
@@ -68,9 +68,9 @@ class j99999animation_library_init
 				return;
 			}
 
-			jomres_cmsspecific_addheaddata('css', 'https://unpkg.com/aos@2.3.1/dist/','aos.css');
-			jomres_cmsspecific_addheaddata('javascript', 'https://unpkg.com/aos@2.3.1/dist/', 'aos.js');
-			jomres_cmsspecific_addheaddata('javascript', JOMRES_JS_RELPATH, 'AOS.js');
+			castor_cmsspecific_addheaddata('css', 'https://unpkg.com/aos@2.3.1/dist/','aos.css');
+			castor_cmsspecific_addheaddata('javascript', 'https://unpkg.com/aos@2.3.1/dist/', 'aos.js');
+			castor_cmsspecific_addheaddata('javascript', CASTOR_JS_RELPATH, 'AOS.js');
 			define('AOS_INITIALISED',1);
 		}
 	}
@@ -80,3 +80,4 @@ class j99999animation_library_init
 		return null;
 	}
 }
+

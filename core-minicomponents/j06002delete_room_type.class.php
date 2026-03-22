@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,14 +35,14 @@ class j06002delete_room_type
 	 
 	public function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 		if ($jrConfig[ 'frontend_room_type_editing_allowed' ] == 0) {
 			return;
@@ -50,23 +50,23 @@ class j06002delete_room_type
 		
 		$property_uid = getDefaultProperty();
 		
-		$room_classes_uid = intval(jomresGetParam($_REQUEST, 'room_classes_uid', 0));
+		$room_classes_uid = intval(castorGetParam($_REQUEST, 'room_classes_uid', 0));
 		
 		if ($room_classes_uid < 1) {
 			throw new Exception('Room class ID not passed');
 		}
 		
-		$jomres_room_types = jomres_singleton_abstract::getInstance('jomres_room_types');
-		$jomres_room_types->get_all_room_types();
+		$castor_room_types = castor_singleton_abstract::getInstance('castor_room_types');
+		$castor_room_types->get_all_room_types();
 		
-		$jomres_room_types->validate_manager_access_to_room_type($room_classes_uid);
+		$castor_room_types->validate_manager_access_to_room_type($room_classes_uid);
 		
 		
-		$jomres_room_types = jomres_singleton_abstract::getInstance('jomres_room_types');
-		$success = $jomres_room_types->delete_room_type(array($room_classes_uid));
+		$castor_room_types = castor_singleton_abstract::getInstance('castor_room_types');
+		$success = $castor_room_types->delete_room_type(array($room_classes_uid));
 
 		if ($success) {
-			$save_message = jr_gettext('_JOMRES_COM_MR_ROOMCLASS_DELETED', '_JOMRES_COM_MR_ROOMCLASS_DELETED', false);
+			$save_message = jr_gettext('_CASTOR_COM_MR_ROOMCLASS_DELETED', '_CASTOR_COM_MR_ROOMCLASS_DELETED', false);
 		} else {
 			$save_message = 'Unable to delete room type. It may still be used by some properties.';
 		}
@@ -78,7 +78,7 @@ class j06002delete_room_type
 		$webhook_notification->data->property_uid	   	= $property_uid;
 		add_webhook_notification($webhook_notification);
 
-		jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL.'&task=list_room_types'), jr_gettext('_JOMRES_COM_MR_VRCT_ROOMTYPES_SAVE_INSERT', '_JOMRES_COM_MR_VRCT_ROOMTYPES_SAVE_INSERT', false));
+		castorRedirect(castorURL(CASTOR_SITEPAGE_URL.'&task=list_room_types'), jr_gettext('_CASTOR_COM_MR_VRCT_ROOMTYPES_SAVE_INSERT', '_CASTOR_COM_MR_VRCT_ROOMTYPES_SAVE_INSERT', false));
 	}
 
 
@@ -87,3 +87,4 @@ class j06002delete_room_type
 		return null;
 	}
 }
+

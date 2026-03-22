@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,19 +36,19 @@ class j16000cms_users_find
 	function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 		
-		$search_string = trim(strtolower(jomresGetParam($_REQUEST, 'term', '')));
+		$search_string = trim(strtolower(castorGetParam($_REQUEST, 'term', '')));
 
 		$existing_managers = array ();
 		
-		//get all jomres user ids
-		$query = "SELECT `userid` AS cms_user_id FROM #__jomres_managers";
+		//get all castor user ids
+		$query = "SELECT `userid` AS cms_user_id FROM #__castor_managers";
 		$result = doSelectSql($query);
 		
 		foreach ($result as $r) {
@@ -56,7 +56,7 @@ class j16000cms_users_find
 		}
 
 		//find cms users that match term
-		$cms_users = jomres_cmsspecific_find_cms_users($search_string);
+		$cms_users = castor_cmsspecific_find_cms_users($search_string);
 		
 		if (empty($cms_users)) {
 			echo "";
@@ -85,3 +85,4 @@ class j16000cms_users_find
 		return null;
 	}
 }
+

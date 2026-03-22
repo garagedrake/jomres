@@ -1,15 +1,15 @@
-<?php
+﻿<?php
 /**
-* Jomres CMS Agnostic Plugin
-* @author Woollyinwales IT <sales@jomres.net>
-* @version Jomres 9 
-* @package Jomres
+* Castor CMS Agnostic Plugin
+* @author Woollyinwales IT <sales@castor.net>
+* @version Castor 9 
+* @package Castor
 * @copyright	2005-2022 Woollyinwales IT
-* Jomres (tm) PHP files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project.
+* Castor (tm) PHP files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project.
 **/
 
 // ################################################################
-defined( '_JOMRES_INITCHECK' ) or die( 'Direct Access to this file is not allowed.' );
+defined( '_CASTOR_INITCHECK' ) or die( 'Direct Access to this file is not allowed.' );
 // ################################################################
 	#[AllowDynamicProperties]
 class j03108stripe_standard
@@ -17,7 +17,7 @@ class j03108stripe_standard
 	function __construct ()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return 
-		$MiniComponents =jomres_getSingleton('mcHandler');
+		$MiniComponents =castor_getSingleton('mcHandler');
 		if ($MiniComponents->template_touch)
 			{
 			$this->template_touchable=false; return;
@@ -26,13 +26,13 @@ class j03108stripe_standard
 		$this->gatewayname	='';
 		$this->filepath		='';
 
-		$tmpBookingHandler =jomres_getSingleton('jomres_temp_booking_handler');
+		$tmpBookingHandler =castor_getSingleton('castor_temp_booking_handler');
 
 		if (isset($tmpBookingHandler->tmpbooking['property_uid']) && $tmpBookingHandler->tmpbooking['property_uid'] > 0 ) {
 
 			$settingArray = array();
 
-			$query		= "SELECT setting,value FROM #__jomres_pluginsettings WHERE prid = ".$tmpBookingHandler->tmpbooking['property_uid']." AND plugin = 'stripe_standard' ";
+			$query		= "SELECT setting,value FROM #__castor_pluginsettings WHERE prid = ".$tmpBookingHandler->tmpbooking['property_uid']." AND plugin = 'stripe_standard' ";
 			$settingsList = doSelectSql( $query );
 			if ( count ($settingsList) > 0)
 			{
@@ -59,7 +59,7 @@ class j03108stripe_standard
 				return false;
 			}
 
-			$this->filepath		= JOMRES_IMAGES_RELPATH;
+			$this->filepath		= CASTOR_IMAGES_RELPATH;
 			$this->gatewayname	= jr_gettext('STRIPE_STANDARD_TITLE',"STRIPE_STANDARD_TITLE",false,false);
 		}
 	}
@@ -77,3 +77,4 @@ class j03108stripe_standard
 		return array('filepath'=>$this->filepath,'gatewayname'=>$this->gatewayname);
 		}
 	}
+

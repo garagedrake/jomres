@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,7 +35,7 @@ class j16000filesystem_integrity_check
 	 
 	public function __construct($componentArgs)
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -53,12 +53,12 @@ class j16000filesystem_integrity_check
 		$output[ 'INTEGRITY_CHECK_LOCALHASH' ] = jr_gettext('INTEGRITY_CHECK_LOCALHASH', 'INTEGRITY_CHECK_LOCALHASH', false);
 		$output[ 'INTEGRITY_CHECK_BUILDHASH' ] = jr_gettext('INTEGRITY_CHECK_BUILDHASH', 'INTEGRITY_CHECK_BUILDHASH', false);
 
-		$hashes = json_decode(file_get_contents(JOMRESCONFIG_ABSOLUTE_PATH.JRDS.JOMRES_ROOT_DIRECTORY.JRDS.'hashes'));
+		$hashes = json_decode(file_get_contents(CASTORCONFIG_ABSOLUTE_PATH.JRDS.CASTOR_ROOT_DIRECTORY.JRDS.'hashes'));
 		$files_count = count($hashes);
 
 		for ($i = 0; $i < $files_count; ++$i) {
-			if (file_exists(JOMRESCONFIG_ABSOLUTE_PATH.JRDS.JOMRES_ROOT_DIRECTORY.JRDS.$hashes[$i]->filename)) {
-				$local_hash = hash_file('md5', JOMRESCONFIG_ABSOLUTE_PATH.JRDS.JOMRES_ROOT_DIRECTORY.JRDS.$hashes[$i]->filename);
+			if (file_exists(CASTORCONFIG_ABSOLUTE_PATH.JRDS.CASTOR_ROOT_DIRECTORY.JRDS.$hashes[$i]->filename)) {
+				$local_hash = hash_file('md5', CASTORCONFIG_ABSOLUTE_PATH.JRDS.CASTOR_ROOT_DIRECTORY.JRDS.$hashes[$i]->filename);
 				$hashes[$i]->local_hash = $local_hash;
 				$hashes[$i]->hash_ok = true;
 				$hashes[$i]->hash_class = 'alert-success';
@@ -85,7 +85,7 @@ class j16000filesystem_integrity_check
 		if (!empty($rows)) {
 			$pageoutput[ ] = $output;
 			$tmpl = new patTemplate();
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 			$tmpl->readTemplatesFromInput('filesystem_integrity_check.html');
 			$tmpl->addRows('pageoutput', $pageoutput);
 			$tmpl->addRows('rows', $rows);
@@ -100,3 +100,4 @@ class j16000filesystem_integrity_check
 		return $this->retVals;
 	}
 }
+

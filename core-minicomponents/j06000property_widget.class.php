@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,21 +35,21 @@ class j06000property_widget
 	 
 	public function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			$this->shortcode_data = array(
 				'task' => 'property_widget',
-				'info' => '_JOMRES_SHORTCODES_06000PROPERTY_WIDGET',
+				'info' => '_CASTOR_SHORTCODES_06000PROPERTY_WIDGET',
 				'arguments' => array(
 					array(
 						'argument' => 'property_uid',
-						'arg_info' => '_JOMRES_SHORTCODES_06000PROPERTY_WIDGET_ARG_PROPERTY_UID',
+						'arg_info' => '_CASTOR_SHORTCODES_06000PROPERTY_WIDGET_ARG_PROPERTY_UID',
 						'arg_example' => '1',
 					),
 					array(
 						'argument' => 'alt_template_name',
-						'arg_info' => '_JOMRES_SHORTCODES_06000PROPERTY_WIDGET_ARG_ALT_TEMPLATE_NAME',
+						'arg_info' => '_CASTOR_SHORTCODES_06000PROPERTY_WIDGET_ARG_ALT_TEMPLATE_NAME',
 						'arg_example' => 'basic_module_output_verbose',
 					),
 				),
@@ -62,7 +62,7 @@ class j06000property_widget
 		if (isset($componentArgs[ 'property_uid' ])) {
 			$property_uid = (int)$componentArgs[ 'property_uid' ];
 		} else {
-			$property_uid = (int)jomresGetParam($_REQUEST, 'property_uid', 0);
+			$property_uid = (int)castorGetParam($_REQUEST, 'property_uid', 0);
 		}
 
 		if ($property_uid == 0) {
@@ -84,7 +84,7 @@ class j06000property_widget
 			$alt_template_name = '';
 			$alt_template_path = '';
 			if ( isset($_REQUEST['alt_template_name']) && $_REQUEST['alt_template_name'] != '') {
-				$temp_template = jomresGetParam($_REQUEST, 'alt_template_name', '');
+				$temp_template = castorGetParam($_REQUEST, 'alt_template_name', '');
 				if (file_exists(get_override_directory().JRDS.$temp_template.'.html')) {
 					$alt_template_name = $temp_template.'.html';
 					$alt_template_path = get_override_directory();
@@ -105,3 +105,4 @@ class j06000property_widget
 		return $this->retVals;
 	}
 }
+

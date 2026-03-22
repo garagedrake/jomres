@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,21 +36,21 @@ class j16000list_invoices_ajax
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		jr_import('jomres_encryption');
-		$jomres_encryption = new jomres_encryption();
+		jr_import('castor_encryption');
+		$castor_encryption = new castor_encryption();
 		
-		$startDate = jomresGetParam($_GET, 'startDate', '');
-		$endDate = jomresGetParam($_GET, 'endDate', '');
-		$invoice_type = (int) jomresGetParam($_GET, 'invoice_type', '0');
-		$invoice_status = (int) jomresGetParam($_GET, 'invoice_status', '4');
-		$cms_user_id = (int) jomresGetParam($_GET, 'cms_user_id', '0');
+		$startDate = castorGetParam($_GET, 'startDate', '');
+		$endDate = castorGetParam($_GET, 'endDate', '');
+		$invoice_type = (int) castorGetParam($_GET, 'invoice_type', '0');
+		$invoice_status = (int) castorGetParam($_GET, 'invoice_status', '4');
+		$cms_user_id = (int) castorGetParam($_GET, 'cms_user_id', '0');
 
 		$rows = array();
 
@@ -94,7 +94,7 @@ class j16000list_invoices_ajax
 		 * on very large tables, and MySQL's regex functionality is very limited
 		 */
 		$sWhere = '';
-		$search = jomresGetParam($_GET, 'jr_search', array());
+		$search = castorGetParam($_GET, 'jr_search', array());
 		if (isset($search['value']) && $search['value'] != '') {
 			$sWhere = 'AND (';
 			for ($i = 0; $i < $n; ++$i) {
@@ -165,15 +165,15 @@ class j16000list_invoices_ajax
 					SUM( CASE WHEN b.init_total_inclusive < 0 THEN 0 ELSE b.init_total_inclusive END ) AS grand_total,
 					c.enc_firstname, 
 					c.enc_surname 
-				FROM #__jomresportal_invoices a 
-					CROSS JOIN #__jomresportal_lineitems b ON a.id = b.inv_id 
-					LEFT JOIN #__jomres_guest_profile c ON ( c.cms_user_id IS NULL OR a.cms_user_id = c.cms_user_id ) "
+				FROM #__castorportal_invoices a 
+					CROSS JOIN #__castorportal_lineitems b ON a.id = b.inv_id 
+					LEFT JOIN #__castor_guest_profile c ON ( c.cms_user_id IS NULL OR a.cms_user_id = c.cms_user_id ) "
 				.$clause
 				.' '.$sWhere
 				.' GROUP BY a.id '
 				.$sOrder
 				.' '.$sLimit;
-		$jomresInvoicesList = doSelectSql($query);
+		$castorInvoicesList = doSelectSql($query);
 
 		/*
 		 * Total number of rows
@@ -201,7 +201,7 @@ class j16000list_invoices_ajax
 			'data' => array(),
 		);
 
-		foreach ($jomresInvoicesList as $p) {
+		foreach ($castorInvoicesList as $p) {
 			$r = array();
 
 			switch ($p->status) {
@@ -226,16 +226,16 @@ class j16000list_invoices_ajax
 			$font_awesome_tariffs = 'fa-usd';
 			$font_awesome_edit = 'fa-pencil-square-o';
 
-			if (jomres_bootstrap_version() == '5') {
+			if (castor_bootstrap_version() == '5') {
 				$font_awesome_tariffs = 'fa-dollar-sign';
 				$font_awesome_edit = 'fas fa-edit';
 			}
 
-			$toolbar = jomres_singleton_abstract::getInstance('jomresItemToolbar');
+			$toolbar = castor_singleton_abstract::getInstance('castorItemToolbar');
 			$toolbar->newToolbar();
-			$toolbar->addItem($font_awesome_edit, 'btn btn-info', '', jomresURL(JOMRES_SITEPAGE_URL_ADMIN.'&task=view_invoice&id='.$p->id), jr_gettext('COMMON_VIEW', 'COMMON_VIEW', false));
+			$toolbar->addItem($font_awesome_edit, 'btn btn-info', '', castorURL(CASTOR_SITEPAGE_URL_ADMIN.'&task=view_invoice&id='.$p->id), jr_gettext('COMMON_VIEW', 'COMMON_VIEW', false));
 			if ($p->status != 1 && $p->raised_date > '1970-01-01 00:00:01') {
-				$toolbar->addSecondaryItem($font_awesome_tariffs, '', '', jomresURL(JOMRES_SITEPAGE_URL_ADMIN.'&task=mark_invoice_paid&id='.$p->id), jr_gettext('_JOMRES_INVOICE_MARKASPAID', '_JOMRES_INVOICE_MARKASPAID', false));
+				$toolbar->addSecondaryItem($font_awesome_tariffs, '', '', castorURL(CASTOR_SITEPAGE_URL_ADMIN.'&task=mark_invoice_paid&id='.$p->id), jr_gettext('_CASTOR_INVOICE_MARKASPAID', '_CASTOR_INVOICE_MARKASPAID', false));
 			}
 			$r[] = $toolbar->getToolbar();
 
@@ -245,13 +245,13 @@ class j16000list_invoices_ajax
 			if ($p->enc_firstname == '') {
 				$r[] = '-';
 			} else {
-				$r[] = '<a href="'.jomresUrl(JOMRES_SITEPAGE_URL_ADMIN.'&task=list_invoices&cms_user_id='.$p->cms_user_id).'">'.$jomres_encryption->decrypt($p->enc_firstname).'</a>';
+				$r[] = '<a href="'.castorUrl(CASTOR_SITEPAGE_URL_ADMIN.'&task=list_invoices&cms_user_id='.$p->cms_user_id).'">'.$castor_encryption->decrypt($p->enc_firstname).'</a>';
 			}
 
 			if ($p->enc_surname == '') {
 				$r[] = '-';
 			} else {
-				$r[] = '<a href="'.jomresUrl(JOMRES_SITEPAGE_URL_ADMIN.'&task=list_invoices&cms_user_id='.$p->cms_user_id).'">'.$jomres_encryption->decrypt($p->enc_surname).'</a>';
+				$r[] = '<a href="'.castorUrl(CASTOR_SITEPAGE_URL_ADMIN.'&task=list_invoices&cms_user_id='.$p->cms_user_id).'">'.$castor_encryption->decrypt($p->enc_surname).'</a>';
 			}
 
 			$translated_line_items = '';
@@ -300,3 +300,4 @@ class j16000list_invoices_ajax
 		return null;
 	}
 }
+

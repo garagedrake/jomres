@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,15 +35,15 @@ class j06000show_property_room_types
 	 
 	public function __construct($componentArgs)
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			$this->shortcode_data = array(
 				'task' => 'show_property_room_types',
-				'info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_ROOM_TYPES',
+				'info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_ROOM_TYPES',
 				'arguments' => array(0 => array(
 						'argument' => 'property_uid',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_ROOM_TYPES_ARG_PROPERTY_UID',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_ROOM_TYPES_ARG_PROPERTY_UID',
 						'arg_example' => '1',
 						),
 					),
@@ -56,7 +56,7 @@ class j06000show_property_room_types
 		if (isset($componentArgs[ 'property_uid' ])) {
 			$property_uid = (int)$componentArgs[ 'property_uid' ];
 		} else {
-			$property_uid = (int)jomresGetParam($_REQUEST, 'property_uid', 0);
+			$property_uid = (int)castorGetParam($_REQUEST, 'property_uid', 0);
 		}
 		
 		$this->property_uid = $property_uid;
@@ -75,36 +75,36 @@ class j06000show_property_room_types
 		}
 
 		$mrConfig = getPropertySpecificSettings($property_uid);
-		$basic_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+		$basic_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 		$basic_property_details->gather_data($property_uid);
 
 		$this->getTariffRanges($property_uid);
 		
 		$output = array();
 
-		$jomres_media_centre_images = jomres_singleton_abstract::getInstance('jomres_media_centre_images');
-		$jomres_media_centre_images->get_images($property_uid);
-		$jomres_media_centre_images->get_site_images('rmtypes'); // These are administrator created room type images. If the property manager doesn't upload images for a room type (which is quite possible if they aren't given the option) then we'll "fallback" to admin created images instead.
+		$castor_media_centre_images = castor_singleton_abstract::getInstance('castor_media_centre_images');
+		$castor_media_centre_images->get_images($property_uid);
+		$castor_media_centre_images->get_site_images('rmtypes'); // These are administrator created room type images. If the property manager doesn't upload images for a room type (which is quite possible if they aren't given the option) then we'll "fallback" to admin created images instead.
 		
 		$resource_type = 'room_types';
 		
 		if (!empty($basic_property_details->room_types)) {
 			$room_types = array();
-			$output[ '_JOMRES_SEARCH_RTYPES' ] = jr_gettext('_JOMRES_COM_MR_VRCT_TAB_ROOMTYPES', '_JOMRES_COM_MR_VRCT_TAB_ROOMTYPES', false);
+			$output[ '_CASTOR_SEARCH_RTYPES' ] = jr_gettext('_CASTOR_COM_MR_VRCT_TAB_ROOMTYPES', '_CASTOR_COM_MR_VRCT_TAB_ROOMTYPES', false);
 
 			foreach ($basic_property_details->room_types as $key => $val) {
 				$resource_id = $key;
 				
-				if (isset($jomres_media_centre_images->images [$resource_type] [$resource_id])) {
-					$images = $jomres_media_centre_images->images [$resource_type] [$resource_id];
+				if (isset($castor_media_centre_images->images [$resource_type] [$resource_id])) {
+					$images = $castor_media_centre_images->images [$resource_type] [$resource_id];
 				} else {
-					if (isset($basic_property_details->this_property_room_classes[$key]) && file_exists(JOMRES_IMAGELOCATION_ABSPATH.'rmtypes/'.$basic_property_details->this_property_room_classes[$key]['image'])) {
-						$images = array( array ( "large" => JOMRES_IMAGELOCATION_RELPATH.'rmtypes/'.$basic_property_details->this_property_room_classes[$key]['image']) );
+					if (isset($basic_property_details->this_property_room_classes[$key]) && file_exists(CASTOR_IMAGELOCATION_ABSPATH.'rmtypes/'.$basic_property_details->this_property_room_classes[$key]['image'])) {
+						$images = array( array ( "large" => CASTOR_IMAGELOCATION_RELPATH.'rmtypes/'.$basic_property_details->this_property_room_classes[$key]['image']) );
 					} else {
 						$images = array ( array(
-							"large" => $jomres_media_centre_images->multi_query_images['noimage-large'],
-							"medium" => $jomres_media_centre_images->multi_query_images['noimage-medium'],
-							"small" => $jomres_media_centre_images->multi_query_images['noimage-small']
+							"large" => $castor_media_centre_images->multi_query_images['noimage-large'],
+							"medium" => $castor_media_centre_images->multi_query_images['noimage-medium'],
+							"small" => $castor_media_centre_images->multi_query_images['noimage-small']
 						) );
 					}
 				}
@@ -115,9 +115,9 @@ class j06000show_property_room_types
 				$room_type[ 'ROOM_TYPE_TEXT' ] = '';
 				$room_type[ 'ROOM_TYPE_COUNTER' ] = 0;
 				if (isset($basic_property_details->this_property_room_classes[$key])) {
-					$url = jomresURL(JOMRES_SITEPAGE_URL.'&task=show_property_room_type&property_uid='.$property_uid.'&room_classes_uid='.$key);
+					$url = castorURL(CASTOR_SITEPAGE_URL.'&task=show_property_room_type&property_uid='.$property_uid.'&room_classes_uid='.$key);
 					$room_type[ 'ROOM_TYPE' ] =
-						jomres_makeTooltip(
+						castor_makeTooltip(
 							$basic_property_details->this_property_room_classes,
 							$basic_property_details->this_property_room_classes[$key]['abbv'],
 							$basic_property_details->this_property_room_classes[$key]['desc'],
@@ -129,13 +129,13 @@ class j06000show_property_room_types
 						);
 
 
-					$room_type[ '_JOMRES_TARIFFSFROM' ] = jr_gettext('_JOMRES_TARIFFSFROM', '_JOMRES_TARIFFSFROM', false);
+					$room_type[ '_CASTOR_TARIFFSFROM' ] = jr_gettext('_CASTOR_TARIFFSFROM', '_CASTOR_TARIFFSFROM', false);
 					$room_type[ 'ROOM_TYPE_IMAGE' ] = $images[0]['large'];
 					$room_type[ 'ROOM_TYPE_TEXT' ] = $basic_property_details->this_property_room_classes[$key]['abbv'];
 					$room_type[ 'ROOM_TYPE_COUNTER' ] = count($basic_property_details->rooms_by_type[$key]);
-					$room_type[ 'ROOM_TYPE_PAGE_URL' ] = jomresURL(JOMRES_SITEPAGE_URL.'&task=show_property_room_type&property_uid='.$property_uid.'&room_classes_uid='.$key);
+					$room_type[ 'ROOM_TYPE_PAGE_URL' ] = castorURL(CASTOR_SITEPAGE_URL.'&task=show_property_room_type&property_uid='.$property_uid.'&room_classes_uid='.$key);
 
-					$room_type[ 'ROOM_TYPE_PRICE' ] = jr_gettext('_JOMRES_PRICE_ON_APPLICATION', '_JOMRES_PRICE_ON_APPLICATION', false);
+					$room_type[ 'ROOM_TYPE_PRICE' ] = jr_gettext('_CASTOR_PRICE_ON_APPLICATION', '_CASTOR_PRICE_ON_APPLICATION', false);
 					;
 					
 					if (isset($this->roomTypePriceRanges[$key])) {
@@ -148,7 +148,7 @@ class j06000show_property_room_types
 
 			$pageoutput[] = $output;
 			$tmpl = new patTemplate();
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 			$tmpl->addRows('pageoutput', $pageoutput);
 			$tmpl->addRows('room_types', $room_types);
 			if ($mrConfig['singleRoomProperty'] == '1') {
@@ -163,7 +163,7 @@ class j06000show_property_room_types
 				$this->retVals = $features_template;
 			}
 		} else {
-			$output[ '_JOMRES_SEARCH_RTYPES' ] = '';
+			$output[ '_CASTOR_SEARCH_RTYPES' ] = '';
 		}
 	}
 
@@ -174,7 +174,7 @@ class j06000show_property_room_types
 		$today = date('Y/m/d', mktime(0, 0, 0, date('m'), date('d'), date('Y')));
 		
 		$query = "SELECT `rates_uid`,`rate_title`,`roomclass_uid`,`roomrateperday`
-			FROM #__jomres_rates WHERE property_uid = ".(int)$property_uid."
+			FROM #__castor_rates WHERE property_uid = ".(int)$property_uid."
 			AND DATE_FORMAT(`validto`, '%Y/%m/%d') >= DATE_FORMAT('".$today."', '%Y/%m/%d')
 			AND roomrateperday > 0
 			";
@@ -211,7 +211,7 @@ class j06000show_property_room_types
 	{
 		$mrConfig = getPropertySpecificSettings($this->property_uid);
 		if ($mrConfig[ 'prices_inclusive' ] == 1) {
-			$jrportal_taxrate = jomres_singleton_abstract::getInstance('jrportal_taxrate');
+			$jrportal_taxrate = castor_singleton_abstract::getInstance('jrportal_taxrate');
 			$cfgcode = $mrConfig[ 'accommodation_tax_code' ];
 			$accommodation_tax_rate = (float) $jrportal_taxrate->taxrates[ $cfgcode ][ 'rate' ];
 			
@@ -228,3 +228,4 @@ class j06000show_property_room_types
 		return $this->retVals;
 	}
 }
+

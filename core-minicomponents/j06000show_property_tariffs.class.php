@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 	/**
 	 * Core file.
 	 *
-	 * @author Vince Wooll <sales@jomres.net>
+	 * @author Vince Wooll <sales@castor.net>
 	 *
-	 *  @version Jomres 10.7.2
+	 *  @version Castor 10.7.2
 	 *
 	 * @copyright	2005-2023 Vince Wooll
-	 * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+	 * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
 	 **/
 
 // ################################################################
-	defined('_JOMRES_INITCHECK') or die('');
+	defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,15 +35,15 @@ class j06000show_property_tariffs
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			$this->shortcode_data = array(
 				'task' => 'show_property_tariffs',
-				'info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_TARIFFS',
+				'info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_TARIFFS',
 				'arguments' => array(0 => array(
 					'argument' => 'property_uid',
-					'arg_info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_TARIFFS_ARG_PROPERTY_UID',
+					'arg_info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_TARIFFS_ARG_PROPERTY_UID',
 					'arg_example' => '1',
 				),
 				),
@@ -56,7 +56,7 @@ class j06000show_property_tariffs
 		if (isset($componentArgs[ 'property_uid' ])) {
 			$property_uid = (int)$componentArgs[ 'property_uid' ];
 		} else {
-			$property_uid = (int)jomresGetParam($_REQUEST, 'property_uid', 0);
+			$property_uid = (int)castorGetParam($_REQUEST, 'property_uid', 0);
 		}
 
 		if ($property_uid == 0) {
@@ -77,11 +77,11 @@ class j06000show_property_tariffs
 
 		$output = array();
 
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 		$mrConfig = getPropertySpecificSettings($property_uid);
-		$pop = jomresGetParam($_REQUEST, 'popup', '0');
-		$current_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+		$pop = castorGetParam($_REQUEST, 'popup', '0');
+		$current_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 		$current_property_details->gather_data($property_uid);
 
 		$this->retVals = '';
@@ -91,18 +91,18 @@ class j06000show_property_tariffs
 		$query = 'SELECT `rates_uid`,`rate_title`,`rate_description`,`validfrom`,`validto`,
 			`roomrateperday`,`mindays`,`maxdays`,`minpeople`,`maxpeople`,`roomclass_uid`,
 			`ignore_pppn`,`allow_ph`,`allow_we`
-			FROM #__jomres_rates WHERE property_uid = ' .$property_uid.' ORDER BY rate_title,roomclass_uid,validto';
+			FROM #__castor_rates WHERE property_uid = ' .$property_uid.' ORDER BY rate_title,roomclass_uid,validto';
 		$tariffsList = doSelectSql($query);
 
-		$output[ 'HTITLE' ] = jr_gettext('_JOMRES_FRONT_TARIFFS_TITLE', '_JOMRES_FRONT_TARIFFS_TITLE');
-		$output[ 'HDESC' ] = jr_gettext('_JOMRES_FRONT_TARIFFS_DESC', '_JOMRES_FRONT_TARIFFS_DESC');
-		$output[ 'HROOMTYPE' ] = jr_gettext('_JOMRES_FRONT_TARIFFS_ROOMTYPE', '_JOMRES_FRONT_TARIFFS_ROOMTYPE');
-		$output[ 'HSTARTS' ] = jr_gettext('_JOMRES_FRONT_TARIFFS_STARTS', '_JOMRES_FRONT_TARIFFS_STARTS');
-		$output[ 'HENDS' ] = jr_gettext('_JOMRES_FRONT_TARIFFS_ENDS', '_JOMRES_FRONT_TARIFFS_ENDS');
-		$output[ 'HMINDAYS' ] = jr_gettext('_JOMRES_FRONT_TARIFFS_MINDAYS', '_JOMRES_FRONT_TARIFFS_MINDAYS');
-		$output[ 'HMAXDAYS' ] = jr_gettext('_JOMRES_FRONT_TARIFFS_MAXDAYS', '_JOMRES_FRONT_TARIFFS_MAXDAYS');
-		$output[ 'HMINPEEPS' ] = jr_gettext('_JOMRES_FRONT_TARIFFS_MINPEEPS', '_JOMRES_FRONT_TARIFFS_MINPEEPS');
-		$output[ 'HMAXPEEPS' ] = jr_gettext('_JOMRES_FRONT_TARIFFS_MAXPEEPS', '_JOMRES_FRONT_TARIFFS_MAXPEEPS');
+		$output[ 'HTITLE' ] = jr_gettext('_CASTOR_FRONT_TARIFFS_TITLE', '_CASTOR_FRONT_TARIFFS_TITLE');
+		$output[ 'HDESC' ] = jr_gettext('_CASTOR_FRONT_TARIFFS_DESC', '_CASTOR_FRONT_TARIFFS_DESC');
+		$output[ 'HROOMTYPE' ] = jr_gettext('_CASTOR_FRONT_TARIFFS_ROOMTYPE', '_CASTOR_FRONT_TARIFFS_ROOMTYPE');
+		$output[ 'HSTARTS' ] = jr_gettext('_CASTOR_FRONT_TARIFFS_STARTS', '_CASTOR_FRONT_TARIFFS_STARTS');
+		$output[ 'HENDS' ] = jr_gettext('_CASTOR_FRONT_TARIFFS_ENDS', '_CASTOR_FRONT_TARIFFS_ENDS');
+		$output[ 'HMINDAYS' ] = jr_gettext('_CASTOR_FRONT_TARIFFS_MINDAYS', '_CASTOR_FRONT_TARIFFS_MINDAYS');
+		$output[ 'HMAXDAYS' ] = jr_gettext('_CASTOR_FRONT_TARIFFS_MAXDAYS', '_CASTOR_FRONT_TARIFFS_MAXDAYS');
+		$output[ 'HMINPEEPS' ] = jr_gettext('_CASTOR_FRONT_TARIFFS_MINPEEPS', '_CASTOR_FRONT_TARIFFS_MINPEEPS');
+		$output[ 'HMAXPEEPS' ] = jr_gettext('_CASTOR_FRONT_TARIFFS_MAXPEEPS', '_CASTOR_FRONT_TARIFFS_MAXPEEPS');
 
 		$query = 'SELECT `tarifftype_id`,`tariff_id`  FROM #__jomcomp_tarifftype_rate_xref  WHERE `property_uid` = '.(int) $property_uid;
 		$result = doSelectSql($query);
@@ -134,26 +134,26 @@ class j06000show_property_tariffs
 				if ($unixTodaysDate < $unixValidto) {
 					$r = array();
 
-					$r[ 'HTITLE' ] 		= jr_gettext('_JOMRES_FRONT_TARIFFS_TITLE', '_JOMRES_FRONT_TARIFFS_TITLE');
-					$r[ 'HDESC' ] 		= jr_gettext('_JOMRES_FRONT_TARIFFS_DESC', '_JOMRES_FRONT_TARIFFS_DESC');
-					$r[ 'HROOMTYPE' ] 	= jr_gettext('_JOMRES_FRONT_TARIFFS_ROOMTYPE', '_JOMRES_FRONT_TARIFFS_ROOMTYPE');
-					$r[ 'HSTARTS' ] 	= jr_gettext('_JOMRES_FRONT_TARIFFS_STARTS', '_JOMRES_FRONT_TARIFFS_STARTS');
-					$r[ 'HENDS' ] 		= jr_gettext('_JOMRES_FRONT_TARIFFS_ENDS', '_JOMRES_FRONT_TARIFFS_ENDS');
-					$r[ 'HMINDAYS' ] 	= jr_gettext('_JOMRES_FRONT_TARIFFS_MINDAYS', '_JOMRES_FRONT_TARIFFS_MINDAYS');
-					$r[ 'HMAXDAYS' ] 	= jr_gettext('_JOMRES_FRONT_TARIFFS_MAXDAYS', '_JOMRES_FRONT_TARIFFS_MAXDAYS');
-					$r[ 'HMINPEEPS' ] 	= jr_gettext('_JOMRES_FRONT_TARIFFS_MINPEEPS', '_JOMRES_FRONT_TARIFFS_MINPEEPS');
-					$r[ 'HMAXPEEPS' ] 	= jr_gettext('_JOMRES_FRONT_TARIFFS_MAXPEEPS', '_JOMRES_FRONT_TARIFFS_MAXPEEPS');
+					$r[ 'HTITLE' ] 		= jr_gettext('_CASTOR_FRONT_TARIFFS_TITLE', '_CASTOR_FRONT_TARIFFS_TITLE');
+					$r[ 'HDESC' ] 		= jr_gettext('_CASTOR_FRONT_TARIFFS_DESC', '_CASTOR_FRONT_TARIFFS_DESC');
+					$r[ 'HROOMTYPE' ] 	= jr_gettext('_CASTOR_FRONT_TARIFFS_ROOMTYPE', '_CASTOR_FRONT_TARIFFS_ROOMTYPE');
+					$r[ 'HSTARTS' ] 	= jr_gettext('_CASTOR_FRONT_TARIFFS_STARTS', '_CASTOR_FRONT_TARIFFS_STARTS');
+					$r[ 'HENDS' ] 		= jr_gettext('_CASTOR_FRONT_TARIFFS_ENDS', '_CASTOR_FRONT_TARIFFS_ENDS');
+					$r[ 'HMINDAYS' ] 	= jr_gettext('_CASTOR_FRONT_TARIFFS_MINDAYS', '_CASTOR_FRONT_TARIFFS_MINDAYS');
+					$r[ 'HMAXDAYS' ] 	= jr_gettext('_CASTOR_FRONT_TARIFFS_MAXDAYS', '_CASTOR_FRONT_TARIFFS_MAXDAYS');
+					$r[ 'HMINPEEPS' ] 	= jr_gettext('_CASTOR_FRONT_TARIFFS_MINPEEPS', '_CASTOR_FRONT_TARIFFS_MINPEEPS');
+					$r[ 'HMAXPEEPS' ] 	= jr_gettext('_CASTOR_FRONT_TARIFFS_MAXPEEPS', '_CASTOR_FRONT_TARIFFS_MAXPEEPS');
 
-					$r[ '_JOMRES_FRONT_MR_MENU_BOOKAROOM' ] 	= jr_gettext('_JOMRES_FRONT_MR_MENU_BOOKAROOM', '_JOMRES_FRONT_MR_MENU_BOOKAROOM');
+					$r[ '_CASTOR_FRONT_MR_MENU_BOOKAROOM' ] 	= jr_gettext('_CASTOR_FRONT_MR_MENU_BOOKAROOM', '_CASTOR_FRONT_MR_MENU_BOOKAROOM');
 
 
 					if (isset($tariff_tarifftypes_xref[ $tariff->rates_uid ])) {
-						$r[ 'TITLE' ] = jr_gettext('_JOMRES_CUSTOMTEXT_TARIFF_TITLE_TARIFFTYPE_ID'.$tariff_tarifftypes_xref[ $tariff->rates_uid ], stripslashes($tariff->rate_title));
+						$r[ 'TITLE' ] = jr_gettext('_CASTOR_CUSTOMTEXT_TARIFF_TITLE_TARIFFTYPE_ID'.$tariff_tarifftypes_xref[ $tariff->rates_uid ], stripslashes($tariff->rate_title));
 					} else {
-						$r[ 'TITLE' ] = jr_gettext('_JOMRES_CUSTOMTEXT_TARIFF_TITLE'.$tariff->rates_uid, stripslashes($tariff->rate_title));
+						$r[ 'TITLE' ] = jr_gettext('_CASTOR_CUSTOMTEXT_TARIFF_TITLE'.$tariff->rates_uid, stripslashes($tariff->rate_title));
 					}
 
-					$r[ 'DESC' ] = jr_gettext('_JOMRES_CUSTOMTEXT_TARIFFDESC'.$tariff->rates_uid, stripslashes($tariff->rate_description));
+					$r[ 'DESC' ] = jr_gettext('_CASTOR_CUSTOMTEXT_TARIFFDESC'.$tariff->rates_uid, stripslashes($tariff->rate_description));
 					$r[ 'ROOMCLASSABBV' ] = $current_property_details->room_types[$tariff->roomclass_uid]['abbv'];
 					$r[ 'ROOMCLASSFULLDESC' ] = $current_property_details->room_types[$tariff->roomclass_uid]['desc'];
 					$r[ 'MINPEOPLE' ] = $tariff->minpeople;
@@ -189,7 +189,7 @@ class j06000show_property_tariffs
 					}
 
 					$multiplier = 1;
-					if (!isset($mrConfig[ 'booking_form_daily_weekly_monthly' ])) { // This shouldn't be needed, as the setting is automatically pulled from jomres_config.php, but there's always one weird server...
+					if (!isset($mrConfig[ 'booking_form_daily_weekly_monthly' ])) { // This shouldn't be needed, as the setting is automatically pulled from castor_config.php, but there's always one weird server...
 						$mrConfig[ 'booking_form_daily_weekly_monthly' ] = 'D';
 					}
 
@@ -209,28 +209,28 @@ class j06000show_property_tariffs
 					switch ($mrConfig[ 'booking_form_daily_weekly_monthly' ]) {
 						case 'D':
 							if ($mrConfig[ 'wholeday_booking' ] == '1') {
-								$post_text = jr_gettext('_JOMRES_FRONT_TARIFFS_PN_DAY_WHOLEDAY', '_JOMRES_FRONT_TARIFFS_PN_DAY_WHOLEDAY');
+								$post_text = jr_gettext('_CASTOR_FRONT_TARIFFS_PN_DAY_WHOLEDAY', '_CASTOR_FRONT_TARIFFS_PN_DAY_WHOLEDAY');
 							} else {
 								if ($mrConfig[ 'perPersonPerNight' ] == '0') {
-									$post_text = '&nbsp;'.jr_gettext('_JOMRES_FRONT_TARIFFS_PN', '_JOMRES_FRONT_TARIFFS_PN');
+									$post_text = '&nbsp;'.jr_gettext('_CASTOR_FRONT_TARIFFS_PN', '_CASTOR_FRONT_TARIFFS_PN');
 								} else {
-									$post_text = '&nbsp;'.jr_gettext('_JOMRES_FRONT_TARIFFS_PPPN', '_JOMRES_FRONT_TARIFFS_PPPN');
+									$post_text = '&nbsp;'.jr_gettext('_CASTOR_FRONT_TARIFFS_PPPN', '_CASTOR_FRONT_TARIFFS_PPPN');
 								}
 							}
 							break;
 						case 'W':
-							$post_text = jr_gettext('_JOMRES_BOOKINGFORM_PRICINGOUTPUT_WEEKLY', '_JOMRES_BOOKINGFORM_PRICINGOUTPUT_WEEKLY');
+							$post_text = jr_gettext('_CASTOR_BOOKINGFORM_PRICINGOUTPUT_WEEKLY', '_CASTOR_BOOKINGFORM_PRICINGOUTPUT_WEEKLY');
 							break;
 						case 'M':
-							$post_text = jr_gettext('_JOMRES_BOOKINGFORM_PRICINGOUTPUT_MONTHLY', '_JOMRES_BOOKINGFORM_PRICINGOUTPUT_MONTHLY');
+							$post_text = jr_gettext('_CASTOR_BOOKINGFORM_PRICINGOUTPUT_MONTHLY', '_CASTOR_BOOKINGFORM_PRICINGOUTPUT_MONTHLY');
 							break;
 					}
 
 					if ($mrConfig[ 'wholeday_booking' ] == '1') {
 						if ($tariff->ignore_pppn || $mrConfig[ 'perPersonPerNight' ] == '0') {
-							$r[ 'ROOMRATEPERDAY' ] = output_price($price_inc_vat * $multiplier).' '.jr_gettext('_JOMRES_FRONT_TARIFFS_PN_DAY_WHOLEDAY', '_JOMRES_FRONT_TARIFFS_PN_DAY_WHOLEDAY');
+							$r[ 'ROOMRATEPERDAY' ] = output_price($price_inc_vat * $multiplier).' '.jr_gettext('_CASTOR_FRONT_TARIFFS_PN_DAY_WHOLEDAY', '_CASTOR_FRONT_TARIFFS_PN_DAY_WHOLEDAY');
 						} else {
-							$r[ 'ROOMRATEPERDAY' ] = output_price($price_inc_vat * $multiplier).' '.jr_gettext('_JOMRES_FRONT_TARIFFS_PPPN_DAY_WHOLEDAY', '_JOMRES_FRONT_TARIFFS_PPPN_DAY_WHOLEDAY');
+							$r[ 'ROOMRATEPERDAY' ] = output_price($price_inc_vat * $multiplier).' '.jr_gettext('_CASTOR_FRONT_TARIFFS_PPPN_DAY_WHOLEDAY', '_CASTOR_FRONT_TARIFFS_PPPN_DAY_WHOLEDAY');
 						}
 					} else {
 						$r[ 'ROOMRATEPERDAY' ] = output_price($price_inc_vat * $multiplier).' '.$post_text;
@@ -240,11 +240,11 @@ class j06000show_property_tariffs
 						if ($mrConfig[ 'tariffmode' ] == '2' || $mrConfig[ 'tariffmode' ] == '5') {
 							$price_inc_vat = $price_inc_vat * 7;
 						}
-						$r[ 'ROOMRATEPERDAY' ] = output_price($price_inc_vat).' '.jr_gettext('_JOMRES_COM_MR_LISTTARIFF_ROOMRATEPERWEEK', '_JOMRES_COM_MR_LISTTARIFF_ROOMRATEPERWEEK');
+						$r[ 'ROOMRATEPERDAY' ] = output_price($price_inc_vat).' '.jr_gettext('_CASTOR_COM_MR_LISTTARIFF_ROOMRATEPERWEEK', '_CASTOR_COM_MR_LISTTARIFF_ROOMRATEPERWEEK');
 					}
 
 					if ($tariff->allow_we == '0') {
-						$r[ 'NOTWEEKENDS' ] = jr_gettext('_JOMRES_FRONT_TARIFFS_NOTWEEKEND', '_JOMRES_FRONT_TARIFFS_NOTWEEKEND');
+						$r[ 'NOTWEEKENDS' ] = jr_gettext('_CASTOR_FRONT_TARIFFS_NOTWEEKEND', '_CASTOR_FRONT_TARIFFS_NOTWEEKEND');
 					}
 					$theRate = number_format(($price_inc_vat), 2, '.', '');
 
@@ -272,7 +272,7 @@ class j06000show_property_tariffs
 				$tmpl->addRows('customOutput_'.$key, array($val));
 			}
 		}
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 
 		if ($mrConfig[ 'verbosetariffinfo' ] == '0') {
 			$tmpl->readTemplatesFromInput('te_show_tariffs.html');
@@ -294,3 +294,4 @@ class j06000show_property_tariffs
 		return $this->retVals;
 	}
 }
+

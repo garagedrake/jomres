@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,7 +35,7 @@ class j06000cron_syndication_get_syndicate_domains
 	 
 	public function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -44,7 +44,7 @@ class j06000cron_syndication_get_syndicate_domains
 
 		return;
 
-		$query = "SELECT id , domain FROM #__jomres_syndication_domains ";
+		$query = "SELECT id , domain FROM #__castor_syndication_domains ";
 		$result = doSelectSql($query);
 		
 		$existing_domains = array();
@@ -56,7 +56,7 @@ class j06000cron_syndication_get_syndicate_domains
 		
 		try {
 			$client = new GuzzleHttp\Client();
-			$response = $client->request('GET', "https://app.jomres.net/jomres/api/get_sites/", ['connect_timeout' => 10 ]);
+			$response = $client->request('GET', "https://app.castor.net/castor/api/get_sites/", ['connect_timeout' => 10 ]);
 
 			$body				= json_decode((string)$response->getBody());
 					
@@ -73,7 +73,7 @@ class j06000cron_syndication_get_syndicate_domains
 						if (!in_array($new_site_domain, $existing_domains)) {
 							try {
 								$query = "
-									INSERT INTO #__jomres_syndication_domains SET
+									INSERT INTO #__castor_syndication_domains SET
 										`domain` = '".$new_site_domain."',
 										`api_url` = '".$new_site_api_url."',
 										`date_added` =  '".$new_site_datetime_added."',
@@ -100,3 +100,4 @@ class j06000cron_syndication_get_syndicate_domains
 		return null;
 	}
 }
+

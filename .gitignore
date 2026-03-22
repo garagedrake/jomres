@@ -1,4 +1,4 @@
-core-plugins
+﻿core-plugins
 uploadedimages
 temp
 /configuration.php
@@ -15,7 +15,7 @@ desktop.ini
 /node_modules/x-editable/test/*
 /node_modules/jquery-ui/external/*
 /encryption_key.class.php
-/database/updates/9.15.0/jomres_images_resource_id_update_rmtypes.php
+/database/updates/9.15.0/castor_images_resource_id_update_rmtypes.php
 /libraries/node_modules/x-editable/test
 /libraries/node_modules/jquery-ui/external
 /libraries/vendor/ezyang/htmlpurifier/library/HTMLPurifier/DefinitionCache/Serializer/HTML/4.12.0,039209994080c416d43e1a443a5b919d9bdafeb5,1.ser
@@ -69,3 +69,4 @@ logs/DeferredTasks.application.log
 logs/OhoVJrkvxRBLJRCNPvqTlRClCJNJFx.html
 
 logs/
+

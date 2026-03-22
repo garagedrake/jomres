@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Used by j06000viewproperty.class.php to build tabs in the property details page. Builds More Information (other area activities etc) template output.
 	 *
@@ -36,7 +36,7 @@ class j00035tabcontent_01_more_info
 	 
 	public function __construct($componentArgs)
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -54,10 +54,10 @@ class j00035tabcontent_01_more_info
 		}
 
 		//property more info
-		$output['HPROPERTY_MOREINFO'] = jr_gettext('_JOMRES_COM_A_CLICKFORMOREINFORMATION', '_JOMRES_COM_A_CLICKFORMOREINFORMATION', false);
+		$output['HPROPERTY_MOREINFO'] = jr_gettext('_CASTOR_COM_A_CLICKFORMOREINFORMATION', '_CASTOR_COM_A_CLICKFORMOREINFORMATION', false);
 		$output['PROPERTY_MOREINFO'] = $MiniComponents->specificEvent('06000', 'show_property_moreinfo', array('output_now' => false, 'property_uid' => $property_uid));
 
-		$anchor = jomres_generate_tab_anchor($output[ 'HPROPERTY_MOREINFO' ]);
+		$anchor = castor_generate_tab_anchor($output[ 'HPROPERTY_MOREINFO' ]);
 		$tab = array('TAB_ANCHOR' => $anchor, 'TAB_TITLE' => $output[ 'HPROPERTY_MOREINFO' ], 'TAB_CONTENT' => $output['PROPERTY_MOREINFO'], 'TAB_ID' => 'tour_target_property_details_moreinfo');
 		$this->retVals = $tab;
 	}
@@ -73,3 +73,4 @@ class j00035tabcontent_01_more_info
 		return $this->retVals;
 	}
 }
+

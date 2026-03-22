@@ -1,44 +1,44 @@
-<patTemplate:tmpl name="pageoutput" unusedvars="strip">
+﻿<patTemplate:tmpl name="pageoutput" unusedvars="strip">
 
-<form id="jomres_login" action="{RETURN_URL}" class="form-horizontal" role="form" method="post">
+<form id="castor_login" action="{RETURN_URL}" class="form-horizontal" role="form" method="post">
 
-	<h4>{_JOMRES_CUSTOMCODE_JOMRESMAINMENU_LOGIN}</h4>
+	<h4>{_CASTOR_CUSTOMCODE_CASTORMAINMENU_LOGIN}</h4>
 
 	<patTemplate:tmpl name="reasonoutput" type="simpleCondition" requiredVars="login_reason" unusedvars="nbsp">
 	<p class="alert alert-info">{LOGIN_REASON}</p>
 	</patTemplate:tmpl>
 	
 	<div class="form-group">
-		<label for="jomres_username" class="col-sm-2 control-label">{_JOMRES_CUSTOMCODE_JOMRESMAINMENU_LOGIN}</label>
+		<label for="castor_username" class="col-sm-2 control-label">{_CASTOR_CUSTOMCODE_CASTORMAINMENU_LOGIN}</label>
 		<div class="col-sm-10">
-			<input type="text" class="form-control" name="jomres_username" placeholder="" value="">
+			<input type="text" class="form-control" name="castor_username" placeholder="" value="">
 		</div>
 	</div>
 	
 	<div class="form-group">
-		<label for="jomres_password" class="col-sm-2 control-label">{_JOMRES_LOGIN_PASSWORD}</label>
+		<label for="castor_password" class="col-sm-2 control-label">{_CASTOR_LOGIN_PASSWORD}</label>
 		<div class="col-sm-10">
-			<input type="password" class="form-control" name="jomres_password" placeholder="" value="">
+			<input type="password" class="form-control" name="castor_password" placeholder="" value="">
 		</div>
 	</div>
 	
 	<div class="form-group">
 		<div class="col-sm-10 col-sm-offset-2">
-			<button type="submit" class="btn btn-primary" onclick="getResponse('releaseRooms','1')" >{_JOMRES_CUSTOMCODE_JOMRESMAINMENU_LOGIN}</button>
+			<button type="submit" class="btn btn-primary" onclick="getResponse('releaseRooms','1')" >{_CASTOR_CUSTOMCODE_CASTORMAINMENU_LOGIN}</button>
 			<button type="button" class="btn btn-default" data-dismiss="modal">{COMMON_CANCEL}</button>
 		</div>
 	</div>
 	
-	<p>{_JOMRES_LOGIN_RESET_MESSAGE}</p>
+	<p>{_CASTOR_LOGIN_RESET_MESSAGE}</p>
 	
 	<div class="form-group">
 		<div class="col-sm-10 col-sm-offset-2">
-			<a href="{RESET_URL}" class="btn btn-default" target="_blank">{_JOMRES_LOGIN_RESET_BUTTON}</a>
+			<a href="{RESET_URL}" class="btn btn-default" target="_blank">{_CASTOR_LOGIN_RESET_BUTTON}</a>
 		</div>
 	</div>
 	
 	<input type="hidden" name="return_url" value="{RETURN_URL}" />
-	<input type="hidden" name="jomres_loginform_email" value="{EMAIL}" />
+	<input type="hidden" name="castor_loginform_email" value="{EMAIL}" />
 	{CSRF_TOKEN}
 </form>
 

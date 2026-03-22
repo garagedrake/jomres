@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,7 +36,7 @@ class j19997menu
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -46,17 +46,17 @@ class j19997menu
 		$this->ret_vals = '';
 		$menu_sections = array();
 		
-		$jomres_menu = jomres_singleton_abstract::getInstance('jomres_menu');
-		$jomres_menu->generate_admin_menu();
+		$castor_menu = castor_singleton_abstract::getInstance('castor_menu');
+		$castor_menu->generate_admin_menu();
 		
-		if (empty($jomres_menu->admin_menu)) {
+		if (empty($castor_menu->admin_menu)) {
 			return;
 		}
 
-		//section params are in $jomres_menu->admin_sections[section_id]
-		//menu items params are in $jomres_menu->admin_items[task]
+		//section params are in $castor_menu->admin_sections[section_id]
+		//menu items params are in $castor_menu->admin_items[task]
 		//now let`s generate the menu output
-		foreach ($jomres_menu->admin_menu as $section_id => $tasks) {
+		foreach ($castor_menu->admin_menu as $section_id => $tasks) {
 			$pageoutput = array();
 			$rows = array();
 			$output = array();
@@ -67,29 +67,29 @@ class j19997menu
 				$r = array();
 				
 				//menu item name
-				$r['MENU_NAME'] = $jomres_menu->admin_items[$task]['title'];
+				$r['MENU_NAME'] = $castor_menu->admin_items[$task]['title'];
 
 				//menu item url
-				if ($jomres_menu->admin_items[$task]['is_url']) {
+				if ($castor_menu->admin_items[$task]['is_url']) {
 					$r['LINK'] = $task;
 				} elseif ($task != 'blank') {
-					$r['LINK'] = jomresUrl(JOMRES_SITEPAGE_URL_ADMIN.'&task='.$task);
+					$r['LINK'] = castorUrl(CASTOR_SITEPAGE_URL_ADMIN.'&task='.$task);
 				} else {
-					$r['LINK'] = jomresUrl(JOMRES_SITEPAGE_URL_ADMIN);
+					$r['LINK'] = castorUrl(CASTOR_SITEPAGE_URL_ADMIN);
 				}
 				
 				//menu item icon
-				$r['ICON_CLASS'] = $jomres_menu->admin_items[$task]['icon'];
+				$r['ICON_CLASS'] = $castor_menu->admin_items[$task]['icon'];
 
 				//menu item target
 				$r[ 'TARGET' ] = '';
-				if ($jomres_menu->admin_items[$task]['external']) {
+				if ($castor_menu->admin_items[$task]['external']) {
 					$r[ 'TARGET' ] = ' target="_blank" ';
 				}
 				
 				//menu item disabled class
 				$r[ 'DISABLED_CLASS' ] = '';
-				if ($jomres_menu->admin_items[$task]['disabled']) {
+				if ($castor_menu->admin_items[$task]['disabled']) {
 					$r[ 'LINK' ] = '#';
 					$r[ 'DISABLED_CLASS' ] = 'disabled';
 				}
@@ -97,14 +97,14 @@ class j19997menu
 				//menu item badges TODO: find a better way or remove this completely
 				$r[ 'BADGES' ] = '';
 
-				if (!$jomres_menu->admin_items[$task]['is_url'] && get_showtime('task') != 'addplugin') {
+				if (!$castor_menu->admin_items[$task]['is_url'] && get_showtime('task') != 'addplugin') {
 					$items_requiring_attention = get_number_of_items_requiring_attention_for_menu_option($task);
 					
 					if (!empty($items_requiring_attention)) {
 						foreach ($items_requiring_attention as $colour => $number) {
 							if ($number > 0) {
 								$tmpl = new patTemplate();
-								$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+								$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 								$tmpl->readTemplatesFromInput('menu_badge_'.$colour.'.html');
 								$tmpl->addRows('items_requiring_attention', array(array('NUMBER' => $number)));
 								$r[ 'BADGES' ] = $tmpl->getParsedTemplate();
@@ -119,7 +119,7 @@ class j19997menu
 				if (get_showtime('task') == $task) {
 					$r[ 'ACTIVE' ] = 'active';
 					$output[ 'COLLAPSE_IN' ] = 'in';
-				} elseif (get_showtime('task') == '' && $task == 'blank' && !$jomres_menu->admin_items[$task]['external']) {
+				} elseif (get_showtime('task') == '' && $task == 'blank' && !$castor_menu->admin_items[$task]['external']) {
 					$r[ 'ACTIVE' ] = 'active';
 					$output[ 'COLLAPSE_IN' ] = 'in';
 				}
@@ -127,13 +127,13 @@ class j19997menu
 				$rows[] = $r;
 			}
 			
-			$output[ 'CATEGORY' ] = $jomres_menu->admin_sections[$section_id]['title'];
+			$output[ 'CATEGORY' ] = $castor_menu->admin_sections[$section_id]['title'];
 			$output[ 'ID' ] = 'cpanel-category-'.$section_id;
 
 			$pageoutput[ ] = $output;
 			$tmpl = new patTemplate();
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
-			if (this_cms_is_joomla() && _JOMRES_DETECTED_CMS == 'joomla3') {
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
+			if (this_cms_is_joomla() && _CASTOR_DETECTED_CMS == 'joomla3') {
 				$tmpl->readTemplatesFromInput('control_panel_menu_options_vertical.html');
 			} else {
 				$tmpl->readTemplatesFromInput('control_panel_menu_options_horizontal.html');
@@ -144,9 +144,9 @@ class j19997menu
 		}
 		
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 		
-		if (this_cms_is_joomla() && _JOMRES_DETECTED_CMS == 'joomla3') {
+		if (this_cms_is_joomla() && _CASTOR_DETECTED_CMS == 'joomla3') {
 			$tmpl->readTemplatesFromInput('control_panel_menu_wrapper_vertical.html');
 		} else {
 			$tmpl->readTemplatesFromInput('control_panel_menu_wrapper_horizontal.html');
@@ -161,3 +161,4 @@ class j19997menu
 		return $this->ret_vals;
 	}
 }
+

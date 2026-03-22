@@ -1,8 +1,8 @@
-jomresJquery.bt = {version: '0.9.5-rc1'};
+﻿castorJquery.bt = {version: '0.9.5-rc1'};
 ;
 (function ($) {
 
-	jomresJquery.fn.bt = function (content, options) {
+	castorJquery.fn.bt = function (content, options) {
 
 		if (typeof content != 'string') {
 			var contentSelect = true;
@@ -13,13 +13,13 @@ jomresJquery.bt = {version: '0.9.5-rc1'};
 			var contentSelect = false;
 		}
 
-		if (jomresJquery.fn.hoverIntent && jomresJquery.bt.defaults.trigger == 'hover') {
-			jomresJquery.bt.defaults.trigger = 'hoverIntent';
+		if (castorJquery.fn.hoverIntent && castorJquery.bt.defaults.trigger == 'hover') {
+			castorJquery.bt.defaults.trigger = 'hoverIntent';
 		}
 
 		return this.each(function (index) {
 
-			var opts = jomresJquery.extend(false, jomresJquery.bt.defaults, jomresJquery.bt.options, options);
+			var opts = castorJquery.extend(false, castorJquery.bt.defaults, castorJquery.bt.options, options);
 
 			opts.spikeLength = numb(opts.spikeLength);
 			opts.spikeGirth = numb(opts.spikeGirth);
@@ -39,7 +39,7 @@ jomresJquery.bt = {version: '0.9.5-rc1'};
 				opts.trigger = [opts.trigger];
 			}
 			if (opts.trigger[0] == 'hoverIntent') {
-				var hoverOpts = jomresJquery.extend(opts.hoverIntentOpts, {
+				var hoverOpts = castorJquery.extend(opts.hoverIntentOpts, {
 					over: function () {
 						this.btOn();
 					},
@@ -101,7 +101,7 @@ jomresJquery.bt = {version: '0.9.5-rc1'};
 				opts.preBuild.apply(this);
 
 				// turn off other tips
-				$(jomresJquery.bt.vars.closeWhenOpenStack).btOff();
+				$(castorJquery.bt.vars.closeWhenOpenStack).btOff();
 
 				// add the class to the target element (for hilighting, for example)
 				// bt-active is always applied to all, but activeClass can apply another
@@ -144,7 +144,7 @@ jomresJquery.bt = {version: '0.9.5-rc1'};
 						var target = this;
 
 						// set up the options
-						var ajaxOpts = jomresJquery.extend(false,
+						var ajaxOpts = castorJquery.extend(false,
 							{
 								type: opts.ajaxType,
 								data: opts.ajaxData,
@@ -182,7 +182,7 @@ jomresJquery.bt = {version: '0.9.5-rc1'};
 									}
 								}
 							}, opts.ajaxOpts);
-						jomresJquery.ajax(ajaxOpts);
+						castorJquery.ajax(ajaxOpts);
 
 						content = opts.ajaxLoading;
 					}
@@ -196,7 +196,7 @@ jomresJquery.bt = {version: '0.9.5-rc1'};
 
 				if (opts.shadow && !shadowSupport()) {
 					opts.shadow = false;
-					jomresJquery.extend(opts, opts.noShadowOpts);
+					castorJquery.extend(opts, opts.noShadowOpts);
 				}
 
 				if (opts.shadow) {
@@ -265,7 +265,7 @@ jomresJquery.bt = {version: '0.9.5-rc1'};
 
 				// use bgiframe to get around z-index problems in IE6
 				// http://plugins.jquery.com/project/bgiframe
-				if (jomresJquery.fn.bgiframe) {
+				if (castorJquery.fn.bgiframe) {
 					$text.bgiframe();
 					$box.bgiframe();
 				}
@@ -597,13 +597,13 @@ jomresJquery.bt = {version: '0.9.5-rc1'};
 
 				// stick this element into the clickAnywhereToClose stack
 				if (opts.clickAnywhereToClose) {
-					jomresJquery.bt.vars.clickAnywhereStack.push(this);
-					$(document).click(jomresJquery.bt.docClick);
+					castorJquery.bt.vars.clickAnywhereStack.push(this);
+					$(document).click(castorJquery.bt.docClick);
 				}
 
 				// stick this element into the closeWhenOthersOpen stack
 				if (opts.closeWhenOthersOpen) {
-					jomresJquery.bt.vars.closeWhenOpenStack.push(this);
+					castorJquery.bt.vars.closeWhenOpenStack.push(this);
 				}
 
 				// trigger postShow function
@@ -642,8 +642,8 @@ jomresJquery.bt = {version: '0.9.5-rc1'};
 					}
 
 					// remove this from the stacks
-					jomresJquery.bt.vars.clickAnywhereStack = arrayRemove(jomresJquery.bt.vars.clickAnywhereStack, i);
-					jomresJquery.bt.vars.closeWhenOpenStack = arrayRemove(jomresJquery.bt.vars.closeWhenOpenStack, i);
+					castorJquery.bt.vars.clickAnywhereStack = arrayRemove(castorJquery.bt.vars.clickAnywhereStack, i);
+					castorJquery.bt.vars.closeWhenOpenStack = arrayRemove(castorJquery.bt.vars.closeWhenOpenStack, i);
 
 					// remove the 'bt-active' and activeClass classes from target
 					$(i).removeClass('bt-active ' + opts.activeClass);
@@ -871,18 +871,18 @@ jomresJquery.bt = {version: '0.9.5-rc1'};
 
 		}; // </ findIntersectX() >
 
-	}; // </ jomresJquery.fn.bt() >
+	}; // </ castorJquery.fn.bt() >
 
 	/**
-	 * jomresJquery's compat.js (used in Drupal's jomresJquery upgrade module, overrides the $().position() function
+	 * castorJquery's compat.js (used in Drupal's castorJquery upgrade module, overrides the $().position() function
 	 *  this is a copy of that function to allow the plugin to work when compat.js is present
 	 *  once compat.js is fixed to not override existing functions, this function can be removed
 	 *  and .btPosion() can be replaced with .position() above...
 	 */
-	jomresJquery.fn.btPosition = function () {
+	castorJquery.fn.btPosition = function () {
 
 		function num(elem, prop) {
-			return elem[0] && parseInt(jomresJquery.curCSS(elem[0], prop, true), 10) || 0;
+			return elem[0] && parseInt(castorJquery.curCSS(elem[0], prop, true), 10) || 0;
 		};
 
 		var left = 0, top = 0, results;
@@ -913,18 +913,18 @@ jomresJquery.bt = {version: '0.9.5-rc1'};
 		}
 
 		return results;
-	}; // </ jomresJquery.fn.btPosition() >
+	}; // </ castorJquery.fn.btPosition() >
 
 
 	/**
-	 * jomresJquery's dimensions.js overrides the $().btOuterWidth() function
-	 *  this is a copy of original jomresJquery's outerWidth() function to
+	 * castorJquery's dimensions.js overrides the $().btOuterWidth() function
+	 *  this is a copy of original castorJquery's outerWidth() function to
 	 *  allow the plugin to work when dimensions.js is present
 	 */
-	jomresJquery.fn.btOuterWidth = function (margin) {
+	castorJquery.fn.btOuterWidth = function (margin) {
 
 		function num(elem, prop) {
-			return elem[0] && parseInt(jomresJquery.curCSS(elem[0], prop, true), 10) || 0;
+			return elem[0] && parseInt(castorJquery.curCSS(elem[0], prop, true), 10) || 0;
 		};
 
 		return this["innerWidth"]()
@@ -933,15 +933,15 @@ jomresJquery.bt = {version: '0.9.5-rc1'};
 			+ (margin ? num(this, "marginLeft")
 			+ num(this, "marginRight") : 0);
 
-	}; // </ jomresJquery.fn.btOuterWidth() >
+	}; // </ castorJquery.fn.btOuterWidth() >
 
 	/**
 	 * A convenience function to run btOn() (if available)
 	 * for each selected item
 	 */
-	jomresJquery.fn.btOn = function () {
+	castorJquery.fn.btOn = function () {
 		return this.each(function (index) {
-			if (jomresJquery.isFunction(this.btOn)) {
+			if (castorJquery.isFunction(this.btOn)) {
 				this.btOn();
 			}
 		});
@@ -952,31 +952,31 @@ jomresJquery.bt = {version: '0.9.5-rc1'};
 	 * A convenience function to run btOff() (if available)
 	 * for each selected item
 	 */
-	jomresJquery.fn.btOff = function () {
+	castorJquery.fn.btOff = function () {
 		return this.each(function (index) {
-			if (jomresJquery.isFunction(this.btOff)) {
+			if (castorJquery.isFunction(this.btOff)) {
 				this.btOff();
 			}
 		});
 	}; // </ $().btOff() >
 
-	jomresJquery.bt.vars = {clickAnywhereStack: [], closeWhenOpenStack: []};
+	castorJquery.bt.vars = {clickAnywhereStack: [], closeWhenOpenStack: []};
 
 	/**
 	 * This function gets bound to the document's click event
 	 * It turns off all of the tips in the click-anywhere-to-close stack
 	 */
-	jomresJquery.bt.docClick = function (e) {
+	castorJquery.bt.docClick = function (e) {
 		if (!e) {
 			var e = window.event;
 		}
 		;
 		// if clicked element is a child of neither a tip NOR a target
 		// and there are tips in the stack
-		if (!$(e.target).parents().andSelf().filter('.bt-wrapper, .bt-active').length && jomresJquery.bt.vars.clickAnywhereStack.length) {
+		if (!$(e.target).parents().andSelf().filter('.bt-wrapper, .bt-active').length && castorJquery.bt.vars.clickAnywhereStack.length) {
 			// if clicked element isn't inside tip, close tips in stack
-			$(jomresJquery.bt.vars.clickAnywhereStack).btOff();
-			$(document).unbind('click', jomresJquery.bt.docClick);
+			$(castorJquery.bt.vars.clickAnywhereStack).btOff();
+			$(document).unbind('click', castorJquery.bt.docClick);
 		}
 	}; // </ docClick() >
 
@@ -986,9 +986,9 @@ jomresJquery.bt = {version: '0.9.5-rc1'};
 	 * Note this is a variable definition and not a function. So defaults can be
 	 * written for an entire page by simply redefining attributes like so:
 	 *
-	 *   jomresJquery.bt.options.width = 400;
+	 *   castorJquery.bt.options.width = 400;
 	 *
-	 * Be sure to use *jomresJquery.bt.options* and not jomresJquery.bt.defaults when overriding
+	 * Be sure to use *castorJquery.bt.options* and not castorJquery.bt.defaults when overriding
 	 *
 	 * This would make all Beauty Tips boxes 400px wide.
 	 *
@@ -997,7 +997,7 @@ jomresJquery.bt = {version: '0.9.5-rc1'};
 	 * Can be overriden globally or at time of call.
 	 *
 	 */
-	jomresJquery.bt.defaults = {
+	castorJquery.bt.defaults = {
 		trigger: 'hover',                // trigger to show/hide tip
 		// use [on, off] to define separate on/off triggers
 		// also use space character to allow multiple  to trigger
@@ -1068,13 +1068,13 @@ jomresJquery.bt = {version: '0.9.5-rc1'};
 
 		ajaxPath: null,                  // if using ajax request for content, this contains url and (opt) selector
 		// this will override content and contentSelector
-		// examples (see jomresJquery load() function):
+		// examples (see castorJquery load() function):
 		//   '/demo.html'
 		//   '/help/ajax/snip'
 		//   '/help/existing/full div#content'
 
 		// ajaxPath can also be defined as an array
-		// in which case, the first value will be parsed as a jomresJquery selector
+		// in which case, the first value will be parsed as a castorJquery selector
 		// the result of which will be used as the ajaxPath
 		// the second (optional) value is the content selector as above
 		// examples:
@@ -1089,7 +1089,7 @@ jomresJquery.bt = {version: '0.9.5-rc1'};
 		ajaxType: 'GET',                 // 'GET' or 'POST'
 		ajaxCache: true,                  // cache ajax results and do not send request to same url multiple times
 		ajaxOpts: {},                    // any other ajax options - timeout, passwords, processing functions, etc...
-		// see http://docs.jquery.com/Ajax/jomresJquery.ajax#options
+		// see http://docs.jquery.com/Ajax/castorJquery.ajax#options
 
 		preBuild: function () {
 		},          // function to run before popup is built
@@ -1115,11 +1115,11 @@ jomresJquery.bt = {version: '0.9.5-rc1'};
 			timeout: 500
 		}
 
-	}; // </ jomresJquery.bt.defaults >
+	}; // </ castorJquery.bt.defaults >
 
-	jomresJquery.bt.options = {};
+	castorJquery.bt.options = {};
 
-})(jomresJquery);
+})(castorJquery);
 
 // @todo
 // use larger canvas (extend to edge of page when windowMargin is active)

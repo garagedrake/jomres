@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * This script will build language definition scripts for javascript files that need to be called AFTER all of the other language files have been read in.
 	 *
@@ -37,7 +37,7 @@ class j00005x_build_javascript_lang_definitions
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -48,36 +48,36 @@ class j00005x_build_javascript_lang_definitions
 			return;
 		}
 
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
-		$ls = jomresGetDomain();
+		$ls = castorGetDomain();
 		$javascript_files = array();
 
 		$live_scrolling_enabled = 'true';
-		if (!jomres_cmsspecific_areweinadminarea()) {
+		if (!castor_cmsspecific_areweinadminarea()) {
 			if ($jrConfig['live_scrolling_enabled'] == '0') {
 				$live_scrolling_enabled = 'false';
 			}
 		}
 
 
-		if (jomres_cmsspecific_areweinadminarea()) {
-			$jomres_sitepage_url_ajax = JOMRES_SITEPAGE_URL_ADMIN_AJAX;
+		if (castor_cmsspecific_areweinadminarea()) {
+			$castor_sitepage_url_ajax = CASTOR_SITEPAGE_URL_ADMIN_AJAX;
 		} else {
-			$jomres_sitepage_url_ajax = JOMRES_SITEPAGE_URL_AJAX;
+			$castor_sitepage_url_ajax = CASTOR_SITEPAGE_URL_AJAX;
 		}
 
 		$misc_url_defs = '
-			var live_site_ajax = "'.$jomres_sitepage_url_ajax.'";
-			var compare_url = "'.JOMRES_SITEPAGE_URL_NOSEF.'&task=compare'.'";
-			var path_to_jomres_dir = "'.get_showtime('live_site').'";
-			var module_pop_ajax_url = "'.JOMRES_SITEPAGE_URL_AJAX.'&task=module_popup&nofollowtmpl=1&id=";
+			var live_site_ajax = "'.$castor_sitepage_url_ajax.'";
+			var compare_url = "'.CASTOR_SITEPAGE_URL_NOSEF.'&task=compare'.'";
+			var path_to_castor_dir = "'.get_showtime('live_site').'";
+			var module_pop_ajax_url = "'.CASTOR_SITEPAGE_URL_AJAX.'&task=module_popup&nofollowtmpl=1&id=";
 			';
 
 		$misc_url_defs .= '
-			var property_reviews_ajax_url = "'.JOMRES_SITEPAGE_URL_AJAX.'&task=show_property_reviews&nofollowtmpl=1&property_uid=";
+			var property_reviews_ajax_url = "'.CASTOR_SITEPAGE_URL_AJAX.'&task=show_property_reviews&nofollowtmpl=1&property_uid=";
 			
-			var JOMRES_ROOT_DIRECTORY = "' .JOMRES_ROOT_DIRECTORY.'";
+			var CASTOR_ROOT_DIRECTORY = "' .CASTOR_ROOT_DIRECTORY.'";
 			var live_scrolling_enabled = ' .$live_scrolling_enabled.';
 			
 			var dataTables_sEmptyTable		= "'.jr_gettext('DATATABLES_SEMPTYTABLE', 'DATATABLES_SEMPTYTABLE', false).'";
@@ -100,12 +100,12 @@ class j00005x_build_javascript_lang_definitions
 			var dataTables_showhide			= "'.jr_gettext('DATATABLES_SHOWHIDE', 'DATATABLES_SHOWHIDE', false).'";
 			var dataTables_sColVis			= "'.jr_gettext('DATATABLES_COLVIS', 'DATATABLES_COLVIS', false).'";
 
-			var jomres_javascript_readmore = "' .jr_gettext('_JOMRES_JAVASCRIPT_READMORE', '_JOMRES_JAVASCRIPT_READMORE', false).'";
-			var jomres_javascript_readless = "' .jr_gettext('_JOMRES_JAVASCRIPT_READLESS', '_JOMRES_JAVASCRIPT_READLESS', false).'";
+			var castor_javascript_readmore = "' .jr_gettext('_CASTOR_JAVASCRIPT_READMORE', '_CASTOR_JAVASCRIPT_READMORE', false).'";
+			var castor_javascript_readless = "' .jr_gettext('_CASTOR_JAVASCRIPT_READLESS', '_CASTOR_JAVASCRIPT_READLESS', false).'";
 			';
 
 		if (get_showtime('property_uid') > 0) {
-			$current_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+			$current_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 			$current_property_details->gather_data(get_showtime('property_uid'));
 
 			$property_type = $current_property_details->property_type;
@@ -119,25 +119,25 @@ class j00005x_build_javascript_lang_definitions
 			$SERVER_PORT = $_SERVER[ "SERVER_PORT" ];
 		}
 		
-		if ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $SERVER_PORT == 443) {// We need to include some javascript which could normally be echo'd into the page, but due to the fact that it might be included by Jomres proper, as well as plugins, we'll instead create it's own .js file, and use the host CMS to insert it into the head.
+		if ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $SERVER_PORT == 443) {// We need to include some javascript which could normally be echo'd into the page, but due to the fact that it might be included by Castor proper, as well as plugins, we'll instead create it's own .js file, and use the host CMS to insert it into the head.
 			$temp_file = $ls.'_ssl_'.get_showtime('lang').'_'.$property_type.'_';
 		} else {
 			$temp_file = $ls.'_'.get_showtime('lang').'_'.$property_type.'_';
 		}
 
-		if (jomres_cmsspecific_areweinadminarea()) {
+		if (castor_cmsspecific_areweinadminarea()) {
 			$temp_file .= '_misc_url_defs_admin.js';
 		} else {
 			$temp_file .= '_misc_url_defs.js';
 		}
-		if (!file_exists(JOMRES_TEMP_ABSPATH.$temp_file)) {
-			$result = file_put_contents(JOMRES_TEMP_ABSPATH.$temp_file, $misc_url_defs);
+		if (!file_exists(CASTOR_TEMP_ABSPATH.$temp_file)) {
+			$result = file_put_contents(CASTOR_TEMP_ABSPATH.$temp_file, $misc_url_defs);
 			if (!$result) {
-				throw new Exception('Tried to write  '.JOMRES_TEMP_ABSPATH.$temp_file.' but was not succcessful');
+				throw new Exception('Tried to write  '.CASTOR_TEMP_ABSPATH.$temp_file.' but was not succcessful');
 			}
 		}
 
-		jomres_cmsspecific_addheaddata('javascript', JOMRES_ROOT_DIRECTORY.'/temp/', $temp_file);
+		castor_cmsspecific_addheaddata('javascript', CASTOR_ROOT_DIRECTORY.'/temp/', $temp_file);
 	}
 
 
@@ -146,3 +146,4 @@ class j00005x_build_javascript_lang_definitions
 		return null;
 	}
 }
+

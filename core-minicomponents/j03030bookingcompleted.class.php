@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Shows the booking completed message
 	 *
@@ -37,21 +37,21 @@ class j03030bookingcompleted
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = true;
 
 			return;
 		}
 		$mrConfig = getPropertySpecificSettings();
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
-		$tmpBookingHandler = jomres_singleton_abstract::getInstance('jomres_temp_booking_handler');
+		$tmpBookingHandler = castor_singleton_abstract::getInstance('castor_temp_booking_handler');
 		$property_uid = $tmpBookingHandler->getBookingPropertyId();
 
 		// Here we'll check for payment_success_redirect_url in the user_settings. If it exists we will redirect the user to there, instead of showing the message here.
 		if (isset($tmpBookingHandler->user_settings[ 'payment_success_redirect_url' ])) {
-			jomresRedirect(base64_decode($tmpBookingHandler->user_settings[ 'payment_success_redirect_url' ]));
+			castorRedirect(base64_decode($tmpBookingHandler->user_settings[ 'payment_success_redirect_url' ]));
 		}
 
 		$save_deets = array();
@@ -60,11 +60,11 @@ class j03030bookingcompleted
 		if (defined('_JR_GATEWAY_AFTERWORD')) {
 			$save_deets[ 'JR_GATEWAY_AFTERWORD' ] = jr_gettext('_JR_GATEWAY_AFTERWORD', '_JR_GATEWAY_AFTERWORD');
 		}
-		$save_deets[ 'SAVEDMESSAGE' ] = jr_gettext('_JOMRES_FRONT_MR_BOOKINGMADE', '_JOMRES_FRONT_MR_BOOKINGMADE');
+		$save_deets[ 'SAVEDMESSAGE' ] = jr_gettext('_CASTOR_FRONT_MR_BOOKINGMADE', '_CASTOR_FRONT_MR_BOOKINGMADE');
 		$save_deets[ 'PROPERTYUID' ] = $property_uid;
 		
 		$save_deets[ 'PROPERTY_DETAILS_URL' ] = get_showtime('livesite');
-		$save_deets[ 'BACKTOPROPERTY' ] = jr_gettext('_JOMRES_BACKTOPROPERTYDETAILSLINK', '_JOMRES_BACKTOPROPERTYDETAILSLINK');
+		$save_deets[ 'BACKTOPROPERTY' ] = jr_gettext('_CASTOR_BACKTOPROPERTYDETAILSLINK', '_CASTOR_BACKTOPROPERTYDETAILSLINK');
 		if ($jrConfig[ 'is_single_property_installation' ] != '1') {
 			$save_deets[ 'PROPERTY_DETAILS_URL' ] = get_property_details_url($property_uid);
 		}
@@ -73,7 +73,7 @@ class j03030bookingcompleted
 		$tmpl = new patTemplate();
 		$tmpl->addRows('completed', $save_details);
 		$componentArgs = array('tmpl' => $tmpl);
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 		$tmpl->readTemplatesFromInput('bookings_completed.html');
 		$tmpl->displayParsedTemplate();
 	}
@@ -83,8 +83,8 @@ class j03030bookingcompleted
 		$output = array();
 
 		//$output[]		=jr_gettext('_JR_GATEWAY_AFTERWORD','_JR_GATEWAY_AFTERWORD');
-		$output[ ] = jr_gettext('_JOMRES_FRONT_MR_BOOKINGMADE', '_JOMRES_FRONT_MR_BOOKINGMADE');
-		$output[ ] = jr_gettext('_JOMRES_BACKTOPROPERTYDETAILSLINK', '_JOMRES_BACKTOPROPERTYDETAILSLINK');
+		$output[ ] = jr_gettext('_CASTOR_FRONT_MR_BOOKINGMADE', '_CASTOR_FRONT_MR_BOOKINGMADE');
+		$output[ ] = jr_gettext('_CASTOR_BACKTOPROPERTYDETAILSLINK', '_CASTOR_BACKTOPROPERTYDETAILSLINK');
 
 		foreach ($output as $o) {
 			echo $o;
@@ -103,3 +103,4 @@ class j03030bookingcompleted
 		return null;
 	}
 }
+

@@ -1,23 +1,23 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 
 use function \PHP81_BC\strftime;
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -38,20 +38,20 @@ class j06000srp_calendar
 	public function __construct($componentArgs = null)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 		$this->retVals = '';
 
 		$this->now = time();
 
-		$property_uid = (int) jomresGetParam($_REQUEST, 'property_uid', '');
+		$property_uid = (int) castorGetParam($_REQUEST, 'property_uid', '');
 		if (isset($componentArgs ['property_uid'])) {
 			$property_uid = (int) $componentArgs ['property_uid'];
 		}
@@ -60,37 +60,37 @@ class j06000srp_calendar
 			return;
 		}
 
-		$output_now = (bool) jomresGetParam($_REQUEST, 'op', true);
+		$output_now = (bool) castorGetParam($_REQUEST, 'op', true);
 		if (isset($componentArgs ['output_now'])) {
 			$output_now = (bool) $componentArgs ['output_now'];
 		}
 
-		$months_to_show = (int) jomresGetParam($_REQUEST, 'months_to_show', 24);
+		$months_to_show = (int) castorGetParam($_REQUEST, 'months_to_show', 24);
 		if (isset($componentArgs ['months_to_show'])) {
 			$months_to_show = (int) $componentArgs ['months_to_show'];
 		}
 
-		$start_month = (int) jomresGetParam($_REQUEST, 'start_month', date('m'));
+		$start_month = (int) castorGetParam($_REQUEST, 'start_month', date('m'));
 		if (isset($componentArgs ['start_month'])) {
 			$start_month = (int) $componentArgs ['start_month'];
 		}
-		$start_year = (int) jomresGetParam($_REQUEST, 'start_year', date('Y'));
+		$start_year = (int) castorGetParam($_REQUEST, 'start_year', date('Y'));
 		if (isset($componentArgs ['start_year'])) {
 			$start_year = (int) $componentArgs ['start_year'];
 		}
 
-		$show_just_month = (bool) jomresGetParam($_REQUEST, 'show_just_month', false);
+		$show_just_month = (bool) castorGetParam($_REQUEST, 'show_just_month', false);
 		if (isset($componentArgs ['show_just_month'])) {
 			$show_just_month = (bool) $componentArgs ['show_just_month'];
 		}
 
-		$room_uid = (int) jomresGetParam($_REQUEST, 'room_uid', 0);
+		$room_uid = (int) castorGetParam($_REQUEST, 'room_uid', 0);
 		if (isset($componentArgs ['room_uid'])) {
 			$room_uid = (int) $componentArgs ['room_uid'];
 		}
 
 		if ($room_uid == 0) {
-			$query = 'SELECT room_uid FROM #__jomres_rooms WHERE propertys_uid = '.$property_uid.' LIMIT 1 ';
+			$query = 'SELECT room_uid FROM #__castor_rooms WHERE propertys_uid = '.$property_uid.' LIMIT 1 ';
 			$room_uid = (int) doSelectSql($query, 1);
 		}
 
@@ -105,7 +105,7 @@ class j06000srp_calendar
 		$this->booking_start_dates = array();
 		$this->booking_end_dates = array();
 
-		$query = "SELECT `date`,`contract_uid` FROM #__jomres_room_bookings WHERE room_uid = '".(int) $room_uid."' ";
+		$query = "SELECT `date`,`contract_uid` FROM #__castor_room_bookings WHERE room_uid = '".(int) $room_uid."' ";
 		$room_bookings = doSelectSql($query);
 		foreach ($room_bookings as $b) {
 			$this->booked_dates[] = $b->date;
@@ -113,7 +113,7 @@ class j06000srp_calendar
 		}
 
 		if (!empty($contracts)) {
-			$query = 'SELECT `arrival`,`departure` FROM #__jomres_contracts WHERE `contract_uid` IN ('.jomres_implode($contracts).')';
+			$query = 'SELECT `arrival`,`departure` FROM #__castor_contracts WHERE `contract_uid` IN ('.castor_implode($contracts).')';
 			$contractList = doSelectSql($query);
 
 			foreach ($contractList as $contract) {
@@ -128,8 +128,8 @@ class j06000srp_calendar
 			if (get_showtime('task') != 'dobooking') {
 				$this->retVals = '
 				<div class="row">
-					<div class="col-md-3 jomres-calendar-day-num jomres-calendar-available"> ' .jr_gettext('_JOMRES_COM_AVLCAL_INMONTHFACE_KEY', '_JOMRES_COM_AVLCAL_INMONTHFACE_KEY').'</div>
-					<div class="col-md-3 jomres-calendar-day-num jomres-calendar-booking-occupied-completely">' .jr_gettext('_JOMRES_COM_AVLCAL_OCCUPIEDCOLOUR_KEY', '_JOMRES_COM_AVLCAL_OCCUPIEDCOLOUR_KEY').'</div>
+					<div class="col-md-3 castor-calendar-day-num castor-calendar-available"> ' .jr_gettext('_CASTOR_COM_AVLCAL_INMONTHFACE_KEY', '_CASTOR_COM_AVLCAL_INMONTHFACE_KEY').'</div>
+					<div class="col-md-3 castor-calendar-day-num castor-calendar-booking-occupied-completely">' .jr_gettext('_CASTOR_COM_AVLCAL_OCCUPIEDCOLOUR_KEY', '_CASTOR_COM_AVLCAL_OCCUPIEDCOLOUR_KEY').'</div>
 				</div>
 				<div class="container-fluid">
 					<div class="row">
@@ -172,7 +172,7 @@ class j06000srp_calendar
 
 	public function makecal($stmonth, $styear, $property_uid)
 	{
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 
 		$mrConfig = getPropertySpecificSettings($property_uid);
@@ -189,7 +189,7 @@ class j06000srp_calendar
 
 		$thisMonthName = getThisMonthName(date('n', $stdate), false);
 		if ($thisMonthName == '') {
-			$thisMonthName = jr_gettext('_JOMRES_CUSTOMTEXT_'.date('M', $stdate), strftime('%B', $stdate), false, false);
+			$thisMonthName = jr_gettext('_CASTOR_CUSTOMTEXT_'.date('M', $stdate), strftime('%B', $stdate), false, false);
 		}
 		date('Y', strtotime($this->now));
 		$this->retVals .= '<div class="calendar-month-name">'.$thisMonthName.' '.strftime('%Y', $stdate).'</div>';
@@ -198,21 +198,21 @@ class j06000srp_calendar
 		$this->retVals .= '<tr>';
 		
 		if ($jrConfig[ 'calendarstartofweekday' ] == '1') {
-			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_JOMRES_COM_MR_WEEKDAYS_SUNDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_SUNDAY_ABBR', false, false), 0, 1).'</td>';
-			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_JOMRES_COM_MR_WEEKDAYS_MONDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_MONDAY_ABBR', false, false), 0, 1).'</td>';
-			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_JOMRES_COM_MR_WEEKDAYS_TUESDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_TUESDAY_ABBR', false, false), 0, 1).'</td>';
-			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_JOMRES_COM_MR_WEEKDAYS_WEDNESDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_WEDNESDAY_ABBR', false, false), 0, 1).'</td>';
-			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_JOMRES_COM_MR_WEEKDAYS_THURSDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_THURSDAY_ABBR', false, false), 0, 1).'</td>';
-			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_JOMRES_COM_MR_WEEKDAYS_FRIDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_FRIDAY_ABBR', false, false), 0, 1).'</td>';
-			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_JOMRES_COM_MR_WEEKDAYS_SATURDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_SATURDAY_ABBR', false, false), 0, 1).'</td>';
+			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_CASTOR_COM_MR_WEEKDAYS_SUNDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_SUNDAY_ABBR', false, false), 0, 1).'</td>';
+			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_CASTOR_COM_MR_WEEKDAYS_MONDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_MONDAY_ABBR', false, false), 0, 1).'</td>';
+			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_CASTOR_COM_MR_WEEKDAYS_TUESDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_TUESDAY_ABBR', false, false), 0, 1).'</td>';
+			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_CASTOR_COM_MR_WEEKDAYS_WEDNESDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_WEDNESDAY_ABBR', false, false), 0, 1).'</td>';
+			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_CASTOR_COM_MR_WEEKDAYS_THURSDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_THURSDAY_ABBR', false, false), 0, 1).'</td>';
+			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_CASTOR_COM_MR_WEEKDAYS_FRIDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_FRIDAY_ABBR', false, false), 0, 1).'</td>';
+			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_CASTOR_COM_MR_WEEKDAYS_SATURDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_SATURDAY_ABBR', false, false), 0, 1).'</td>';
 		} else {
-			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_JOMRES_COM_MR_WEEKDAYS_MONDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_MONDAY_ABBR', false, false), 0, 1).'</td>';
-			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_JOMRES_COM_MR_WEEKDAYS_TUESDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_TUESDAY_ABBR', false, false), 0, 1).'</td>';
-			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_JOMRES_COM_MR_WEEKDAYS_WEDNESDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_WEDNESDAY_ABBR', false, false), 0, 1).'</td>';
-			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_JOMRES_COM_MR_WEEKDAYS_THURSDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_THURSDAY_ABBR', false, false), 0, 1).'</td>';
-			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_JOMRES_COM_MR_WEEKDAYS_FRIDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_FRIDAY_ABBR', false, false), 0, 1).'</td>';
-			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_JOMRES_COM_MR_WEEKDAYS_SATURDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_SATURDAY_ABBR', false, false), 0, 1).'</td>';
-			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_JOMRES_COM_MR_WEEKDAYS_SUNDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_SUNDAY_ABBR', false, false), 0, 1).'</td>';
+			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_CASTOR_COM_MR_WEEKDAYS_MONDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_MONDAY_ABBR', false, false), 0, 1).'</td>';
+			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_CASTOR_COM_MR_WEEKDAYS_TUESDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_TUESDAY_ABBR', false, false), 0, 1).'</td>';
+			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_CASTOR_COM_MR_WEEKDAYS_WEDNESDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_WEDNESDAY_ABBR', false, false), 0, 1).'</td>';
+			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_CASTOR_COM_MR_WEEKDAYS_THURSDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_THURSDAY_ABBR', false, false), 0, 1).'</td>';
+			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_CASTOR_COM_MR_WEEKDAYS_FRIDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_FRIDAY_ABBR', false, false), 0, 1).'</td>';
+			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_CASTOR_COM_MR_WEEKDAYS_SATURDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_SATURDAY_ABBR', false, false), 0, 1).'</td>';
+			$this->retVals .= "<td class='calendar-day'>".mb_substr(jr_gettext('_CASTOR_COM_MR_WEEKDAYS_SUNDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_SUNDAY_ABBR', false, false), 0, 1).'</td>';
 		}
 		
 		$this->retVals .= '</tr>';
@@ -242,18 +242,18 @@ class j06000srp_calendar
 				
 				if (in_array($fmt, $this->booked_dates)) {
 					$link = '';
-					$class = 'jomres-calendar-booking-occupied-completely';
+					$class = 'castor-calendar-booking-occupied-completely';
 				}
 				if (in_array($fmt, $this->booking_start_dates)) {
 					$link = '';
-					$class = 'jomres-calendar-booking-start';
+					$class = 'castor-calendar-booking-start';
 				}
 				if (in_array($fmt, $this->booking_end_dates)) {
-					$class = 'jomres-calendar-booking-end';
+					$class = 'castor-calendar-booking-end';
 				}
 				if (in_array($fmt, $this->booking_start_dates) && in_array($fmt, $this->booking_end_dates)) {
 					$link = '';
-					$class = 'jomres-calendar-booking-crossover';
+					$class = 'castor-calendar-booking-crossover';
 				}
 
 				if ($currdate < $now) {
@@ -261,7 +261,7 @@ class j06000srp_calendar
 				}
 
 				$this->retVals .= '<td>';
-				$this->retVals .= '<div class="jomres-calendar-day-num '.$class.'">';
+				$this->retVals .= '<div class="castor-calendar-day-num '.$class.'">';
 
 				if (date('m', $currdate) == $stmonth) {
 					if ($link != '') {
@@ -286,3 +286,4 @@ class j06000srp_calendar
 		return $this->retVals;
 	}
 }
+

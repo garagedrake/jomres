@@ -1,27 +1,27 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 /**
  *
- * @package Jomres\Core\Database
+ * @package Castor\Core\Database
  *
  * Database modification during updates
  *
  **/
 $query = "
-CREATE TABLE IF NOT EXISTS  #__jomres_gdpr_optins (
+CREATE TABLE IF NOT EXISTS  #__castor_gdpr_optins (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`date_time` datetime default NULL ,
 	`user_id` INT UNSIGNED NOT NULL DEFAULT 0,
@@ -36,5 +36,6 @@ CREATE TABLE IF NOT EXISTS  #__jomres_gdpr_optins (
 ";
 
 if (!doInsertSql($query)) {
-	$this->setMessage('Error, unable to create the #__jomres_gdpr_optins table', 'danger');
+	$this->setMessage('Error, unable to create the #__castor_gdpr_optins table', 'danger');
 }
+

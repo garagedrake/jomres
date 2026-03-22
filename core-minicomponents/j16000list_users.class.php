@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,7 +36,7 @@ class j16000list_users
 	function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			return;
@@ -46,11 +46,11 @@ class j16000list_users
 		$rows	   = array ();
 		$pageoutput = array ();
 
-		$output[ 'HLEGEND' ] 					   						= jr_gettext('_JOMRES_HLEGEND', '_JOMRES_HLEGEND', false);
-		$output[ '_JOMRES_MANAGER_CHOOSE_EXISTINGTITLE' ]				= jr_gettext('_JOMRES_MANAGER_CHOOSE_EXISTINGTITLE', '_JOMRES_MANAGER_CHOOSE_EXISTINGTITLE', false);
-		$output[ '_JOMRES_CHOOSEMANAGER_NUMBEROFPROPERTIES_ASSIGNED' ]	= jr_gettext('_JOMRES_CHOOSEMANAGER_NUMBEROFPROPERTIES_ASSIGNED', '_JOMRES_CHOOSEMANAGER_NUMBEROFPROPERTIES_ASSIGNED', false);
-		$output[ 'HACCESSLEVEL' ]	   									= jr_gettext('_JOMRES_COM_MR_ASSIGNUSER_AUTHORISEDACCESSLEVEL', '_JOMRES_COM_MR_ASSIGNUSER_AUTHORISEDACCESSLEVEL', false);
-		$output[ 'HUSERNAME' ]		   									= jr_gettext('_JOMRES_COM_MR_ASSIGNUSER_USERNAME', '_JOMRES_COM_MR_ASSIGNUSER_USERNAME', false);
+		$output[ 'HLEGEND' ] 					   						= jr_gettext('_CASTOR_HLEGEND', '_CASTOR_HLEGEND', false);
+		$output[ '_CASTOR_MANAGER_CHOOSE_EXISTINGTITLE' ]				= jr_gettext('_CASTOR_MANAGER_CHOOSE_EXISTINGTITLE', '_CASTOR_MANAGER_CHOOSE_EXISTINGTITLE', false);
+		$output[ '_CASTOR_CHOOSEMANAGER_NUMBEROFPROPERTIES_ASSIGNED' ]	= jr_gettext('_CASTOR_CHOOSEMANAGER_NUMBEROFPROPERTIES_ASSIGNED', '_CASTOR_CHOOSEMANAGER_NUMBEROFPROPERTIES_ASSIGNED', false);
+		$output[ 'HACCESSLEVEL' ]	   									= jr_gettext('_CASTOR_COM_MR_ASSIGNUSER_AUTHORISEDACCESSLEVEL', '_CASTOR_COM_MR_ASSIGNUSER_AUTHORISEDACCESSLEVEL', false);
+		$output[ 'HUSERNAME' ]		   									= jr_gettext('_CASTOR_COM_MR_ASSIGNUSER_USERNAME', '_CASTOR_COM_MR_ASSIGNUSER_USERNAME', false);
 
 		$output[ '_LIST_USERS_LEGEND_NOROLE' ]		   								= jr_gettext('_LIST_USERS_LEGEND_NOROLE', '_LIST_USERS_LEGEND_NOROLE', false);
 		$output[ '_LIST_USERS_LEGEND_RECEPTIONIST' ]		   						= jr_gettext('_LIST_USERS_LEGEND_RECEPTIONIST', '_LIST_USERS_LEGEND_RECEPTIONIST', false);
@@ -59,10 +59,10 @@ class j16000list_users
 		$output[ '_LIST_USERS_LEGEND_SUSPENDED' ]		   							= jr_gettext('_LIST_USERS_LEGEND_SUSPENDED', '_LIST_USERS_LEGEND_SUSPENDED', false);
 		$output[ '_LIST_USERS_LEGEND_DELETEDFROMCMS' ]		   						= jr_gettext('_LIST_USERS_LEGEND_DELETEDFROMCMS', '_LIST_USERS_LEGEND_DELETEDFROMCMS', false);
 		
-		$jomres_users = jomres_singleton_abstract::getInstance('jomres_users');
-		$jomres_users->get_users();
+		$castor_users = castor_singleton_abstract::getInstance('castor_users');
+		$castor_users->get_users();
 		
-		foreach ($jomres_users->users as $u) {
+		foreach ($castor_users->users as $u) {
 			$r = array ();
 
 			switch ($u['access_level']) {
@@ -93,19 +93,19 @@ class j16000list_users
 			}
 			
 			if ($u['access_level'] > 0) {
-				$toolbar = jomres_singleton_abstract::getInstance('jomresItemToolbar');
+				$toolbar = castor_singleton_abstract::getInstance('castorItemToolbar');
 				$toolbar->newToolbar();
-				$toolbar->addItem('fa fa-pencil-square-o', 'btn btn-info', '', jomresURL(JOMRES_SITEPAGE_URL_ADMIN . '&task=edit_user&cms_user_id=' . $u['cms_user_id']), jr_gettext('COMMON_EDIT', 'COMMON_EDIT', false));
+				$toolbar->addItem('fa fa-pencil-square-o', 'btn btn-info', '', castorURL(CASTOR_SITEPAGE_URL_ADMIN . '&task=edit_user&cms_user_id=' . $u['cms_user_id']), jr_gettext('COMMON_EDIT', 'COMMON_EDIT', false));
 				
 				if ($u['access_level'] < 90) {
 					if ($u['suspended'] == 1) {
-						$toolbar->addSecondaryItem('fa fa-ban', '', '', jomresURL(JOMRES_SITEPAGE_URL_ADMIN . '&task=unsuspend_user&cms_user_id=' . $u['cms_user_id']), 'Unsuspend');
+						$toolbar->addSecondaryItem('fa fa-ban', '', '', castorURL(CASTOR_SITEPAGE_URL_ADMIN . '&task=unsuspend_user&cms_user_id=' . $u['cms_user_id']), 'Unsuspend');
 					} else {
-						$toolbar->addSecondaryItem('fa fa-ban', '', '', jomresURL(JOMRES_SITEPAGE_URL_ADMIN . '&task=suspend_user&cms_user_id=' . $u['cms_user_id']), 'Suspend');
+						$toolbar->addSecondaryItem('fa fa-ban', '', '', castorURL(CASTOR_SITEPAGE_URL_ADMIN . '&task=suspend_user&cms_user_id=' . $u['cms_user_id']), 'Suspend');
 					}
 				}
 				
-				$toolbar->addSecondaryItem('fa fa-trash-o', '', '', jomresURL(JOMRES_SITEPAGE_URL_ADMIN . '&task=delete_user&cms_user_id=' . $u['cms_user_id']), jr_gettext('COMMON_DELETE', 'COMMON_DELETE', false));
+				$toolbar->addSecondaryItem('fa fa-trash-o', '', '', castorURL(CASTOR_SITEPAGE_URL_ADMIN . '&task=delete_user&cms_user_id=' . $u['cms_user_id']), jr_gettext('COMMON_DELETE', 'COMMON_DELETE', false));
 				
 				$r['LINKTEXT'] = $toolbar->getToolbar();
 			} else {
@@ -124,19 +124,19 @@ class j16000list_users
 			$rows[] = $r;
 		}
 		
-		$jrtbar = jomres_singleton_abstract::getInstance('jomres_toolbar');
+		$jrtbar = castor_singleton_abstract::getInstance('castor_toolbar');
 		$jrtb  = $jrtbar->startTable();
 		
-		$image = $jrtbar->makeImageValid(JOMRES_IMAGES_RELPATH.'jomresimages/small/AddItem.png');
+		$image = $jrtbar->makeImageValid(CASTOR_IMAGES_RELPATH.'castorimages/small/AddItem.png');
 		
-		$jrtb .= $jrtbar->customToolbarItem('edit', JOMRES_SITEPAGE_URL_ADMIN, $text=jr_gettext('COMMON_NEW', 'COMMON_NEW', false), $submitOnClick=true, $submitTask="edit_user", $image);
-		$jrtb .= $jrtbar->toolbarItem('cancel', JOMRES_SITEPAGE_URL_ADMIN, jr_gettext("COMMON_CANCEL", 'COMMON_CANCEL', false));
+		$jrtb .= $jrtbar->customToolbarItem('edit', CASTOR_SITEPAGE_URL_ADMIN, $text=jr_gettext('COMMON_NEW', 'COMMON_NEW', false), $submitOnClick=true, $submitTask="edit_user", $image);
+		$jrtb .= $jrtbar->toolbarItem('cancel', CASTOR_SITEPAGE_URL_ADMIN, jr_gettext("COMMON_CANCEL", 'COMMON_CANCEL', false));
 		$jrtb .= $jrtbar->endTable();
-		$output['JOMRESTOOLBAR']=$jrtb;
+		$output['CASTORTOOLBAR']=$jrtb;
 
 		$pageoutput[] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 		$tmpl->readTemplatesFromInput('list_users.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->addRows('rows', $rows);
@@ -149,3 +149,4 @@ class j16000list_users
 		return null;
 	}
 }
+

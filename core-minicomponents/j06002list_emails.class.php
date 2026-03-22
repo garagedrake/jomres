@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,7 +35,7 @@ class j06002list_emails
 	 
 	public function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -45,15 +45,15 @@ class j06002list_emails
 		$ePointFilepath = get_showtime('ePointFilepath');
 		$defaultProperty = getDefaultProperty();
 
-		$toolbar = jomres_singleton_abstract::getInstance('jomresItemToolbar');
+		$toolbar = castor_singleton_abstract::getInstance('castorItemToolbar');
 
 		$output = array();
 		$rows = array();
 
-		$output['PAGETITLE'] = jr_gettext('_JOMRES_EMAIL_TEMPLATES_TITLE', '_JOMRES_EMAIL_TEMPLATES_TITLE', false);
-		$output['HEMAIL_TYPE'] = jr_gettext('_JOMRES_EMAIL_TEMPLATES_TYPE', '_JOMRES_EMAIL_TEMPLATES_TYPE', false);
-		$output['HEMAIL_NAME'] = jr_gettext('_JOMRES_EMAIL_TEMPLATES_NAME', '_JOMRES_EMAIL_TEMPLATES_NAME', false);
-		$output['HEMAIL_DESC'] = jr_gettext('_JOMRES_EMAIL_TEMPLATES_DESC', '_JOMRES_EMAIL_TEMPLATES_DESC', false);
+		$output['PAGETITLE'] = jr_gettext('_CASTOR_EMAIL_TEMPLATES_TITLE', '_CASTOR_EMAIL_TEMPLATES_TITLE', false);
+		$output['HEMAIL_TYPE'] = jr_gettext('_CASTOR_EMAIL_TEMPLATES_TYPE', '_CASTOR_EMAIL_TEMPLATES_TYPE', false);
+		$output['HEMAIL_NAME'] = jr_gettext('_CASTOR_EMAIL_TEMPLATES_NAME', '_CASTOR_EMAIL_TEMPLATES_NAME', false);
+		$output['HEMAIL_DESC'] = jr_gettext('_CASTOR_EMAIL_TEMPLATES_DESC', '_CASTOR_EMAIL_TEMPLATES_DESC', false);
 
 		$MiniComponents->triggerEvent('03150');
 
@@ -64,14 +64,14 @@ class j06002list_emails
 			$r['EMAIL_DESC'] = $t['desc'];
 
 			if (!using_bootstrap()) {
-				$jrtbar = jomres_getSingleton('jomres_toolbar');
+				$jrtbar = castor_getSingleton('castor_toolbar');
 				$jrtb = $jrtbar->startTable();
-				$jrtb .= $jrtbar->toolbarItem('edit', jomresURL(JOMRES_SITEPAGE_URL.'&task=edit_email&email_type='.$t['type']), '');
+				$jrtb .= $jrtbar->toolbarItem('edit', castorURL(CASTOR_SITEPAGE_URL.'&task=edit_email&email_type='.$t['type']), '');
 				$jrtb .= $jrtbar->endTable();
 				$r['EDITLINK'] = $jrtb;
 			} else {
 				$toolbar->newToolbar();
-				$toolbar->addItem('fa fa-pencil-square-o', 'btn btn-info', '', jomresURL(JOMRES_SITEPAGE_URL.'&task=edit_email&email_type='.$t['type']), jr_gettext('COMMON_EDIT', 'COMMON_EDIT', false));
+				$toolbar->addItem('fa fa-pencil-square-o', 'btn btn-info', '', castorURL(CASTOR_SITEPAGE_URL.'&task=edit_email&email_type='.$t['type']), jr_gettext('COMMON_EDIT', 'COMMON_EDIT', false));
 				$r['EDITLINK'] = $toolbar->getToolbar();
 			}
 
@@ -80,7 +80,7 @@ class j06002list_emails
 
 		$pageoutput[] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 		$tmpl->readTemplatesFromInput('list_emails.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->addRows('rows', $rows);
@@ -93,3 +93,4 @@ class j06002list_emails
 		return null;
 	}
 }
+

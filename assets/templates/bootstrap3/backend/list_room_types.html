@@ -1,28 +1,28 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <script type="text/javascript">
 	<!--
-	jomresJquery(document).ready(function () {
+	castorJquery(document).ready(function () {
 		make_datatable('list_room_types', '{PAGETITLE}', '{LIVESITE}');
 	});
 	//-->
 </script>
 <h2 class="page-header">{PAGETITLE}</h2>
-<p>{_JOMRES_PROPERTY_ROOM_TYPES_EDIT_LEAD}</p>
+<p>{_CASTOR_PROPERTY_ROOM_TYPES_EDIT_LEAD}</p>
 
 
 <div class="well">
-	<a href="{NEW_ROOM_TYPE_URL}" class="btn btn-primary"><i class="fa fa-plus"></i> {_JOMRES_PROPERTY_ROOM_TYPES_NEW}</a>
+	<a href="{NEW_ROOM_TYPE_URL}" class="btn btn-primary"><i class="fa fa-plus"></i> {_CASTOR_PROPERTY_ROOM_TYPES_NEW}</a>
 </div>
 
 <form method="post" name="listRoomTypes">
-	{JOMRESTOOLBAR}
+	{CASTORTOOLBAR}
 	<table id="list_room_types" width="100%" class="table table-striped">
 		<thead>
 		<tr>
 			<th></th>
 			<th>{HRTTITLE}</th>
-			<th class="hidden-phone">{HJOMRES_A_ICON}</th>
+			<th class="hidden-phone">{HCASTOR_A_ICON}</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -35,7 +35,7 @@
 		</patTemplate:tmpl>
 		</tbody>
 	</table>
-	<input type="hidden" name="option" value="com_jomres"/>
+	<input type="hidden" name="option" value="com_castor"/>
 	{CSRF_TOKEN}
 </form>
 </patTemplate:tmpl>

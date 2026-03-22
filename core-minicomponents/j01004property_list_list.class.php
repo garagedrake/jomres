@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Registers the list layout for property search results/lists. These are the options that a user can choose to alter the layout they want to see properties displayed in.
 	 */
@@ -36,7 +36,7 @@ class j01004property_list_list
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = true;
 
@@ -45,7 +45,7 @@ class j01004property_list_list
 		$this_plugin = 'list';
 		$layout = '';
 
-		$tmpBookingHandler = jomres_singleton_abstract::getInstance('jomres_temp_booking_handler');
+		$tmpBookingHandler = castor_singleton_abstract::getInstance('castor_temp_booking_handler');
 
 		if (isset($tmpBookingHandler->tmpsearch_data[ 'current_property_list_layout' ])) {
 			$layout = $tmpBookingHandler->tmpsearch_data[ 'current_property_list_layout' ];
@@ -61,7 +61,7 @@ class j01004property_list_list
 			$property_list_layouts = array();
 		}
 
-		$property_list_layouts[ $this_plugin ] = array('layout' => 'list_properties.html', 'title' => jr_gettext('_JOMRES_PROPERTYLIST_LAYOUT_LIST', '_JOMRES_PROPERTYLIST_LAYOUT_LIST', false, false), 'path' => null);
+		$property_list_layouts[ $this_plugin ] = array('layout' => 'list_properties.html', 'title' => jr_gettext('_CASTOR_PROPERTYLIST_LAYOUT_LIST', '_CASTOR_PROPERTYLIST_LAYOUT_LIST', false, false), 'path' => null);
 
 		set_showtime('property_list_layouts', $property_list_layouts);
 	}
@@ -69,7 +69,7 @@ class j01004property_list_list
 	public function touch_template_language()
 	{
 		$output = array();
-		$output[ ] = jr_gettext('_JOMRES_PROPERTYLIST_LAYOUT_LIST', '_JOMRES_PROPERTYLIST_LAYOUT_LIST');
+		$output[ ] = jr_gettext('_CASTOR_PROPERTYLIST_LAYOUT_LIST', '_CASTOR_PROPERTYLIST_LAYOUT_LIST');
 
 		foreach ($output as $o) {
 			echo $o;
@@ -83,3 +83,4 @@ class j01004property_list_list
 		return null;
 	}
 }
+

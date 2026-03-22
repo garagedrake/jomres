@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Ajax script. dds properties to the shortlist, if the user is logged in, instead adds the property to the user's favourites list.
 	 *
@@ -36,20 +36,20 @@ class j06000ajax_shortlist
 	 
 	public function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		$property_uid = (int) jomresGetParam($_GET, 'property_uid', 0);
-		$show_label = (int) jomresGetParam($_GET, 'show_label', 0);
+		$property_uid = (int) castorGetParam($_GET, 'property_uid', 0);
+		$show_label = (int) castorGetParam($_GET, 'show_label', 0);
 		$result = '';
 
-		$tmpBookingHandler = jomres_singleton_abstract::getInstance('jomres_temp_booking_handler');
+		$tmpBookingHandler = castor_singleton_abstract::getInstance('castor_temp_booking_handler');
 
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 
 		$shortlist_items = array();
 		if (isset($tmpBookingHandler->tmpsearch_data[ 'shortlist_items' ])) {
@@ -62,11 +62,11 @@ class j06000ajax_shortlist
 
 			$output = array();
 			$pageoutput = array();
-			$output['TEXT'] = jr_gettext('_JOMRES_REMOVEFROMSHORTLIST', '_JOMRES_REMOVEFROMSHORTLIST', false, false);
+			$output['TEXT'] = jr_gettext('_CASTOR_REMOVEFROMSHORTLIST', '_CASTOR_REMOVEFROMSHORTLIST', false, false);
 			$pageoutput[ ] = $output;
 
 			$tmpl = new patTemplate();
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 			if ($show_label == 1) {
 				$tmpl->readTemplatesFromInput('shortlilst_added_text.html');
 			} else {
@@ -97,11 +97,11 @@ class j06000ajax_shortlist
 
 			$output = array();
 			$pageoutput = array();
-			$output['TEXT'] = jr_gettext('_JOMRES_ADDTOSHORTLIST', '_JOMRES_ADDTOSHORTLIST', false, false);
+			$output['TEXT'] = jr_gettext('_CASTOR_ADDTOSHORTLIST', '_CASTOR_ADDTOSHORTLIST', false, false);
 			$pageoutput[ ] = $output;
 
 			$tmpl = new patTemplate();
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 			if ($show_label == 1) {
 				$tmpl->readTemplatesFromInput('shortlist_removed_text.html');
 			} else {
@@ -136,3 +136,4 @@ class j06000ajax_shortlist
 		return null;
 	}
 }
+

@@ -1,16 +1,16 @@
-<?php
+﻿<?php
 	/**
 	 *
-	 * @author Vince Wooll <sales@jomres.net>
+	 * @author Vince Wooll <sales@castor.net>
 	 *
-	 *  @version Jomres 10.7.2
+	 *  @version Castor 10.7.2
 	 *
 	 * @copyright	2005-2023 Vince Wooll
-	 * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+	 * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
 	 **/
 
 // ################################################################
-	defined('_JOMRES_INITCHECK') or die('');
+	defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 
 	use Joomla\CMS\Factory;
@@ -18,17 +18,17 @@
 
 	/**
 	 *
-	 * Sets up the Jomres framework.
+	 * Sets up the Castor framework.
 	 *
-	 * The REST API is does not have to use the Jomres framework, however it saves time to use the framework and API features can optionally request the framework to make use of already existing functions and classes.
+	 * The REST API is does not have to use the Castor framework, however it saves time to use the framework and API features can optionally request the framework to make use of already existing functions and classes.
 	 *
 	 */
 
-	if (!defined('JOMRES_ROOT_DIRECTORY')) {
-		if (file_exists(dirname(__FILE__).'/../jomres_root.php')) {
-			require_once dirname(__FILE__).'/../jomres_root.php';
+	if (!defined('CASTOR_ROOT_DIRECTORY')) {
+		if (file_exists(dirname(__FILE__).'/../castor_root.php')) {
+			require_once dirname(__FILE__).'/../castor_root.php';
 		} else {
-			define('JOMRES_ROOT_DIRECTORY', 'jomres');
+			define('CASTOR_ROOT_DIRECTORY', 'castor');
 		}
 	}
 
@@ -39,10 +39,10 @@
 
 	require_once dirname(__FILE__).'/integration.php';
 
-//jomres framework
+//castor framework
 	$all_classes = get_declared_classes();
-	if (!jomres_cmsspecific_areweinadminarea() || in_array('ElementorPro\Plugin' , $all_classes) ) {
-		load_jomres_environment();
+	if (!castor_cmsspecific_areweinadminarea() || in_array('ElementorPro\Plugin' , $all_classes) ) {
+		load_castor_environment();
 	}
 
 	/**
@@ -86,19 +86,19 @@
 
 	/**
 	 *
-	 * Setup the Jomres framework for use by functionality that doesn't come directly from the host CMS (e.g. the REST API)
+	 * Setup the Castor framework for use by functionality that doesn't come directly from the host CMS (e.g. the REST API)
 	 *
 	 */
-	function load_jomres_environment()
+	function load_castor_environment()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 
 		/**
 		 *
 		 * site config object
 		 *
 		 */
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 
 		/**
@@ -106,23 +106,23 @@
 		 * get all properties in system.
 		 *
 		 */
-		$jomres_properties = jomres_singleton_abstract::getInstance('jomres_properties');
-		$jomres_properties->get_all_properties();
+		$castor_properties = castor_singleton_abstract::getInstance('castor_properties');
+		$castor_properties->get_all_properties();
 
 		/**
 		 *
 		 * language object - load default language file for context
 		 *
 		 */
-		$jomres_language = jomres_singleton_abstract::getInstance('jomres_language');
-		$jomres_language->get_language();
+		$castor_language = castor_singleton_abstract::getInstance('castor_language');
+		$castor_language->get_language();
 
 		/**
 		 *
 		 * custom text object - load all custom text
 		 *
 		 */
-		$customTextObj = jomres_singleton_abstract::getInstance('custom_text');
+		$customTextObj = castor_singleton_abstract::getInstance('custom_text');
 
 		/**
 		 *
@@ -145,7 +145,7 @@
 		 * Setup the user object
 		 *
 		 */
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 
 		/**
 		 *
@@ -156,11 +156,11 @@
 
 		/**
 		 *
-		 * jomres cron object
+		 * castor cron object
 		 *
 		 */
 		if (!defined('API_STARTED')) {
-			$cron = jomres_singleton_abstract::getInstance('jomres_cron');
+			$cron = castor_singleton_abstract::getInstance('castor_cron');
 			if ($cron->method == 'Minicomponent' && !AJAXCALL) {
 				$cron->triggerJobs();
 			}
@@ -173,18 +173,18 @@
 		 * Called the booking object, in reality it is the object that retrieves, holds for use during run, and stores specific user variables plus booking details.
 		 *
 		 */
-		$tmpBookingHandler = jomres_singleton_abstract::getInstance('jomres_temp_booking_handler');
+		$tmpBookingHandler = castor_singleton_abstract::getInstance('castor_temp_booking_handler');
 
 		/**
 		 *
-		 * Setup the Jomres session
+		 * Setup the Castor session
 		 *
 		 */
-		if (is_null($tmpBookingHandler->jomressession) || $tmpBookingHandler->jomressession == '') {
+		if (is_null($tmpBookingHandler->castorsession) || $tmpBookingHandler->castorsession == '') {
 			$tmpBookingHandler->initBookingSession();
 
-			$jomressession = $tmpBookingHandler->getJomressession();
-			set_showtime('jomressession', $jomressession);
+			$castorsession = $tmpBookingHandler->getCastorsession();
+			set_showtime('castorsession', $castorsession);
 		}
 
 		/**
@@ -192,15 +192,15 @@
 		 * currency exchange rates
 		 *
 		 */
-		$jomres_currency_exchange_rates = jomres_singleton_abstract::getInstance('jomres_currency_exchange_rates');
+		$castor_currency_exchange_rates = castor_singleton_abstract::getInstance('castor_currency_exchange_rates');
 
 		/**
 		 *
 		 * set currency code to the appropriate one for the detected location
 		 *
 		 */
-		$jomres_geolocation = jomres_singleton_abstract::getInstance('jomres_geolocation');
-		$jomres_geolocation->auto_set_user_currency_code();
+		$castor_geolocation = castor_singleton_abstract::getInstance('castor_geolocation');
+		$castor_geolocation->auto_set_user_currency_code();
 
 		$property_uid = (int) detect_property_uid();
 
@@ -218,7 +218,7 @@
 				set_showtime('old_language_context', $original_language_context);
 			}
 
-			$current_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+			$current_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 			$current_property_details->gather_data($property_uid);
 
 			//since we have a property uid, we also have a property type, so let`s set a showtime
@@ -226,7 +226,7 @@
 			set_showtime('ptype_id', $current_property_details->ptype_id);
 
 			//load property type specific language file if $property_type is set
-			$jomres_language->get_language($current_property_details->property_type);
+			$castor_language->get_language($current_property_details->property_type);
 		}
 
 		if (!AJAXCALL) {
@@ -275,3 +275,4 @@
 
 		return true;
 	}
+

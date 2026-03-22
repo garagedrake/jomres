@@ -1,22 +1,22 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -40,17 +40,17 @@ class j16000view_log_file
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		$filename = (string) jomresGetParam($_REQUEST, 'filename', '');
-		$session = (string) jomresGetParam($_REQUEST, 'session', '');
+		$filename = (string) castorGetParam($_REQUEST, 'filename', '');
+		$session = (string) castorGetParam($_REQUEST, 'session', '');
 
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 
 		if (!isset($jrConfig['log_path']) || $jrConfig['log_path'] == '') {
@@ -107,7 +107,7 @@ class j16000view_log_file
 						$r['USERNAME'] = $content_array[2];
 						$r['SESSION'] = $content_array[4];
 						$r['URL'] = $content_array[5];
-						$r['MESSAGE'] = jomres_purify_html($content_array[3]);
+						$r['MESSAGE'] = castor_purify_html($content_array[3]);
 						$r['CONTEXT'] = $content_array[6];
 						$r['EXTRA'] = $content_array[7];
 						if ($session != '' && $r['SESSION'] == $session) {
@@ -120,7 +120,7 @@ class j16000view_log_file
 
 				$pageoutput[ ] = $output;
 				$tmpl = new patTemplate();
-				$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+				$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 				$tmpl->readTemplatesFromInput('view_log_channel.html');
 				$tmpl->addRows('pageoutput', $pageoutput);
 				$tmpl->addRows('rows', $rows);
@@ -135,3 +135,4 @@ class j16000view_log_file
 		return null;
 	}
 }
+

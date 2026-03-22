@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,21 +36,21 @@ class j16000anonymise_guest
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_getSingleton('mcHandler');
+		$MiniComponents = castor_getSingleton('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		$guest_id = (int)jomresGetParam($_REQUEST, 'guest_id', 0);
-		$property_uid = (int)jomresGetParam($_REQUEST, 'property_uid', 0);
+		$guest_id = (int)castorGetParam($_REQUEST, 'guest_id', 0);
+		$property_uid = (int)castorGetParam($_REQUEST, 'property_uid', 0);
 		
-		jr_import('jomres_gdpr_personal_information_collections');
-		$jomres_gdpr_personal_information_collections = new jomres_gdpr_personal_information_collections();
-		$jomres_gdpr_personal_information_collections->redact_non_registered_guest_pii($guest_id, $property_uid);
+		jr_import('castor_gdpr_personal_information_collections');
+		$castor_gdpr_personal_information_collections = new castor_gdpr_personal_information_collections();
+		$castor_gdpr_personal_information_collections->redact_non_registered_guest_pii($guest_id, $property_uid);
 		
-		jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL_ADMIN . "&task=list_guests"), jr_gettext("_JOMRES_GDPR_RTBF_GUEST_REDACTED", '_JOMRES_GDPR_RTBF_GUEST_REDACTED', false));
+		castorRedirect(castorURL(CASTOR_SITEPAGE_URL_ADMIN . "&task=list_guests"), jr_gettext("_CASTOR_GDPR_RTBF_GUEST_REDACTED", '_CASTOR_GDPR_RTBF_GUEST_REDACTED', false));
 	}
 
 
@@ -59,3 +59,4 @@ class j16000anonymise_guest
 		return null;
 	}
 }
+

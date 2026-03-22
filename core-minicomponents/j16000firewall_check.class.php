@@ -1,24 +1,24 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\ClientException;
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -39,7 +39,7 @@ class j16000firewall_check
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -51,9 +51,9 @@ class j16000firewall_check
 		$pageoutput = array();
 		
 		$remote_services = array (
-			'https://license-server.jomres.net/remote.php',
-			'http://plugins.jomres.net/',
-			'http://updates.jomres.net/',
+			'https://license-server.castor.net/remote.php',
+			'http://plugins.castor.net/',
+			'http://updates.castor.net/',
 			'https://maps-api-ssl.google.com/',
 			'https://api.openweathermap.org',
 			'https://openexchangerates.org/api/latest.json'
@@ -98,7 +98,7 @@ class j16000firewall_check
 
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 		$tmpl->readTemplatesFromInput('firewall_check.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->addRows('rows', $rows);
@@ -143,3 +143,4 @@ class j16000firewall_check
 		return null;
 	}
 }
+

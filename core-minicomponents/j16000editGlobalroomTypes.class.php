@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,43 +36,43 @@ class j16000editGlobalroomTypes
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		$room_classes_uid = intval(jomresGetParam($_REQUEST, 'rmTypeUid', 0));
-		$mrp_srp_flag = intval(jomresGetParam($_REQUEST, 'mrp_srp_flag', 0));
+		$room_classes_uid = intval(castorGetParam($_REQUEST, 'rmTypeUid', 0));
+		$mrp_srp_flag = intval(castorGetParam($_REQUEST, 'mrp_srp_flag', 0));
 
 		$output = array();
 		$all_ptype_rows = array();
 
-		$jomres_property_types = jomres_singleton_abstract::getInstance('jomres_property_types');
-		$jomres_property_types->get_all_property_types();
+		$castor_property_types = castor_singleton_abstract::getInstance('castor_property_types');
+		$castor_property_types->get_all_property_types();
 
-		$jomres_room_types = jomres_singleton_abstract::getInstance('jomres_room_types');
-		$jomres_room_types->get_room_type($room_classes_uid);
+		$castor_room_types = castor_singleton_abstract::getInstance('castor_room_types');
+		$castor_room_types->get_room_type($room_classes_uid);
 
 		$output[ 'ROOMCLASSUID' ] = $room_classes_uid;
-		$output[ 'CLASSABBV' ] = stripslashes($jomres_room_types->room_type['room_class_abbv']);
+		$output[ 'CLASSABBV' ] = stripslashes($castor_room_types->room_type['room_class_abbv']);
 
 		$width="95%";
 		$height="250";
 		$col="20";
 		$row="10";
 		
-		$output['CLASSDESC']=editorAreaText('room_class_desc', $jomres_room_types->room_type['room_class_full_desc'], 'room_class_desc', $width, $height, $col, $row);
+		$output['CLASSDESC']=editorAreaText('room_class_desc', $castor_room_types->room_type['room_class_full_desc'], 'room_class_desc', $width, $height, $col, $row);
 		
-		if (!empty($jomres_property_types->property_types)) {
-			foreach ($jomres_property_types->property_types as $ptype) {
+		if (!empty($castor_property_types->property_types)) {
+			foreach ($castor_property_types->property_types as $ptype) {
 				$r = array();
 				$r[ 'propertytype_id' ] = $ptype['id'];
 				$r[ 'propertytype_desc' ] = $ptype['ptype'];
 				$r[ 'checked' ] = '';
 
-				if (in_array($ptype['id'], $jomres_room_types->room_type['ptype_xref'])) {
+				if (in_array($ptype['id'], $castor_room_types->room_type['ptype_xref'])) {
 					$r[ 'checked' ] = ' checked ';
 				}
 
@@ -80,10 +80,10 @@ class j16000editGlobalroomTypes
 			}
 		}
 
-		$image = $jomres_room_types->room_type['image'];
+		$image = $castor_room_types->room_type['image'];
 
 		//room type icons
-		$images = $jomres_room_types->get_all_room_type_images();
+		$images = $castor_room_types->get_all_room_type_images();
 		
 		$rows = array();
 		
@@ -97,27 +97,27 @@ class j16000editGlobalroomTypes
 			$rows[] = $i;
 		}
 
-		$output[ 'PROPERTYFEATUREINFO' ] = jr_gettext('_JOMRES_A_GLOBALROOMTYPES_INFO', '_JOMRES_A_GLOBALROOMTYPES_INFO', false);
-		$output[ 'HLINKTEXT' ] = jr_gettext('_JOMRES_COM_MR_VRCT_ROOMTYPES_LINKTEXT', '_JOMRES_COM_MR_VRCT_ROOMTYPES_LINKTEXT', false);
-		$output[ 'HLINKTEXTCLONE' ] = jr_gettext('_JOMRES_COM_MR_LISTTARIFF_LINKTEXTCLONE', '_JOMRES_COM_MR_LISTTARIFF_LINKTEXTCLONE', false);
-		$output[ 'HABBV' ] = jr_gettext('_JOMRES_SEARCH_RTYPES', '_JOMRES_SEARCH_RTYPES', false);
-		$output[ 'HDESC' ] = jr_gettext('_JOMRES_COM_MR_EB_ROOM_CLASS_DESC', '_JOMRES_COM_MR_EB_ROOM_CLASS_DESC', false);
-		$output[ 'PAGETITLE' ] = jr_gettext('_JOMRES_COM_MR_VRCT_ROOMTYPES_HEADER_LINK', '_JOMRES_COM_MR_VRCT_ROOMTYPES_HEADER_LINK', false);
-		$output[ '_JOMRES_PROPERTY_TYPE_ASSIGNMENT' ] = jr_gettext('_JOMRES_PROPERTY_TYPE_ASSIGNMENT', '_JOMRES_PROPERTY_TYPE_ASSIGNMENT', false);
-		$output[ '_JOMRES_IMAGE' ] = jr_gettext('_JOMRES_IMAGE', '_JOMRES_IMAGE', false);
+		$output[ 'PROPERTYFEATUREINFO' ] = jr_gettext('_CASTOR_A_GLOBALROOMTYPES_INFO', '_CASTOR_A_GLOBALROOMTYPES_INFO', false);
+		$output[ 'HLINKTEXT' ] = jr_gettext('_CASTOR_COM_MR_VRCT_ROOMTYPES_LINKTEXT', '_CASTOR_COM_MR_VRCT_ROOMTYPES_LINKTEXT', false);
+		$output[ 'HLINKTEXTCLONE' ] = jr_gettext('_CASTOR_COM_MR_LISTTARIFF_LINKTEXTCLONE', '_CASTOR_COM_MR_LISTTARIFF_LINKTEXTCLONE', false);
+		$output[ 'HABBV' ] = jr_gettext('_CASTOR_SEARCH_RTYPES', '_CASTOR_SEARCH_RTYPES', false);
+		$output[ 'HDESC' ] = jr_gettext('_CASTOR_COM_MR_EB_ROOM_CLASS_DESC', '_CASTOR_COM_MR_EB_ROOM_CLASS_DESC', false);
+		$output[ 'PAGETITLE' ] = jr_gettext('_CASTOR_COM_MR_VRCT_ROOMTYPES_HEADER_LINK', '_CASTOR_COM_MR_VRCT_ROOMTYPES_HEADER_LINK', false);
+		$output[ '_CASTOR_PROPERTY_TYPE_ASSIGNMENT' ] = jr_gettext('_CASTOR_PROPERTY_TYPE_ASSIGNMENT', '_CASTOR_PROPERTY_TYPE_ASSIGNMENT', false);
+		$output[ '_CASTOR_IMAGE' ] = jr_gettext('_CASTOR_IMAGE', '_CASTOR_IMAGE', false);
 
-		$jrtbar = jomres_singleton_abstract::getInstance('jomres_toolbar');
+		$jrtbar = castor_singleton_abstract::getInstance('castor_toolbar');
 		$jrtb = $jrtbar->startTable();
-		$image = $jrtbar->makeImageValid(JOMRES_IMAGES_RELPATH.'jomresimages/small/Save.png');
-		$link = JOMRES_SITEPAGE_URL_ADMIN;
-		$jrtb .= $jrtbar->toolbarItem('cancel', JOMRES_SITEPAGE_URL_ADMIN.'&task=listGlobalroomTypes', '');
-		$jrtb .= $jrtbar->customToolbarItem('saveGlobalRoomClass', $link, jr_gettext('_JOMRES_COM_MR_SAVE', '_JOMRES_COM_MR_SAVE', false), $submitOnClick = true, $submitTask = 'saveGlobalRoomClass', $image);
+		$image = $jrtbar->makeImageValid(CASTOR_IMAGES_RELPATH.'castorimages/small/Save.png');
+		$link = CASTOR_SITEPAGE_URL_ADMIN;
+		$jrtb .= $jrtbar->toolbarItem('cancel', CASTOR_SITEPAGE_URL_ADMIN.'&task=listGlobalroomTypes', '');
+		$jrtb .= $jrtbar->customToolbarItem('saveGlobalRoomClass', $link, jr_gettext('_CASTOR_COM_MR_SAVE', '_CASTOR_COM_MR_SAVE', false), $submitOnClick = true, $submitTask = 'saveGlobalRoomClass', $image);
 		$jrtb .= $jrtbar->endTable();
-		$output[ 'JOMRESTOOLBAR' ] = $jrtb;
+		$output[ 'CASTORTOOLBAR' ] = $jrtb;
 
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 		$tmpl->readTemplatesFromInput('edit_room_type.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->addRows('rows', $rows);
@@ -131,3 +131,4 @@ class j16000editGlobalroomTypes
 		return null;
 	}
 }
+

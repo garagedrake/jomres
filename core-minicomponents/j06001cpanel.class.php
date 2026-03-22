@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,29 +35,29 @@ class j06001cpanel
 	 
 	public function __construct($componentArgs)
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			$this->shortcode_data = array(
 					'task' => 'cpanel',
 					'arguments' => array(),
-					'info' => '_JOMRES_SHORTCODES_06001CPANEL',
+					'info' => '_CASTOR_SHORTCODES_06001CPANEL',
 				);
 
 			return;
 		}
-		jomres_cmsspecific_setmetadata('title', jomres_purify_html(jr_gettext('_JRPORTAL_CPANEL', '_JRPORTAL_CPANEL', false)));
+		castor_cmsspecific_setmetadata('title', castor_purify_html(jr_gettext('_JRPORTAL_CPANEL', '_JRPORTAL_CPANEL', false)));
 		
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 		
 		$property_uid = getDefaultProperty();
 		
-		$jomres_widgets = jomres_singleton_abstract::getInstance('jomres_widgets');
-		$jomres_widgets->get_widgets($property_uid);
+		$castor_widgets = castor_singleton_abstract::getInstance('castor_widgets');
+		$castor_widgets->get_widgets($property_uid);
 
 		//widgets js
-		jomres_cmsspecific_addheaddata('javascript', JOMRES_JS_RELPATH, 'jomres-widgets.js');
+		castor_cmsspecific_addheaddata('javascript', CASTOR_JS_RELPATH, 'castor-widgets.js');
 
 		$output = array();
 		
@@ -75,8 +75,8 @@ class j06001cpanel
 			'is_widget' => true
 		);
 	
-		if (!empty($jomres_widgets->this_page_widgets)) {
-			foreach ($jomres_widgets->this_page_widgets as $widget => $w) {
+		if (!empty($castor_widgets->this_page_widgets)) {
+			foreach ($castor_widgets->this_page_widgets as $widget => $w) {
 				if (isset($w['column']) && $w['column'] <= $number_of_columns) {
 					$c = (int)$w['column'];
 				} else {
@@ -87,15 +87,15 @@ class j06001cpanel
 				
 				$widget_output['JR_WIDGET_TASK'] = $widget;
 
-				//$widget_output['WIDGET_SHORTCODE'] = '{jomres_shortcode '.$widget.'}';
-				$widget_output['WIDGET_SHORTCODE'] = $MiniComponents->specificEvent($jomres_widgets->widgets[$widget]['eventPoint'], $widget, $componentArgs);
+				//$widget_output['WIDGET_SHORTCODE'] = '{castor_shortcode '.$widget.'}';
+				$widget_output['WIDGET_SHORTCODE'] = $MiniComponents->specificEvent($castor_widgets->widgets[$widget]['eventPoint'], $widget, $componentArgs);
 				
-				$widget_output['WIDGET_TITLE'] = $jomres_widgets->widgets[$widget]['title'];
+				$widget_output['WIDGET_TITLE'] = $castor_widgets->widgets[$widget]['title'];
 				
 				$pageoutput = array();
 				$pageoutput[] = $widget_output;
 				$tmpl = new patTemplate();
-				$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+				$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 				$tmpl->addRows('pageoutput', $pageoutput);
 				$tmpl->readTemplatesFromInput('widget.html');
 				
@@ -112,7 +112,7 @@ class j06001cpanel
 		$pageoutput = array();
 		$pageoutput[] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 		$tmpl->addRows('pageoutput', $pageoutput);
 
 		for ($i = 1; $i <= $number_of_columns; ++$i) {
@@ -136,3 +136,4 @@ class j06001cpanel
 		return null;
 	}
 }
+

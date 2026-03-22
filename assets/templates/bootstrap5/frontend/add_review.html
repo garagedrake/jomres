@@ -1,54 +1,54 @@
-<pattemplate:tmpl name="pageoutput" unusedvars="strip">
+﻿<pattemplate:tmpl name="pageoutput" unusedvars="strip">
 	<script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function(){
-            jomresJquery.validator.setDefaults({
+            castorJquery.validator.setDefaults({
                 highlight: function (input) {
-                    jomresJquery(input).addClass("ui-state-highlight");
+                    castorJquery(input).addClass("ui-state-highlight");
                 },
                 unhighlight: function (input) {
-                    jomresJquery(input).removeClass("ui-state-highlight");
+                    castorJquery(input).removeClass("ui-state-highlight");
                 }
             });
-            jomresJquery("#messageBox").hide();
+            castorJquery("#messageBox").hide();
         }, false);
 
 	</script>
 
 	<div id="messageBox" class="alert alert-block"></div>
 
-	<h2 class="page-header">{_JOMRES_REVIEWS_ADD_REVIEW}</h2>
-	<form action="{JOMRES_SITEPAGE_URL_NOSEF}" method="post" id="reviewForm"
+	<h2 class="page-header">{_CASTOR_REVIEWS_ADD_REVIEW}</h2>
+	<form action="{CASTOR_SITEPAGE_URL_NOSEF}" method="post" id="reviewForm"
 	      name="adminform" class="" role="form">
 		<div class="form-group">
-			<label class="col-lg-2 col-form-label" for="review_title">{_JOMRES_REVIEWS_TITLE}</label>
+			<label class="col-lg-2 col-form-label" for="review_title">{_CASTOR_REVIEWS_TITLE}</label>
 			<div class="col-lg-10">
 				<input id="review_title" name="review_title" type="text" value="" class="form-control required"
-				       placeholder="{_JOMRES_REVIEWS_TITLE}">
+				       placeholder="{_CASTOR_REVIEWS_TITLE}">
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-lg-2 col-form-label" for="review_description">{_JOMRES_REVIEWS_REVIEWBODY}</label>
+			<label class="col-lg-2 col-form-label" for="review_description">{_CASTOR_REVIEWS_REVIEWBODY}</label>
 			<div class="col-lg-10">
                 <textarea id="review_description" name="review_description" rows="3" class="form-control required"
-                          placeholder="{_JOMRES_REVIEWS_REVIEWBODY}"></textarea>
+                          placeholder="{_CASTOR_REVIEWS_REVIEWBODY}"></textarea>
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-lg-2 col-form-label" for="pros">{_JOMRES_REVIEWS_PROS}</label>
+			<label class="col-lg-2 col-form-label" for="pros">{_CASTOR_REVIEWS_PROS}</label>
 			<div class="col-lg-10">
                 <textarea id="pros" name="pros" rows="3" class="form-control required"
-                          placeholder="{_JOMRES_REVIEWS_PROS}"></textarea>
+                          placeholder="{_CASTOR_REVIEWS_PROS}"></textarea>
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-lg-2 col-form-label" for="cons">{_JOMRES_REVIEWS_CONS}</label>
+			<label class="col-lg-2 col-form-label" for="cons">{_CASTOR_REVIEWS_CONS}</label>
 			<div class="col-lg-10">
                 <textarea id="cons" name="cons" rows="3" class="form-control required"
-                          placeholder="{_JOMRES_REVIEWS_CONS}"></textarea>
+                          placeholder="{_CASTOR_REVIEWS_CONS}"></textarea>
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-lg-2 col-form-label" for="rating_1">{_JOMRES_REVIEWS_RATING_1}</label>
+			<label class="col-lg-2 col-form-label" for="rating_1">{_CASTOR_REVIEWS_RATING_1}</label>
 			<div class="col-lg-10">
 				<input name="rating_1" type="radio" value="1" class="star">
 				<input name="rating_1" type="radio" value="2" class="star">
@@ -63,7 +63,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-lg-2 col-form-label" for="rating_2">{_JOMRES_REVIEWS_RATING_2}</label>
+			<label class="col-lg-2 col-form-label" for="rating_2">{_CASTOR_REVIEWS_RATING_2}</label>
 			<div class="col-lg-10">
 				<input name="rating_2" type="radio" value="1" class="star">
 				<input name="rating_2" type="radio" value="2" class="star">
@@ -78,7 +78,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-lg-2 col-form-label" for="rating_3">{_JOMRES_REVIEWS_RATING_3}</label>
+			<label class="col-lg-2 col-form-label" for="rating_3">{_CASTOR_REVIEWS_RATING_3}</label>
 			<div class="col-lg-10">
 				<input name="rating_3" type="radio" value="1" class="star">
 				<input name="rating_3" type="radio" value="2" class="star">
@@ -93,7 +93,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-lg-2 col-form-label" for="rating_4">{_JOMRES_REVIEWS_RATING_4}</label>
+			<label class="col-lg-2 col-form-label" for="rating_4">{_CASTOR_REVIEWS_RATING_4}</label>
 			<div class="col-lg-10">
 				<input name="rating_4" type="radio" value="1" class="star">
 				<input name="rating_4" type="radio" value="2" class="star">
@@ -108,7 +108,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-lg-2 col-form-label" for="rating_5">{_JOMRES_REVIEWS_RATING_5}</label>
+			<label class="col-lg-2 col-form-label" for="rating_5">{_CASTOR_REVIEWS_RATING_5}</label>
 			<div class="col-lg-10">
 				<input name="rating_5" type="radio" value="1" class="star">
 				<input name="rating_5" type="radio" value="2" class="star">
@@ -123,7 +123,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-lg-2 col-form-label" for="rating_6">{_JOMRES_REVIEWS_RATING_6}</label>
+			<label class="col-lg-2 col-form-label" for="rating_6">{_CASTOR_REVIEWS_RATING_6}</label>
 			<div class="col-lg-10">
 				<input name="rating_6" type="radio" value="1" class="star">
 				<input name="rating_6" type="radio" value="2" class="star">
@@ -138,15 +138,15 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-lg-2 col-form-label" for="anonymise">{_JOMRES_REVIEWS_ANONYMISE}</label>
+			<label class="col-lg-2 col-form-label" for="anonymise">{_CASTOR_REVIEWS_ANONYMISE}</label>
 			<div class="col-lg-10">{ANONYMISE_YESNO}
-				<p><small>{_JOMRES_REVIEWS_ANONYMISE_DESC}</small>
+				<p><small>{_CASTOR_REVIEWS_ANONYMISE_DESC}</small>
 				</p>
 			</div>
 		</div>
 		<div class="form-actions">
 			<div class="offset-md-2 col-lg-10">
-				<button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> {_JOMRES_REVIEWS_SUBMIT}</button>	<a href="{PROPERTY_DETAILS_URL}"
+				<button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> {_CASTOR_REVIEWS_SUBMIT}</button>	<a href="{PROPERTY_DETAILS_URL}"
 				                                                                                                                  class="btn btn-secondary"><i class="fa fa-times"></i> {COMMON_CANCEL}</a>
 			</div>
 		</div>

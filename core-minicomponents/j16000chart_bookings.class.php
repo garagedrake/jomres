@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,7 +36,7 @@ class j16000chart_bookings
 	 
 	public function __construct($componentArgs)
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -51,18 +51,18 @@ class j16000chart_bookings
 			$output_now = true;
 		}
 
-		$chart_type = jomresGetParam($_POST, 'jr_chart_type', 'line');
+		$chart_type = castorGetParam($_POST, 'jr_chart_type', 'line');
 
-		//import jomres charts class and create a new instance
-		jr_import('jomres_charts');
-		$chart = new jomres_charts();
+		//import castor charts class and create a new instance
+		jr_import('castor_charts');
+		$chart = new castor_charts();
 
 		//set new chart data
 		$chart->type = $chart_type;
-		$chart->title = jr_gettext('_JOMRES_STATUS_BOOKINGS', '_JOMRES_STATUS_BOOKINGS', false, false);
-		$chart->url = jomresUrl(JOMRES_SITEPAGE_URL_ADMIN.'&task=charts&jr_chart=chart_bookings');
+		$chart->title = jr_gettext('_CASTOR_STATUS_BOOKINGS', '_CASTOR_STATUS_BOOKINGS', false, false);
+		$chart->url = castorUrl(CASTOR_SITEPAGE_URL_ADMIN.'&task=charts&jr_chart=chart_bookings');
 		$chart->title_class = 'panel-default';
-		$chart->description = jr_gettext('_JOMRES_CHART_BOOKINGS_DESC', '_JOMRES_CHART_BOOKINGS_DESC', false, false);
+		$chart->description = jr_gettext('_CASTOR_CHART_BOOKINGS_DESC', '_CASTOR_CHART_BOOKINGS_DESC', false, false);
 		$chart->labels = array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
 
 		//query db for relevant rows for this chart
@@ -71,8 +71,8 @@ class j16000chart_bookings
 					a.status, 
 					a.raised_date,   
 					SUM( CASE WHEN b.init_total_inclusive < 0 THEN 0 ELSE b.init_total_inclusive END ) AS grand_total   
-				FROM #__jomresportal_invoices a 
-					JOIN #__jomresportal_lineitems b ON a.id = b.inv_id 
+				FROM #__castorportal_invoices a 
+					JOIN #__castorportal_lineitems b ON a.id = b.inv_id 
 				WHERE (a.status = 1 OR a.status = 3)
 					AND a.contract_id > 0 
 				GROUP BY a.id 
@@ -143,3 +143,4 @@ class j16000chart_bookings
 		return $this->retVals;
 	}
 }
+

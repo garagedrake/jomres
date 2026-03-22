@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 	/**
 	 * Core file.
 	 *
-	 * @author Vince Wooll <sales@jomres.net>
+	 * @author Vince Wooll <sales@castor.net>
 	 *
-	 *  @version Jomres 10.7.2
+	 *  @version Castor 10.7.2
 	 *
 	 * @copyright	2005-2023 Vince Wooll
-	 * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+	 * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
 	 **/
 
 // ################################################################
-	defined('_JOMRES_INITCHECK') or die('');
+	defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -53,23 +53,23 @@
 		public function __construct($componentArgs)
 		{
 			// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-			$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+			$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 			if ($MiniComponents->template_touch) {
 				$this->template_touchable = false;
 
 				return;
 			}
 
-			$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+			$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 			if (!$thisJRUser->userIsManager) {
 				return;
 			}
 
-			$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+			$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 			$jrConfig = $siteConfig->get();
 
 			//resource_type_gathering_trigger
-			if (jomres_cmsspecific_areweinadminarea()) {
+			if (castor_cmsspecific_areweinadminarea()) {
 				$result = $MiniComponents->triggerEvent('11010');
 				$resource_types = $MiniComponents->miniComponentData[ '11010' ];
 			} else {
@@ -82,8 +82,8 @@
 				return;
 			}
 
-			$resource_type = jomresGetParam($_REQUEST, 'resource_type', '');
-			$resource_id = jomresGetParam($_REQUEST, 'resource_id', '0');
+			$resource_type = castorGetParam($_REQUEST, 'resource_type', '');
+			$resource_id = castorGetParam($_REQUEST, 'resource_id', '0');
 
 			if ($resource_id == 'undefined') {
 				$resource_id = 0;
@@ -105,7 +105,7 @@
 			}
 
 			//set property uid
-			if (jomres_cmsspecific_areweinadminarea()) {
+			if (castor_cmsspecific_areweinadminarea()) {
 				$property_uid = 0;
 			} else {
 				$property_uid = getDefaultProperty();
@@ -122,23 +122,23 @@
 				$rel_path = $resource_types [$resource_type] ['upload_root_rel_path'].$resource_type.'/';
 			}
 
-			$jomres_media_centre_images = jomres_singleton_abstract::getInstance('jomres_media_centre_images');
+			$castor_media_centre_images = castor_singleton_abstract::getInstance('castor_media_centre_images');
 
 			if (isset($_GET['delete']) && $_GET['delete'] == '1') {
-				$file_name = (string) jomresGetParam($_REQUEST, 'file', '');
+				$file_name = (string) castorGetParam($_REQUEST, 'file', '');
 				if ($file_name == '') {
 					return;
 				}
 
 				//delete image from disk and db
-				if (!$jomres_media_centre_images->delete_image($property_uid, $resource_type, $resource_id, $file_name, $abs_path, $resource_id_required)) {
+				if (!$castor_media_centre_images->delete_image($property_uid, $resource_type, $resource_id, $file_name, $abs_path, $resource_id_required)) {
 					$response = array('message' => "Boo, we couldn't delete it. I'm going to have a little cry in the corner now.", 'success' => '0');
 				} else {
 					$response = array('message' => "Yay, we'll deleted this sukka", 'success' => '1');
 				}
 
 				//post_delete_processing_trigger, optional for post deletion
-				if (jomres_cmsspecific_areweinadminarea()) {
+				if (castor_cmsspecific_areweinadminarea()) {
 					$MiniComponents->triggerEvent('11050');
 				} else {
 					$MiniComponents->triggerEvent('03384');
@@ -162,15 +162,15 @@
 				return;
 			} else {
 				if (!empty($_FILES)) {
-					jr_import('jomres_media_centre_uploader');
+					jr_import('castor_media_centre_uploader');
 
-					if (!jomres_cmsspecific_areweinadminarea()) {
-						$script_url = JOMRES_SITEPAGE_URL_AJAX.'&task=media_centre_handler&delete=1&resource_type='.$resource_type.'&resource_id='.$resource_id;
+					if (!castor_cmsspecific_areweinadminarea()) {
+						$script_url = CASTOR_SITEPAGE_URL_AJAX.'&task=media_centre_handler&delete=1&resource_type='.$resource_type.'&resource_id='.$resource_id;
 					} else {
-						$script_url = JOMRES_SITEPAGE_URL_ADMIN_AJAX.'&task=media_centre_handler&delete=1&resource_type='.$resource_type.'&resource_id='.$resource_id;
+						$script_url = CASTOR_SITEPAGE_URL_ADMIN_AJAX.'&task=media_centre_handler&delete=1&resource_type='.$resource_type.'&resource_id='.$resource_id;
 					}
 
-					if (jomres_cmsspecific_areweinadminarea()) {
+					if (castor_cmsspecific_areweinadminarea()) {
 						$crop = false;
 					} else {
 						$crop = true;
@@ -200,7 +200,7 @@
 								'crop' => $crop
 							)
 						),
-						//jomres specific params, required for post upload processing
+						//castor specific params, required for post upload processing
 						'property_uid' => $property_uid,
 						'resource_type' => $resource_type,
 						'resource_id' => $resource_id,
@@ -208,7 +208,7 @@
 					));
 
 					//post_upload_processing_trigger, optional for post processing
-					if (jomres_cmsspecific_areweinadminarea()) {
+					if (castor_cmsspecific_areweinadminarea()) {
 						$MiniComponents->triggerEvent('11030');
 					} else {
 						$MiniComponents->triggerEvent('03382');
@@ -244,3 +244,4 @@
 			return null;
 		}
 	}
+

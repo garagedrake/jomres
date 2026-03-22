@@ -1,14 +1,14 @@
-
+﻿
 <patTemplate:tmpl name="booking_particulars">
 <script language="JavaScript" type="text/javascript">
 	<!--
 	function confirmation_validate(usecart) {
 		if (document.bookingForm.agreecheck.checked) {
 			if (usecart) {
-				jomresJquery('#jomres_task').val("{PROCESSURL_SAVETOCART}");
+				castorJquery('#castor_task').val("{PROCESSURL_SAVETOCART}");
 			}
 			else {
-				jomresJquery('#jomres_task').val("{PROCESSURL}");
+				castorJquery('#castor_task').val("{PROCESSURL}");
 			}
 
 			return true;
@@ -21,13 +21,13 @@
 
 	function agreeAlert() {
 		if (document.bookingForm.agreecheck.checked) {
-			jomresJquery('#agreealert').removeClass('alert-warning').addClass('alert-success');
-			jomresJquery('#send').removeAttr('disabled');
-			jomresJquery('#cart').removeAttr('disabled');
+			castorJquery('#agreealert').removeClass('alert-warning').addClass('alert-success');
+			castorJquery('#send').removeAttr('disabled');
+			castorJquery('#cart').removeAttr('disabled');
 		} else {
-			jomresJquery('#agreealert').removeClass('alert-success').addClass('alert-warning');
-			jomresJquery('#send').attr('disabled', 'disabled');
-			jomresJquery('#cart').attr('disabled', 'disabled');
+			castorJquery('#agreealert').removeClass('alert-success').addClass('alert-warning');
+			castorJquery('#send').attr('disabled', 'disabled');
+			castorJquery('#cart').attr('disabled', 'disabled');
 		}
 	}
 	//-->
@@ -190,7 +190,7 @@
 
 		<div class="row">
 			<div class="col-md-6">
-				{JOMRES_CITY_TAX_HEADING}
+				{CASTOR_CITY_TAX_HEADING}
 			</div>
 			<div class="col-md-6 align-right">
 				{CITY_TAX}
@@ -198,7 +198,7 @@
 		</div>
 		<div class="row">
 			<div class="col-md-6">
-				{JOMRES_CLEANING_FEE_HEADING}
+				{CASTOR_CLEANING_FEE_HEADING}
 			</div>
 			<div class="col-md-6 align-right">
 				{CLEANING_FEE}
@@ -309,13 +309,13 @@
 <div class="form-actions">
 	<div class="col-md-4 col-md-push-4" align="center">
 		<input type="submit" id="send" name="send" value="{THEBUTTON}" class="btn btn-success btn-lg btn-block" onclick="return confirmation_validate(false);" disabled="disabled"/>
-		<patTemplate:tmpl name="cartoutput" type="simpleCondition" requiredVars="_jomres_saveforlater"> {_JOMRES_CART_OR}
-			<input class="btn btn-default btn-lg btn-block" type="submit" id="cart" name="cart" value="{_JOMRES_SAVEFORLATER}" onclick="return confirmation_validate(true);" disabled="disabled"/>
+		<patTemplate:tmpl name="cartoutput" type="simpleCondition" requiredVars="_castor_saveforlater"> {_CASTOR_CART_OR}
+			<input class="btn btn-default btn-lg btn-block" type="submit" id="cart" name="cart" value="{_CASTOR_SAVEFORLATER}" onclick="return confirmation_validate(true);" disabled="disabled"/>
 		</patTemplate:tmpl>
 	</div>
 </div>
 
-<input type="hidden" name="task" id="jomres_task" value="" />
+<input type="hidden" name="task" id="castor_task" value="" />
 {CSRF_TOKEN}
 </form>
 

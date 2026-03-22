@@ -1,28 +1,28 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 
 /**
  *
- * @package Jomres\Core\Database
+ * @package Castor\Core\Database
  *
  * Database modification during updates
  *
  **/
 // Let's check that the buyer's table isn't populated. If it is not, then we are able to convert invoices.
-$query = "SELECT id FROM `#__jomres_invoice_pii_buyers` LIMIT 1";
+$query = "SELECT id FROM `#__castor_invoice_pii_buyers` LIMIT 1";
 $populated = doSelectSql($query);
 if (!empty($populated)) {
 	return ;
@@ -30,14 +30,14 @@ if (!empty($populated)) {
 
 // At this point in the update process the guest and manager PII will have been converted to encrypted PII. Next we will make use of the jrportal_invoice classes new methods to convert all current invoice's data to compatible encrypted data.
 
-$query = "SELECT id FROM #__jomresportal_invoices";
+$query = "SELECT id FROM #__castorportal_invoices";
 $invoice_ids = doSelectSql($query);
 
 jr_import('jrportal_invoice');
 $jrportal_invoice = new jrportal_invoice();
 	
 $all_contracts_guest_uids = array();
-$query = "SELECT  contract_uid , guest_uid FROM #__jomres_contracts";
+$query = "SELECT  contract_uid , guest_uid FROM #__castor_contracts";
 $contracts = doSelectSql($query);
 
 if (!empty($contracts)) {
@@ -61,7 +61,7 @@ $query = "SELECT
 		`enc_tel_mobile`,
 		`enc_email`,
 		`enc_vat_number`
-	FROM `#__jomres_guests`";
+	FROM `#__castor_guests`";
 $guests = doSelectSql($query );
 if (!empty( $guests )) {
 	foreach ($guests as $guest ) {
@@ -88,3 +88,4 @@ if (!empty($invoice_ids)) {
 		
 	}
 }
+

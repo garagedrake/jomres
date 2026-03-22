@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 	/**
 	 * Core file.
 	 *
-	 * @author Vince Wooll <sales@jomres.net>
+	 * @author Vince Wooll <sales@castor.net>
 	 *
-	 *  @version Jomres 10.7.2
+	 *  @version Castor 10.7.2
 	 *
 	 * @copyright	2005-2023 Vince Wooll
-	 * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+	 * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
 	 **/
 
 // ################################################################
-	defined('_JOMRES_INITCHECK') or die('');
+	defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,7 +35,7 @@
 
 		public function __construct()
 		{
-			$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+			$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 			if ($MiniComponents->template_touch) {
 				$this->template_touchable = false;
 
@@ -48,9 +48,9 @@
 			 * Call 2: Rebuilds the room list  (or simply outputs "We have bookings" in the case of SRPs) and returns the room list. This is parsed by the booking form as plain text in the room details field. Needs to be plain text as the overlib data returned will update javascript
 			 * Call 3: Calculates room prices and constructs any warnings. Sets background colours of the messages field and returns the calculated prices, the messages when are in turn parsed by javascript in the booking form and displayed.
 			 */
-			$thisJRUser = jomres_getSingleton('jr_user');
+			$thisJRUser = castor_getSingleton('jr_user');
 
-			$tmpBookingHandler = jomres_singleton_abstract::getInstance('jomres_temp_booking_handler');
+			$tmpBookingHandler = castor_singleton_abstract::getInstance('castor_temp_booking_handler');
 			$bookingDeets = gettempBookingdata();
 			$pid = $bookingDeets[ 'property_uid' ];
 
@@ -67,21 +67,21 @@
 			$errorClass = '; document.getElementById("messages").className=error_class;';
 			$oktobookClass = '; document.getElementById("messages").className=highlight_class;';
 
-			$field = jomresGetParam($_GET, 'field', '', 'string');
+			$field = castorGetParam($_GET, 'field', '', 'string');
 			$field = getEscaped($field);
-			$value = jomresGetParam($_GET, 'value', '', 'string');
+			$value = castorGetParam($_GET, 'value', '', 'string');
 			$value = getEscaped($value);
-			$typeid = jomresGetParam($_GET, 'typeid', '', 'string');
+			$typeid = castorGetParam($_GET, 'typeid', '', 'string');
 			$typeid = getEscaped($typeid);
-			$lastfield = jomresGetParam($_GET, 'lastfield', '', 'string');
+			$lastfield = castorGetParam($_GET, 'lastfield', '', 'string');
 			$lastfield = getEscaped($lastfield);
-			$firstrun = jomresGetParam($_GET, 'firstrun', '', 'string');
+			$firstrun = castorGetParam($_GET, 'firstrun', '', 'string');
 			$firstrun = getEscaped($firstrun);
 
 			$retText = '';
 
 			$doNotRebuildRoomsListOnTheseFieldsArray = array('addressstring', 'existingCustomers', 'firstname', 'surname', 'house', 'street', 'town', 'region', 'country', 'postcode', 'tel_landline', 'tel_mobile', 'email', 'property_uid_check', 'email_usage_check');
-			$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+			$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 			$bkg = $MiniComponents->triggerEvent('05000'); // Create the booking object
 			$isSingleRoomProperty = $bkg->getSingleRoomPropertyStatus();
 			$bkg->rebuildIgnoreList = $doNotRebuildRoomsListOnTheseFieldsArray;
@@ -248,7 +248,7 @@
 					$ajrq = 'ajrq:::extra_guests';
 					$bkg->setOkToBook(false);
 					$value = $bkg->sanitiseInput('int', $value);
-					$guest_index = (int)jomresGetParam($_GET, 'guest_index', 0) ;
+					$guest_index = (int)castorGetParam($_GET, 'guest_index', 0) ;
 
 					$bkg->set_child_selection($guest_index, $value);
 					break;
@@ -261,24 +261,24 @@
 					if ($bkg->extraAlreadySelected($value)) {
 						$retText = 'Extra removed from booking';
 						$bkg->removeExtra($value);
-						echo 'jomresJquery("input[name=\'extras[theId]\']").prop("checked",false);';
+						echo 'castorJquery("input[name=\'extras[theId]\']").prop("checked",false);';
 					} else {
 						$retText = 'Extra added to booking';
 						$bkg->setExtras($value);
-						echo 'jomresJquery("input[name=\'extras[theId]\']").prop("checked",true);';
+						echo 'castorJquery("input[name=\'extras[theId]\']").prop("checked",true);';
 					}
 					break;
 				case 'extrasquantity':
 					$ajrq = 'ajrq:::extrasquantity';
 					$bkg->setOkToBook(false);
 					$value = $bkg->sanitiseInput('int', $value);
-					$theId = jomresGetParam($_GET, 'theId', 1);
+					$theId = castorGetParam($_GET, 'theId', 1);
 					$theId = getEscaped($theId);
 					$bkg->writeToLogfile('Starting extra quantity input : Value = '.$value.'Extra id ='.$theId);
 					if ($bkg->extraAlreadySelected($theId)) {
 						$retText = 'Extra added to booking';
 						$bkg->setExtras($theId);
-						echo 'jomresJquery("#quantity"+theId).prop("checked", true);';
+						echo 'castorJquery("#quantity"+theId).prop("checked", true);';
 						$bkg->modifyExtraQuantity($value, $theId);
 					}
 
@@ -325,8 +325,8 @@
 					$ajrq = ' -- Release room locks -- ';
 					$bkg->setOkToBook(false);
 
-					jr_import('jomres_roomlocks');
-					$room_locker = new jomres_roomlocks();
+					jr_import('castor_roomlocks');
+					$room_locker = new castor_roomlocks();
 
 					$room_selections = explode(',', $value);
 
@@ -342,8 +342,8 @@
 
 				case 'multiroom_select':
 					$ajrq = ' -- Selected multiple rooms -- ';
-					jr_import('jomres_roomlocks');
-					$room_locker = new jomres_roomlocks();
+					jr_import('castor_roomlocks');
+					$room_locker = new castor_roomlocks();
 					$bkg->setOkToBook(false);
 					$value = $bkg->sanitiseInput('string', $value);
 					$room_selections = explode(',', $value);
@@ -416,13 +416,13 @@
 			}
 
 			if ($field != 'heartbeat' && $field != 'show_log' && $field != 'email_usage_check') {
-				$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+				$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 				$jrConfig = $siteConfig->get();
 
 				$ajrq = 'show_log';
 				$bkg->setErrorLog('handlereq::Generating billing data');
                 if (!$mrConfig['item_hire_property']) {
-                    echo '; populateDiv("totalinparty","' . $bkg->getTotalInParty() . ' ' . $bkg->sanitiseOutput(jr_gettext('_JOMRES_AJAXFORM_BILLING_TOTALINPARTY', '_JOMRES_AJAXFORM_BILLING_TOTALINPARTY', false, false)) . '");';
+                    echo '; populateDiv("totalinparty","' . $bkg->getTotalInParty() . ' ' . $bkg->sanitiseOutput(jr_gettext('_CASTOR_AJAXFORM_BILLING_TOTALINPARTY', '_CASTOR_AJAXFORM_BILLING_TOTALINPARTY', false, false)) . '");';
                 }
 
 				$arrivalDate = $bkg->getArrivalDate();
@@ -571,8 +571,8 @@
 
 				if ($bkg->getOkToBook()) {
 					echo $oktobookClass;
-					echo '; populateDiv("messages","'.$bkg->sanitiseOutput(jr_gettext('_JOMRES_FRONT_MR_REVIEWBOOKING', '_JOMRES_FRONT_MR_REVIEWBOOKING', false, false)).'"); checkSelectRoomMessage(true,"'.$disable_address.'");';
-					echo $bkg->setGuestPopupMessage(jr_gettext('_JOMRES_FRONT_MR_REVIEWBOOKING', '_JOMRES_FRONT_MR_REVIEWBOOKING', false, false));
+					echo '; populateDiv("messages","'.$bkg->sanitiseOutput(jr_gettext('_CASTOR_FRONT_MR_REVIEWBOOKING', '_CASTOR_FRONT_MR_REVIEWBOOKING', false, false)).'"); checkSelectRoomMessage(true,"'.$disable_address.'");';
+					echo $bkg->setGuestPopupMessage(jr_gettext('_CASTOR_FRONT_MR_REVIEWBOOKING', '_CASTOR_FRONT_MR_REVIEWBOOKING', false, false));
 					echo '; enableSubmitButton(document.ajaxform.confirmbooking); '; // Added timeout because if a user clicks on this button too soon they'll get taken to the review booking before oktobook has been saved, therefore getting themselves redirected back to here
 				} else {
 					$messagesClass = $errorClass;
@@ -598,22 +598,22 @@
 
 		function updateBookingFormAddressDetails(&$bkg)
 		{
-			$tmpBookingHandler = jomres_singleton_abstract::getInstance('jomres_temp_booking_handler');
+			$tmpBookingHandler = castor_singleton_abstract::getInstance('castor_temp_booking_handler');
 			$bkg->storeBookingDetails();
 			$result = $tmpBookingHandler->getGuestData();
-			echo '; document.ajaxform.firstname.value="'.jomres_decode($result[ 'firstname' ]).'"';
-			echo '; document.ajaxform.surname.value="'.jomres_decode($result[ 'surname' ]).'"';
-			echo '; document.ajaxform.house.value="'.jomres_decode($result[ 'house' ]).'"';
-			echo '; document.ajaxform.street.value="'.jomres_decode($result[ 'street' ]).'"';
-			echo '; document.ajaxform.town.value="'.jomres_decode($result[ 'town' ]).'"';
-			//echo '; document.ajaxform.region.value="' . jomres_decode( $result[ 'region' ] ) . '"';
-			echo '; document.ajaxform.country.value="'.jomres_decode($result[ 'country' ]).'"';
-			echo '; document.ajaxform.postcode.value="'.jomres_decode($result[ 'postcode' ]).'"';
-			echo '; document.ajaxform.tel_landline.value="'.jomres_decode($result[ 'tel_landline' ]).'"';
-			echo '; document.ajaxform.tel_mobile.value="'.jomres_decode($result[ 'tel_mobile' ]).'"';
+			echo '; document.ajaxform.firstname.value="'.castor_decode($result[ 'firstname' ]).'"';
+			echo '; document.ajaxform.surname.value="'.castor_decode($result[ 'surname' ]).'"';
+			echo '; document.ajaxform.house.value="'.castor_decode($result[ 'house' ]).'"';
+			echo '; document.ajaxform.street.value="'.castor_decode($result[ 'street' ]).'"';
+			echo '; document.ajaxform.town.value="'.castor_decode($result[ 'town' ]).'"';
+			//echo '; document.ajaxform.region.value="' . castor_decode( $result[ 'region' ] ) . '"';
+			echo '; document.ajaxform.country.value="'.castor_decode($result[ 'country' ]).'"';
+			echo '; document.ajaxform.postcode.value="'.castor_decode($result[ 'postcode' ]).'"';
+			echo '; document.ajaxform.tel_landline.value="'.castor_decode($result[ 'tel_landline' ]).'"';
+			echo '; document.ajaxform.tel_mobile.value="'.castor_decode($result[ 'tel_mobile' ]).'"';
 			echo '; populateDiv("guest_region_div","'.str_replace('"', '\"', setupRegions($result[ 'country' ], $result[ 'region' ])).'")';
 			if ($bkg->checkEmail($result[ 'email' ])) {
-				echo '; document.ajaxform.eemail.value="'.jomres_decode($result[ 'email' ]).'"';
+				echo '; document.ajaxform.eemail.value="'.castor_decode($result[ 'email' ]).'"';
 			}
 		}
 
@@ -686,15 +686,15 @@
 				$output = '';
 
 				if (!$isSingleRoomProperty) {
-					$selected_rooms_text = '<div><h4 class="page-header">'.jr_gettext('_JOMRES_AJAXFORM_SELECTEDROOMS', '_JOMRES_AJAXFORM_SELECTEDROOMS', false, false).'</h4></div>';
+					$selected_rooms_text = '<div><h4 class="page-header">'.jr_gettext('_CASTOR_AJAXFORM_SELECTEDROOMS', '_CASTOR_AJAXFORM_SELECTEDROOMS', false, false).'</h4></div>';
 
 					if ($bkg->numberOfCurrentlySelectedRooms() > 0) {
 						$currently_selected = '<div>'.$bkg->listCurrentlySelectedRooms().'</div>';
 					} else {
-						$currently_selected = '<div id="noroomsselected" >'.jr_gettext('_JOMRES_BOOKINGFORM_NOROOMSSELECTEDYET', '_JOMRES_BOOKINGFORM_NOROOMSSELECTEDYET', false, false).'</div>';
+						$currently_selected = '<div id="noroomsselected" >'.jr_gettext('_CASTOR_BOOKINGFORM_NOROOMSSELECTEDYET', '_CASTOR_BOOKINGFORM_NOROOMSSELECTEDYET', false, false).'</div>';
 					}
 
-					$available_rooms_text = '<div><h4 class="page-header">'.jr_gettext('_JOMRES_AJAXFORM_AVAILABLEROOMS', '_JOMRES_AJAXFORM_AVAILABLEROOMS', false, false).'</h4></div><div id="rooms_listing"></div>';
+					$available_rooms_text = '<div><h4 class="page-header">'.jr_gettext('_CASTOR_AJAXFORM_AVAILABLEROOMS', '_CASTOR_AJAXFORM_AVAILABLEROOMS', false, false).'</h4></div><div id="rooms_listing"></div>';
 
 					$selected_rooms_text = $bkg->sanitise_for_eval($selected_rooms_text);
 					$currently_selected = $bkg->sanitise_for_eval($currently_selected);
@@ -704,10 +704,10 @@
 					$output .= "populateDiv('availRooms','".$available_rooms_text."');";
 
 					if (!empty($freeRoomsArray)) {
-						$output .= ";jomresJquery('#availRooms').fadeIn();";
-						$output .= ";jomresJquery('#selectedRooms').fadeIn();";
+						$output .= ";castorJquery('#availRooms').fadeIn();";
+						$output .= ";castorJquery('#selectedRooms').fadeIn();";
 					} else {
-						//$output .= ";jomresJquery('#availRooms').fadeOut();"; // Don't use this as it hides the available rooms list, and thereby hides the no rooms available message.
+						//$output .= ";castorJquery('#availRooms').fadeOut();"; // Don't use this as it hides the available rooms list, and thereby hides the no rooms available message.
 					}
 
 					if ($bkg->cfg_booking_form_rooms_list_style == '1') {
@@ -734,3 +734,4 @@
 			return null;
 		}
 	}
+

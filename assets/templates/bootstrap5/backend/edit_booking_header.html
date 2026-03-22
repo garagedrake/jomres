@@ -1,11 +1,11 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <script language="JavaScript" type="text/javascript">
 	<!--
 	document.addEventListener('DOMContentLoaded', function(){
-		jomresJquery('#page-help').each(function () {
-			var $dialog = jomresJquery('<div></div>');
-			var $link = jomresJquery(this).one('click', function () {
+		castorJquery('#page-help').each(function () {
+			var $dialog = castorJquery('<div></div>');
+			var $link = castorJquery(this).one('click', function () {
 				$dialog
 						.load($link.attr('href'))
 						.dialog({
@@ -34,7 +34,7 @@
 			{BUTTON}
 		</patTemplate:tmpl>
 		
-		<h2 class="page-header">{_JOMRES_BOOKING_NUMBER} {BOOKING_NUMBER} - {GUEST_FIRSTNAME} {GUEST_SURNAME}</h2>
+		<h2 class="page-header">{_CASTOR_BOOKING_NUMBER} {BOOKING_NUMBER} - {GUEST_FIRSTNAME} {GUEST_SURNAME}</h2>
 	</div>
 </div>
 

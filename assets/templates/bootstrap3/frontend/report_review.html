@@ -1,22 +1,22 @@
-<patTemplate:tmpl name="pageoutput" unusedvars="strip">
+﻿<patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <script type="text/javascript">
 <!--
-jomresJquery(document).ready(function () {
-	jomresJquery.validator.setDefaults({
+castorJquery(document).ready(function () {
+	castorJquery.validator.setDefaults({
 		highlight: function (input) {
-			jomresJquery(input).addClass("alert alert-error");
+			castorJquery(input).addClass("alert alert-error");
 		},
 		unhighlight: function (input) {
-			jomresJquery(input).removeClass("alert alert-error");
+			castorJquery(input).removeClass("alert alert-error");
 		}
 	});
 
-	jomresJquery("#reviewForm").validate({
+	castorJquery("#reviewForm").validate({
 		rules: {
 			report: "required",
 		},
 		messages: {
-			report: "{_JOMRES_REVIEWS_REPORT_REVIEW_ERROR}",
+			report: "{_CASTOR_REVIEWS_REPORT_REVIEW_ERROR}",
 		},
 		errorLabelContainer: "#messageBox",
 		wrapper: "li",
@@ -25,25 +25,25 @@ jomresJquery(document).ready(function () {
 		},
 
 	});
-	jomresJquery("#messageBox").hide();
+	castorJquery("#messageBox").hide();
 });
 //-->
 </script>
 
-<h2 class="page-header">{_JOMRES_REVIEWS_REPORT_REVIEW}</h2>
-<p>{_JOMRES_REVIEWS_REPORT_REVIEW_MOREDETAIL}</p>
+<h2 class="page-header">{_CASTOR_REVIEWS_REPORT_REVIEW}</h2>
+<p>{_CASTOR_REVIEWS_REPORT_REVIEW_MOREDETAIL}</p>
 
 <ul id="messageBox" class="alert alert-error"></ul>
 <form method="post" id="reviewForm" name="adminform" role="form" class="form-horizontal">
 	<div class="form-group">
-		<label class="col-md-2 control-label" for="report">{JOMRES_COM_A_MESSAGE}</label>
+		<label class="col-md-2 control-label" for="report">{CASTOR_COM_A_MESSAGE}</label>
 		<div class="col-md-10">
 			<textarea name="report" class="input-xlarge" rows="5" class="required"></textarea>
 		</div>
 	</div>
 	<div class="form-actions">
 		<div class="col-md-10 col-md-offset-2">
-			<button class="btn btn-primary" type="submit"><i class="fa fa-check"></i> {_JOMRES_REVIEWS_SUBMIT}</button>
+			<button class="btn btn-primary" type="submit"><i class="fa fa-check"></i> {_CASTOR_REVIEWS_SUBMIT}</button>
 			<a href="{PROPERTY_DETAILS_URL}" class="btn btn-default"><i class="fa fa-times"></i> {COMMON_CANCEL}</a>
 		</div>
 	</div>

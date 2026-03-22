@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,40 +36,40 @@ class j16000list_tax_rules
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
-		$editIcon = '<img src="'.JOMRES_IMAGES_RELPATH.'jomresimages/small/EditItem.png" border="0" alt="editicon" />';
+		$editIcon = '<img src="'.CASTOR_IMAGES_RELPATH.'castorimages/small/EditItem.png" border="0" alt="editicon" />';
 
-		$jrportal_taxrate = jomres_singleton_abstract::getInstance('jrportal_taxrate');
+		$jrportal_taxrate = castor_singleton_abstract::getInstance('jrportal_taxrate');
 
 		$output = array();
 		$pageoutput = array();
 		$rows = array();
 
-		$query = 'SELECT `id`,`tax_rate_id`,`country_id`,`region_id` FROM #__jomres_tax_rules';
+		$query = 'SELECT `id`,`tax_rate_id`,`country_id`,`region_id` FROM #__castor_tax_rules';
 		$all_tax_rules = doSelectSql($query);
 
-		$output[ 'PAGETITLE' ] = jr_gettext('_JOMRES_TAX_RULES_LIST', '_JOMRES_TAX_RULES_LIST', false);
+		$output[ 'PAGETITLE' ] = jr_gettext('_CASTOR_TAX_RULES_LIST', '_CASTOR_TAX_RULES_LIST', false);
 		$output[ '_JRPORTAL_TAXRATES_CODE' ] = jr_gettext('_JRPORTAL_TAXRATES_CODE', '_JRPORTAL_TAXRATES_CODE', false);
 		$output[ '_JRPORTAL_TAXRATES_DESCRIPTION' ] = jr_gettext('_JRPORTAL_TAXRATES_DESCRIPTION', '_JRPORTAL_TAXRATES_DESCRIPTION', false);
-		$output[ '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', false);
-		$output[ '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_REGION' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_REGION', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_REGION', false);
+		$output[ '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', false);
+		$output[ '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_REGION' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_REGION', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_REGION', false);
 		$output[ '_JRPORTAL_TAXRATES_RATE' ] = jr_gettext('_JRPORTAL_TAXRATES_RATE', '_JRPORTAL_TAXRATES_RATE', false);
-		$output[ '_JOMRES_TAX_RULE_INFO' ] = jr_gettext('_JOMRES_TAX_RULE_INFO', '_JOMRES_TAX_RULE_INFO', false);
+		$output[ '_CASTOR_TAX_RULE_INFO' ] = jr_gettext('_CASTOR_TAX_RULE_INFO', '_CASTOR_TAX_RULE_INFO', false);
 
-		$jomres_countries = jomres_singleton_abstract::getInstance('jomres_countries');
-		$jomres_countries->get_all_countries();
+		$castor_countries = castor_singleton_abstract::getInstance('castor_countries');
+		$castor_countries->get_all_countries();
 
 		foreach ($all_tax_rules as $rule) {
 			$r = array();
 			$r[ 'ID' ] = $rule->id;
 			$rate_id = $rule->tax_rate_id;
 
-			foreach ($jomres_countries->countries as $c) {
+			foreach ($castor_countries->countries as $c) {
 				if ($c['id'] == $rule->country_id) {
 					$r[ 'COUNTRY' ] = $c['countryname'];
 					break;
@@ -81,21 +81,21 @@ class j16000list_tax_rules
 			$r[ 'RATE' ] = $jrportal_taxrate->taxrates[$rate_id]['rate'];
 			$r[ 'DESCRIPTION' ] = $jrportal_taxrate->taxrates[$rate_id]['description'];
 
-			$r[ 'EDITLINK' ] = '<a href="'.JOMRES_SITEPAGE_URL_ADMIN.'&task=edit_tax_rule&id='.$rule->id.'">'.$editIcon.'</a>';
+			$r[ 'EDITLINK' ] = '<a href="'.CASTOR_SITEPAGE_URL_ADMIN.'&task=edit_tax_rule&id='.$rule->id.'">'.$editIcon.'</a>';
 			$rows[ ] = $r;
 		}
 
-		$jrtbar = jomres_singleton_abstract::getInstance('jomres_toolbar');
+		$jrtbar = castor_singleton_abstract::getInstance('castor_toolbar');
 		$jrtb = $jrtbar->startTable();
-		$jrtb .= $jrtbar->toolbarItem('cancel', jomresURL(JOMRES_SITEPAGE_URL_ADMIN), '');
-		$jrtb .= $jrtbar->toolbarItem('new', jomresURL(JOMRES_SITEPAGE_URL_ADMIN.'&task=edit_tax_rule'), '');
+		$jrtb .= $jrtbar->toolbarItem('cancel', castorURL(CASTOR_SITEPAGE_URL_ADMIN), '');
+		$jrtb .= $jrtbar->toolbarItem('new', castorURL(CASTOR_SITEPAGE_URL_ADMIN.'&task=edit_tax_rule'), '');
 
 		$jrtb .= $jrtbar->endTable();
-		$output[ 'JOMRESTOOLBAR' ] = $jrtb;
+		$output[ 'CASTORTOOLBAR' ] = $jrtb;
 
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 		$tmpl->readTemplatesFromInput('list_tax_rules.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->addRows('rows', $rows);
@@ -108,3 +108,4 @@ class j16000list_tax_rules
 		return null;
 	}
 }
+

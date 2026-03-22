@@ -1,20 +1,20 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('Direct Access to this file is not allowed.');
+defined('_CASTOR_INITCHECK') or die('Direct Access to this file is not allowed.');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Sends the new property welcome email
 	 *
@@ -36,7 +36,7 @@ class j04950translation_definitions_room_features
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -44,19 +44,19 @@ class j04950translation_definitions_room_features
 		}
 		$property_uid = getDefaultProperty();
 
-		$current_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+		$current_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 		$current_property_details->gather_data($property_uid);
 		$current_property_details->get_all_resource_features($property_uid);
 
 		$definitions = array();
-		$section_name = jr_gettext('_JOMRES_COM_MR_VRCT_TAB_ROOMFEATURES', '_JOMRES_COM_MR_VRCT_TAB_ROOMFEATURES', false);
+		$section_name = jr_gettext('_CASTOR_COM_MR_VRCT_TAB_ROOMFEATURES', '_CASTOR_COM_MR_VRCT_TAB_ROOMFEATURES', false);
 
 		if (!empty($current_property_details->all_room_features)) {
 			foreach ($current_property_details->all_room_features as $f) {
-					$subtitle = jr_gettext('_JOMRES_CUSTOMTEXT_ROOMFEATURE_DESCRIPTION'.(int) $f['room_features_uid'], $f['feature_description'], false);
+					$subtitle = jr_gettext('_CASTOR_CUSTOMTEXT_ROOMFEATURE_DESCRIPTION'.(int) $f['room_features_uid'], $f['feature_description'], false);
 					$definitions[$section_name][$subtitle][] = [
-						'definition' => jr_gettext('_JOMRES_CUSTOMTEXT_ROOMFEATURE_DESCRIPTION'.(int) $f['room_features_uid'], $f['feature_description']),
-						'label' => '_JOMRES_COM_MR_VRCT_ROOMFEATURES_HEADER_INPUT',
+						'definition' => jr_gettext('_CASTOR_CUSTOMTEXT_ROOMFEATURE_DESCRIPTION'.(int) $f['room_features_uid'], $f['feature_description']),
+						'label' => '_CASTOR_COM_MR_VRCT_ROOMFEATURES_HEADER_INPUT',
 						'translate_label' => true
 						];
 			}
@@ -69,3 +69,4 @@ class j04950translation_definitions_room_features
 		return $this->retVals;
 	}
 }
+

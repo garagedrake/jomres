@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -34,7 +34,7 @@ class j06002edit_integration
 	 
 	function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			return;
@@ -51,7 +51,7 @@ class j06002edit_integration
 		
 		
 		$ePointFilepath=get_showtime('ePointFilepath');
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 		
 		jr_import("webhooks");
 		$webhooks = new webhooks($thisJRUser->id);
@@ -60,7 +60,7 @@ class j06002edit_integration
 		$pageoutput = array();
 		$output = array();
 		
-		$integration_id = (int)jomresGetParam($_REQUEST, 'id', 0);
+		$integration_id = (int)castorGetParam($_REQUEST, 'id', 0);
 		
 		$output['PAGETITLE']					=jr_gettext('WEBHOOKS_INTEGRATION_EDIT', 'WEBHOOKS_INTEGRATION_EDIT', false);
 		$output['WEBHOOKS_INTEGRATION_URL']	 =jr_gettext('WEBHOOKS_INTEGRATION_URL', 'WEBHOOKS_INTEGRATION_URL', false);
@@ -87,27 +87,27 @@ class j06002edit_integration
 		$authMethods = array();
 		if (!empty($authentication_methods)) {
 			foreach ($authentication_methods as $method) {
-				$authMethods[ ] = jomresHTML::makeOption($method['plugin'], $method['plugin']);
+				$authMethods[ ] = castorHTML::makeOption($method['plugin'], $method['plugin']);
 			}
 		}
 		
-		$output['AUTHMETHODSDROPDOWN'] = jomresHTML::selectList($authMethods, 'authmethod', ' onchange=get_auth_form(this.value); size="1"', 'value', 'text', $output['AUTHMETHOD'], false);
+		$output['AUTHMETHODSDROPDOWN'] = castorHTML::selectList($authMethods, 'authmethod', ' onchange=get_auth_form(this.value); size="1"', 'value', 'text', $output['AUTHMETHOD'], false);
 		
 		$output['AUTH_FORM'] = $MiniComponents->specificEvent('06002', 'ajax_webhooks_build_auth_form', array('output_now' => false, 'integration_id' => $output['INTEGRATION_ID'], 'auth_method' => $output['AUTHMETHOD']));
 
-		$jrtbar = jomres_singleton_abstract::getInstance('jomres_toolbar');
+		$jrtbar = castor_singleton_abstract::getInstance('castor_toolbar');
 		$jrtb   = $jrtbar->startTable();
-		$jrtb .= $jrtbar->toolbarItem('cancel', jomresURL(JOMRES_SITEPAGE_URL . "&task=webhooks_core"), '');
+		$jrtb .= $jrtbar->toolbarItem('cancel', castorURL(CASTOR_SITEPAGE_URL . "&task=webhooks_core"), '');
 		$jrtb .= $jrtbar->toolbarItem('save', '', '', true, 'save_integration');
 		if ($integration_id != '') {
-			$jrtb .= $jrtbar->toolbarItem('delete', jomresURL(JOMRES_SITEPAGE_URL . "&task=delete_integration&id=".$integration_id."&no_html=1"), '');
+			$jrtb .= $jrtbar->toolbarItem('delete', castorURL(CASTOR_SITEPAGE_URL . "&task=delete_integration&id=".$integration_id."&no_html=1"), '');
 		}
 		$jrtb .= $jrtbar->endTable();
-		$output[ 'JOMRESTOOLBAR' ] = $jrtb;
+		$output[ 'CASTORTOOLBAR' ] = $jrtb;
 
 		$pageoutput[]=$output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 		$tmpl->readTemplatesFromInput('edit_integration.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->displayParsedTemplate();
@@ -119,3 +119,4 @@ class j06002edit_integration
 		return null;
 	}
 }
+

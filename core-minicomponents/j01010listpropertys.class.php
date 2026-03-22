@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 	/**
 	 * Core file.
 	 *
-	 * @author Vince Wooll <sales@jomres.net>
+	 * @author Vince Wooll <sales@castor.net>
 	 *
-	 *  @version Jomres 10.7.2
+	 *  @version Castor 10.7.2
 	 *
 	 * @copyright	2005-2023 Vince Wooll
-	 * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+	 * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
 	 **/
 
 // ################################################################
-	defined('_JOMRES_INITCHECK') or die('');
+	defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Generates and displays the search results property list page
 	 *
@@ -36,28 +36,28 @@
 		public function __construct($componentArgs)
 		{
 			// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-			$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+			$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 			if ($MiniComponents->template_touch) {
 				$this->template_touchable = false;
 
 				return;
 			}
 
-			jr_import('jomres_markdown');
-			$jomres_markdown = new jomres_markdown();
+			jr_import('castor_markdown');
+			$castor_markdown = new castor_markdown();
 
 			output_ribbon_styling();
 
 			$MiniComponents->triggerEvent('01008', $componentArgs); // optional
 
-			jr_import('jomres_ribbon_generator');
+			jr_import('castor_ribbon_generator');
 
-			$data_only 					= jomresGetParam($_REQUEST, 'dataonly', false);
-			$propertylist_layout 		= jomresGetParam($_REQUEST, 'propertylist_layout', '');
-			$this->jr_page 					= (int)jomresGetParam($_REQUEST, 'jr_page', 0);
-			$return_to_search_results 	= jomresGetParam($_REQUEST, 'return_to_search_results', false);
-			$arrivalDate 				= jomresGetParam($_REQUEST, 'arrivalDate', '');
-			$departureDate 				= jomresGetParam($_REQUEST, 'departureDate', '');
+			$data_only 					= castorGetParam($_REQUEST, 'dataonly', false);
+			$propertylist_layout 		= castorGetParam($_REQUEST, 'propertylist_layout', '');
+			$this->jr_page 					= (int)castorGetParam($_REQUEST, 'jr_page', 0);
+			$return_to_search_results 	= castorGetParam($_REQUEST, 'return_to_search_results', false);
+			$arrivalDate 				= castorGetParam($_REQUEST, 'arrivalDate', '');
+			$departureDate 				= castorGetParam($_REQUEST, 'departureDate', '');
 
 			if (!AJAXCALL) {
 				$show_property_list_header = true;
@@ -65,12 +65,12 @@
 				$show_property_list_header = false;
 			}
 
-			$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+			$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 			$jrConfig = $siteConfig->get();
 
-			$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+			$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 
-			$tmpBookingHandler = jomres_singleton_abstract::getInstance('jomres_temp_booking_handler');
+			$tmpBookingHandler = castor_singleton_abstract::getInstance('castor_temp_booking_handler');
 
 			$stayDays = 1;
 
@@ -105,12 +105,12 @@
 
 			$layout_rows = array();
 			$all_layouts = array();
-			if (((defined('JOMRES_NOHTML') && JOMRES_NOHTML == 0) || get_showtime('task') == 'ajax_search_filter' || get_showtime('task') == 'search' ) && count($property_list_layouts) > 1) {
+			if (((defined('CASTOR_NOHTML') && CASTOR_NOHTML == 0) || get_showtime('task') == 'ajax_search_filter' || get_showtime('task') == 'search' ) && count($property_list_layouts) > 1) {
 				foreach ($property_list_layouts as $key => $layouts) {
 					$all_layouts[ ] = $key;
 					$r = array();
 					$r[ 'TITLE' ] = $layouts[ 'title' ];
-					$r[ 'LINK' ] = jomresURL(JOMRES_SITEPAGE_URL.'&task=listproperties&propertylist_layout='.$key);
+					$r[ 'LINK' ] = castorURL(CASTOR_SITEPAGE_URL.'&task=listproperties&propertylist_layout='.$key);
 					$layout_rows[ ] = $r;
 				}
 			}
@@ -185,7 +185,7 @@
 					$layout_template = 'list_properties.html';
 				}
 
-				if (jomres_bootstrap_version() == '5' && isset($_REQUEST['list_properties_template'])) {
+				if (castor_bootstrap_version() == '5' && isset($_REQUEST['list_properties_template'])) {
 					if (function_exists('get_available_property_list_templates')) {
 						$available_list_templates = get_available_property_list_templates();
 
@@ -207,7 +207,7 @@
 
 				if (!isset($layout_path_to_template)) {
 					if (!isset($property_list_layouts[ $layout ][ 'path' ])) {
-						$layout_path_to_template = JOMRES_TEMPLATEPATH_FRONTEND;
+						$layout_path_to_template = CASTOR_TEMPLATEPATH_FRONTEND;
 					} else {
 						$layout_path_to_template = $property_list_layouts[ $layout ][ 'path' ];
 					}
@@ -215,7 +215,7 @@
 
 
 				if ($live_scrolling_enabled) {
-					jomres_cmsspecific_addheaddata('javascript', JOMRES_JS_RELPATH, 'jquery.livequery.js');
+					castor_cmsspecific_addheaddata('javascript', CASTOR_JS_RELPATH, 'jquery.livequery.js');
 				}
 
 				if ($jrConfig[ 'is_single_property_installation' ] == '1') {
@@ -224,7 +224,7 @@
 					if ($arrivalDate != '') {
 						$arrival_clause = '&arrivalDate='.$arrivalDate.'&departureDate='.$departureDate;
 					}
-					jomresRedirect(get_booking_url($propertys_uids[ 0 ], '', $arrival_clause), '');
+					castorRedirect(get_booking_url($propertys_uids[ 0 ], '', $arrival_clause), '');
 				}
 
 				if (!isset($jrConfig['use_budget_feature'])) {
@@ -233,8 +233,8 @@
 
 				$budget_output = array();
 				if (using_bootstrap() && $jrConfig['use_budget_feature'] == '1') {
-					jr_import('jomres_user_budget');
-					$budget = new jomres_user_budget();
+					jr_import('castor_user_budget');
+					$budget = new castor_user_budget();
 
 					$budget_output[0]['BUDGET_DROPDOWN'] = $budget->get_budget_dropdown();
 				}
@@ -242,8 +242,8 @@
 				if (!empty($propertys_uids)) {
 					$header_output = array();
 
-					$header_output[ 'HARRIVALDATE' ] = jr_gettext('_JOMRES_COM_MR_VIEWBOOKINGS_ARRIVAL', '_JOMRES_COM_MR_VIEWBOOKINGS_ARRIVAL', false);
-					$header_output[ 'HDEPARTUREDATE' ] = jr_gettext('_JOMRES_COM_MR_VIEWBOOKINGS_DEPARTURE', '_JOMRES_COM_MR_VIEWBOOKINGS_DEPARTURE', false);
+					$header_output[ 'HARRIVALDATE' ] = jr_gettext('_CASTOR_COM_MR_VIEWBOOKINGS_ARRIVAL', '_CASTOR_COM_MR_VIEWBOOKINGS_ARRIVAL', false);
+					$header_output[ 'HDEPARTUREDATE' ] = jr_gettext('_CASTOR_COM_MR_VIEWBOOKINGS_DEPARTURE', '_CASTOR_COM_MR_VIEWBOOKINGS_DEPARTURE', false);
 
 					if (isset($tmpBookingHandler->tmpsearch_data['ajax_search_composite_selections']['arrivalDate'])) {
 						$header_output[ 'ARRIVALDATE' ] = generateDateInput('arrivalDate', $tmpBookingHandler->tmpsearch_data['ajax_search_composite_selections']['arrivalDate'], 'ad', true);
@@ -251,30 +251,30 @@
 					if (isset($tmpBookingHandler->tmpsearch_data['ajax_search_composite_selections']['departureDate'])) {
 						$header_output[ 'DEPARTUREDATE' ] = generateDateInput('departureDate', $tmpBookingHandler->tmpsearch_data['ajax_search_composite_selections']['departureDate'], false, true, false);
 					}
-					$header_output[ 'HSEARCH' ] = jr_gettext('_JOMRES_SEARCH_BUTTON', '_JOMRES_SEARCH_BUTTON');
+					$header_output[ 'HSEARCH' ] = jr_gettext('_CASTOR_SEARCH_BUTTON', '_CASTOR_SEARCH_BUTTON');
 					if (!using_bootstrap()) {
-						$header_output[ 'THEBUTTON' ] = '<input type="submit" name="send" value="'.jr_gettext('_JOMRES_SEARCH_BUTTON', '_JOMRES_SEARCH_BUTTON', false).'" class="button" />';
+						$header_output[ 'THEBUTTON' ] = '<input type="submit" name="send" value="'.jr_gettext('_CASTOR_SEARCH_BUTTON', '_CASTOR_SEARCH_BUTTON', false).'" class="button" />';
 					} else {
-						$header_output[ 'THEBUTTON' ] = '<input type="submit" class="btn btn-primary" name="send" value="'.jr_gettext('_JOMRES_SEARCH_BUTTON', '_JOMRES_SEARCH_BUTTON', false).'" />';
+						$header_output[ 'THEBUTTON' ] = '<input type="submit" class="btn btn-primary" name="send" value="'.jr_gettext('_CASTOR_SEARCH_BUTTON', '_CASTOR_SEARCH_BUTTON', false).'" />';
 					}
 
 					$header_output[ 'ORDER_DROPDOWN' ] = get_showtime('order_dropdown');
-					$header_output[ 'CLICKTOHIDE' ] = jr_gettext('_JOMRES_REVIEWS_CLICKTOHIDE', '_JOMRES_REVIEWS_CLICKTOHIDE', false);
-					$header_output[ 'CLICKTOSHOW' ] = jr_gettext('_JOMRES_REVIEWS_CLICKTOSHOW', '_JOMRES_REVIEWS_CLICKTOSHOW', false);
+					$header_output[ 'CLICKTOHIDE' ] = jr_gettext('_CASTOR_REVIEWS_CLICKTOHIDE', '_CASTOR_REVIEWS_CLICKTOHIDE', false);
+					$header_output[ 'CLICKTOSHOW' ] = jr_gettext('_CASTOR_REVIEWS_CLICKTOSHOW', '_CASTOR_REVIEWS_CLICKTOSHOW', false);
 
 
 
 					$compare = array();
 					$shortlist = array();
-					if ((defined('JOMRES_NOHTML') && JOMRES_NOHTML == 0) || get_showtime('task') == 'ajax_search_filter') {
-						$compare[] = array('_JOMRES_COMPARE' => jr_gettext('_JOMRES_COMPARE', '_JOMRES_COMPARE', false), 'COMPARELINK' => '<script type="text/javascript">var compare_url = "'.jomresURL(JOMRES_SITEPAGE_URL_NOSEF.'&task=compare').'";</script>');
+					if ((defined('CASTOR_NOHTML') && CASTOR_NOHTML == 0) || get_showtime('task') == 'ajax_search_filter') {
+						$compare[] = array('_CASTOR_COMPARE' => jr_gettext('_CASTOR_COMPARE', '_CASTOR_COMPARE', false), 'COMPARELINK' => '<script type="text/javascript">var compare_url = "'.castorURL(CASTOR_SITEPAGE_URL_NOSEF.'&task=compare').'";</script>');
 						if (get_showtime('task') != 'show_shortlisted_properties') {
-							$shortlist[] = array('_JOMRES_VIEWSHORTLIST' => jr_gettext('_JOMRES_VIEWSHORTLIST', '_JOMRES_VIEWSHORTLIST', false), 'SHORTLISTLINK' => jomresURL(JOMRES_SITEPAGE_URL.'&task=show_shortlisted_properties'));
+							$shortlist[] = array('_CASTOR_VIEWSHORTLIST' => jr_gettext('_CASTOR_VIEWSHORTLIST', '_CASTOR_VIEWSHORTLIST', false), 'SHORTLISTLINK' => castorURL(CASTOR_SITEPAGE_URL.'&task=show_shortlisted_properties'));
 						}
 					}
 
-					if (defined('JOMRES_NOHTML') && JOMRES_NOHTML == 0 && get_showtime('task') != 'ajax_search_filter') {
-						$output[ 'JOMRES_SITEPAGE_URL_AJAX' ] = "<script type=\"text/javascript\"> var live_site_ajax = '".JOMRES_SITEPAGE_URL_AJAX."'; </script>";
+					if (defined('CASTOR_NOHTML') && CASTOR_NOHTML == 0 && get_showtime('task') != 'ajax_search_filter') {
+						$output[ 'CASTOR_SITEPAGE_URL_AJAX' ] = "<script type=\"text/javascript\"> var live_site_ajax = '".CASTOR_SITEPAGE_URL_AJAX."'; </script>";
 					}
 
 					if ($live_scrolling_enabled) {
@@ -342,25 +342,25 @@
 					$original_property_uid = get_showtime('property_uid');
 					$original_property_type = get_showtime('property_type');
 
-					$current_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+					$current_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 					$current_property_details->gather_data_multi($propertysToShow);
 
-					$jomres_property_list_prices = jomres_singleton_abstract::getInstance('jomres_property_list_prices');
-					$jomres_property_list_prices->gather_lowest_prices_multi($propertysToShow, $lowest_ever = false, $hide_rpn = true);
+					$castor_property_list_prices = castor_singleton_abstract::getInstance('castor_property_list_prices');
+					$castor_property_list_prices->gather_lowest_prices_multi($propertysToShow, $lowest_ever = false, $hide_rpn = true);
 
-					$jomres_media_centre_images = jomres_singleton_abstract::getInstance('jomres_media_centre_images');
-					$jomres_media_centre_images->get_images_multi($propertysToShow, array('property'));
+					$castor_media_centre_images = castor_singleton_abstract::getInstance('castor_media_centre_images');
+					$castor_media_centre_images->get_images_multi($propertysToShow, array('property'));
 
-					$jomres_property_payment_methods = jomres_singleton_abstract::getInstance('jomres_property_payment_methods');
-					$jomres_property_payment_methods->get_gateways_multi($propertysToShow);
+					$castor_property_payment_methods = castor_singleton_abstract::getInstance('castor_property_payment_methods');
+					$castor_property_payment_methods->get_gateways_multi($propertysToShow);
 
 					// Last booked
 					$lastBookedArray = array();
-					$query = 'SELECT `property_uid`, max(`timestamp`) AS ts FROM #__jomres_contracts WHERE `property_uid` IN ('.jomres_implode($propertysToShow).') AND `timestamp` IS NOT NULL GROUP BY `property_uid` ';
+					$query = 'SELECT `property_uid`, max(`timestamp`) AS ts FROM #__castor_contracts WHERE `property_uid` IN ('.castor_implode($propertysToShow).') AND `timestamp` IS NOT NULL GROUP BY `property_uid` ';
 					$result = doSelectSql($query);
 					if (!empty($result)) {
 						foreach ($result as $r) {
-							$date = jomres_nicetime($r->ts);
+							$date = castor_nicetime($r->ts);
 							if ($date != '') {
 								$lastBookedArray[ $r->property_uid ] = $date;
 							}
@@ -368,8 +368,8 @@
 					}
 
 					if ($jrConfig[ 'use_reviews' ] == '1') {
-						jr_import('jomres_reviews');
-						$Reviews = new jomres_reviews();
+						jr_import('castor_reviews');
+						$Reviews = new castor_reviews();
 						$Reviews->getRatingsMulti($propertysToShow);
 					}
 
@@ -378,7 +378,7 @@
 
 					$properties_where_guest_has_already_booked = array();
 					if ($thisJRUser->id > 0) {
-						$query = 'SELECT `property_uid` FROM #__jomres_guests WHERE `property_uid` IN ('.jomres_implode($propertysToShow).') AND mos_userid = '.(int)$thisJRUser->id;
+						$query = 'SELECT `property_uid` FROM #__castor_guests WHERE `property_uid` IN ('.castor_implode($propertysToShow).') AND mos_userid = '.(int)$thisJRUser->id;
 						$xistingBookings = doSelectSql($query);
 						if (!empty($xistingBookings)) {
 							foreach ($xistingBookings as $booking) {
@@ -394,16 +394,16 @@
 
 						$mrConfig = getPropertySpecificSettings($propertys_uid);
 
-						$jomres_ribbon_generator = new jomres_ribbon_generator($propertys_uid);
+						$castor_ribbon_generator = new castor_ribbon_generator($propertys_uid);
 
 						$property_deets['GATEWAYS'] = '';
-						$payment_methods = $jomres_property_payment_methods->get_property_gateways($propertys_uid);
+						$payment_methods = $castor_property_payment_methods->get_property_gateways($propertys_uid);
 
 						if (!empty($payment_methods)) {
 							$tmpl = new patTemplate();
 							$tmpl->addRows('pageoutput', $payment_methods);
 
-							$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+							$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 							$tmpl->readTemplatesFromInput('list_properties_gateways_snippet.html');
 							$property_deets['GATEWAYS'] = $tmpl->getParsedTemplate();
 						}
@@ -411,7 +411,7 @@
 						$featureList = array();
 						$ptown = stripslashes($current_property_details->multi_query_result[ $propertys_uid ]['property_town']);
 						$property_stars = $current_property_details->multi_query_result[ $propertys_uid ]['stars'];
-						$propertyDesc = $jomres_markdown->get_markdown(strip_tags(jomres_decode(jr_gettext('_JOMRES_CUSTOMTEXT_ROOMTYPE_DESCRIPTION_'.$propertys_uid, $current_property_details->multi_query_result[ $propertys_uid ]['property_description'], false))));
+						$propertyDesc = $castor_markdown->get_markdown(strip_tags(castor_decode(jr_gettext('_CASTOR_CUSTOMTEXT_ROOMTYPE_DESCRIPTION_'.$propertys_uid, $current_property_details->multi_query_result[ $propertys_uid ]['property_description'], false))));
 
 						if (in_array($propertys_uid, $tmpBookingHandler->tmpsearch_data[ 'featured_properties' ])) {
 							if (!isset($jrConfig[ 'featured_listings_emphasis' ]) || $jrConfig[ 'featured_listings_emphasis' ] == '') {
@@ -426,16 +426,16 @@
 						$property_deets[ 'BUDGET_BORDER_CLASS' ] = '';
 
 						if ($guest_budget > 0 && $jrConfig['use_budget_feature'] == '1' && using_bootstrap()) {
-							if ($guest_budget >= $jomres_property_list_prices->lowest_prices[$propertys_uid][ 'RAW_PRICE' ] &&
-								$jomres_property_list_prices->lowest_prices[$propertys_uid][ 'RAW_PRICE' ] > 0
+							if ($guest_budget >= $castor_property_list_prices->lowest_prices[$propertys_uid][ 'RAW_PRICE' ] &&
+								$castor_property_list_prices->lowest_prices[$propertys_uid][ 'RAW_PRICE' ] > 0
 							) {
 								$property_deets[ 'BUDGET_BORDER_CLASS' ] = 'panel-success';
 							} else {
 								$property_deets[ 'BUDGET_BORDER_CLASS' ] .= ' property-list-overbudget-properties';
 							}
 
-							// Don't know if I want to use this yet. Jomres 8.1
-							/*if ( $jomres_property_list_prices->lowest_prices[$propertys_uid][ 'RAW_PRICE' ] > ($guest_budget*3))
+							// Don't know if I want to use this yet. Castor 8.1
+							/*if ( $castor_property_list_prices->lowest_prices[$propertys_uid][ 'RAW_PRICE' ] > ($guest_budget*3))
 								{
 								$property_deets[ 'BUDGET_BORDER_CLASS' ] = "panel-danger property-list-overbudget-properties";
 								} */
@@ -448,12 +448,12 @@
 							$property_deets['AVERAGE_RATING'] = number_format($itemRating['avg_rating'], 1, '.', '');
 							$property_deets['NUMBER_OF_REVIEWS'] = $itemRating['counter'];
 
-							$property_deets['_JOMRES_REVIEWS_ADMIN_NUMBERTOTAL'] = jr_gettext('_JOMRES_REVIEWS_ADMIN_NUMBERTOTAL', '_JOMRES_REVIEWS_ADMIN_NUMBERTOTAL', false);
+							$property_deets['_CASTOR_REVIEWS_ADMIN_NUMBERTOTAL'] = jr_gettext('_CASTOR_REVIEWS_ADMIN_NUMBERTOTAL', '_CASTOR_REVIEWS_ADMIN_NUMBERTOTAL', false);
 
-							$property_deets['_JOMRES_REVIEWS'] = jr_gettext('_JOMRES_REVIEWS', '_JOMRES_REVIEWS', false);
-							$property_deets['_JOMRES_REVIEWS_AVERAGE_RATING'] = jr_gettext('_JOMRES_REVIEWS_AVERAGE_RATING', '_JOMRES_REVIEWS_AVERAGE_RATING', false);
-							$property_deets['_JOMRES_REVIEWS_TOTAL_VOTES'] = jr_gettext('_JOMRES_REVIEWS_TOTAL_VOTES', '_JOMRES_REVIEWS_TOTAL_VOTES', false);
-							$property_deets['_JOMRES_REVIEWS'] = jr_gettext('_JOMRES_REVIEWS', '_JOMRES_REVIEWS', false);
+							$property_deets['_CASTOR_REVIEWS'] = jr_gettext('_CASTOR_REVIEWS', '_CASTOR_REVIEWS', false);
+							$property_deets['_CASTOR_REVIEWS_AVERAGE_RATING'] = jr_gettext('_CASTOR_REVIEWS_AVERAGE_RATING', '_CASTOR_REVIEWS_AVERAGE_RATING', false);
+							$property_deets['_CASTOR_REVIEWS_TOTAL_VOTES'] = jr_gettext('_CASTOR_REVIEWS_TOTAL_VOTES', '_CASTOR_REVIEWS_TOTAL_VOTES', false);
+							$property_deets['_CASTOR_REVIEWS'] = jr_gettext('_CASTOR_REVIEWS', '_CASTOR_REVIEWS', false);
 
 							$property_deets['COLON'] = ' : ';
 							$property_deets['HYPHEN'] = ' - ';
@@ -464,16 +464,16 @@
 							$reviews_output_button = array();
 							$no_reviews_output_button = array();
 
-							if (jomres_bootstrap_version() == '5') {
+							if (castor_bootstrap_version() == '5') {
 								if ((int)$property_deets['NUMBER_OF_REVIEWS'] > 0) {   // For Joomla 4 BS5 template sets
-									$jomres_ribbon_generator->set_review_score($itemRating['avg_rating'], $itemRating["rating_ribbon_text"]);
+									$castor_ribbon_generator->set_review_score($itemRating['avg_rating'], $itemRating["rating_ribbon_text"]);
 
 									$rob['RATING_TEXT_COLOUR'] = 'text-success';
 									$rob['AVERAGE_RATING'] = number_format($itemRating['avg_rating'], 1, '.', '');
 
 									$rob['RATING_SCORE_TEXT'] = '';
 									if ($rob['AVERAGE_RATING'] > 5) {
-										$rob['RATING_SCORE_TEXT'] = jomres_badge(
+										$rob['RATING_SCORE_TEXT'] = castor_badge(
 											$itemRating["rating_ribbon_text"],
 											'success'
 										);
@@ -487,32 +487,32 @@
 									$rob['UID'] = $propertys_uid;
 									$rob['AVERAGE_RATING'] = $property_deets['AVERAGE_RATING'];
 									$rob['NUMBER_OF_REVIEWS'] = $itemRating['counter'];
-									$rob['_JOMRES_REVIEWS_CLICKTOSHOW'] = jr_gettext('_JOMRES_REVIEWS_CLICKTOSHOW', '_JOMRES_REVIEWS_CLICKTOSHOW', false);
-									$rob['_JOMRES_REVIEWS_AVERAGE_RATING'] = jr_gettext('_JOMRES_REVIEWS_AVERAGE_RATING', '_JOMRES_REVIEWS_AVERAGE_RATING', false);
-									$rob['_JOMRES_REVIEWS_TOTAL_VOTES'] = jr_gettext('_JOMRES_REVIEWS_TOTAL_VOTES', '_JOMRES_REVIEWS_TOTAL_VOTES', false);
-									$rob['_JOMRES_REVIEWS_ADMIN_NUMBERTOTAL'] = jr_gettext('_JOMRES_REVIEWS_ADMIN_NUMBERTOTAL', '_JOMRES_REVIEWS_ADMIN_NUMBERTOTAL', false);
+									$rob['_CASTOR_REVIEWS_CLICKTOSHOW'] = jr_gettext('_CASTOR_REVIEWS_CLICKTOSHOW', '_CASTOR_REVIEWS_CLICKTOSHOW', false);
+									$rob['_CASTOR_REVIEWS_AVERAGE_RATING'] = jr_gettext('_CASTOR_REVIEWS_AVERAGE_RATING', '_CASTOR_REVIEWS_AVERAGE_RATING', false);
+									$rob['_CASTOR_REVIEWS_TOTAL_VOTES'] = jr_gettext('_CASTOR_REVIEWS_TOTAL_VOTES', '_CASTOR_REVIEWS_TOTAL_VOTES', false);
+									$rob['_CASTOR_REVIEWS_ADMIN_NUMBERTOTAL'] = jr_gettext('_CASTOR_REVIEWS_ADMIN_NUMBERTOTAL', '_CASTOR_REVIEWS_ADMIN_NUMBERTOTAL', false);
 
 									$reviews_output_button[] = $rob;
 
 									$tmpl = new patTemplate();
-									$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+									$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 									$tmpl->readTemplatesFromInput('list_properties_reviews_section.html');
 									$tmpl->addRows('reviews_output', $reviews_output_button);
 									$property_deets['REVIEWS_SECTION'] = $tmpl->getParsedTemplate();
 
 									$tmpl = new patTemplate();
-									$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+									$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 									$tmpl->readTemplatesFromInput('list_properties_reviews_button.html');
 									$tmpl->addRows('reviews_button', $reviews_output_button);
 									$property_deets['REVIEWS_BUTTON'] = $tmpl->getParsedTemplate();
 								} else { // There aren't any reviews, we'll show a "these guys are new" badge instead
-									$new_listing_blub = jr_gettext('JOMRES_REVIEWS_NONE_NEW', 'JOMRES_REVIEWS_NONE_NEW', false);
+									$new_listing_blub = jr_gettext('CASTOR_REVIEWS_NONE_NEW', 'CASTOR_REVIEWS_NONE_NEW', false);
 									$no_reviews_output_button = [0 => [
-										'JOMRES_REVIEWS_NONE_NEW' =>
-											jomres_badge($new_listing_blub, 'warning')
+										'CASTOR_REVIEWS_NONE_NEW' =>
+											castor_badge($new_listing_blub, 'warning')
 									]];
 									$tmpl = new patTemplate();
-									$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+									$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 									$tmpl->readTemplatesFromInput('list_properties_reviews_section_no_reviews.html');
 									$tmpl->addRows('reviews_button', $no_reviews_output_button);
 									$property_deets['REVIEWS_SECTION'] = $tmpl->getParsedTemplate();
@@ -527,20 +527,20 @@
 								$property_reviews = array();
 								$property_reviews[0][ 'AVERAGE_RATING' ] = $property_deets[ 'AVERAGE_RATING' ];
 								$property_reviews[0][ 'NUMBER_OF_REVIEWS' ] = $property_deets[ 'NUMBER_OF_REVIEWS' ];
-								$property_reviews[0][ '_JOMRES_REVIEWS_AVERAGE_RATING' ] = $property_deets[ '_JOMRES_REVIEWS_AVERAGE_RATING' ];
-								$property_reviews[0][ '_JOMRES_REVIEWS_TOTAL_VOTES' ] = $property_deets[ '_JOMRES_REVIEWS_TOTAL_VOTES' ];
-								$property_reviews[0][ '_JOMRES_REVIEWS' ] = $property_deets[ '_JOMRES_REVIEWS' ];
-								$property_reviews[0][ '_JOMRES_REVIEWS_CLICKTOSHOW' ] =  jr_gettext('_JOMRES_REVIEWS_CLICKTOSHOW', '_JOMRES_REVIEWS_CLICKTOSHOW', false);
+								$property_reviews[0][ '_CASTOR_REVIEWS_AVERAGE_RATING' ] = $property_deets[ '_CASTOR_REVIEWS_AVERAGE_RATING' ];
+								$property_reviews[0][ '_CASTOR_REVIEWS_TOTAL_VOTES' ] = $property_deets[ '_CASTOR_REVIEWS_TOTAL_VOTES' ];
+								$property_reviews[0][ '_CASTOR_REVIEWS' ] = $property_deets[ '_CASTOR_REVIEWS' ];
+								$property_reviews[0][ '_CASTOR_REVIEWS_CLICKTOSHOW' ] =  jr_gettext('_CASTOR_REVIEWS_CLICKTOSHOW', '_CASTOR_REVIEWS_CLICKTOSHOW', false);
 								$property_reviews[0][ 'COLON' ] = $property_deets[ 'COLON' ];
 								$property_reviews[0][ 'HYPHEN' ] = $property_deets[ 'HYPHEN' ];
-								$property_reviews[0][ 'REVIEWS_RANDOM_IDENTIFIER' ] = generateJomresRandomString(10);
+								$property_reviews[0][ 'REVIEWS_RANDOM_IDENTIFIER' ] = generateCastorRandomString(10);
 								$property_reviews[0][ 'UID' ] = $propertys_uid;
 
 								$property_reviews[0][ 'PROPERTY_NAME' ] = urlencode($current_property_details->multi_query_result[ $propertys_uid ][ 'property_name' ]);
 
 								$property_reviews[0][ 'MODAL_BUTTON' ] =
 									make_modal_button(
-										$property_reviews[0][ '_JOMRES_REVIEWS_CLICKTOSHOW' ],  // Test of the button
+										$property_reviews[0][ '_CASTOR_REVIEWS_CLICKTOSHOW' ],  // Test of the button
 										'show_property_reviews',								// The task being called
 										'&property_uid='.$propertys_uid,						// Extra arguments being added to the url for that specific task
 										$property_reviews[0][ 'PROPERTY_NAME' ],				// The title of the modal
@@ -549,19 +549,19 @@
 
 								$tmpl = new patTemplate();
 								$tmpl->addRows('property_reviews', $property_reviews);
-								$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+								$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 								$tmpl->readTemplatesFromInput('list_properties_reviews_snippet.html');
 								$property_deets [ 'REVIEWS_SNIPPET' ] = $tmpl->getParsedTemplate();
 							} else {
-								$property_deets [ 'REVIEWS_SNIPPET' ] = jr_gettext('_JOMRES_REVIEWS_NOREVIEWS', '_JOMRES_REVIEWS_NOREVIEWS', false);
+								$property_deets [ 'REVIEWS_SNIPPET' ] = jr_gettext('_CASTOR_REVIEWS_NOREVIEWS', '_CASTOR_REVIEWS_NOREVIEWS', false);
 							}
 						} else {
 							$property_deets[ 'AVERAGE_RATING' ] = '';
 							$property_deets[ 'NUMBER_OF_REVIEWS' ] = '';
-							$property_deets[ '_JOMRES_REVIEWS_AVERAGE_RATING' ] = '';
-							$property_deets[ '_JOMRES_REVIEWS_TOTAL_VOTES' ] = '';
-							$property_deets[ '_JOMRES_REVIEWS' ] = '';
-							$property_deets[ '_JOMRES_REVIEWS_CLICKTOSHOW' ] = '';
+							$property_deets[ '_CASTOR_REVIEWS_AVERAGE_RATING' ] = '';
+							$property_deets[ '_CASTOR_REVIEWS_TOTAL_VOTES' ] = '';
+							$property_deets[ '_CASTOR_REVIEWS' ] = '';
+							$property_deets[ '_CASTOR_REVIEWS_CLICKTOSHOW' ] = '';
 							$property_deets[ 'COLON' ] = '';
 							$property_deets[ 'HYPHEN' ] = '';
 							$property_deets[ 'REVIEWS' ] = '';
@@ -577,7 +577,7 @@
 
 						$property_deets[ 'SUPERIOR' ] = '';
 						if ($current_property_details->multi_query_result[ $propertys_uid ]['superior'] == 1) {
-							$property_deets[ 'SUPERIOR' ] = '<img src="'.JOMRES_IMAGES_RELPATH.'superior.png" alt="superior" border="0" />';
+							$property_deets[ 'SUPERIOR' ] = '<img src="'.CASTOR_IMAGES_RELPATH.'superior.png" alt="superior" border="0" />';
 						}
 
 						$rtRows = '';
@@ -585,7 +585,7 @@
 						if (isset($current_property_details->multi_query_result[ $propertys_uid ][ 'room_types' ]) && !empty($current_property_details->multi_query_result[ $propertys_uid ][ 'room_types' ])) {
 							$rTypes = $current_property_details->multi_query_result[ $propertys_uid ][ 'room_types' ];
 							foreach ($rTypes as $rtd) {
-								$rtRows .= jomres_makeTooltip($rtd['abbv'], $rtd['abbv'], $rtd['desc'], JOMRES_IMAGELOCATION_RELPATH.'rmtypes/'.$rtd['image'], '', 'room_type', array());
+								$rtRows .= castor_makeTooltip($rtd['abbv'], $rtd['abbv'], $rtd['desc'], CASTOR_IMAGELOCATION_RELPATH.'rmtypes/'.$rtd['image'], '', 'room_type', array());
 								$rtRowsLabels .= '<span class="label label-info">'.trim($rtd['abbv']).'</span> ';
 							}
 						}
@@ -605,19 +605,19 @@
 									}
 									$hotel_feature_abbv = $current_property_details->all_property_features[ $f ]['abbv'];
 									$hotel_feature_full_desc = $current_property_details->all_property_features[ $f ]['desc'];
-									$feature_image = JOMRES_IMAGELOCATION_RELPATH.'pfeatures/'.$current_property_details->all_property_features[ $f ]['image'];
-									$featureList .= jomres_makeTooltip($hotel_feature_abbv, $hotel_feature_abbv, $hotel_feature_full_desc, $feature_image, '', 'property_feature', array());
+									$feature_image = CASTOR_IMAGELOCATION_RELPATH.'pfeatures/'.$current_property_details->all_property_features[ $f ]['image'];
+									$featureList .= castor_makeTooltip($hotel_feature_abbv, $hotel_feature_abbv, $hotel_feature_full_desc, $feature_image, '', 'property_feature', array());
 									++$counter;
 								}
 							}
 							$property_deets[ 'FEATURELIST' ] = $featureList;
 						}
 
-						$property_deets[ 'PRICE_PRE_TEXT' ] = $jomres_property_list_prices->lowest_prices[$propertys_uid][ 'PRE_TEXT' ];
-						$property_deets[ 'PRICE_PRICE' ] = $jomres_property_list_prices->lowest_prices[$propertys_uid][ 'PRICE' ];
-						$property_deets[ 'PRICE_POST_TEXT' ] = $jomres_property_list_prices->lowest_prices[$propertys_uid][ 'POST_TEXT' ];
-						if (isset($jomres_property_list_prices->lowest_prices[$propertys_uid][ 'PRICE_NOCONVERSION' ])) {
-							$property_deets[ 'PRICE_NOCONVERSION' ] = $jomres_property_list_prices->lowest_prices[$propertys_uid][ 'PRICE_NOCONVERSION' ];
+						$property_deets[ 'PRICE_PRE_TEXT' ] = $castor_property_list_prices->lowest_prices[$propertys_uid][ 'PRE_TEXT' ];
+						$property_deets[ 'PRICE_PRICE' ] = $castor_property_list_prices->lowest_prices[$propertys_uid][ 'PRICE' ];
+						$property_deets[ 'PRICE_POST_TEXT' ] = $castor_property_list_prices->lowest_prices[$propertys_uid][ 'POST_TEXT' ];
+						if (isset($castor_property_list_prices->lowest_prices[$propertys_uid][ 'PRICE_NOCONVERSION' ])) {
+							$property_deets[ 'PRICE_NOCONVERSION' ] = $castor_property_list_prices->lowest_prices[$propertys_uid][ 'PRICE_NOCONVERSION' ];
 						}
 
 						//total price
@@ -632,22 +632,22 @@
 							}
 						}
 
-						if ($mrConfig[ 'is_real_estate_listing' ] == 0 && !$plugin_will_provide_lowest_price && $jomres_property_list_prices->lowest_prices[$propertys_uid]['PRICE'] != jr_gettext('_JOMRES_PRICE_ON_APPLICATION', '_JOMRES_PRICE_ON_APPLICATION', '', true, false)) {//&& $stayDays > 1)
-							if ($jomres_property_list_prices->lowest_prices[$propertys_uid]['RAW_PRICE'] > 0) {
-								$property_deets[ 'PRICE_CUMULATIVE' ] = $jomres_property_list_prices->lowest_prices[$propertys_uid]['PRICE_CUMULATIVE'];
+						if ($mrConfig[ 'is_real_estate_listing' ] == 0 && !$plugin_will_provide_lowest_price && $castor_property_list_prices->lowest_prices[$propertys_uid]['PRICE'] != jr_gettext('_CASTOR_PRICE_ON_APPLICATION', '_CASTOR_PRICE_ON_APPLICATION', '', true, false)) {//&& $stayDays > 1)
+							if ($castor_property_list_prices->lowest_prices[$propertys_uid]['RAW_PRICE'] > 0) {
+								$property_deets[ 'PRICE_CUMULATIVE' ] = $castor_property_list_prices->lowest_prices[$propertys_uid]['PRICE_CUMULATIVE'];
 							} else {
-								$property_deets[ 'PRICE_CUMULATIVE' ] = $jomres_property_list_prices->lowest_prices[$propertys_uid][ 'PRICE' ];
+								$property_deets[ 'PRICE_CUMULATIVE' ] = $castor_property_list_prices->lowest_prices[$propertys_uid][ 'PRICE' ];
 							}
 
-							$property_deets['FOR'] = jr_gettext('_JOMRES_FOR', '_JOMRES_FOR', false);
-							if ($jomres_property_list_prices->lowest_prices[$propertys_uid]['RAW_PRICE'] > 0) {
+							$property_deets['FOR'] = jr_gettext('_CASTOR_FOR', '_CASTOR_FOR', false);
+							if ($castor_property_list_prices->lowest_prices[$propertys_uid]['RAW_PRICE'] > 0) {
 								if ($mrConfig[ 'wholeday_booking' ] == '1') {
-									$property_deets[ 'NIGHTS_TEXT' ] = jr_gettext('_JOMRES_COM_MR_QUICKRES_STEP4_STAYDAYS_WHOLEDAY', '_JOMRES_COM_MR_QUICKRES_STEP4_STAYDAYS_WHOLEDAY', false);
+									$property_deets[ 'NIGHTS_TEXT' ] = jr_gettext('_CASTOR_COM_MR_QUICKRES_STEP4_STAYDAYS_WHOLEDAY', '_CASTOR_COM_MR_QUICKRES_STEP4_STAYDAYS_WHOLEDAY', false);
 								} else {
 									if ($stayDays == 1) {
-										$property_deets[ 'NIGHTS_TEXT' ] = jr_gettext('_JOMRES_PRICINGOUTPUT_NIGHT', '_JOMRES_PRICINGOUTPUT_NIGHT', false);
+										$property_deets[ 'NIGHTS_TEXT' ] = jr_gettext('_CASTOR_PRICINGOUTPUT_NIGHT', '_CASTOR_PRICINGOUTPUT_NIGHT', false);
 									} else {
-										$property_deets[ 'NIGHTS_TEXT' ] = jr_gettext('_JOMRES_PRICINGOUTPUT_NIGHTS', '_JOMRES_PRICINGOUTPUT_NIGHTS', false);
+										$property_deets[ 'NIGHTS_TEXT' ] = jr_gettext('_CASTOR_PRICINGOUTPUT_NIGHTS', '_CASTOR_PRICINGOUTPUT_NIGHTS', false);
 									}
 								}
 								if ($stayDays == 0) {
@@ -659,12 +659,12 @@
 								$property_deets[ 'STAY_DAYS' ] = '';
 							}
 						} elseif ($mrConfig[ 'is_real_estate_listing' ] == 1) {
-							$property_deets[ 'PRICE_CUMULATIVE' ] = $jomres_property_list_prices->lowest_prices[$propertys_uid][ 'PRICE' ];
+							$property_deets[ 'PRICE_CUMULATIVE' ] = $castor_property_list_prices->lowest_prices[$propertys_uid][ 'PRICE' ];
 						}
 						//end total price
 
 						if (array_key_exists($propertys_uid, $lastBookedArray)) {
-							$property_deets[ 'LASTBOOKED' ] = jr_gettext('_JOMRES_DATEPERIOD_LATESTBOOKING', '_JOMRES_DATEPERIOD_LATESTBOOKING').' '.$lastBookedArray[ $propertys_uid ];
+							$property_deets[ 'LASTBOOKED' ] = jr_gettext('_CASTOR_DATEPERIOD_LATESTBOOKING', '_CASTOR_DATEPERIOD_LATESTBOOKING').' '.$lastBookedArray[ $propertys_uid ];
 							if (!using_bootstrap()) {
 								$property_deets[ 'LASTBOOKING_STYLE' ] = 'ui-state-highlight ui-corner-all';
 							} else {
@@ -683,22 +683,22 @@
 									if ($mrConfig[ 'requireApproval' ] == '1') {
 										$property_deets[ 'BOOKTHIS_TEXT' ] = jr_gettext('_BOOKING_CALCQUOTE', '_BOOKING_CALCQUOTE', false);
 									} else {
-										$property_deets[ 'BOOKTHIS_TEXT' ] = jr_gettext('_JOMRES_FRONT_MR_MENU_BOOKTHISPROPERTY', '_JOMRES_FRONT_MR_MENU_BOOKTHISPROPERTY', false);
+										$property_deets[ 'BOOKTHIS_TEXT' ] = jr_gettext('_CASTOR_FRONT_MR_MENU_BOOKTHISPROPERTY', '_CASTOR_FRONT_MR_MENU_BOOKTHISPROPERTY', false);
 									}
 								} else {
 									if ($mrConfig[ 'requireApproval' ] == '1') {
 										$property_deets[ 'BOOKTHIS_TEXT' ] = jr_gettext('_BOOKING_CALCQUOTE', '_BOOKING_CALCQUOTE', false);
 									} else {
-										$property_deets[ 'BOOKTHIS_TEXT' ] = jr_gettext('_JOMRES_FRONT_MR_MENU_BOOKAROOM', '_JOMRES_FRONT_MR_MENU_BOOKAROOM', false);
+										$property_deets[ 'BOOKTHIS_TEXT' ] = jr_gettext('_CASTOR_FRONT_MR_MENU_BOOKAROOM', '_CASTOR_FRONT_MR_MENU_BOOKAROOM', false);
 									}
 								}
 							} else {
-								$property_deets[ 'LINK' ] = jomresURL(JOMRES_SITEPAGE_URL.'&task=contactowner&selectedProperty='.$propertys_uid);
-								$property_deets[ 'BOOKTHIS_TEXT' ] = jr_gettext('_JOMRES_FRONT_MR_MENU_CONTACTHOTEL', '_JOMRES_FRONT_MR_MENU_CONTACTHOTEL', false);
+								$property_deets[ 'LINK' ] = castorURL(CASTOR_SITEPAGE_URL.'&task=contactowner&selectedProperty='.$propertys_uid);
+								$property_deets[ 'BOOKTHIS_TEXT' ] = jr_gettext('_CASTOR_FRONT_MR_MENU_CONTACTHOTEL', '_CASTOR_FRONT_MR_MENU_CONTACTHOTEL', false);
 							}
 						} else {
-							$property_deets[ 'LINK' ] = jomresURL(JOMRES_SITEPAGE_URL.'&task=contactowner&selectedProperty='.$propertys_uid);
-							$property_deets[ 'BOOKTHIS_TEXT' ] = jr_gettext('_JOMRES_FRONT_MR_MENU_CONTACT_AGENT', '_JOMRES_FRONT_MR_MENU_CONTACT_AGENT', false);
+							$property_deets[ 'LINK' ] = castorURL(CASTOR_SITEPAGE_URL.'&task=contactowner&selectedProperty='.$propertys_uid);
+							$property_deets[ 'BOOKTHIS_TEXT' ] = jr_gettext('_CASTOR_FRONT_MR_MENU_CONTACT_AGENT', '_CASTOR_FRONT_MR_MENU_CONTACT_AGENT', false);
 						}
 
 						if (strlen($current_property_details->multi_query_result[ $propertys_uid ][ 'property_name' ]) > 15 && $layout == 'tile') {
@@ -730,27 +730,27 @@
 						}
 						// End hiding property address
 
-						$property_deets[ 'PROP_TOWN' ] = '<a style="text-decoration:none;" href="'.jomresURL(JOMRES_SITEPAGE_URL.'&send=Search&calledByModule=mod_jomsearch_m0&town='.jomres_decode($current_property_details->multi_query_result[ $propertys_uid ][ 'property_town' ])).'">'.jomres_decode($current_property_details->multi_query_result[ $propertys_uid ][ 'property_town' ]).'</a>';
+						$property_deets[ 'PROP_TOWN' ] = '<a style="text-decoration:none;" href="'.castorURL(CASTOR_SITEPAGE_URL.'&send=Search&calledByModule=mod_jomsearch_m0&town='.castor_decode($current_property_details->multi_query_result[ $propertys_uid ][ 'property_town' ])).'">'.castor_decode($current_property_details->multi_query_result[ $propertys_uid ][ 'property_town' ]).'</a>';
 						$property_deets[ 'PROP_POSTCODE' ] = stripslashes($current_property_details->multi_query_result[ $propertys_uid ][ 'property_postcode' ]);
-						$property_deets[ 'PROP_REGION' ] = '<a style="text-decoration:none;" href="'.jomresURL(JOMRES_SITEPAGE_URL.'&send=Search&calledByModule=mod_jomsearch_m0&region='.$current_property_details->multi_query_result[ $propertys_uid ][ 'property_region_id' ]).'">'.jomres_decode($current_property_details->multi_query_result[ $propertys_uid ][ 'property_region' ]).'</a>';
-						$property_deets[ 'PROP_COUNTRY' ] = '<a style="text-decoration:none;" href="'.jomresURL(JOMRES_SITEPAGE_URL.'&send=Search&calledByModule=mod_jomsearch_m0&country='.jomres_decode($current_property_details->multi_query_result[ $propertys_uid ][ 'property_country_code' ])).'">'.jomres_decode($current_property_details->multi_query_result[ $propertys_uid ][ 'property_country' ]).'</a>';
+						$property_deets[ 'PROP_REGION' ] = '<a style="text-decoration:none;" href="'.castorURL(CASTOR_SITEPAGE_URL.'&send=Search&calledByModule=mod_jomsearch_m0&region='.$current_property_details->multi_query_result[ $propertys_uid ][ 'property_region_id' ]).'">'.castor_decode($current_property_details->multi_query_result[ $propertys_uid ][ 'property_region' ]).'</a>';
+						$property_deets[ 'PROP_COUNTRY' ] = '<a style="text-decoration:none;" href="'.castorURL(CASTOR_SITEPAGE_URL.'&send=Search&calledByModule=mod_jomsearch_m0&country='.castor_decode($current_property_details->multi_query_result[ $propertys_uid ][ 'property_country_code' ])).'">'.castor_decode($current_property_details->multi_query_result[ $propertys_uid ][ 'property_country' ]).'</a>';
 
 						$property_deets[ 'LIVESITE' ] = get_showtime('live_site');
 						$property_deets[ 'UID' ] = $propertys_uid;
-						$property_deets[ 'MOREINFORMATION' ] = jr_gettext('_JOMRES_COM_A_CLICKFORMOREINFORMATION', '_JOMRES_COM_A_CLICKFORMOREINFORMATION', $editable = false, true);
+						$property_deets[ 'MOREINFORMATION' ] = jr_gettext('_CASTOR_COM_A_CLICKFORMOREINFORMATION', '_CASTOR_COM_A_CLICKFORMOREINFORMATION', $editable = false, true);
 						$property_deets[ 'MOREINFORMATIONLINK' ] = get_property_details_url($propertys_uid);
 						$property_deets[ 'MOREINFORMATIONLINK_AJAX' ] = get_property_details_url($propertys_uid, 'ajax');
 						$property_deets[ 'MOREINFORMATIONLINK_SEFSAFE' ] = get_property_details_url($propertys_uid, 'sefsafe');
 						$property_deets[ 'PROPERTYNAME' ] = $property_deets[ 'PROP_NAME' ];
 
-						$property_deets[ '_JOMRES_COM_MR_VRCT_ROOM_HEADER_FEATURES' ] = jr_gettext('_JOMRES_COM_MR_VRCT_ROOM_HEADER_FEATURES', '_JOMRES_COM_MR_VRCT_ROOM_HEADER_FEATURES');
-						$property_deets[ '_JOMRES_FRONT_ROOMTYPES' ] = jr_gettext('_JOMRES_FRONT_ROOMTYPES', '_JOMRES_FRONT_ROOMTYPES');
+						$property_deets[ '_CASTOR_COM_MR_VRCT_ROOM_HEADER_FEATURES' ] = jr_gettext('_CASTOR_COM_MR_VRCT_ROOM_HEADER_FEATURES', '_CASTOR_COM_MR_VRCT_ROOM_HEADER_FEATURES');
+						$property_deets[ '_CASTOR_FRONT_ROOMTYPES' ] = jr_gettext('_CASTOR_FRONT_ROOMTYPES', '_CASTOR_FRONT_ROOMTYPES');
 						$property_deets[ 'JS_SAFE_PROPERTYNAME' ] = preg_replace('/[^A-Za-z0-9_-]+/', '', $property_deets[ 'PROP_NAME' ]);
-						$property_deets[ 'PROPERTYTOWN' ] = jomres_decode($ptown);
-						$property_deets[ 'PROPERTYREGION' ] = jomres_decode(stripslashes($current_property_details->multi_query_result[ $propertys_uid ][ 'property_region' ]));
-						$property_deets[ 'PROPERTYCOUNTRY' ] = jomres_decode(stripslashes($current_property_details->multi_query_result[ $propertys_uid ][ 'property_country' ]));
+						$property_deets[ 'PROPERTYTOWN' ] = castor_decode($ptown);
+						$property_deets[ 'PROPERTYREGION' ] = castor_decode(stripslashes($current_property_details->multi_query_result[ $propertys_uid ][ 'property_region' ]));
+						$property_deets[ 'PROPERTYCOUNTRY' ] = castor_decode(stripslashes($current_property_details->multi_query_result[ $propertys_uid ][ 'property_country' ]));
 
-						$property_deets[ 'TELEPHONE_NUMBER' ] = jomres_decode($current_property_details->multi_query_result[ $propertys_uid ]['property_tel']);
+						$property_deets[ 'TELEPHONE_NUMBER' ] = castor_decode($current_property_details->multi_query_result[ $propertys_uid ]['property_tel']);
 
 						if ((int) $jrConfig['override_property_contact_details'] == 1) {
 							if ($jrConfig['override_property_contact_tel'] != '') {
@@ -764,7 +764,7 @@
 							$property_deets[ 'PROPERTYDESC' ] = $propertyDesc;
 						}
 
-						$property_deets[ '_JOMRES_QUICK_INFO' ] = jr_gettext('_JOMRES_QUICK_INFO', '_JOMRES_QUICK_INFO', false);
+						$property_deets[ '_CASTOR_QUICK_INFO' ] = jr_gettext('_CASTOR_QUICK_INFO', '_CASTOR_QUICK_INFO', false);
 
 						if (isset($mrConfig[ 'galleryLink' ])) {
 							$property_deets[ 'REMOTE_URL' ] = $mrConfig[ 'galleryLink' ];
@@ -773,30 +773,30 @@
 						$property_deets[ 'EDIT_LINK' ] = '';
 						if (!empty($thisJRUser->authorisedProperties)) {
 							if (in_array($propertys_uid, $thisJRUser->authorisedProperties)) {
-								$property_deets[ 'EDIT_LINK' ] = '<a href="'.jomresURL(JOMRES_SITEPAGE_URL.'&task=dashboard&thisProperty='.$propertys_uid).'" class="owner-links btn btn-danger">'.jr_gettext('_JOMRES_CUSTOMCODE_JOMRESMAINMENU_RECEPTION_HOME', '_JOMRES_CUSTOMCODE_JOMRESMAINMENU_RECEPTION_HOME', false).'</a>';
+								$property_deets[ 'EDIT_LINK' ] = '<a href="'.castorURL(CASTOR_SITEPAGE_URL.'&task=dashboard&thisProperty='.$propertys_uid).'" class="owner-links btn btn-danger">'.jr_gettext('_CASTOR_CUSTOMCODE_CASTORMAINMENU_RECEPTION_HOME', '_CASTOR_CUSTOMCODE_CASTORMAINMENU_RECEPTION_HOME', false).'</a>';
 							}
 						}
 
-						$property_deets[ 'RANDOM_IDENTIFIER' ] = generateJomresRandomString(10);
-						$property_deets[ '_JOMRES_COMPARE' ] = jr_gettext('_JOMRES_COMPARE', '_JOMRES_COMPARE', false);
+						$property_deets[ 'RANDOM_IDENTIFIER' ] = generateCastorRandomString(10);
+						$property_deets[ '_CASTOR_COMPARE' ] = jr_gettext('_CASTOR_COMPARE', '_CASTOR_COMPARE', false);
 
 						if (!in_array($propertys_uid, $shortlist_items)) {
 							$shortlist_output = array();
 							$shortlist_pageoutput = array();
-							$shortlist_output['TEXT'] = jr_gettext('_JOMRES_ADDTOSHORTLIST', '_JOMRES_ADDTOSHORTLIST', false);
+							$shortlist_output['TEXT'] = jr_gettext('_CASTOR_ADDTOSHORTLIST', '_CASTOR_ADDTOSHORTLIST', false);
 							$shortlist_pageoutput[ ] = $shortlist_output;
 							$tmpl = new patTemplate();
-							$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+							$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 							$tmpl->readTemplatesFromInput('shortlist_removed.html');
 							$tmpl->addRows('pageoutput', $shortlist_pageoutput);
 							$property_deets[ 'SHORTLIST' ] = $tmpl->getParsedTemplate();
 						} else {
 							$shortlist_output = array();
 							$shortlist_pageoutput = array();
-							$shortlist_output['TEXT'] = jr_gettext('_JOMRES_REMOVEFROMSHORTLIST', '_JOMRES_REMOVEFROMSHORTLIST', false);
+							$shortlist_output['TEXT'] = jr_gettext('_CASTOR_REMOVEFROMSHORTLIST', '_CASTOR_REMOVEFROMSHORTLIST', false);
 							$shortlist_pageoutput[ ] = $shortlist_output;
 							$tmpl = new patTemplate();
-							$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+							$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 							$tmpl->readTemplatesFromInput('shortlilst_added.html');
 							$tmpl->addRows('pageoutput', $shortlist_pageoutput);
 							$property_deets[ 'SHORTLIST' ] = $tmpl->getParsedTemplate();
@@ -818,12 +818,12 @@
 						$property_deets[ 'MAP' ] = $MiniComponents->miniComponentData[ '01050' ][ 'x_geocoder' ];
 
 
-						$property_deets[ 'PROPERTY_TYPE' ] = jomres_badge($current_property_details->multi_query_result[ $propertys_uid ]['property_type_title'], 'info');
-						$property_deets[ 'PROPERTY_TYPE_SEARCH_URL' ] = jomresURL(JOMRES_SITEPAGE_URL.'&task=search&ptype='.$current_property_details->multi_query_result[ $propertys_uid ]['ptype_id']);
+						$property_deets[ 'PROPERTY_TYPE' ] = castor_badge($current_property_details->multi_query_result[ $propertys_uid ]['property_type_title'], 'info');
+						$property_deets[ 'PROPERTY_TYPE_SEARCH_URL' ] = castorURL(CASTOR_SITEPAGE_URL.'&task=search&ptype='.$current_property_details->multi_query_result[ $propertys_uid ]['ptype_id']);
 
 						$property_deets[ 'AGENT_LINK' ] = make_agent_link($propertys_uid);
 
-						$property_deets[ '_JOMRES_AGENT' ] = jr_gettext('_JOMRES_AGENT', '_JOMRES_AGENT');
+						$property_deets[ '_CASTOR_AGENT' ] = jr_gettext('_CASTOR_AGENT', '_CASTOR_AGENT');
 
 						$property_deets[ 'STARS' ] = $starslink;
 
@@ -842,24 +842,24 @@
 						//property image or slideshow
 						$property_deets[ 'PROPERTY_IMAGE_OR_SLIDESHOW' ] = $MiniComponents->specificEvent('06000', 'show_property_main_image', array('output_now' => false, 'property_uid' => $propertys_uid , 'image_size' => 'large'));
 
-						$jomres_media_centre_images->get_images($propertys_uid, array('property'));
+						$castor_media_centre_images->get_images($propertys_uid, array('property'));
 
-						if (isset($jomres_media_centre_images->images['property'][0][0]['large'])) {
-							$property_deets[ 'IMAGELARGE' ] = $jomres_media_centre_images->images['property'][0][0]['large'];
+						if (isset($castor_media_centre_images->images['property'][0][0]['large'])) {
+							$property_deets[ 'IMAGELARGE' ] = $castor_media_centre_images->images['property'][0][0]['large'];
 						} else {
-							$property_deets[ 'IMAGELARGE' ] = $jomres_media_centre_images->multi_query_images['noimage-large'];
+							$property_deets[ 'IMAGELARGE' ] = $castor_media_centre_images->multi_query_images['noimage-large'];
 						}
 
-						if (isset($jomres_media_centre_images->images['property'][0][0]['medium'])) {
-							$property_deets[ 'IMAGEMEDIUM' ] = $jomres_media_centre_images->images['property'][0][0]['medium'];
+						if (isset($castor_media_centre_images->images['property'][0][0]['medium'])) {
+							$property_deets[ 'IMAGEMEDIUM' ] = $castor_media_centre_images->images['property'][0][0]['medium'];
 						} else {
-							$property_deets[ 'IMAGEMEDIUM' ] = $jomres_media_centre_images->multi_query_images['noimage-medium'];
+							$property_deets[ 'IMAGEMEDIUM' ] = $castor_media_centre_images->multi_query_images['noimage-medium'];
 						}
 
-						if (isset($jomres_media_centre_images->images['property'][0][0]['small'])) {
-							$property_deets[ 'IMAGETHUMB' ] = $jomres_media_centre_images->images['property'][0][0]['small'];
+						if (isset($castor_media_centre_images->images['property'][0][0]['small'])) {
+							$property_deets[ 'IMAGETHUMB' ] = $castor_media_centre_images->images['property'][0][0]['small'];
 						} else {
-							$property_deets[ 'IMAGETHUMB' ] = $jomres_media_centre_images->multi_query_images['noimage-small'];
+							$property_deets[ 'IMAGETHUMB' ] = $castor_media_centre_images->multi_query_images['noimage-small'];
 						}
 
 						$MiniComponents->triggerEvent('01011', array('property_uid' => $propertys_uid)); // Optional
@@ -869,7 +869,7 @@
 								if (!is_null($val)) {
 									$result = array_merge($property_deets, $val);
 									if (isset($val['LASTMINUTE']) && $val['LASTMINUTE'] != null) {
-										$result['DISCOUNT_OVERLAY'] = simple_template_output(JOMRES_TEMPLATEPATH_FRONTEND, 'last_minute_overlay.html', $val['LASTMINUTE']);
+										$result['DISCOUNT_OVERLAY'] = simple_template_output(CASTOR_TEMPLATEPATH_FRONTEND, 'last_minute_overlay.html', $val['LASTMINUTE']);
 									} else {
 										$result['DISCOUNT_OVERLAY'] = '';
 									}
@@ -893,11 +893,11 @@
 
 						$result['PRICE_PRE_TEXT'] = '';
 						if (in_array($propertys_uid, $current_jintour_properties)) {
-							$property_deets[ 'PRICE_PRE_TEXT' ] = jr_gettext('_JOMRES_TARIFFSFROM', '_JOMRES_TARIFFSFROM', false);
-							$property_deets[ 'PRICE_POST_TEXT' ] = jr_gettext('_JOMRES_BOOKINGFORM_PERPERSON', '_JOMRES_BOOKINGFORM_PERPERSON', false);
+							$property_deets[ 'PRICE_PRE_TEXT' ] = jr_gettext('_CASTOR_TARIFFSFROM', '_CASTOR_TARIFFSFROM', false);
+							$property_deets[ 'PRICE_POST_TEXT' ] = jr_gettext('_CASTOR_BOOKINGFORM_PERPERSON', '_CASTOR_BOOKINGFORM_PERPERSON', false);
 						}
 
-						$property_deets['RIBBON'] = $jomres_ribbon_generator->generate_html();
+						$property_deets['RIBBON'] = $castor_ribbon_generator->generate_html();
 						$property_details[ ] = $property_deets;
 					}
 
@@ -910,7 +910,7 @@
 						$tmpl->addRows('shortlist', $shortlist);
 
 						$tmpl->addRows('budget_output', $budget_output);
-						$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+						$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 						$tmpl->readTemplatesFromInput('list_properties_header.html');
 						$output[ 'HEADER' ] = $tmpl->getParsedTemplate();
 					}
@@ -947,7 +947,7 @@
 			$prev_output = array();
 			$next_output = array();
 
-			$tmpBookingHandler = jomres_singleton_abstract::getInstance('jomres_temp_booking_handler');
+			$tmpBookingHandler = castor_singleton_abstract::getInstance('castor_temp_booking_handler');
 
 			$selections = '';
 			if (isset($tmpBookingHandler->tmpsearch_data['ajax_search_composite_selections'])) {
@@ -1016,22 +1016,22 @@
 			}
 
 			$totalItems = count($propertys_uids);
-			$urlPattern = JOMRES_SITEPAGE_URL.'&task=search&jr_page=(:num)'.$selections;
+			$urlPattern = CASTOR_SITEPAGE_URL.'&task=search&jr_page=(:num)'.$selections;
 
 			//build the pagination
-			jr_import('jomres_pagination');
-			$paginator = new jomres_pagination($totalItems, $limit, $current_page, $urlPattern);
+			jr_import('castor_pagination');
+			$paginator = new castor_pagination($totalItems, $limit, $current_page, $urlPattern);
 
 			//previous page
 			if ($paginator->getPrevUrl()) {
-				$prev_output[]['PREV_URL'] = jomresURL($paginator->getPrevUrl());
-				$first_output[]['FIRST_URL'] = jomresURL(JOMRES_SITEPAGE_URL.'&task=search'.$selections);
+				$prev_output[]['PREV_URL'] = castorURL($paginator->getPrevUrl());
+				$first_output[]['FIRST_URL'] = castorURL(CASTOR_SITEPAGE_URL.'&task=search'.$selections);
 			}
 
 			//next page
 			if ($paginator->getNextUrl()) {
-				$next_output[]['NEXT_URL'] = jomresURL($paginator->getNextUrl());
-				$last_output[]['LAST_URL'] = jomresURL(JOMRES_SITEPAGE_URL.'&task=search&jr_page='.ceil($totalItems / $limit).$selections);
+				$next_output[]['NEXT_URL'] = castorURL($paginator->getNextUrl());
+				$last_output[]['LAST_URL'] = castorURL(CASTOR_SITEPAGE_URL.'&task=search&jr_page='.ceil($totalItems / $limit).$selections);
 			}
 
 			//pages
@@ -1041,7 +1041,7 @@
 					if ($page['isCurrent']) {
 						$r['PAGE_CLASS'] = 'active';
 					}
-					$r['PAGE_URL'] = jomresURL($page['url']);
+					$r['PAGE_URL'] = castorURL($page['url']);
 				} else {
 					$r['PAGE_CLASS'] = 'disabled';
 					$r['PAGE_URL'] = 'javascript:void();';
@@ -1059,7 +1059,7 @@
 			$tmpl->addRows('prev_output', $prev_output);
 			$tmpl->addRows('next_output', $next_output);
 			$tmpl->addRows('pages_output', $pages_output);
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 			$tmpl->readTemplatesFromInput('list_properties_pagination.html');
 			$pagination = $tmpl->getParsedTemplate();
 
@@ -1077,3 +1077,4 @@
 			return null;
 		}
 	}
+

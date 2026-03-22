@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,17 +36,17 @@ class j06005list_invoices_ajax
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		jr_import('jomres_encryption');
-		$jomres_encryption = new jomres_encryption();
+		jr_import('castor_encryption');
+		$castor_encryption = new castor_encryption();
 		
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 		if ($thisJRUser->userIsManager) {
 			$defaultProperty = getDefaultProperty();
 		} else {
@@ -56,12 +56,12 @@ class j06005list_invoices_ajax
 		set_showtime('property_uid', $defaultProperty);
 		$mrConfig = getPropertySpecificSettings($defaultProperty);
 
-		$startDate = jomresGetParam($_GET, 'startDate', '');
-		$endDate = jomresGetParam($_GET, 'endDate', '');
-		$invoice_type = (int) jomresGetParam($_GET, 'invoice_type', '0');
-		$invoice_status = (int) jomresGetParam($_GET, 'invoice_status', '4');
-		$guest_id = (int) jomresGetParam($_GET, 'guest_id', '0');
-		$show_all = (int) jomresGetParam($_GET, 'show_all', '0');
+		$startDate = castorGetParam($_GET, 'startDate', '');
+		$endDate = castorGetParam($_GET, 'endDate', '');
+		$invoice_type = (int) castorGetParam($_GET, 'invoice_type', '0');
+		$invoice_status = (int) castorGetParam($_GET, 'invoice_status', '4');
+		$guest_id = (int) castorGetParam($_GET, 'guest_id', '0');
+		$show_all = (int) castorGetParam($_GET, 'show_all', '0');
 
 		if ($guest_id != 0) {
 			$show_all = 1;
@@ -109,7 +109,7 @@ class j06005list_invoices_ajax
 		 * on very large tables, and MySQL's regex functionality is very limited
 		 */
 		$sWhere = '';
-		$search = jomresGetParam($_GET, 'jr_search', array());
+		$search = castorGetParam($_GET, 'jr_search', array());
 /* 		if (isset($search['value']) && $search['value'] != '') {
 			$sWhere = 'AND (';
 			for ($i = 0; $i < $n; ++$i) {
@@ -138,7 +138,7 @@ class j06005list_invoices_ajax
 			$clause = 'WHERE ';
 		} elseif ($thisJRUser->userIsManager) {
 			if ($show_all == 1) {
-				$clause = 'WHERE a.property_uid IN (0,'.jomres_implode($thisJRUser->authorisedProperties).') AND ';
+				$clause = 'WHERE a.property_uid IN (0,'.castor_implode($thisJRUser->authorisedProperties).') AND ';
 			} else {
 				$clause = 'WHERE ( a.property_uid = 0 OR a.property_uid = '.(int) $defaultProperty.' ) AND ';
 			}
@@ -226,19 +226,19 @@ class j06005list_invoices_ajax
 					d.approved,
 					( CASE WHEN a.subscription = 1 OR a.is_commission = 1 THEN e.enc_firstname ELSE c.enc_firstname END ) AS firstname, 
 					( CASE WHEN a.subscription = 1 OR a.is_commission = 1 THEN e.enc_surname ELSE c.enc_surname END ) AS surname  
-				FROM #__jomresportal_invoices a 
-					JOIN #__jomresportal_lineitems b ON a.id = b.inv_id 
-					LEFT JOIN #__jomres_contracts d ON a.id = d.invoice_uid 
-					LEFT JOIN #__jomres_guests c ON (( a.guest_id != 0 AND a.guest_id = c.guests_uid ) 
+				FROM #__castorportal_invoices a 
+					JOIN #__castorportal_lineitems b ON a.id = b.inv_id 
+					LEFT JOIN #__castor_contracts d ON a.id = d.invoice_uid 
+					LEFT JOIN #__castor_guests c ON (( a.guest_id != 0 AND a.guest_id = c.guests_uid ) 
 													OR ( d.guest_uid != 0 AND d.guest_uid = c.guests_uid ))  
-					LEFT JOIN #__jomres_guest_profile e ON a.cms_user_id = e.cms_user_id "
+					LEFT JOIN #__castor_guest_profile e ON a.cms_user_id = e.cms_user_id "
 				.$clause
 				.' '.$sWhere
 				.' GROUP BY a.id '
 				.$sOrder
 				.' '.$sLimit;
 
-		$jomresInvoicesList = doSelectSql($query);
+		$castorInvoicesList = doSelectSql($query);
 
 		/*
 		 * Total number of rows
@@ -266,9 +266,9 @@ class j06005list_invoices_ajax
 			'data' => array(),
 		);
 
-		$customTextObj = jomres_singleton_abstract::getInstance('custom_text');
+		$customTextObj = castor_singleton_abstract::getInstance('custom_text');
 
-		foreach ($jomresInvoicesList as $p) {
+		foreach ($castorInvoicesList as $p) {
 			$r = array();
 
 			$thisProperty = '';
@@ -280,7 +280,7 @@ class j06005list_invoices_ajax
 				set_showtime('property_uid', $p->property_uid);
 			}
 
-			if (jomres_bootstrap_version() == '5') {
+			if (castor_bootstrap_version() == '5') {
 				$label_red = 'badge bg-danger';
 				$lable_green = 'badge bg-success';
 				$label_black = 'badge bg-dark';
@@ -313,24 +313,24 @@ class j06005list_invoices_ajax
 			}
 
 			if (!using_bootstrap()) {
-				$jrtbar = jomres_singleton_abstract::getInstance('jomres_toolbar');
+				$jrtbar = castor_singleton_abstract::getInstance('castor_toolbar');
 				$jrtb = $jrtbar->startTable();
-				$jrtb .= $jrtbar->toolbarItem('edit', jomresURL(JOMRES_SITEPAGE_URL.'&task=view_invoice'.'&id='.$p->id.$thisProperty), jr_gettext('COMMON_VIEW', 'COMMON_VIEW', false));
+				$jrtb .= $jrtbar->toolbarItem('edit', castorURL(CASTOR_SITEPAGE_URL.'&task=view_invoice'.'&id='.$p->id.$thisProperty), jr_gettext('COMMON_VIEW', 'COMMON_VIEW', false));
 				$r[] = $jrtb .= $jrtbar->endTable();
 			} else {
-				$toolbar = jomres_singleton_abstract::getInstance('jomresItemToolbar');
+				$toolbar = castor_singleton_abstract::getInstance('castorItemToolbar');
 				$toolbar->newToolbar();
-				$toolbar->addItem('fa fa-pencil-square-o', 'btn btn-info', '', jomresURL(JOMRES_SITEPAGE_URL.'&task=view_invoice&id='.$p->id.$thisProperty), jr_gettext('COMMON_VIEW', 'COMMON_VIEW', false));
+				$toolbar->addItem('fa fa-pencil-square-o', 'btn btn-info', '', castorURL(CASTOR_SITEPAGE_URL.'&task=view_invoice&id='.$p->id.$thisProperty), jr_gettext('COMMON_VIEW', 'COMMON_VIEW', false));
 				if ((int) $p->contract_id != 0 && (int) $p->status != 1) {
 					if ($thisJRUser->userIsManager && $p->approved == 1) {
-						$toolbar->addSecondaryItem('fa fa-check', '', '', jomresURL(JOMRES_SITEPAGE_URL.'&task=mark_booking_invoice_paid&id='.$p->id.$thisProperty), jr_gettext('_JOMRES_INVOICE_MARKASPAID', '_JOMRES_INVOICE_MARKASPAID', false));
-						$toolbar->addSecondaryItem('fa fa-pencil-square-o', '', '', jomresURL(JOMRES_SITEPAGE_URL.'&task=edit_booking&contract_uid='.$p->contract_id.$thisProperty), jr_gettext('_JOMCOMP_MYUSER_VIEWBOOKING', '_JOMCOMP_MYUSER_VIEWBOOKING', false));
+						$toolbar->addSecondaryItem('fa fa-check', '', '', castorURL(CASTOR_SITEPAGE_URL.'&task=mark_booking_invoice_paid&id='.$p->id.$thisProperty), jr_gettext('_CASTOR_INVOICE_MARKASPAID', '_CASTOR_INVOICE_MARKASPAID', false));
+						$toolbar->addSecondaryItem('fa fa-pencil-square-o', '', '', castorURL(CASTOR_SITEPAGE_URL.'&task=edit_booking&contract_uid='.$p->contract_id.$thisProperty), jr_gettext('_JOMCOMP_MYUSER_VIEWBOOKING', '_JOMCOMP_MYUSER_VIEWBOOKING', false));
 					}
 					if ($thisJRUser->userIsRegistered && !$thisJRUser->userIsManager && !$thisJRUser->superPropertyManager) {
-						$toolbar->addSecondaryItem('fa fa-file-text', '', '', jomresURL(JOMRES_SITEPAGE_URL.'&task=muviewbooking&contract_uid='.$p->contract_id.$thisProperty), jr_gettext('_JOMCOMP_MYUSER_VIEWBOOKING', '_JOMCOMP_MYUSER_VIEWBOOKING', false));
+						$toolbar->addSecondaryItem('fa fa-file-text', '', '', castorURL(CASTOR_SITEPAGE_URL.'&task=muviewbooking&contract_uid='.$p->contract_id.$thisProperty), jr_gettext('_JOMCOMP_MYUSER_VIEWBOOKING', '_JOMCOMP_MYUSER_VIEWBOOKING', false));
 					}
 				}
-				$toolbar->addSecondaryItem('fa fa-print', '', '', jomresURL(JOMRES_SITEPAGE_URL.'&task=view_invoice&popup=1&id='.$p->id.$thisProperty.'&tmpl='.get_showtime('tmplcomponent')), jr_gettext('COMMON_PRINT', 'COMMON_PRINT', false));
+				$toolbar->addSecondaryItem('fa fa-print', '', '', castorURL(CASTOR_SITEPAGE_URL.'&task=view_invoice&popup=1&id='.$p->id.$thisProperty.'&tmpl='.get_showtime('tmplcomponent')), jr_gettext('COMMON_PRINT', 'COMMON_PRINT', false));
 				$r[] = $toolbar->getToolbar();
 			}
 
@@ -344,7 +344,7 @@ class j06005list_invoices_ajax
 			}
 
 			if ($p->property_uid != 0) {
-				$r[] = '<a href="'.jomresURL(JOMRES_SITEPAGE_URL.'&task=dashboard&thisProperty='.$p->property_uid).'">'.jomres_decode(getPropertyName($p->property_uid)).'</a>';
+				$r[] = '<a href="'.castorURL(CASTOR_SITEPAGE_URL.'&task=dashboard&thisProperty='.$p->property_uid).'">'.castor_decode(getPropertyName($p->property_uid)).'</a>';
 			} else {
 				$r[] = '-';
 			}
@@ -354,11 +354,11 @@ class j06005list_invoices_ajax
 				$r[] = '-';
 			} else {
 				if (!$thisJRUser->userIsManager) {
-					$r[] = $jomres_encryption->decrypt($p->firstname);
-					$r[] = $jomres_encryption->decrypt($p->surname);
+					$r[] = $castor_encryption->decrypt($p->firstname);
+					$r[] = $castor_encryption->decrypt($p->surname);
 				} else {
-					$r[] = '<a href="'.jomresUrl(JOMRES_SITEPAGE_URL.'&task=show_user_profile&cms_user_id='.$p->cms_user_id).'" target="_blank">'.jomres_decode($jomres_encryption->decrypt($p->firstname)).'</a>';
-					$r[] = '<a href="'.jomresUrl(JOMRES_SITEPAGE_URL.'&task=show_user_profile&cms_user_id='.$p->cms_user_id).'" target="_blank">'.jomres_decode($jomres_encryption->decrypt($p->surname)).'</a>';
+					$r[] = '<a href="'.castorUrl(CASTOR_SITEPAGE_URL.'&task=show_user_profile&cms_user_id='.$p->cms_user_id).'" target="_blank">'.castor_decode($castor_encryption->decrypt($p->firstname)).'</a>';
+					$r[] = '<a href="'.castorUrl(CASTOR_SITEPAGE_URL.'&task=show_user_profile&cms_user_id='.$p->cms_user_id).'" target="_blank">'.castor_decode($castor_encryption->decrypt($p->surname)).'</a>';
 				}
 			}
 
@@ -398,9 +398,9 @@ class j06005list_invoices_ajax
 					($p->contract_id == 0 && ($p->subscription > 0 || $p->is_commission > 0)) //subscription/commission invoice
 					) {
 					if (!using_bootstrap()) {
-						$r[] = '<a href="'.JOMRES_SITEPAGE_URL_NOSEF.'&task=list_gateways_for_invoice&invoice_id='.$p->id.'">'.jr_gettext('_JRPORTAL_INVOICES_PAYNOW', '_JRPORTAL_INVOICES_PAYNOW', false).'</a>';
+						$r[] = '<a href="'.CASTOR_SITEPAGE_URL_NOSEF.'&task=list_gateways_for_invoice&invoice_id='.$p->id.'">'.jr_gettext('_JRPORTAL_INVOICES_PAYNOW', '_JRPORTAL_INVOICES_PAYNOW', false).'</a>';
 					} else {
-						$r[] = '<a href="'.JOMRES_SITEPAGE_URL_NOSEF.'&task=list_gateways_for_invoice&invoice_id='.$p->id.'" class="btn btn-success btn-sm"><i class="fa fa-credit-card"></i> '.jr_gettext('_JRPORTAL_INVOICES_PAYNOW', '_JRPORTAL_INVOICES_PAYNOW', false).'</a>';
+						$r[] = '<a href="'.CASTOR_SITEPAGE_URL_NOSEF.'&task=list_gateways_for_invoice&invoice_id='.$p->id.'" class="btn btn-success btn-sm"><i class="fa fa-credit-card"></i> '.jr_gettext('_JRPORTAL_INVOICES_PAYNOW', '_JRPORTAL_INVOICES_PAYNOW', false).'</a>';
 					}
 				} else {
 					$r[] = '';
@@ -426,3 +426,4 @@ class j06005list_invoices_ajax
 		return null;
 	}
 }
+

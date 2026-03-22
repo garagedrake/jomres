@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 	/**
 	 * Core file.
 	 *
-	 * @author Vince Wooll <sales@jomres.net>
+	 * @author Vince Wooll <sales@castor.net>
 	 *
-	 *  @version Jomres 10.7.2
+	 *  @version Castor 10.7.2
 	 *
 	 * @copyright	2005-2023 Vince Wooll
-	 * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+	 * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
 	 **/
 
 // ################################################################
-	defined('_JOMRES_INITCHECK') or die('');
+	defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,15 +36,15 @@
 		public function __construct($componentArgs)
 		{
 			// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-			$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+			$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 			if ($MiniComponents->template_touch) {
 				$this->template_touchable = false;
 				$this->shortcode_data = array(
 					'task' => 'show_property_main_image',
-					'info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_MAIN_IMAGE',
+					'info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_MAIN_IMAGE',
 					'arguments' => array(0 => array(
 						'argument' => 'property_uid',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_MAIN_IMAGE_ARG_PROPERTY_UID',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_MAIN_IMAGE_ARG_PROPERTY_UID',
 						'arg_example' => '1',
 					),
 					),
@@ -58,7 +58,7 @@
 			if (isset($componentArgs[ 'property_uid' ])) {
 				$property_uid = (int)$componentArgs[ 'property_uid' ];
 			} else {
-				$property_uid = (int)jomresGetParam($_REQUEST, 'property_uid', 0);
+				$property_uid = (int)castorGetParam($_REQUEST, 'property_uid', 0);
 			}
 
 			if ($property_uid == 0) {
@@ -79,7 +79,7 @@
 				$image_size = (string)$componentArgs[ 'image_size' ];
 			} else {
 				if ( isset($_REQUEST['image_size']) && trim($_REQUEST['image_size']) != '' ) {
-					$image_size = (string)jomresGetParam($_REQUEST, 'image_size', '');
+					$image_size = (string)castorGetParam($_REQUEST, 'image_size', '');
 				} else {
 					$image_size = 'small';
 				}
@@ -89,15 +89,15 @@
 				$image_size = 'small';
 			}
 
-			$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+			$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 			$jrConfig = $siteConfig->get();
 
 			$output = array();
 
-			$jomres_media_centre_images = jomres_singleton_abstract::getInstance('jomres_media_centre_images');
-			$jomres_media_centre_images->get_images($property_uid, array('property'));
+			$castor_media_centre_images = castor_singleton_abstract::getInstance('castor_media_centre_images');
+			$castor_media_centre_images->get_images($property_uid, array('property'));
 
-			$imagesArray = $jomres_media_centre_images->images['property'][0];
+			$imagesArray = $castor_media_centre_images->images['property'][0];
 
 			if ($jrConfig['plist_images_as_slideshow'] && count($imagesArray) > 1 ) {
 				$slideshowArgs = array();
@@ -116,30 +116,30 @@
 				$output[ 'SLIDESHOW' ] = $result['slideshow'];
 			} else {
 				$po = [ [
-					'LARGE_IMAGE' => $jomres_media_centre_images->images['property'][0][0]['large'],
-					'MEDIUM_IMAGE' => $jomres_media_centre_images->images['property'][0][0]['medium'],
-					'SMALL_IMAGE' => $jomres_media_centre_images->images['property'][0][0]['small'],
+					'LARGE_IMAGE' => $castor_media_centre_images->images['property'][0][0]['large'],
+					'MEDIUM_IMAGE' => $castor_media_centre_images->images['property'][0][0]['medium'],
+					'SMALL_IMAGE' => $castor_media_centre_images->images['property'][0][0]['small'],
 				] ] ;
 
 				$tmpl = new patTemplate();
 				$tmpl->addRows('pageoutput', $po);
-				$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+				$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 				$tmpl->readTemplatesFromInput('card_image.html');
 				$output[ 'SLIDESHOW' ] = $tmpl->getParsedTemplate();
 			}
 
 
-			$output['IMAGE']	=  $jomres_media_centre_images->images['property'][0][0]['medium'];
-			$output['SMALL']	=  $jomres_media_centre_images->images['property'][0][0]['small'];
-			$output['MEDIUM']	=  $jomres_media_centre_images->images['property'][0][0]['medium'];
-			$output['LARGE']	=  $jomres_media_centre_images->images['property'][0][0]['large'];
+			$output['IMAGE']	=  $castor_media_centre_images->images['property'][0][0]['medium'];
+			$output['SMALL']	=  $castor_media_centre_images->images['property'][0][0]['small'];
+			$output['MEDIUM']	=  $castor_media_centre_images->images['property'][0][0]['medium'];
+			$output['LARGE']	=  $castor_media_centre_images->images['property'][0][0]['large'];
 			$output['URL']		=  get_property_details_url($property_uid);
 
 			$pageoutput = array();
 			$pageoutput[] = $output;
 			$tmpl = new patTemplate();
 			$tmpl->addRows('pageoutput', $pageoutput);
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 			$tmpl->readTemplatesFromInput('show_property_main_image.html');
 			$result = $tmpl->getParsedTemplate();
 
@@ -156,3 +156,4 @@
 			return $this->retVals;
 		}
 	}
+

@@ -1,6 +1,6 @@
-<?PHP
+﻿<?PHP
 // ################################################################
-defined( '_JOMRES_INITCHECK' ) or die( '' );
+defined( '_CASTOR_INITCHECK' ) or die( '' );
 // ################################################################
 /**
  * patTemplate output filter that creates PDF files from latex

@@ -1,33 +1,33 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 
 <h2 class="page-header">{PAGE_TITLE} {ROOM_TYPE_NAME}</h2>
 
-	<p>{JOMRES_OCCUPANCY_LEVELS_EDIT_DESC}</p>
+	<p>{CASTOR_OCCUPANCY_LEVELS_EDIT_DESC}</p>
 
 
-	<form action="{JOMRES_SITEPAGE_URL_NOSEF}" method="post" name="adminForm" class="form-horizontal" role="form">
+	<form action="{CASTOR_SITEPAGE_URL_NOSEF}" method="post" name="adminForm" class="form-horizontal" role="form">
 		<div class="form-group">
-			<label class="col-md-2 control-label" for="max_adults">{JOMRES_OCCUPANCY_LEVELS_MAX_ADULTS}</label>
+			<label class="col-md-2 control-label" for="max_adults">{CASTOR_OCCUPANCY_LEVELS_MAX_ADULTS}</label>
 			<div class="col-md-10">
 				{MAX_ADULTS}
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-md-2 control-label" for="max_children">{JOMRES_OCCUPANCY_LEVELS_MAX_CHILDREN}</label>
+			<label class="col-md-2 control-label" for="max_children">{CASTOR_OCCUPANCY_LEVELS_MAX_CHILDREN}</label>
 			<div class="col-md-10">
 				{MAX_CHILDREN}
 			</div>
 		</div>
 		<!--<div class="form-group">
-			<label class="col-md-2 control-label" for="max_occupancy">{JOMRES_OCCUPANCY_LEVELS_MAX_OCCUPANCY}</label>
+			<label class="col-md-2 control-label" for="max_occupancy">{CASTOR_OCCUPANCY_LEVELS_MAX_OCCUPANCY}</label>
 			<div class="col-md-10">
 				{MAX_OCCUPANCY}
 			</div>
 		</div>-->
 		<div class="form-actions fixed-bottom bg-light text-center pt-1 border-top border-success">
 			<div class="col-md-10 col-md-offset-2">
-				{JOMRESTOOLBAR}
+				{CASTORTOOLBAR}
 			</div>
 		</div>
 	<input type="hidden" name="id" value="{ID}"/>

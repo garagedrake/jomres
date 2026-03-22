@@ -1,11 +1,11 @@
-<patTemplate:tmpl name="pageoutput" unusedvars="strip">
+﻿<patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <script language="JavaScript" type="text/javascript">
 <!--
-jomresJquery(function(){
-	jomresJquery("#guest_country").change(function(){
-		var selectedValue = jomresJquery(this).find(":selected").val();
+castorJquery(function(){
+	castorJquery("#guest_country").change(function(){
+		var selectedValue = castorJquery(this).find(":selected").val();
 		clause = "&task=get_region_dropdown_for_country_code&country="+selectedValue;
-		jomresJquery.get(live_site_ajax + clause, function (data) {
+		castorJquery.get(live_site_ajax + clause, function (data) {
 			populateDiv("guest_region_div",data);
 			});
 		});
@@ -14,7 +14,7 @@ jomresJquery(function(){
 </script>
 <h2 class="page-header">{PAGETITLE}</h2>
 <div id="tour_target_edit_guest_top"></div>
-<form action="{JOMRES_SITEPAGE_URL_NOSEF}" method="post" name="adminForm" class="form-horizontal">
+<form action="{CASTOR_SITEPAGE_URL_NOSEF}" method="post" name="adminForm" class="form-horizontal">
 	<fieldset>
 		<div class="control-group">
 			<label class="control-label" for="firstname">{HFIRSTNAME}</label>
@@ -95,7 +95,7 @@ jomresJquery(function(){
 		</div>
 		<div id="tour_target_edit_guest_vat"></div>
 		<div class="control-group">
-			<label class="control-label" for="vat_number">{_JOMRES_COM_YOURBUSINESS_VATNO}</label>
+			<label class="control-label" for="vat_number">{_CASTOR_COM_YOURBUSINESS_VATNO}</label>
 			<div class="controls">
 				<input id="vat_number" name="vat_number" type="text" value="{VAT_NUMBER}"/>
 				<patTemplate:tmpl name="validation" type="simpleCondition" requiredVars="validation_class">
@@ -118,7 +118,7 @@ jomresJquery(function(){
 			</div>
 		</div>
 		<div class="form-actions">
-			{JOMRESTOOLBAR}
+			{CASTORTOOLBAR}
 		</div>
 		<input type="hidden" name="id" value="{GUESTUID}"/>
 		<input type="hidden" name="task" value="save_guest"/>

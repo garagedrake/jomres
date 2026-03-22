@@ -1,15 +1,15 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 	<script type="text/javascript">
 		<!--
-		jomresJquery(document).ready(function () {
+		castorJquery(document).ready(function () {
 			make_datatable('list_shortcodes', '{PAGETITLE}', '{LIVESITE}');
 		});
 		//-->
 	</script>
 	<h2 class="page-header">{PAGETITLE}</h2>
 
-	{JOMRESTOOLBAR}
+	{CASTORTOOLBAR}
 	<p class="alert alert-info" >{INFO}</p>
 	<table id="list_shortcodes" width="100%" class="table table-striped">
 		<thead>
@@ -33,3 +33,4 @@
 	</table>
 
 </patTemplate:tmpl>
+

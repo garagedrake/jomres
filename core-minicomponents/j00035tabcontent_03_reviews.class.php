@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Used by j06000viewproperty.class.php to build tabs in the property details page. Builds reviews template output.
 	 *
@@ -36,13 +36,13 @@ class j00035tabcontent_03_reviews
 	 
 	public function __construct($componentArgs)
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 		$property_uid = (int) $componentArgs[ 'property_uid' ];
 		$mrConfig = getPropertySpecificSettings($property_uid);
@@ -50,9 +50,9 @@ class j00035tabcontent_03_reviews
 		
 		if ($jrConfig[ 'use_reviews' ] == '1') {
 			$reviews = $MiniComponents->specificEvent('06000', 'show_property_reviews', array('output_now' => false, 'property_uid' => $property_uid));
-			$reviews_title = jr_gettext('_JOMRES_REVIEWS', '_JOMRES_REVIEWS', false, false);
+			$reviews_title = jr_gettext('_CASTOR_REVIEWS', '_CASTOR_REVIEWS', false, false);
 
-			$anchor = jomres_generate_tab_anchor($reviews_title);
+			$anchor = castor_generate_tab_anchor($reviews_title);
 			$tab = array('TAB_ANCHOR' => $anchor, 'TAB_TITLE' => $reviews_title, 'TAB_CONTENT' => $reviews, 'TAB_ID' => 'tour_target_reviews_list');
 			$this->retVals = $tab;
 		}
@@ -64,3 +64,4 @@ class j00035tabcontent_03_reviews
 		return $this->retVals;
 	}
 }
+

@@ -1,4 +1,4 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 	<script type="text/javascript">
 		<!--
@@ -38,11 +38,11 @@
 				}
 			}
 			if (valid) {
-				document.regForm.action = "index.php?option=com_jomres&task=contactowner"
+				document.regForm.action = "index.php?option=com_castor&task=contactowner"
 				document.regForm.submit()
 			}
 			else {
-				alert("{JOMRES_REGISTRATION_INSTRUCTIONS_STEP2_2}");
+				alert("{CASTOR_REGISTRATION_INSTRUCTIONS_STEP2_2}");
 			}
 		}
 		/**
@@ -87,15 +87,15 @@
 
 		var RecaptchaOptions = {
 			custom_translations: {
-				instructions_visual: "{JOMRES_RECAPTCHA_INSTRUCTIONS_VISUAL}",
-				instructions_audio: "{JOMRES_RECAPTCHA_INSTRUCTIONS_AUDIO}",
-				play_again: "{JOMRES_RECAPTCHA_PLAY_AGAIN}",
-				cant_hear_this: "{JOMRES_RECAPTCHA_CANT_HEAR_THIS}",
-				visual_challenge: "{JOMRES_RECAPTCHA_VISUAL_CHALLENGE}",
-				audio_challenge: "{JOMRES_RECAPTCHA_AUDIO_CHALLENGE}",
-				refresh_btn: "{JOMRES_RECAPTCHA_REFRESH_BTN}",
-				help_btn: "{JOMRES_RECAPTCHA_HELP_BTN}",
-				incorrect_try_again: "{JOMRES_RECAPTCHA_INCORRECT_TRY_AGAIN}",
+				instructions_visual: "{CASTOR_RECAPTCHA_INSTRUCTIONS_VISUAL}",
+				instructions_audio: "{CASTOR_RECAPTCHA_INSTRUCTIONS_AUDIO}",
+				play_again: "{CASTOR_RECAPTCHA_PLAY_AGAIN}",
+				cant_hear_this: "{CASTOR_RECAPTCHA_CANT_HEAR_THIS}",
+				visual_challenge: "{CASTOR_RECAPTCHA_VISUAL_CHALLENGE}",
+				audio_challenge: "{CASTOR_RECAPTCHA_AUDIO_CHALLENGE}",
+				refresh_btn: "{CASTOR_RECAPTCHA_REFRESH_BTN}",
+				help_btn: "{CASTOR_RECAPTCHA_HELP_BTN}",
+				incorrect_try_again: "{CASTOR_RECAPTCHA_INCORRECT_TRY_AGAIN}",
 			},
 			lang: 'en', // Unavailable while writing this code (just for audio challenge)
 			theme: 'clean' //can be changed to 'red','white','blackglass'
@@ -106,7 +106,7 @@
 
 	<p>{SUBJECT}</p>
 
-	<form name="regForm" action="{JOMRES_SITEPAGE_URL_NOSEF}&task=contactowner" method="POST" class="form-horizontal">
+	<form name="regForm" action="{CASTOR_SITEPAGE_URL_NOSEF}&task=contactowner" method="POST" class="form-horizontal">
 		<fieldset>
 			<div class="control-group">
 				<label class="control-label" for="guest_name">{HNAME}</label>

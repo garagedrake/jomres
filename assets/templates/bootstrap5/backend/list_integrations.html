@@ -1,4 +1,4 @@
-<patTemplate:tmpl name="pageoutput" unusedvars="strip">
+﻿<patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <script language="javascript" type="text/javascript">
 	<!--
 	document.addEventListener('DOMContentLoaded', function(){
@@ -7,7 +7,7 @@
 	//-->
 
 function toggle_enabled(integration_id) {
-		jomresJquery.ajax({ url:'{JOMRES_SITEPAGE_URL_AJAX}&task=ajax_webhooks_enable_toggle&integration_id='+integration_id,success: function(data)
+		castorJquery.ajax({ url:'{CASTOR_SITEPAGE_URL_AJAX}&task=ajax_webhooks_enable_toggle&integration_id='+integration_id,success: function(data)
 				{
 				//populateDiv("auth_method_form_fields",data);
                 console.log(data);
@@ -17,7 +17,7 @@ function toggle_enabled(integration_id) {
 </script>
 <h2 class="page-header">{PAGETITLE}</h2>
 <div class="well">
-	{JOMRESTOOLBAR}
+	{CASTORTOOLBAR}
 </div>
 
 <div class="row">

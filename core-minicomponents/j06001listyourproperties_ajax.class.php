@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,7 +36,7 @@ class j06001listyourproperties_ajax
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -44,13 +44,13 @@ class j06001listyourproperties_ajax
 		}
 
 		$ePointFilepath = get_showtime('ePointFilepath');
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 		$defaultProperty = getDefaultProperty();
 		$lang = get_showtime('lang');
 
-		$published = (int) jomresGetParam($_GET, 'published', '2');
-		$approved = (int) jomresGetParam($_GET, 'approved', '2');
-		$ptype_id = (int) jomresGetParam($_GET, 'ptype', '0');
+		$published = (int) castorGetParam($_GET, 'published', '2');
+		$approved = (int) castorGetParam($_GET, 'approved', '2');
+		$ptype_id = (int) castorGetParam($_GET, 'ptype', '0');
 		
 		$authorisedProperties_count = count($thisJRUser->authorisedProperties);
 
@@ -96,7 +96,7 @@ class j06001listyourproperties_ajax
 		 * on very large tables, and MySQL's regex functionality is very limited
 		 */
 		$sWhere = '';
-		$search = jomresGetParam($_GET, 'jr_search', array());
+		$search = castorGetParam($_GET, 'jr_search', array());
 		if (isset($search['value']) && $search['value'] != '') {
 			$sWhere = 'AND (';
 			for ($i = 0; $i < $n; ++$i) {
@@ -109,7 +109,7 @@ class j06001listyourproperties_ajax
 		/*
 		 * Property uids clause
 		 */
-		$clause = 'WHERE propertys_uid IN ('.jomres_implode($thisJRUser->authorisedProperties).') ';
+		$clause = 'WHERE propertys_uid IN ('.castor_implode($thisJRUser->authorisedProperties).') ';
 
 		//published status
 		if ($published == 1) {
@@ -158,21 +158,21 @@ class j06001listyourproperties_ajax
 						a.last_changed,
 						a.completed,
 						(CASE WHEN (a.propertys_uid = b.property_uid 
-									AND b.constant = '_JOMRES_CUSTOMTEXT_PROPERTY_NAME' 
+									AND b.constant = '_CASTOR_CUSTOMTEXT_PROPERTY_NAME' 
 									AND b.language = '".$lang."' 
 									AND b.language_context != '') 
 							THEN b.customtext 
 							ELSE a.property_name 
 						END) AS property_name
-					FROM #__jomres_propertys a 
-						LEFT JOIN #__jomres_custom_text b ON (a.propertys_uid = b.property_uid 
-																AND b.constant = '_JOMRES_CUSTOMTEXT_PROPERTY_NAME' 
+					FROM #__castor_propertys a 
+						LEFT JOIN #__castor_custom_text b ON (a.propertys_uid = b.property_uid 
+																AND b.constant = '_CASTOR_CUSTOMTEXT_PROPERTY_NAME' 
 																AND b.language = '".$lang."') "
 					.$clause
 					.' '.$sWhere
 					.' '.$sOrder
 					.' '.$sLimit;
-		$jomresPropertyList = doSelectSql($query);
+		$castorPropertyList = doSelectSql($query);
 
 		/*
 		 * Total number of rows
@@ -200,36 +200,36 @@ class j06001listyourproperties_ajax
 			'data' => array(),
 		);
 
-		foreach ($jomresPropertyList as $p) {
+		foreach ($castorPropertyList as $p) {
 			$r = array();
 
 			//properties toolbar
-				$toolbar = jomres_singleton_abstract::getInstance('jomresItemToolbar');
+				$toolbar = castor_singleton_abstract::getInstance('castorItemToolbar');
 				$toolbar->newToolbar();
 				if ($thisJRUser->accesslevel > 50) { //higher than receptionist
 					if ($p->approved == 1) {
 						if (!$p->published) {
-							$toolbar->addItem('fa fa-times', 'btn btn-success', '', jomresURL(JOMRES_SITEPAGE_URL.'&task=publish_property'.'&property_uid='.$p->propertys_uid), jr_gettext('_JOMRES_COM_MR_VRCT_PUBLISH', '_JOMRES_COM_MR_VRCT_PUBLISH', false));
+							$toolbar->addItem('fa fa-times', 'btn btn-success', '', castorURL(CASTOR_SITEPAGE_URL.'&task=publish_property'.'&property_uid='.$p->propertys_uid), jr_gettext('_CASTOR_COM_MR_VRCT_PUBLISH', '_CASTOR_COM_MR_VRCT_PUBLISH', false));
 						} else {
-							$toolbar->addItem('fa fa-check', 'btn btn-warning', '', jomresURL(JOMRES_SITEPAGE_URL.'&task=unpublish_property'.'&property_uid='.$p->propertys_uid), jr_gettext('_JOMRES_COM_MR_VRCT_UNPUBLISH', '_JOMRES_COM_MR_VRCT_UNPUBLISH', false));
+							$toolbar->addItem('fa fa-check', 'btn btn-warning', '', castorURL(CASTOR_SITEPAGE_URL.'&task=unpublish_property'.'&property_uid='.$p->propertys_uid), jr_gettext('_CASTOR_COM_MR_VRCT_UNPUBLISH', '_CASTOR_COM_MR_VRCT_UNPUBLISH', false));
 						}
 					} else {
 						if (!$p->published) {
-							$toolbar->addItem('fa fa-times', 'btn btn-default disabled', '', 'javascript:void(0);', jr_gettext('_JOMRES_COM_MR_VRCT_PUBLISH', '_JOMRES_COM_MR_VRCT_PUBLISH', false));
+							$toolbar->addItem('fa fa-times', 'btn btn-default disabled', '', 'javascript:void(0);', jr_gettext('_CASTOR_COM_MR_VRCT_PUBLISH', '_CASTOR_COM_MR_VRCT_PUBLISH', false));
 						} else {
-							$toolbar->addItem('fa fa-check', 'btn btn-success disabled', '', 'javascript:void(0);', jr_gettext('_JOMRES_COM_MR_VRCT_UNPUBLISH', '_JOMRES_COM_MR_VRCT_UNPUBLISH', false));
+							$toolbar->addItem('fa fa-check', 'btn btn-success disabled', '', 'javascript:void(0);', jr_gettext('_CASTOR_COM_MR_VRCT_UNPUBLISH', '_CASTOR_COM_MR_VRCT_UNPUBLISH', false));
 						}
 					}
 				}
 				if ($p->propertys_uid != $defaultProperty) {
-					$toolbar->addSecondaryItem('fa fa-refresh', '', '', jomresURL(JOMRES_SITEPAGE_URL.'&thisProperty='.$p->propertys_uid), jr_gettext('_JOMRES_ACTION_SET_CURRENT', '_JOMRES_ACTION_SET_CURRENT', false));
+					$toolbar->addSecondaryItem('fa fa-refresh', '', '', castorURL(CASTOR_SITEPAGE_URL.'&thisProperty='.$p->propertys_uid), jr_gettext('_CASTOR_ACTION_SET_CURRENT', '_CASTOR_ACTION_SET_CURRENT', false));
 				}
 				if ($thisJRUser->accesslevel > 50) { //higher than receptionist
-					$toolbar->addSecondaryItem('fa fa-pencil-square-o', '', '', jomresURL(JOMRES_SITEPAGE_URL.'&task=edit_property'.'&thisProperty='.$p->propertys_uid), jr_gettext('COMMON_EDIT', 'COMMON_EDIT', false));
+					$toolbar->addSecondaryItem('fa fa-pencil-square-o', '', '', castorURL(CASTOR_SITEPAGE_URL.'&task=edit_property'.'&thisProperty='.$p->propertys_uid), jr_gettext('COMMON_EDIT', 'COMMON_EDIT', false));
 					$url = get_property_details_url($p->propertys_uid);
-					$toolbar->addSecondaryItem('fa fa-arrows-alt', '', '', $url, jr_gettext('_JOMRES_FRONT_PREVIEW', '_JOMRES_FRONT_PREVIEW', false));
+					$toolbar->addSecondaryItem('fa fa-arrows-alt', '', '', $url, jr_gettext('_CASTOR_FRONT_PREVIEW', '_CASTOR_FRONT_PREVIEW', false));
 					if ($authorisedProperties_count > 1) {
-						$toolbar->addSecondaryItem('fa fa-trash-o', '', '', jomresURL(JOMRES_SITEPAGE_URL.'&task=delete_property'.'&thisProperty='.$p->propertys_uid), jr_gettext('COMMON_DELETE', 'COMMON_DELETE', false));
+						$toolbar->addSecondaryItem('fa fa-trash-o', '', '', castorURL(CASTOR_SITEPAGE_URL.'&task=delete_property'.'&thisProperty='.$p->propertys_uid), jr_gettext('COMMON_DELETE', 'COMMON_DELETE', false));
 					}
 				}
 				$r[] = $toolbar->getToolbar();
@@ -237,49 +237,49 @@ class j06001listyourproperties_ajax
 			//end properties toolbar
 
 			$r[] = $p->propertys_uid;
-			$property_name = jr_gettext('_JOMRES_CUSTOMTEXT_PROPERTY_NAME_'.$p->propertys_uid, $p->property_name, false);
+			$property_name = jr_gettext('_CASTOR_CUSTOMTEXT_PROPERTY_NAME_'.$p->propertys_uid, $p->property_name, false);
 			if ($p->propertys_uid == $defaultProperty) {
-				$r[] = '<span class="label label-blue badge bg-primary">'.jomres_decode($property_name).'</span>';
+				$r[] = '<span class="label label-blue badge bg-primary">'.castor_decode($property_name).'</span>';
 			} else {
 				if ($p->completed == 1) {
 					if ($p->approved == 1) {
-						$r[] = jomres_decode($p->property_name);
+						$r[] = castor_decode($p->property_name);
 					} else {
-						$r[] = '<span class="label label-orange badge bg-warning text-dark">'.jomres_decode($property_name).'</span>';
+						$r[] = '<span class="label label-orange badge bg-warning text-dark">'.castor_decode($property_name).'</span>';
 					}
 				} else {
-					$r[] = '<span class="label label-red badge bg-danger">'.jomres_decode($property_name).'</span>';
+					$r[] = '<span class="label label-red badge bg-danger">'.castor_decode($property_name).'</span>';
 				}
 			}
 
-			$r[] = jomres_decode($p->property_street);
-			$r[] = jomres_decode($p->property_town);
-			$r[] = jomres_decode(find_region_name($p->property_region));
+			$r[] = castor_decode($p->property_street);
+			$r[] = castor_decode($p->property_town);
+			$r[] = castor_decode(find_region_name($p->property_region));
 			$r[] = $p->property_postcode;
 			$r[] = $p->property_country;
 			$r[] = $p->property_tel;
 			$r[] = $p->property_fax;
-			$r[] = jomres_decode($p->property_email);
+			$r[] = castor_decode($p->property_email);
 
 			$stars = '';
 			for ($i = 1; $i <= (int) $p->stars; ++$i) {
-				$stars .= '<img src="'.JOMRES_IMAGES_RELPATH.'star.png" border="0" alt="star" />';
+				$stars .= '<img src="'.CASTOR_IMAGES_RELPATH.'star.png" border="0" alt="star" />';
 			}
 			$r[] = $stars;
 
 			if ((int) $p->superior == 1) {
-				$r[] = jr_gettext('_JOMRES_COM_MR_YES', '_JOMRES_COM_MR_YES', false);
+				$r[] = jr_gettext('_CASTOR_COM_MR_YES', '_CASTOR_COM_MR_YES', false);
 			} else {
-				$r[] = jr_gettext('_JOMRES_COM_MR_NO', '_JOMRES_COM_MR_NO', false);
+				$r[] = jr_gettext('_CASTOR_COM_MR_NO', '_CASTOR_COM_MR_NO', false);
 			}
 
 			$r[] = $p->lat;
 			$r[] = $p->long;
 
 			if ((int) $p->approved == 1) {
-				$r[] = jr_gettext('_JOMRES_COM_MR_YES', '_JOMRES_COM_MR_YES', false);
+				$r[] = jr_gettext('_CASTOR_COM_MR_YES', '_CASTOR_COM_MR_YES', false);
 			} else {
-				$r[] = jr_gettext('_JOMRES_COM_MR_NO', '_JOMRES_COM_MR_NO', false);
+				$r[] = jr_gettext('_CASTOR_COM_MR_NO', '_CASTOR_COM_MR_NO', false);
 			}
 
 			$r[] = $p->last_changed;
@@ -299,3 +299,4 @@ class j06001listyourproperties_ajax
 		return null;
 	}
 }
+

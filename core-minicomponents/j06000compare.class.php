@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 	/**
 	 * Core file.
 	 *
-	 * @author Vince Wooll <sales@jomres.net>
+	 * @author Vince Wooll <sales@castor.net>
 	 *
-	 *  @version Jomres 10.7.2
+	 *  @version Castor 10.7.2
 	 *
 	 * @copyright	2005-2023 Vince Wooll
-	 * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+	 * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
 	 **/
 
 // ################################################################
-	defined('_JOMRES_INITCHECK') or die('');
+	defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Builds the property comparison page from the list properties page
 	 *
@@ -36,25 +36,25 @@
 
 		public function __construct()
 		{
-			$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+			$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 			if ($MiniComponents->template_touch) {
 				$this->template_touchable = false;
 				$this->shortcode_data = array(
 					'task' => 'compare',
 					'arguments' => array(0 => array(
 						'argument' => 'property_uids',
-						'arg_info' => '_JOMRES_SHORTCODES_06000COMPARE_ARG_PROPERTY_UIDS',
+						'arg_info' => '_CASTOR_SHORTCODES_06000COMPARE_ARG_PROPERTY_UIDS',
 						'arg_example' => '12,8,7',
 					),
 					),
-					'info' => '_JOMRES_SHORTCODES_06000COMPARE',
+					'info' => '_CASTOR_SHORTCODES_06000COMPARE',
 				);
 
 				return;
 			}
 
 			//add_gmaps_source();
-			$property_uids = jomresGetParam($_REQUEST, 'property_uids', '');
+			$property_uids = castorGetParam($_REQUEST, 'property_uids', '');
 
 			// Clean them sukkas up
 			if ($property_uids != '') {
@@ -71,46 +71,46 @@
 			}
 
 			$output = array();
-			$output[ '_JOMRES_RETURN_TO_RESULTS' ] = jr_gettext('_JOMRES_RETURN_TO_RESULTS', '_JOMRES_RETURN_TO_RESULTS', false, false);
-			$output[ 'RETURN_TO_RESULTS_LINK' ] = jomresURL(JOMRES_SITEPAGE_URL.'&task=search');
+			$output[ '_CASTOR_RETURN_TO_RESULTS' ] = jr_gettext('_CASTOR_RETURN_TO_RESULTS', '_CASTOR_RETURN_TO_RESULTS', false, false);
+			$output[ 'RETURN_TO_RESULTS_LINK' ] = castorURL(CASTOR_SITEPAGE_URL.'&task=search');
 
-			$output[ '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TOWN' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TOWN', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TOWN', false, false);
-			$output[ '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', false, false);
-			$output[ '_JOMRES_FRONT_PTYPE' ] = jr_gettext('_JOMRES_FRONT_PTYPE', '_JOMRES_FRONT_PTYPE', false, false);
-			$output[ '_JOMRES_SORTORDER_STARS' ] = jr_gettext('_JOMRES_SORTORDER_STARS', '_JOMRES_SORTORDER_STARS', false, false);
-			$output[ '_JOMRES_TARIFFSFROM' ] = jr_gettext('_JOMRES_TARIFFSFROM', '_JOMRES_TARIFFSFROM', false, false);
-			$output[ '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_MAPPINGLINK' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_MAPPINGLINK', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_MAPPINGLINK', false, false);
+			$output[ '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TOWN' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TOWN', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TOWN', false, false);
+			$output[ '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', false, false);
+			$output[ '_CASTOR_FRONT_PTYPE' ] = jr_gettext('_CASTOR_FRONT_PTYPE', '_CASTOR_FRONT_PTYPE', false, false);
+			$output[ '_CASTOR_SORTORDER_STARS' ] = jr_gettext('_CASTOR_SORTORDER_STARS', '_CASTOR_SORTORDER_STARS', false, false);
+			$output[ '_CASTOR_TARIFFSFROM' ] = jr_gettext('_CASTOR_TARIFFSFROM', '_CASTOR_TARIFFSFROM', false, false);
+			$output[ '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_MAPPINGLINK' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_MAPPINGLINK', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_MAPPINGLINK', false, false);
 
 			if (!empty($property_uids)) {
-				$tick = JOMRES_IMAGES_RELPATH.'jomresimages/small/Tick.png';
-				$cross = JOMRES_IMAGES_RELPATH.'jomresimages/small/Cancel.png';
+				$tick = CASTOR_IMAGES_RELPATH.'castorimages/small/Tick.png';
+				$cross = CASTOR_IMAGES_RELPATH.'castorimages/small/Cancel.png';
 
-				$current_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+				$current_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 				$current_property_details->gather_data_multi($property_uids);
 
-				$jomres_property_list_prices = jomres_singleton_abstract::getInstance('jomres_property_list_prices');
-				$jomres_property_list_prices->gather_lowest_prices_multi($property_uids);
+				$castor_property_list_prices = castor_singleton_abstract::getInstance('castor_property_list_prices');
+				$castor_property_list_prices->gather_lowest_prices_multi($property_uids);
 
-				$jomres_media_centre_images = jomres_singleton_abstract::getInstance('jomres_media_centre_images');
-				$jomres_media_centre_images->get_images_multi($property_uids, array('property'));
+				$castor_media_centre_images = castor_singleton_abstract::getInstance('castor_media_centre_images');
+				$castor_media_centre_images->get_images_multi($property_uids, array('property'));
 
 				$featuresArray = array();
-				$query = "SELECT hotel_features_uid,hotel_feature_abbv,hotel_feature_full_desc,image FROM #__jomres_hotel_features WHERE property_uid = '0' ORDER BY hotel_feature_abbv ";
+				$query = "SELECT hotel_features_uid,hotel_feature_abbv,hotel_feature_full_desc,image FROM #__castor_hotel_features WHERE property_uid = '0' ORDER BY hotel_feature_abbv ";
 				$propertyFeaturesList = doSelectSql($query);
 				foreach ($propertyFeaturesList as $f) {
-					$hotel_feature_abbv = jr_gettext('_JOMRES_CUSTOMTEXT_FEATURES_ABBV'.(int) $f->hotel_features_uid, stripslashes($f->hotel_feature_abbv), false, false);
-					$hotel_feature_full_desc = jr_gettext('_JOMRES_CUSTOMTEXT_FEATURES_DESC'.(int) $f->hotel_features_uid, stripslashes($f->hotel_feature_full_desc), false, false);
+					$hotel_feature_abbv = jr_gettext('_CASTOR_CUSTOMTEXT_FEATURES_ABBV'.(int) $f->hotel_features_uid, stripslashes($f->hotel_feature_abbv), false, false);
+					$hotel_feature_full_desc = jr_gettext('_CASTOR_CUSTOMTEXT_FEATURES_DESC'.(int) $f->hotel_features_uid, stripslashes($f->hotel_feature_full_desc), false, false);
 					$featuresArray[ $f->hotel_features_uid ] = array('hotel_feature_abbv' => $hotel_feature_abbv, 'hotel_feature_full_desc' => $hotel_feature_full_desc, 'image' => $f->image);
 				}
 
-				$query = 'SELECT id,ptype FROM #__jomres_ptypes';
+				$query = 'SELECT id,ptype FROM #__castor_ptypes';
 				$ptypes = doSelectSql($query);
 				$property_types = array();
 				foreach ($ptypes as $p) {
-					$property_types[ $p->id ] = jr_gettext('_JOMRES_CUSTOMTEXT_PROPERTYTYPES'.(int) $p->id, $p->ptype, false, false);
+					$property_types[ $p->id ] = jr_gettext('_CASTOR_CUSTOMTEXT_PROPERTYTYPES'.(int) $p->id, $p->ptype, false, false);
 				}
 
-				$no_image_image = JOMRES_IMAGES_RELPATH.'noimage.svg';
+				$no_image_image = CASTOR_IMAGES_RELPATH.'noimage.svg';
 
 				// We need to find out which features are used by all properties found in the search results
 				$all_used_features = array();
@@ -137,21 +137,21 @@
 						$MiniComponents->specificEvent('01050', 'x_geocoder', $Args);
 						$r[ 'MAP' ] = $MiniComponents->miniComponentData[ '01050' ][ 'x_geocoder' ];
 
-						if (isset($jomres_property_list_prices->lowest_prices[$property_uid])) {
-							$r[ 'PRICE_PRE_TEXT' ] = $jomres_property_list_prices->lowest_prices[$property_uid][ 'PRE_TEXT' ];
-							$r[ 'PRICE_PRICE' ] = $jomres_property_list_prices->lowest_prices[$property_uid][ 'PRICE' ];
-							$r[ 'PRICE_POST_TEXT' ] = $jomres_property_list_prices->lowest_prices[$property_uid][ 'POST_TEXT' ];
+						if (isset($castor_property_list_prices->lowest_prices[$property_uid])) {
+							$r[ 'PRICE_PRE_TEXT' ] = $castor_property_list_prices->lowest_prices[$property_uid][ 'PRE_TEXT' ];
+							$r[ 'PRICE_PRICE' ] = $castor_property_list_prices->lowest_prices[$property_uid][ 'PRICE' ];
+							$r[ 'PRICE_POST_TEXT' ] = $castor_property_list_prices->lowest_prices[$property_uid][ 'POST_TEXT' ];
 						}
 
 
-						$property_image = JOMRES_IMAGES_RELPATH.'noimage.svg';
-						if (file_exists(JOMRES_IMAGELOCATION_ABSPATH.$property_uid.'_property_'.$property_uid.'.jpg')) {
-							$property_image = JOMRES_IMAGELOCATION_RELPATH.$property_uid.'_property_'.$property_uid.'.jpg';
+						$property_image = CASTOR_IMAGES_RELPATH.'noimage.svg';
+						if (file_exists(CASTOR_IMAGELOCATION_ABSPATH.$property_uid.'_property_'.$property_uid.'.jpg')) {
+							$property_image = CASTOR_IMAGELOCATION_RELPATH.$property_uid.'_property_'.$property_uid.'.jpg';
 						}
 
-						$jomres_media_centre_images->get_images($property_uid, array('property'));
-						$r[ 'IMAGETHUMB' ] = $jomres_media_centre_images->images ['property'][0][0]['small'];
-						$r[ 'IMAGEMEDIUM' ] = $jomres_media_centre_images->images ['property'][0][0]['medium'];
+						$castor_media_centre_images->get_images($property_uid, array('property'));
+						$r[ 'IMAGETHUMB' ] = $castor_media_centre_images->images ['property'][0][0]['small'];
+						$r[ 'IMAGEMEDIUM' ] = $castor_media_centre_images->images ['property'][0][0]['medium'];
 
 						$r[ 'PROPERTY_IMAGE_OR_SLIDESHOW' ] = $MiniComponents->specificEvent('06000', 'show_property_main_image', array('output_now' => false, 'property_uid' => $property_uid));
 
@@ -169,7 +169,7 @@
 							}
 							$t = new patTemplate();
 							$t->addRows('fs', $fs);
-							$t->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+							$t->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 							$t->readTemplatesFromInput('compare_features.html');
 							$r[ 'FEATURES' ] = $t->getParsedTemplate();
 						}
@@ -178,8 +178,8 @@
 
 						$r[ 'LIVE_SITE' ] = get_showtime('live_site');
 						$r[ 'MOREINFORMATIONLINK' ] = get_property_details_url($property_uid);
-						$r[ 'MOREINFORMATION' ] = jr_gettext('_JOMRES_COM_A_CLICKFORMOREINFORMATION', '_JOMRES_COM_A_CLICKFORMOREINFORMATION', $editable = false, true);
-						$r[ 'RANDOM_IDENTIFIER' ] = generateJomresRandomString(10);
+						$r[ 'MOREINFORMATION' ] = jr_gettext('_CASTOR_COM_A_CLICKFORMOREINFORMATION', '_CASTOR_COM_A_CLICKFORMOREINFORMATION', $editable = false, true);
+						$r[ 'RANDOM_IDENTIFIER' ] = generateCastorRandomString(10);
 						$ptype = $property[ 'ptype_id' ];
 						$r[ 'PROPERTY_TYPE' ] = $property_types[ $ptype ];
 
@@ -190,8 +190,8 @@
 								$property_uids_url_string .= $id.',';
 							}
 						}
-						$r[ '_JOMRES_REMOVE' ] = jr_gettext('_JOMRES_REMOVE', '_JOMRES_REMOVE', false, false);
-						$r[ 'REMOVE_LINK' ] = jomresURL(JOMRES_SITEPAGE_URL.'&task=compare'.$property_uids_url_string);
+						$r[ '_CASTOR_REMOVE' ] = jr_gettext('_CASTOR_REMOVE', '_CASTOR_REMOVE', false, false);
+						$r[ 'REMOVE_LINK' ] = castorURL(CASTOR_SITEPAGE_URL.'&task=compare'.$property_uids_url_string);
 						$rows[ ] = $r;
 					}
 
@@ -212,18 +212,18 @@
 
 				output_ribbon_styling();
 
-				jomres_set_page_title( 0 ,  jr_gettext('_JOMRES_COMPARE', '_JOMRES_COMPARE', false).' : '.substr($property_names_str, 0, -3) );
+				castor_set_page_title( 0 ,  jr_gettext('_CASTOR_COMPARE', '_CASTOR_COMPARE', false).' : '.substr($property_names_str, 0, -3) );
 
 				$pageoutput[ ] = $output;
 				$tmpl = new patTemplate();
 				$tmpl->addRows('pageoutput', $pageoutput);
 				$tmpl->addRows('features', $features);
 				$tmpl->addRows('rows', $rows);
-				$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+				$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 				$tmpl->readTemplatesFromInput('compare.html');
 				$tmpl->displayParsedTemplate();
 			} else { // Oh, the naughty little tinker, they've removed all properties from their list, we'll just send them back to the search results
-				$tmpBookingHandler = jomres_singleton_abstract::getInstance('jomres_temp_booking_handler');
+				$tmpBookingHandler = castor_singleton_abstract::getInstance('castor_temp_booking_handler');
 				$MiniComponents->triggerEvent('01004'); // optional
 				$MiniComponents->triggerEvent('01005'); // optional
 				$MiniComponents->triggerEvent('01006'); // optional
@@ -238,3 +238,4 @@
 			return null;
 		}
 	}
+

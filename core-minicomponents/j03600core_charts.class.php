@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Builds the default bookings chart
 	 *
@@ -37,23 +37,23 @@ class j03600core_charts
 	 
 	public function __construct($componentArgs)
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		$all_jomres_charts = get_showtime('all_jomres_charts');
+		$all_castor_charts = get_showtime('all_castor_charts');
 
 		//bookings chart
-		$all_jomres_charts[] = array(
+		$all_castor_charts[] = array(
 									 'id' => 'chart_bookings',
-									 'title' => jr_gettext('_JOMRES_STATUS_BOOKINGS', '_JOMRES_STATUS_BOOKINGS', false, false),
-									 'description' => jr_gettext('_JOMRES_CHART_BOOKINGS_DESC', '_JOMRES_CHART_BOOKINGS_DESC', false, false),
+									 'title' => jr_gettext('_CASTOR_STATUS_BOOKINGS', '_CASTOR_STATUS_BOOKINGS', false, false),
+									 'description' => jr_gettext('_CASTOR_CHART_BOOKINGS_DESC', '_CASTOR_CHART_BOOKINGS_DESC', false, false),
 									 );
 
-		set_showtime('all_jomres_charts', $all_jomres_charts);
+		set_showtime('all_castor_charts', $all_castor_charts);
 	}
 
 	public function getRetVals()
@@ -61,3 +61,4 @@ class j03600core_charts
 		return null;
 	}
 }
+

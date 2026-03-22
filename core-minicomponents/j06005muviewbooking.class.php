@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,9 +35,9 @@ class j06005muviewbooking
 	 
 	public function __construct()
 	{
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -45,18 +45,18 @@ class j06005muviewbooking
 		}
 
 		if ($thisJRUser->userIsRegistered) {
-			$contract_uid = jomresGetParam($_REQUEST, 'contract_uid', 0);
+			$contract_uid = castorGetParam($_REQUEST, 'contract_uid', 0);
 
 			if ($contract_uid == 0) {
 				return;
 			}
 
-			$output[ 'HARRIVAL' ] = jr_gettext('_JOMRES_COM_MR_VIEWBOOKINGS_ARRIVAL', '_JOMRES_COM_MR_VIEWBOOKINGS_ARRIVAL', $editable = false, $isLink = false);
-			$output[ 'HDEPARTURE' ] = jr_gettext('_JOMRES_COM_MR_VIEWBOOKINGS_DEPARTURE', '_JOMRES_COM_MR_VIEWBOOKINGS_DEPARTURE', $editable = false, $isLink = false);
-			$output[ 'HTOTAL' ] = jr_gettext('_JOMRES_AJAXFORM_BILLING_TOTAL', '_JOMRES_AJAXFORM_BILLING_TOTAL', $editable = false, $isLink = false);
-			$output[ 'HEXTRAS' ] = jr_gettext('_JOMRES_AJAXFORM_BILLING_EXTRAS', '_JOMRES_AJAXFORM_BILLING_EXTRAS', $editable = false, $isLink = false);
-			$output[ 'HPNAME' ] = jr_gettext('_JOMRES_COM_MR_QUICKRES_STEP2_PROPERTYNAME', '_JOMRES_COM_MR_QUICKRES_STEP2_PROPERTYNAME', $editable = false, $isLink = false);
-			$output[ 'HMOREINFO' ] = jr_gettext('_JOMRES_COM_A_CLICKFORMOREINFORMATION', '_JOMRES_COM_A_CLICKFORMOREINFORMATION', $editable = false, $isLink = false);
+			$output[ 'HARRIVAL' ] = jr_gettext('_CASTOR_COM_MR_VIEWBOOKINGS_ARRIVAL', '_CASTOR_COM_MR_VIEWBOOKINGS_ARRIVAL', $editable = false, $isLink = false);
+			$output[ 'HDEPARTURE' ] = jr_gettext('_CASTOR_COM_MR_VIEWBOOKINGS_DEPARTURE', '_CASTOR_COM_MR_VIEWBOOKINGS_DEPARTURE', $editable = false, $isLink = false);
+			$output[ 'HTOTAL' ] = jr_gettext('_CASTOR_AJAXFORM_BILLING_TOTAL', '_CASTOR_AJAXFORM_BILLING_TOTAL', $editable = false, $isLink = false);
+			$output[ 'HEXTRAS' ] = jr_gettext('_CASTOR_AJAXFORM_BILLING_EXTRAS', '_CASTOR_AJAXFORM_BILLING_EXTRAS', $editable = false, $isLink = false);
+			$output[ 'HPNAME' ] = jr_gettext('_CASTOR_COM_MR_QUICKRES_STEP2_PROPERTYNAME', '_CASTOR_COM_MR_QUICKRES_STEP2_PROPERTYNAME', $editable = false, $isLink = false);
+			$output[ 'HMOREINFO' ] = jr_gettext('_CASTOR_COM_A_CLICKFORMOREINFORMATION', '_CASTOR_COM_A_CLICKFORMOREINFORMATION', $editable = false, $isLink = false);
 			$output[ 'TITLE' ] = jr_gettext('_JOMCOMP_MYUSER_VIEWBOOKING', '_JOMCOMP_MYUSER_VIEWBOOKING', $editable = false, $isLink = false);
 
 			$pageoutput = array();
@@ -64,9 +64,9 @@ class j06005muviewbooking
 
 			$allGuestUids = array();
 			if (!$thisJRUser->is_partner) {
-				$query = "SELECT guests_uid FROM #__jomres_guests WHERE mos_userid = '".(int) $thisJRUser->id."' ";
+				$query = "SELECT guests_uid FROM #__castor_guests WHERE mos_userid = '".(int) $thisJRUser->id."' ";
 			} else {
-				$query = "SELECT guests_uid FROM #__jomres_guests WHERE partner_id = '".(int) $thisJRUser->id."' ";
+				$query = "SELECT guests_uid FROM #__castor_guests WHERE partner_id = '".(int) $thisJRUser->id."' ";
 			}
 
 			$guests_uids = doSelectSql($query);
@@ -76,7 +76,7 @@ class j06005muviewbooking
 					$allGuestUids[ ] = $g->guests_uid;
 				}
 			}
-			$query = "SELECT * FROM #__jomres_contracts WHERE contract_uid = '".(int) $contract_uid."' AND guest_uid IN (".jomres_implode($allGuestUids).') LIMIT 1';
+			$query = "SELECT * FROM #__castor_contracts WHERE contract_uid = '".(int) $contract_uid."' AND guest_uid IN (".castor_implode($allGuestUids).') LIMIT 1';
 			$bookingData = doSelectSql($query);
 			if (count($bookingData) == 1) {
 				foreach ($bookingData as $booking) {
@@ -85,11 +85,11 @@ class j06005muviewbooking
 					$property_uid = $booking->property_uid;
 				}
 				$mrConfig = getPropertySpecificSettings($property_uid);
-				$query = "SELECT * FROM #__jomres_extraservices WHERE contract_uid = '".(int) $contract_uid."'";
+				$query = "SELECT * FROM #__castor_extraservices WHERE contract_uid = '".(int) $contract_uid."'";
 				$extraBillingData = doSelectSql($query);
-				$query = "SELECT * FROM #__jomres_guests WHERE guests_uid = '".(int) $guest_uid."'";
+				$query = "SELECT * FROM #__castor_guests WHERE guests_uid = '".(int) $guest_uid."'";
 				$guestData = doSelectSql($query);
-				$query = "SELECT * FROM #__jomres_room_bookings WHERE contract_uid = '".(int) $contract_uid."'";
+				$query = "SELECT * FROM #__castor_room_bookings WHERE contract_uid = '".(int) $contract_uid."'";
 				$roomBookingData = doSelectSql($query);
 				$room_uid = array();
 				$roomInfo = array();
@@ -103,7 +103,7 @@ class j06005muviewbooking
 					$room_uid = array_unique($room_uid);
 					sort($room_uid);
 
-					$query = 'SELECT * FROM #__jomres_rooms WHERE room_uid IN ('.jomres_implode($room_uid).') ';
+					$query = 'SELECT * FROM #__castor_rooms WHERE room_uid IN ('.castor_implode($room_uid).') ';
 					$roomInfo = doSelectSql($query);
 					$rFeatures = '';
 					foreach ($roomInfo as $room) {
@@ -112,13 +112,13 @@ class j06005muviewbooking
 						if (!empty($room->room_features_uid)) {
 							$featuresArray = explode(',', $room->room_features_uid);
 							if (!empty($featuresArray)) {
-								$query = 'SELECT * FROM #__jomres_room_features WHERE room_features_uid IN ('.jomres_implode($featuresArray).') ';
+								$query = 'SELECT * FROM #__castor_room_features WHERE room_features_uid IN ('.castor_implode($featuresArray).') ';
 								$rFeatures = doSelectSql($query);
 								$numberOfRoomFeatures = count($rFeatures);
 							}
 						}
 					}
-					$query = 'SELECT * FROM #__jomres_room_classes WHERE room_classes_uid IN ('.jomres_implode($room_classes_uid).') ';
+					$query = 'SELECT * FROM #__castor_room_classes WHERE room_classes_uid IN ('.castor_implode($room_classes_uid).') ';
 					$rClass = doSelectSql($query);
 				}
 				$this->editBooking_html($contract_uid, $bookingData, $extraBillingData, $guestData, $roomBookingData, $roomInfo, $rClass, $rFeatures, $mrConfig);
@@ -128,8 +128,8 @@ class j06005muviewbooking
 
 	public function editBooking_html($contract_uid, $bookingData, $extraBillingData, $guestData, $roomBookingData, $roomInfo, $roomClass, $roomFeatures, $mrConfig)
 	{
-		jr_import('jomres_encryption');
-		$jomres_encryption = new jomres_encryption();
+		jr_import('castor_encryption');
+		$castor_encryption = new castor_encryption();
 		
 		$popup = get_showtime('popup');
 		$guest_firstname = 'N/A';
@@ -149,26 +149,26 @@ class j06005muviewbooking
 		$guest_vat_number = 'N/A';
 
 		foreach ($guestData as $guest) {
-			$guest_firstname = $jomres_encryption->decrypt($guest->enc_firstname);
-			$guest_surname = $jomres_encryption->decrypt($guest->enc_surname);
+			$guest_firstname = $castor_encryption->decrypt($guest->enc_firstname);
+			$guest_surname = $castor_encryption->decrypt($guest->enc_surname);
 			$guest_uid = $guest->guests_uid;
 			$guest_mos_userid = $guest->mos_userid;
-			$guest_house = $jomres_encryption->decrypt($guest->enc_house);
-			$guest_street = $jomres_encryption->decrypt($guest->enc_street);
-			$guest_town = $jomres_encryption->decrypt($guest->enc_town);
-			if (is_numeric($jomres_encryption->decrypt($guest->enc_county))) {
-				$jomres_regions = jomres_singleton_abstract::getInstance('jomres_regions');
-				$guest_region = jr_gettext('_JOMRES_CUSTOMTEXT_REGIONS_'.$jomres_encryption->decrypt($guest->enc_county), $jomres_regions->get_region_name($jomres_encryption->decrypt($guest->enc_county)), false, false);
+			$guest_house = $castor_encryption->decrypt($guest->enc_house);
+			$guest_street = $castor_encryption->decrypt($guest->enc_street);
+			$guest_town = $castor_encryption->decrypt($guest->enc_town);
+			if (is_numeric($castor_encryption->decrypt($guest->enc_county))) {
+				$castor_regions = castor_singleton_abstract::getInstance('castor_regions');
+				$guest_region = jr_gettext('_CASTOR_CUSTOMTEXT_REGIONS_'.$castor_encryption->decrypt($guest->enc_county), $castor_regions->get_region_name($castor_encryption->decrypt($guest->enc_county)), false, false);
 			} else {
-				$guest_region = jr_gettext('_JOMRES_CUSTOMTEXT_PROPERTY_REGION'.$jomres_encryption->decrypt($guest->enc_county), $jomres_encryption->decrypt($guest->enc_county), false, false);
+				$guest_region = jr_gettext('_CASTOR_CUSTOMTEXT_PROPERTY_REGION'.$castor_encryption->decrypt($guest->enc_county), $castor_encryption->decrypt($guest->enc_county), false, false);
 			}
-			$guest_country = getSimpleCountry($jomres_encryption->decrypt($guest->enc_country));
-			$guest_postcode = $jomres_encryption->decrypt($guest->enc_postcode);
-			$guest_tel_landline = $jomres_encryption->decrypt($guest->enc_tel_landline);
-			$guest_tel_mobile = $jomres_encryption->decrypt($guest->enc_tel_mobile);
-			$guest_email = $jomres_encryption->decrypt($guest->enc_email);
-			$guest_preferences = $jomres_encryption->decrypt($guest->enc_preferences);
-			$guest_vat_number = $jomres_encryption->decrypt($guest->enc_vat_number);
+			$guest_country = getSimpleCountry($castor_encryption->decrypt($guest->enc_country));
+			$guest_postcode = $castor_encryption->decrypt($guest->enc_postcode);
+			$guest_tel_landline = $castor_encryption->decrypt($guest->enc_tel_landline);
+			$guest_tel_mobile = $castor_encryption->decrypt($guest->enc_tel_mobile);
+			$guest_email = $castor_encryption->decrypt($guest->enc_email);
+			$guest_preferences = $castor_encryption->decrypt($guest->enc_preferences);
+			$guest_vat_number = $castor_encryption->decrypt($guest->enc_vat_number);
 		}
 
 		foreach ($bookingData as $booking) {
@@ -207,7 +207,7 @@ class j06005muviewbooking
 				$vu = $vDeets[ 1 ];
 				$vq = $vDeets[ 2 ];
 				$vv = $vDeets[ 3 ];
-				$query = "SELECT `type` FROM `#__jomres_customertypes` where id = '".(int) $vu."' ";
+				$query = "SELECT `type` FROM `#__castor_customertypes` where id = '".(int) $vu."' ";
 				$vtitle = doSelectSql($query, 1);
 				$guesttypeOutput[ ] = array('title' => $vtitle, 'qty' => $vq, 'value' => $vv);
 			}
@@ -234,15 +234,15 @@ class j06005muviewbooking
 			$rClass_room_class_full_desc = $rClass->room_class_full_desc;
 		}
 		if ($booking_deposit_paid) {
-			$depositPaid = jr_gettext('_JOMRES_COM_MR_YES', '_JOMRES_COM_MR_YES');
+			$depositPaid = jr_gettext('_CASTOR_COM_MR_YES', '_CASTOR_COM_MR_YES');
 		} else {
-			$depositPaid = jr_gettext('_JOMRES_COM_MR_NO', '_JOMRES_COM_MR_NO');
+			$depositPaid = jr_gettext('_CASTOR_COM_MR_NO', '_CASTOR_COM_MR_NO');
 		}
 
 		if (!$bookedin && dateDiff('d', date('Y/m/d'), $booking_arrival) > (int) $mrConfig[ 'cancellation_threashold' ] && (int) $booking_cancelled == 0) {
-			$jrtbar = jomres_singleton_abstract::getInstance('jomres_toolbar');
+			$jrtbar = castor_singleton_abstract::getInstance('castor_toolbar');
 			$jrtb = $jrtbar->startTable();
-			$jrtb .= $jrtbar->toolbarItem('cancel_booking', jomresURL(JOMRES_SITEPAGE_URL."&task=cancelGuestBooking&contract_uid=$booking_contract_uid"), '');
+			$jrtb .= $jrtbar->toolbarItem('cancel_booking', castorURL(CASTOR_SITEPAGE_URL."&task=cancelGuestBooking&contract_uid=$booking_contract_uid"), '');
 			$jrtb .= $jrtbar->endTable();
 			echo $jrtb;
 		}
@@ -254,77 +254,77 @@ class j06005muviewbooking
 				$class = 'ui-state-error';
 			}
 
-			echo '<div class="'.$class.'">'.jr_gettext('_JOMRES_STATUS_CANCELLED', '_JOMRES_STATUS_CANCELLED', false).'</div>';
+			echo '<div class="'.$class.'">'.jr_gettext('_CASTOR_STATUS_CANCELLED', '_CASTOR_STATUS_CANCELLED', false).'</div>';
 		}
 
-		echo "<div id='jomresmenu_hint' style=color:red; >&nbsp;</div>";
-		jr_import('jomres_content_tabs');
-		$contentPanel = new jomres_content_tabs();
+		echo "<div id='castormenu_hint' style=color:red; >&nbsp;</div>";
+		jr_import('castor_content_tabs');
+		$contentPanel = new castor_content_tabs();
 		$contentPanel->startTabs();
-		$contentPanel->startPanel(jr_gettext('_JOMRES_COM_MR_EDITBOOKING_TAB_ARRIVAL', '_JOMRES_COM_MR_EDITBOOKING_TAB_ARRIVAL', false));
+		$contentPanel->startPanel(jr_gettext('_CASTOR_COM_MR_EDITBOOKING_TAB_ARRIVAL', '_CASTOR_COM_MR_EDITBOOKING_TAB_ARRIVAL', false));
 		$contentPanel->setcontent('<table>
 			<tr>
-				<td>' .jr_gettext('_JOMRES_COM_MR_VIEWBOOKINGS_ARRIVAL', '_JOMRES_COM_MR_VIEWBOOKINGS_ARRIVAL').'</td>
+				<td>' .jr_gettext('_CASTOR_COM_MR_VIEWBOOKINGS_ARRIVAL', '_CASTOR_COM_MR_VIEWBOOKINGS_ARRIVAL').'</td>
 				<td>' .outputDate($booking_arrival).'</td>
 			</tr>
 			<tr>
-				<td>' .jr_gettext('_JOMRES_COM_MR_VIEWBOOKINGS_DEPARTURE', '_JOMRES_COM_MR_VIEWBOOKINGS_DEPARTURE').'</td>
+				<td>' .jr_gettext('_CASTOR_COM_MR_VIEWBOOKINGS_DEPARTURE', '_CASTOR_COM_MR_VIEWBOOKINGS_DEPARTURE').'</td>
 				<td>' .outputDate($booking_departure).'</td>
 			</tr>
 			<tr>
-				<td>' .jr_gettext('_JOMRES_COM_MR_EB_ROOM_BOOKINGSPECIALREQ', '_JOMRES_COM_MR_EB_ROOM_BOOKINGSPECIALREQ').'</td>
+				<td>' .jr_gettext('_CASTOR_COM_MR_EB_ROOM_BOOKINGSPECIALREQ', '_CASTOR_COM_MR_EB_ROOM_BOOKINGSPECIALREQ').'</td>
 				<td><b>' .ucfirst($booking_special_reqs).'</b></td>
 			</tr>
 		</table>');
 		$contentPanel->insertContent();
 		$contentPanel->endPanel();
 
-		$contentPanel->startPanel(jr_gettext('_JOMRES_COM_MR_EDITBOOKING_TAB_GUEST', '_JOMRES_COM_MR_EDITBOOKING_TAB_GUEST', false));
+		$contentPanel->startPanel(jr_gettext('_CASTOR_COM_MR_EDITBOOKING_TAB_GUEST', '_CASTOR_COM_MR_EDITBOOKING_TAB_GUEST', false));
 		$contentPanel->setcontent('<table>
 			<tr>
-				<td>' .jr_gettext('_JOMRES_COM_MR_EB_ARRIVALFIRSTNAME_EXPL', '_JOMRES_COM_MR_EB_ARRIVALFIRSTNAME_EXPL').'</td>
+				<td>' .jr_gettext('_CASTOR_COM_MR_EB_ARRIVALFIRSTNAME_EXPL', '_CASTOR_COM_MR_EB_ARRIVALFIRSTNAME_EXPL').'</td>
 				<td>' .ucfirst($guest_firstname).'</td>
 			</tr>
 			<tr>
-				<td>' .jr_gettext('_JOMRES_COM_MR_EB_ARRIVALSURNAME_EXPL', '_JOMRES_COM_MR_EB_ARRIVALSURNAME_EXPL').'</td>
+				<td>' .jr_gettext('_CASTOR_COM_MR_EB_ARRIVALSURNAME_EXPL', '_CASTOR_COM_MR_EB_ARRIVALSURNAME_EXPL').'</td>
 				<td>' .ucfirst($guest_surname).'</td>
 			</tr>
 			<tr>
-				<td>' .jr_gettext('_JOMRES_COM_MR_EB_GUEST_JOMRES_HOUSE_EXPL', '_JOMRES_COM_MR_EB_GUEST_JOMRES_HOUSE_EXPL').'</td>
+				<td>' .jr_gettext('_CASTOR_COM_MR_EB_GUEST_CASTOR_HOUSE_EXPL', '_CASTOR_COM_MR_EB_GUEST_CASTOR_HOUSE_EXPL').'</td>
 				<td>' .ucfirst($guest_house).'</td>
 			</tr>
 			<tr>
-				<td>' .jr_gettext('_JOMRES_COM_MR_EB_GUEST_JOMRES_STREET_EXPL', '_JOMRES_COM_MR_EB_GUEST_JOMRES_STREET_EXPL').'</td>
+				<td>' .jr_gettext('_CASTOR_COM_MR_EB_GUEST_CASTOR_STREET_EXPL', '_CASTOR_COM_MR_EB_GUEST_CASTOR_STREET_EXPL').'</td>
 				<td>' .ucfirst($guest_street).'</td>
 			</tr>
 			<tr>
-				<td>' .jr_gettext('_JOMRES_COM_MR_EB_GUEST_JOMRES_TOWN_EXPL', '_JOMRES_COM_MR_EB_GUEST_JOMRES_TOWN_EXPL').'</td>
+				<td>' .jr_gettext('_CASTOR_COM_MR_EB_GUEST_CASTOR_TOWN_EXPL', '_CASTOR_COM_MR_EB_GUEST_CASTOR_TOWN_EXPL').'</td>
 				<td>' .ucfirst($guest_town).'</td>
 			</tr>
 			<tr>
-				<td>' .jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_REGION', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_REGION').'</td>
+				<td>' .jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_REGION', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_REGION').'</td>
 				<td>' .ucfirst($guest_region).'</td>
 			</tr>
 			<tr>
-				<td>' .jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY').'</td>
+				<td>' .jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY').'</td>
 				<td>' .ucfirst($guest_country).'</td>
 			</tr>
 
 			<tr>
-				<td>' .jr_gettext('_JOMRES_COM_MR_EB_GUEST_JOMRES_POSTCODE_EXPL', '_JOMRES_COM_MR_EB_GUEST_JOMRES_POSTCODE_EXPL').'</td>
+				<td>' .jr_gettext('_CASTOR_COM_MR_EB_GUEST_CASTOR_POSTCODE_EXPL', '_CASTOR_COM_MR_EB_GUEST_CASTOR_POSTCODE_EXPL').'</td>
 				<td>' .strtoupper($guest_postcode).'</td>
 			</tr>
 			<tr>
-			<td>' .jr_gettext('_JOMRES_COM_MR_EB_GUEST_JOMRES_LANDLINE_EXPL', '_JOMRES_COM_MR_EB_GUEST_JOMRES_LANDLINE_EXPL').'</td>
+			<td>' .jr_gettext('_CASTOR_COM_MR_EB_GUEST_CASTOR_LANDLINE_EXPL', '_CASTOR_COM_MR_EB_GUEST_CASTOR_LANDLINE_EXPL').'</td>
 				<td>' .$guest_tel_landline.'</td>
 			</tr>
 				<tr>
-				<td>' .jr_gettext('_JOMRES_COM_MR_EB_GUEST_JOMRES_MOBILE_EXPL', '_JOMRES_COM_MR_EB_GUEST_JOMRES_MOBILE_EXPL').'</td>
+				<td>' .jr_gettext('_CASTOR_COM_MR_EB_GUEST_CASTOR_MOBILE_EXPL', '_CASTOR_COM_MR_EB_GUEST_CASTOR_MOBILE_EXPL').'</td>
 				<td>' .$guest_tel_mobile.'</td>
 			</tr>
 			</tr>
 				<tr>
-				<td>' .jr_gettext('_JOMRES_COM_YOURBUSINESS_VATNO', '_JOMRES_COM_YOURBUSINESS_VATNO', false).'</td>
+				<td>' .jr_gettext('_CASTOR_COM_YOURBUSINESS_VATNO', '_CASTOR_COM_YOURBUSINESS_VATNO', false).'</td>
 				<td>' .$guest_vat_number.'</td>
 			</tr>
 		</table>');
@@ -333,18 +333,18 @@ class j06005muviewbooking
 
 		$rooms_tab_replacement = get_showtime('rooms_tab_replacement');
 		if (is_null($rooms_tab_replacement)) {
-			$contentPanel->startPanel(jr_gettext('_JOMRES_COM_MR_EDITBOOKING_TAB_ROOM', '_JOMRES_COM_MR_EDITBOOKING_TAB_ROOM', false));
+			$contentPanel->startPanel(jr_gettext('_CASTOR_COM_MR_EDITBOOKING_TAB_ROOM', '_CASTOR_COM_MR_EDITBOOKING_TAB_ROOM', false));
 			$contentPanel->setcontent('<table>');
 			if ($roomBooking_black_booking == '1') {
-				$bookingType = jr_gettext('_JOMRES_COM_MR_EB_ROOM_BOOKINGTYPE_BLACK', '_JOMRES_COM_MR_EB_ROOM_BOOKINGTYPE_BLACK');
+				$bookingType = jr_gettext('_CASTOR_COM_MR_EB_ROOM_BOOKINGTYPE_BLACK', '_CASTOR_COM_MR_EB_ROOM_BOOKINGTYPE_BLACK');
 			} elseif ($roomBooking_reception_booking == '1') {
-				$bookingType = jr_gettext('_JOMRES_COM_MR_EB_ROOM_BOOKINGTYPE_RECEPTION', '_JOMRES_COM_MR_EB_ROOM_BOOKINGTYPE_RECEPTION');
+				$bookingType = jr_gettext('_CASTOR_COM_MR_EB_ROOM_BOOKINGTYPE_RECEPTION', '_CASTOR_COM_MR_EB_ROOM_BOOKINGTYPE_RECEPTION');
 			} else {
-				$bookingType = jr_gettext('_JOMRES_COM_MR_EB_ROOM_BOOKINGTYPE_INTERNET', '_JOMRES_COM_MR_EB_ROOM_BOOKINGTYPE_INTERNET');
+				$bookingType = jr_gettext('_CASTOR_COM_MR_EB_ROOM_BOOKINGTYPE_INTERNET', '_CASTOR_COM_MR_EB_ROOM_BOOKINGTYPE_INTERNET');
 			}
 			$contentPanel->setcontent('
 				<tr>
-					<td>' .jr_gettext('_JOMRES_COM_MR_EB_ROOM_BOOKINGTYPE_EXPL', '_JOMRES_COM_MR_EB_ROOM_BOOKINGTYPE_EXPL').'</td>
+					<td>' .jr_gettext('_CASTOR_COM_MR_EB_ROOM_BOOKINGTYPE_EXPL', '_CASTOR_COM_MR_EB_ROOM_BOOKINGTYPE_EXPL').'</td>
 					<td>' .$bookingType.'</td>
 				</tr>
 				<tr>
@@ -354,27 +354,27 @@ class j06005muviewbooking
 			foreach ($rmInfo as $ri) {
 				$contentPanel->setcontent('
 				<tr>
-					<td>' .jr_gettext('_JOMRES_COM_MR_EB_ROOM_NAME', '_JOMRES_COM_MR_EB_ROOM_NAME').'</td>
+					<td>' .jr_gettext('_CASTOR_COM_MR_EB_ROOM_NAME', '_CASTOR_COM_MR_EB_ROOM_NAME').'</td>
 					<td>' .$ri[ 'rInfo_name' ].'</td>
 				</tr>
 				<tr>
-					<td>' .jr_gettext('_JOMRES_COM_MR_EB_ROOM_NUMBER', '_JOMRES_COM_MR_EB_ROOM_NUMBER').'</td>
+					<td>' .jr_gettext('_CASTOR_COM_MR_EB_ROOM_NUMBER', '_CASTOR_COM_MR_EB_ROOM_NUMBER').'</td>
 					<td>' .$ri[ 'rInfo_number' ].'</td>
 				</tr>
 				<tr>
-					<td>' .jr_gettext('_JOMRES_COM_MR_EB_ROOM_FLOOR', '_JOMRES_COM_MR_EB_ROOM_FLOOR').'</td>
+					<td>' .jr_gettext('_CASTOR_COM_MR_EB_ROOM_FLOOR', '_CASTOR_COM_MR_EB_ROOM_FLOOR').'</td>
 					<td>' .$ri[ 'rInfo_room_floor' ].'</td>
 				</tr>
 				<tr>
-					<td>' .jr_gettext('_JOMRES_COM_MR_EB_ROOM_MAXPEOPLE', '_JOMRES_COM_MR_EB_ROOM_MAXPEOPLE').'</td>
+					<td>' .jr_gettext('_CASTOR_COM_MR_EB_ROOM_MAXPEOPLE', '_CASTOR_COM_MR_EB_ROOM_MAXPEOPLE').'</td>
 					<td>' .$ri[ 'rInfo_max_people' ].'</td>
 				</tr>
 				<tr>');
 				$rit = $ri[ 'rInfo_type' ];
-				$query = "SELECT room_class_abbv FROM #__jomres_room_classes WHERE room_classes_uid = '".(int) $rit."'";
+				$query = "SELECT room_class_abbv FROM #__castor_room_classes WHERE room_classes_uid = '".(int) $rit."'";
 				$type = doSelectSql($query, 1);
 				$contentPanel->setcontent('
-					<td>' .jr_gettext('_JOMRES_COM_MR_EB_ROOM_CLASS_ABBV', '_JOMRES_COM_MR_EB_ROOM_CLASS_ABBV').'</td>
+					<td>' .jr_gettext('_CASTOR_COM_MR_EB_ROOM_CLASS_ABBV', '_CASTOR_COM_MR_EB_ROOM_CLASS_ABBV').'</td>
 					<td>' .$type.'</td>
 				</tr>
 				<tr>
@@ -398,13 +398,13 @@ class j06005muviewbooking
 		if (is_null($rooms_tab_replacement)) {
 			$nights = '
 			<tr>
-				<td>' .jr_gettext('_JOMRES_COM_MR_QUICKRES_STEP4_STAYDAYS', '_JOMRES_COM_MR_QUICKRES_STEP4_STAYDAYS').'</td>
+				<td>' .jr_gettext('_CASTOR_COM_MR_QUICKRES_STEP4_STAYDAYS', '_CASTOR_COM_MR_QUICKRES_STEP4_STAYDAYS').'</td>
 				<td>' .count(explode(',', $booking_date_range_string)).'</td>
 			</tr>
 			';
 			$sps = '
 			<tr>
-				<td>' .jr_gettext('_JOMRES_COM_A_SUPPLIMENTS_SINGLEPERSON', '_JOMRES_COM_A_SUPPLIMENTS_SINGLEPERSON').'</td>
+				<td>' .jr_gettext('_CASTOR_COM_A_SUPPLIMENTS_SINGLEPERSON', '_CASTOR_COM_A_SUPPLIMENTS_SINGLEPERSON').'</td>
 				<td>' .output_price($single_person_suppliment).'</td>
 			</tr>
 			';
@@ -414,34 +414,34 @@ class j06005muviewbooking
 				<td><hr></td>
 			</tr>
 			<tr>
-				<td>' .jr_gettext('_JOMRES_CONFIG_VARIANCES_CUSTOMERTYPES', '_JOMRES_CONFIG_VARIANCES_CUSTOMERTYPES').'</td>
+				<td>' .jr_gettext('_CASTOR_CONFIG_VARIANCES_CUSTOMERTYPES', '_CASTOR_CONFIG_VARIANCES_CUSTOMERTYPES').'</td>
 				<td>&nbsp;</td>
 			</tr>
 			';
 		}
 
-		$contentPanel->startPanel(jr_gettext('_JOMRES_COM_MR_EDITBOOKING_TAB_PAYMENT', '_JOMRES_COM_MR_EDITBOOKING_TAB_PAYMENT', false));
+		$contentPanel->startPanel(jr_gettext('_CASTOR_COM_MR_EDITBOOKING_TAB_PAYMENT', '_CASTOR_COM_MR_EDITBOOKING_TAB_PAYMENT', false));
 		$contentPanel->setcontent('<table>
 			<tr>
-				<td>' .jr_gettext('_JOMRES_COM_MR_EB_PAYM_DEPOSIT_PAID', '_JOMRES_COM_MR_EB_PAYM_DEPOSIT_PAID').'</td>
+				<td>' .jr_gettext('_CASTOR_COM_MR_EB_PAYM_DEPOSIT_PAID', '_CASTOR_COM_MR_EB_PAYM_DEPOSIT_PAID').'</td>
 				<td>' .$depositPaid.'</td>
 			</tr>
 			<tr>
-				<td>' .jr_gettext('_JOMRES_COM_MR_EB_PAYM_DEPOSITREQUIRED', '_JOMRES_COM_MR_EB_PAYM_DEPOSITREQUIRED').'</td>
+				<td>' .jr_gettext('_CASTOR_COM_MR_EB_PAYM_DEPOSITREQUIRED', '_CASTOR_COM_MR_EB_PAYM_DEPOSITREQUIRED').'</td>
 				<td>' .output_price($booking_deposit_required).'</td>
 			</tr>
 			<tr>
-			<td>' .jr_gettext('_JOMRES_COM_MR_EB_PAYM_CONTRACT_TOTAL', '_JOMRES_COM_MR_EB_PAYM_CONTRACT_TOTAL').'</td>
+			<td>' .jr_gettext('_CASTOR_COM_MR_EB_PAYM_CONTRACT_TOTAL', '_CASTOR_COM_MR_EB_PAYM_CONTRACT_TOTAL').'</td>
 				<td>' .output_price($booking_contract_total).'</td>
 			</tr>
 			' .$nights.'
 			<tr>
-				<td>' .jr_gettext('_JOMRES_COM_MR_EB_PAYM_DEPOSIT_REF', '_JOMRES_COM_MR_EB_PAYM_DEPOSIT_REF').'</td>
+				<td>' .jr_gettext('_CASTOR_COM_MR_EB_PAYM_DEPOSIT_REF', '_CASTOR_COM_MR_EB_PAYM_DEPOSIT_REF').'</td>
 				<td>' .$booking_deposit_ref.'</td>
 			</tr>
 			' .$sps.'
 			<tr>
-				<td>' .jr_gettext('_JOMRES_COM_FRONT_ROOMTAX', '_JOMRES_COM_FRONT_ROOMTAX').'</td>
+				<td>' .jr_gettext('_CASTOR_COM_FRONT_ROOMTAX', '_CASTOR_COM_FRONT_ROOMTAX').'</td>
 				<td>' .output_price($tax).'</td>
 			</tr>
 
@@ -458,12 +458,12 @@ class j06005muviewbooking
 				<td><hr></td>
 			</tr>
 			<tr>
-				<td>' .jr_gettext('_JOMRES_COM_MR_EXTRA_TITLE', '_JOMRES_COM_MR_EXTRA_TITLE').'</td>
+				<td>' .jr_gettext('_CASTOR_COM_MR_EXTRA_TITLE', '_CASTOR_COM_MR_EXTRA_TITLE').'</td>
 				<td>&nbsp;</td>
 			</tr>');
 		$extraOptionsArray = explode(',', $extraOptionsList);
 		foreach ($extraOptionsArray as $extraUid) {
-			$query = "SELECT name,price FROM #__jomres_extras WHERE uid = '".(int) $extraUid."' ORDER BY name";
+			$query = "SELECT name,price FROM #__castor_extras WHERE uid = '".(int) $extraUid."' ORDER BY name";
 			$extrasList = doSelectSql($query);
 			foreach ($extrasList as $theExtras) {
 				$contentPanel->setcontent('
@@ -475,7 +475,7 @@ class j06005muviewbooking
 		}
 		$contentPanel->setcontent('
 			<tr>
-				<td>' .jr_gettext('_JOMRES_COM_MR_QUICKRES_STEP4_TOTALINVOICE', '_JOMRES_COM_MR_QUICKRES_STEP4_TOTALINVOICE').'</td>
+				<td>' .jr_gettext('_CASTOR_COM_MR_QUICKRES_STEP4_TOTALINVOICE', '_CASTOR_COM_MR_QUICKRES_STEP4_TOTALINVOICE').'</td>
 				<td>' .output_price($extrasOptionsValue).'</td>
 			</tr>
 			<tr>
@@ -483,7 +483,7 @@ class j06005muviewbooking
 				<td><hr></td>
 			</tr>
 			<tr>
-				<td>' .jr_gettext('_JOMRES_COM_ADDSERVICE_BOOKINGDESC', '_JOMRES_COM_ADDSERVICE_BOOKINGDESC').'</td>
+				<td>' .jr_gettext('_CASTOR_COM_ADDSERVICE_BOOKINGDESC', '_CASTOR_COM_ADDSERVICE_BOOKINGDESC').'</td>
 				<td>');
 
 		$other_services_rows = array();
@@ -505,10 +505,10 @@ class j06005muviewbooking
 				<td><hr></td>
 			</tr>
 			<tr>
-				<td>' .jr_gettext('_JOMRES_COM_INVOICE_LETTER_GRANDTOTAL', '_JOMRES_COM_INVOICE_LETTER_GRANDTOTAL').'</td>
+				<td>' .jr_gettext('_CASTOR_COM_INVOICE_LETTER_GRANDTOTAL', '_CASTOR_COM_INVOICE_LETTER_GRANDTOTAL').'</td>
 				<td>' .output_price($otherServiceTotal + $booking_contract_total).'</td>
 			</tr>');
-		$query = 'SELECT invoice_uid FROM #__jomres_contracts WHERE contract_uid = '.$booking_contract_uid.' LIMIT 1 ';
+		$query = 'SELECT invoice_uid FROM #__castor_contracts WHERE contract_uid = '.$booking_contract_uid.' LIMIT 1 ';
 		$invoice_uid = (int) doSelectSql($query, 1);
 
 		if ($invoice_uid > 0) {
@@ -526,7 +526,7 @@ class j06005muviewbooking
 
 		$contentPanel->setcontent('
 			<tr>
-				<td>' .jr_gettext('_JOMRES_COM_MR_EDITBOOKING_REMAINDERTOPAY', '_JOMRES_COM_MR_EDITBOOKING_REMAINDERTOPAY').'</td>
+				<td>' .jr_gettext('_CASTOR_COM_MR_EDITBOOKING_REMAINDERTOPAY', '_CASTOR_COM_MR_EDITBOOKING_REMAINDERTOPAY').'</td>
 				<td><b>' .output_price($remaindertopay).'</b></td>
 			</tr>
 		</table>');
@@ -546,3 +546,4 @@ class j06005muviewbooking
 		return null;
 	}
 }
+

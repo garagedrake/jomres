@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 #[AllowDynamicProperties]
 /**
- * @package Jomres\Core\Minicomponents
+ * @package Castor\Core\Minicomponents
  *
  *
  */
@@ -36,12 +36,12 @@ class j11020towns
     function __construct($componentArgs)
     {
         // Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-        $MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+        $MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
         if ($MiniComponents->template_touch) {
             $this->template_touchable = false;
             return;
         }
-        $thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+        $thisJRUser = castor_singleton_abstract::getInstance('jr_user');
         if (!$thisJRUser->userIsManager) {
             return;
         }
@@ -49,7 +49,7 @@ class j11020towns
         $dropdown = '';
 
         //big results list on big sites...we need a better way, because grouping by property town won`t work if mysql mode is set to ONLY_FULL_GROUP_BY
-        $query = "SELECT `propertys_uid`, `property_town` FROM #__jomres_propertys WHERE `property_town` != ''";
+        $query = "SELECT `propertys_uid`, `property_town` FROM #__castor_propertys WHERE `property_town` != ''";
         $townsList = doSelectSql($query);
 
         if (!empty($townsList)) {
@@ -62,10 +62,10 @@ class j11020towns
             $resource_options = array();
             foreach ($towns as $k => $v) {
                 set_showtime('property_uid', $k);
-                $resource_options[ ] = jomresHTML::makeOption(jomres_cmsspecific_stringURLSafe($v), jr_gettext('_JOMRES_CUSTOMTEXT_PROPERTY_TOWN', jomres_decode($v), ENT_QUOTES));
+                $resource_options[ ] = castorHTML::makeOption(castor_cmsspecific_stringURLSafe($v), jr_gettext('_CASTOR_CUSTOMTEXT_PROPERTY_TOWN', castor_decode($v), ENT_QUOTES));
             }
             $use_bootstrap_radios = false;
-            $dropdown = jomresHTML::selectList($resource_options, 'resource_id', ' autocomplete="off" ', 'value', 'text', '', $use_bootstrap_radios);
+            $dropdown = castorHTML::selectList($resource_options, 'resource_id', ' autocomplete="off" ', 'value', 'text', '', $use_bootstrap_radios);
         }
         $this->ret_vals = $dropdown;
     }
@@ -76,3 +76,4 @@ class j11020towns
         return $this->ret_vals;
     }
 }
+

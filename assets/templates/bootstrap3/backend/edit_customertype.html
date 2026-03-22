@@ -1,7 +1,7 @@
-<patTemplate:tmpl name="pageoutput" unusedvars="strip">
+﻿<patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <h2 class="page-header">{PAGETITLE}</h2>
-<p class="lead">{_JOMRES_GUESTTYPES_INTRO}<p>
-<p>{_JOMRES_GUESTTYPES_INSTRUCTIONS}<p>
+<p class="lead">{_CASTOR_GUESTTYPES_INTRO}<p>
+<p>{_CASTOR_GUESTTYPES_INSTRUCTIONS}<p>
 <form method="post" name="adminForm" class="form-horizontal" role="form">
 <div class="form-group">
 	<label class="col-md-2 control-label" for="type">{HTYPE}</label>
@@ -47,15 +47,15 @@
 </div>
 
 <div class="form-group">
-	<label class="col-md-2 control-label" for="is_child">{H_JOMRES_GUESTTYPES_IS_CHILD}</label>
+	<label class="col-md-2 control-label" for="is_child">{H_CASTOR_GUESTTYPES_IS_CHILD}</label>
 	<div class="col-md-10">
 		{ISCHILD}
-		<p class="help-block">{HJOMRES_GUESTTYPES_IS_CHILD_T_TEXT}</p>
+		<p class="help-block">{HCASTOR_GUESTTYPES_IS_CHILD_T_TEXT}</p>
 	</div>
 </div>
 <div class="form-actions">
 	<div class="col-md-10 col-md-offset-2">
-		{JOMRESTOOLBAR}
+		{CASTORTOOLBAR}
 	</div>
 </div>
 <input type="hidden" name="typeid" value="{ID}"/>

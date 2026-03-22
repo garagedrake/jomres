@@ -1,7 +1,7 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 
-{JOMRES_POPUPURL_GLOBALVAR}
+{CASTOR_POPUPURL_GLOBALVAR}
 
 <div title="{PROPERTY_NAME}" class="col-md-12">
 	<div class="panel panel-default">
@@ -27,8 +27,8 @@
 		</div>
 	</div>
 	<script>
-	jomresJquery(document).ready(function(){
-		jomresJquery('#module_{RANDOM_IDENTIFIER}_popup').appendTo("body");
+	castorJquery(document).ready(function(){
+		castorJquery('#module_{RANDOM_IDENTIFIER}_popup').appendTo("body");
 	});
 	</script>
 

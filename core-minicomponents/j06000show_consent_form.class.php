@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,12 +36,12 @@ class j06000show_consent_form
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			$this->shortcode_data = array(
 				'task' => 'show_consent_form',
-				'info' => '_JOMRES_SHORTCODES_06000SHOW_CONSENT_FORM'
+				'info' => '_CASTOR_SHORTCODES_06000SHOW_CONSENT_FORM'
 				);
 
 			return;
@@ -52,18 +52,18 @@ class j06000show_consent_form
 			$output_now = (bool) $componentArgs[ 'output_now' ];
 		}
 
-		$output[ '_JOMRES_GDPR_CONSENT_FORM_INTRO' ] = jr_gettext('_JOMRES_GDPR_CONSENT_FORM_INTRO', '_JOMRES_GDPR_CONSENT_FORM_INTRO', false);
-		$output[ '_JOMRES_COM_MR_YES' ] = jr_gettext('_JOMRES_COM_MR_YES', '_JOMRES_COM_MR_YES', false);
-		$output[ '_JOMRES_COM_MR_NO' ] = jr_gettext('_JOMRES_COM_MR_NO', '_JOMRES_COM_MR_NO', false, false);
-		$output[ '_JOMRES_GDPR_CONSENT_FORM_THIRD_PARTIES' ] = jr_gettext('_JOMRES_GDPR_CONSENT_FORM_THIRD_PARTIES', '_JOMRES_GDPR_CONSENT_FORM_THIRD_PARTIES', false);
-		$output[ '_JOMRES_GDPR_CONSENT_FORM_CONSENT_REQUEST' ] = jr_gettext('_JOMRES_GDPR_CONSENT_FORM_CONSENT_REQUEST', '_JOMRES_GDPR_CONSENT_FORM_CONSENT_REQUEST', false);
-		$output[ '_JOMRES_GDPR_CONSENT_FORM_DETAIL' ] = jr_gettext('_JOMRES_GDPR_CONSENT_FORM_DETAIL', '_JOMRES_GDPR_CONSENT_FORM_DETAIL', false, false);
-		$output[ '_JOMRES_GDPR_CONSENT_FORM_COOKIE' ] = jr_gettext('_JOMRES_GDPR_CONSENT_FORM_COOKIE', '_JOMRES_GDPR_CONSENT_FORM_COOKIE', false);
-		$output[ '_JOMRES_GDPR_CONSENT_FORM_BASIC_INFORMATION' ] = jr_gettext('_JOMRES_GDPR_CONSENT_FORM_BASIC_INFORMATION', '_JOMRES_GDPR_CONSENT_FORM_BASIC_INFORMATION', false);
-		$output[ '_JOMRES_GDPR_CONSENT_FORM_BOOKINGS_INTRO' ] = jr_gettext('_JOMRES_GDPR_CONSENT_FORM_BOOKINGS_INTRO', '_JOMRES_GDPR_CONSENT_FORM_BOOKINGS_INTRO', false, false);
-		$output[ '_JOMRES_GDPR_CONSENT_FORM_BOOKINGS_1' ] = jr_gettext('_JOMRES_GDPR_CONSENT_FORM_BOOKINGS_1', '_JOMRES_GDPR_CONSENT_FORM_BOOKINGS_1', false);
-		$output[ '_JOMRES_GDPR_CONSENT_FORM_BOOKINGS_2' ] = jr_gettext('_JOMRES_GDPR_CONSENT_FORM_BOOKINGS_2', '_JOMRES_GDPR_CONSENT_FORM_BOOKINGS_2', false);
-		$output[ '_JOMRES_GDPR_CONSENT_FORM_BOOKINGS_3' ] = jr_gettext('_JOMRES_GDPR_CONSENT_FORM_BOOKINGS_3', '_JOMRES_GDPR_CONSENT_FORM_BOOKINGS_3', false);
+		$output[ '_CASTOR_GDPR_CONSENT_FORM_INTRO' ] = jr_gettext('_CASTOR_GDPR_CONSENT_FORM_INTRO', '_CASTOR_GDPR_CONSENT_FORM_INTRO', false);
+		$output[ '_CASTOR_COM_MR_YES' ] = jr_gettext('_CASTOR_COM_MR_YES', '_CASTOR_COM_MR_YES', false);
+		$output[ '_CASTOR_COM_MR_NO' ] = jr_gettext('_CASTOR_COM_MR_NO', '_CASTOR_COM_MR_NO', false, false);
+		$output[ '_CASTOR_GDPR_CONSENT_FORM_THIRD_PARTIES' ] = jr_gettext('_CASTOR_GDPR_CONSENT_FORM_THIRD_PARTIES', '_CASTOR_GDPR_CONSENT_FORM_THIRD_PARTIES', false);
+		$output[ '_CASTOR_GDPR_CONSENT_FORM_CONSENT_REQUEST' ] = jr_gettext('_CASTOR_GDPR_CONSENT_FORM_CONSENT_REQUEST', '_CASTOR_GDPR_CONSENT_FORM_CONSENT_REQUEST', false);
+		$output[ '_CASTOR_GDPR_CONSENT_FORM_DETAIL' ] = jr_gettext('_CASTOR_GDPR_CONSENT_FORM_DETAIL', '_CASTOR_GDPR_CONSENT_FORM_DETAIL', false, false);
+		$output[ '_CASTOR_GDPR_CONSENT_FORM_COOKIE' ] = jr_gettext('_CASTOR_GDPR_CONSENT_FORM_COOKIE', '_CASTOR_GDPR_CONSENT_FORM_COOKIE', false);
+		$output[ '_CASTOR_GDPR_CONSENT_FORM_BASIC_INFORMATION' ] = jr_gettext('_CASTOR_GDPR_CONSENT_FORM_BASIC_INFORMATION', '_CASTOR_GDPR_CONSENT_FORM_BASIC_INFORMATION', false);
+		$output[ '_CASTOR_GDPR_CONSENT_FORM_BOOKINGS_INTRO' ] = jr_gettext('_CASTOR_GDPR_CONSENT_FORM_BOOKINGS_INTRO', '_CASTOR_GDPR_CONSENT_FORM_BOOKINGS_INTRO', false, false);
+		$output[ '_CASTOR_GDPR_CONSENT_FORM_BOOKINGS_1' ] = jr_gettext('_CASTOR_GDPR_CONSENT_FORM_BOOKINGS_1', '_CASTOR_GDPR_CONSENT_FORM_BOOKINGS_1', false);
+		$output[ '_CASTOR_GDPR_CONSENT_FORM_BOOKINGS_2' ] = jr_gettext('_CASTOR_GDPR_CONSENT_FORM_BOOKINGS_2', '_CASTOR_GDPR_CONSENT_FORM_BOOKINGS_2', false);
+		$output[ '_CASTOR_GDPR_CONSENT_FORM_BOOKINGS_3' ] = jr_gettext('_CASTOR_GDPR_CONSENT_FORM_BOOKINGS_3', '_CASTOR_GDPR_CONSENT_FORM_BOOKINGS_3', false);
 		
 		if (isset($_REQUEST['return_url'])) {
 			if (isset($_REQUEST['url_already_forwarded'])) {
@@ -75,19 +75,19 @@ class j06000show_consent_form
 			$output['RETURN_URL'] = jr_base64url_encode(getCurrentUrl());
 		}
 		
-		$output['CONSENTED'] = jr_gettext('_JOMRES_GDPR_CONSENT_OPTED_IN', '_JOMRES_GDPR_CONSENT_OPTED_IN', false);
+		$output['CONSENTED'] = jr_gettext('_CASTOR_GDPR_CONSENT_OPTED_IN', '_CASTOR_GDPR_CONSENT_OPTED_IN', false);
 		
-		if (!isset($_COOKIE['jomres_gdpr_consent_form_processed'])) {
-			$output['CONSENTED'] = jr_gettext('_JOMRES_GDPR_CONSENT_NOT_SET', '_JOMRES_GDPR_CONSENT_NOT_SET', false);
-		} elseif ((int)$_COOKIE['jomres_gdpr_consent_form_processed'] == 0) {
-			$output['CONSENTED'] = jr_gettext('_JOMRES_GDPR_CONSENT_OPTED_OUT', '_JOMRES_GDPR_CONSENT_OPTED_OUT', false);
+		if (!isset($_COOKIE['castor_gdpr_consent_form_processed'])) {
+			$output['CONSENTED'] = jr_gettext('_CASTOR_GDPR_CONSENT_NOT_SET', '_CASTOR_GDPR_CONSENT_NOT_SET', false);
+		} elseif ((int)$_COOKIE['castor_gdpr_consent_form_processed'] == 0) {
+			$output['CONSENTED'] = jr_gettext('_CASTOR_GDPR_CONSENT_OPTED_OUT', '_CASTOR_GDPR_CONSENT_OPTED_OUT', false);
 		}
 		
 
 		$pageoutput[] = $output;
 		$tmpl = new patTemplate();
 		$tmpl->addRows('pageoutput', $pageoutput);
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 		$tmpl->readTemplatesFromInput('show_gdpr_consent_form.html');
 		$this->retVals = $tmpl->getParsedTemplate();
 		
@@ -103,3 +103,4 @@ class j06000show_consent_form
 		return $this->retVals;
 	}
 }
+

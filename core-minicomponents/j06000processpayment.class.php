@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,16 +35,16 @@ class j06000processpayment
 	 
 	public function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 		
-		$tmpBookingHandler = jomres_singleton_abstract::getInstance('jomres_temp_booking_handler');
+		$tmpBookingHandler = castor_singleton_abstract::getInstance('castor_temp_booking_handler');
 		$property_uid = (int)$tmpBookingHandler->tmpbooking['property_uid'];
 		$bookingdata = gettempBookingdata();
 		
@@ -58,24 +58,24 @@ class j06000processpayment
 
 		$tag = set_booking_number();
 
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
-		$siteConfig		= jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
+		$siteConfig		= castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig		  = $siteConfig->get();
 
 		if ($thisJRUser->userIsManager && $jrConfig['development_production'] != 'development') {
-			$plugin = jomres_validate_gateway_plugin();
+			$plugin = castor_validate_gateway_plugin();
 		} else { // Site is set to Development mode and we are allowing the manager to make payments. There's no need to validate the gateway
-			$plugin = jomresGetParam($_REQUEST, 'plugin', '');
+			$plugin = castorGetParam($_REQUEST, 'plugin', '');
 		}
 
 
-		$query = "SELECT `id` FROM #__jomres_booking_data_archive WHERE `tag` = '".$tag."'";
+		$query = "SELECT `id` FROM #__castor_booking_data_archive WHERE `tag` = '".$tag."'";
 		$result = doSelectSql($query);
 		if (empty($result)) {
 			$data = array('tmpbooking' => $tmpBookingHandler->tmpbooking, 'tmpguest' => $tmpBookingHandler->tmpguest);
 			$data = str_replace("'", "''", serialize($data));
 
-			$query = "INSERT INTO #__jomres_booking_data_archive SET `data`='".$data."',`date`='".date('Y-m-d H:i:s')."', `tag` = '".$tag."'";
+			$query = "INSERT INTO #__castor_booking_data_archive SET `data`='".$data."',`date`='".date('Y-m-d H:i:s')."', `tag` = '".$tag."'";
 			doInsertSql($query, '');
 		}
 
@@ -86,7 +86,7 @@ class j06000processpayment
 			$plugin = 'NA';
 		}
 
-			$query = 'SELECT * FROM #__jomres_pluginsettings WHERE (prid = '.(int) $property_uid." OR prid = 0)  AND `plugin` = '".(string) $plugin."' ";
+			$query = 'SELECT * FROM #__castor_pluginsettings WHERE (prid = '.(int) $property_uid." OR prid = 0)  AND `plugin` = '".(string) $plugin."' ";
 			$gatewayDeets = doSelectSql($query);
 
 
@@ -99,9 +99,9 @@ class j06000processpayment
 				}
 
 				if ( $test_mode != true && $thisJRUser->userIsManager ) {
-					insertInternetBooking(get_showtime('jomressession'), $depositPaid = false, $confirmationPageRequired = true, $customTextForConfirmationForm = '');
+					insertInternetBooking(get_showtime('castorsession'), $depositPaid = false, $confirmationPageRequired = true, $customTextForConfirmationForm = '');
 				} else {
-					$interrupted = intval(jomresGetParam($_POST, 'interrupted', 0));
+					$interrupted = intval(castorGetParam($_POST, 'interrupted', 0));
 					$interruptOutgoingFile = false;
 
 					if ($MiniComponents->eventFileLocate('00600', $plugin)) {
@@ -118,7 +118,7 @@ class j06000processpayment
 					} //outgoing
 				}
 			} else {
-				insertInternetBooking(get_showtime('jomressession'), $depositPaid = false, $confirmationPageRequired = true, $customTextForConfirmationForm = '');
+				insertInternetBooking(get_showtime('castorsession'), $depositPaid = false, $confirmationPageRequired = true, $customTextForConfirmationForm = '');
 			}
 	}
 
@@ -128,3 +128,4 @@ class j06000processpayment
 		return null;
 	}
 }
+

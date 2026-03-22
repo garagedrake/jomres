@@ -1,0 +1,122 @@
+﻿<?php
+/**
+ * Core file.
+ *
+ * @author Vince Wooll <sales@castor.net>
+ *
+ *  @version Castor 10.7.2
+ *
+ * @copyright	2005-2023 Vince Wooll
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ **/
+
+// ################################################################
+defined('_CASTOR_INITCHECK') or die('');
+// ################################################################
+	
+	/**
+	 *
+	 * @package Castor\Core\Classes
+	 *
+	 */
+	#[AllowDynamicProperties]
+class castor_child_rates
+{
+
+	/**
+	 *
+	 *
+	 *
+	 */
+
+	public function __construct($property_uid = 0)
+	{
+		if ($property_uid == 0) {
+			throw new Exception('Error: Property uid not set ');
+		}
+
+		$this->property_uid = $property_uid;
+
+		$this->mrConfig = getPropertySpecificSettings($this->property_uid);
+
+		$this->default_model = 'per_night';
+
+		if (isset($this->mrConfig['child_rates'])) {
+			$this->child_rates = unserialize(base64_decode($this->mrConfig['child_rates']));
+		} else {
+			$this->child_rates = array ( );
+		}
+
+		uasort($this->child_rates, function ($a, $b) {
+			return $a['age_from'] <=> $b['age_from'];
+		});
+	}
+
+	public function set_child_rate($id = 0, $age_from = 0, $age_to = 0, $price = 0.00, $model = 'per_night')
+	{
+
+		if ($age_to == 0) {
+			throw new Exception('Age to must be greater than 0 ');
+		}
+
+		if ($id == 0) {
+			$last_key = array_key_last($this->child_rates);
+			$id = $last_key + 1;
+		}
+
+		$this->child_rates[$id] = array ( "id" => $id , "age_from" => (int)$age_from , "age_to" => (int)$age_to , "price" => (float)$price , "model" => (string)$model );
+	}
+
+	public function save_child_rates()
+	{
+
+		$rates = base64_encode(serialize($this->child_rates));
+
+		$query = "SELECT uid FROM #__castor_settings WHERE property_uid = '".(int) $this->property_uid."' and akey = 'child_rates' ";
+		$result = doSelectSql($query);
+		if (empty($result)) {
+			$query = "INSERT INTO #__castor_settings (`property_uid`,`akey`,`value`) VALUES (".(int) $this->property_uid." , 'child_rates' , '".$rates."')";
+		} else {
+			$query = "UPDATE #__castor_settings SET `value`='".$rates."' WHERE `property_uid` = ".(int)  $this->property_uid." and `akey` = 'child_rates' ";
+		}
+		doInsertSql($query);
+
+		$webhook_notification						   	= new stdClass();
+		$webhook_notification->webhook_event			= 'property_state_change';
+		$webhook_notification->webhook_event_description= 'A catchall webhook notification which notes that the property state has changed. Primarily designed for caching features to remove/refresh cache elements';
+		$webhook_notification->data					 	= new stdClass();
+		$webhook_notification->data->property_uid	   	= $this->property_uid;
+		add_webhook_notification($webhook_notification);
+	}
+
+	public function delete_child_rate($id)
+	{
+		unset($this->child_rates[$id]);
+	}
+
+	public function check_for_overlapping_ages()
+	{
+		if (!empty($this->child_rates)) {
+		}
+	}
+
+	public function build_rate_model_dropdown($rate_id = 0)
+	{
+		if ($rate_id == 0) {
+			$current_model = $this->default_model ;
+		} else {
+			$current_model = $this->child_rates[$rate_id]['model'];
+		}
+
+		$output = array();
+
+		$output[ 'CASTOR_POLICIES_CHILDREN_CHARGE_MODEL' ] = jr_gettext('CASTOR_POLICIES_CHILDREN_CHARGE_MODEL', 'CASTOR_POLICIES_CHILDREN_CHARGE_MODEL', false);
+		$output[ 'CASTOR_POLICIES_CHILDREN_CHARGE_MODEL_DESC' ] = jr_gettext('CASTOR_POLICIES_CHILDREN_CHARGE_MODEL_DESC', 'CASTOR_POLICIES_CHILDREN_CHARGE_MODEL_DESC', false);
+
+		$options = array();
+		$options[] = castorHTML::makeOption('per_night', jr_gettext('CASTOR_POLICIES_CHILDREN_CHARGE_MODEL_PER_NIGHT', 'CASTOR_POLICIES_CHILDREN_CHARGE_MODEL_PER_NIGHT', false));
+		$options[] = castorHTML::makeOption('per_stay', jr_gettext('CASTOR_POLICIES_CHILDREN_CHARGE_MODEL_PER_STAY', 'CASTOR_POLICIES_CHILDREN_CHARGE_MODEL_PER_STAY', false));
+		return castorHTML::selectList($options, 'model', '', 'value', 'text', $current_model, true);
+	}
+}
+

@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Builds the booking confirmation page, showing booking information and payment gateways if configured.
 	 */
@@ -36,37 +36,37 @@ class j02990showconfirmation
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = true;
 
 			return;
 		}
 		
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 		
 		$mrConfig = getPropertySpecificSettings();
 
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 		
-		$tmpBookingHandler = jomres_singleton_abstract::getInstance('jomres_temp_booking_handler');
+		$tmpBookingHandler = castor_singleton_abstract::getInstance('castor_temp_booking_handler');
 
-		$paypal_settings = jomres_singleton_abstract::getInstance('jrportal_paypal_settings');
+		$paypal_settings = castor_singleton_abstract::getInstance('jrportal_paypal_settings');
 		$paypal_settings->get_paypal_settings();
 
 		$secret_key_payment = false;
 		
-		$secret_key = jomresGetParam($_REQUEST, 'sk', '');
+		$secret_key = castorGetParam($_REQUEST, 'sk', '');
 
 		if ($secret_key != '') {
-			jr_import('jomres_contract_secret_key');
-			$jomres_contract_secret_key = new jomres_contract_secret_key();
+			jr_import('castor_contract_secret_key');
+			$castor_contract_secret_key = new castor_contract_secret_key();
 
-			if ($jomres_contract_secret_key->validate_secret_key($secret_key)) {
-				if (!$jomres_contract_secret_key->check_secret_key_used($secret_key)) {
-					$contract_uid = $jomres_contract_secret_key->get_contract_id_for_secret_key($secret_key);
-					$query = 'SELECT data FROM #__jomres_booking_data_archive WHERE contract_uid = '.$contract_uid;
+			if ($castor_contract_secret_key->validate_secret_key($secret_key)) {
+				if (!$castor_contract_secret_key->check_secret_key_used($secret_key)) {
+					$contract_uid = $castor_contract_secret_key->get_contract_id_for_secret_key($secret_key);
+					$query = 'SELECT data FROM #__castor_booking_data_archive WHERE contract_uid = '.$contract_uid;
 					$data = unserialize(doSelectSql($query, 1));
 
 					$tmpBookingHandler->tmpbooking = $data['tmpbooking'];
@@ -75,7 +75,7 @@ class j02990showconfirmation
 					$secret_key_payment = true;
 					$tmpBookingHandler->tmpbooking['approval_contract_uid'] = $contract_uid;
 				} else {
-					jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL), '');
+					castorRedirect(castorURL(CASTOR_SITEPAGE_URL), '');
 				}
 			} else {
 				throw new Exception('Could not validate secret key '.$secret_key);
@@ -103,10 +103,10 @@ class j02990showconfirmation
 		$property_uid = (int) $bookingDeets[ 'property_uid' ];
 
 		if ($property_uid == 0) {
-			jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL.'&task=search'), '');
+			castorRedirect(castorURL(CASTOR_SITEPAGE_URL.'&task=search'), '');
 		}
 
-		$current_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+		$current_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 		$current_property_details->gather_data($property_uid);
 
 		if (isset($_REQUEST['payment_success_redirect_url']) && trim($_REQUEST['payment_success_redirect_url']) != '' ) {
@@ -128,7 +128,7 @@ class j02990showconfirmation
 		}
 
 		if ($adults == 0 && $children == 0) {
-			$basic_guest_type_details = jomres_singleton_abstract::getInstance('basic_guest_type_details');
+			$basic_guest_type_details = castor_singleton_abstract::getInstance('basic_guest_type_details');
 			$basic_guest_type_details->get_all_guest_types($property_uid);
 
 
@@ -154,7 +154,7 @@ class j02990showconfirmation
 
 		if ($amend_contract) {
 			$amend_contractuid = $tmpBookingHandler->getBookingFieldVal('amend_contractuid');
-			$query = 'SELECT special_reqs FROM #__jomres_contracts WHERE contract_uid = '.(int) $amend_contractuid.' AND property_uid = '.(int) $property_uid;
+			$query = 'SELECT special_reqs FROM #__castor_contracts WHERE contract_uid = '.(int) $amend_contractuid.' AND property_uid = '.(int) $property_uid;
 			$booking_parts[ 'SPECIALREQS' ] = doSelectSql($query, 1);
 		} else {
 			$booking_parts[ 'SPECIALREQS' ] = $thisJRUser->preferences;
@@ -165,13 +165,13 @@ class j02990showconfirmation
 		}*/
 
 		if (!$bookingDeets[ 'ok_to_book' ]) {
-			jomresRedirect(get_booking_url($bookingDeets[ 'property_uid' ]), '');
+			castorRedirect(get_booking_url($bookingDeets[ 'property_uid' ]), '');
 		}
 
 		$this->accommodation_tax_rate = 0.0;
 
 		if (isset($mrConfig[ 'accommodation_tax_code' ]) && (int) $mrConfig[ 'accommodation_tax_code' ] > 0) {
-			$jrportal_taxrate = jomres_singleton_abstract::getInstance('jrportal_taxrate');
+			$jrportal_taxrate = castor_singleton_abstract::getInstance('jrportal_taxrate');
 			$taxrate_id = (int) $mrConfig[ 'accommodation_tax_code' ];
 			$jrportal_taxrate->gather_data($taxrate_id);
 			$this->accommodation_tax_rate = $jrportal_taxrate->rate;
@@ -183,8 +183,8 @@ class j02990showconfirmation
 
 		$ptype_id = $current_property_details->ptype_id;
 
-		$jomres_custom_field_handler = jomres_singleton_abstract::getInstance('jomres_custom_field_handler');
-		$allCustomFields = $jomres_custom_field_handler->getAllCustomFieldsByPtypeId($ptype_id);
+		$castor_custom_field_handler = castor_singleton_abstract::getInstance('castor_custom_field_handler');
+		$allCustomFields = $castor_custom_field_handler->getAllCustomFieldsByPtypeId($ptype_id);
 
 		$customFields = array();
 		if (!empty($allCustomFields) && !$secret_key_payment) {
@@ -195,11 +195,11 @@ class j02990showconfirmation
 				$tmpBookingHandler->saveCustomFields($allCustomFields);
 
 				$fielddata = array();
-				$fielddata[ 'DESCRIPTION' ] = jr_gettext('JOMRES_CUSTOMTEXT'.$f[ 'uid' ], $f[ 'description' ]);
-				$fielddata[ 'VALUE' ] = jomresGetParam($_POST, $formfieldname, '');
+				$fielddata[ 'DESCRIPTION' ] = jr_gettext('CASTOR_CUSTOMTEXT'.$f[ 'uid' ], $f[ 'description' ]);
+				$fielddata[ 'VALUE' ] = castorGetParam($_POST, $formfieldname, '');
 
 				if ($required == '1' && strlen($_POST[ $formfieldname ]) == 0) {
-					jomresRedirect(get_booking_url($bookingDeets[ 'property_uid' ]), '');
+					castorRedirect(get_booking_url($bookingDeets[ 'property_uid' ]), '');
 				}
 
 				$customFields[ ] = $fielddata;
@@ -210,23 +210,23 @@ class j02990showconfirmation
 
 		$booking_parts[ 'PROPERTY' ] = $bookingDeets[ 'property_uid' ];
 
-		$booking_parts[ 'HTOTAL' ] = jr_gettext('_JOMRES_COM_MR_EB_PAYM_CONTRACT_TOTAL', '_JOMRES_COM_MR_EB_PAYM_CONTRACT_TOTAL');
-		$booking_parts[ 'HGRANDTOTAL' ] = jr_gettext('_JOMRES_AJAXFORM_BILLING_TOTAL', '_JOMRES_AJAXFORM_BILLING_TOTAL');
-		$booking_parts[ 'HROOMSBOOKED' ] = jr_gettext('_JOMRES_FRONT_MR_BOOKED', '_JOMRES_FRONT_MR_BOOKED');
+		$booking_parts[ 'HTOTAL' ] = jr_gettext('_CASTOR_COM_MR_EB_PAYM_CONTRACT_TOTAL', '_CASTOR_COM_MR_EB_PAYM_CONTRACT_TOTAL');
+		$booking_parts[ 'HGRANDTOTAL' ] = jr_gettext('_CASTOR_AJAXFORM_BILLING_TOTAL', '_CASTOR_AJAXFORM_BILLING_TOTAL');
+		$booking_parts[ 'HROOMSBOOKED' ] = jr_gettext('_CASTOR_FRONT_MR_BOOKED', '_CASTOR_FRONT_MR_BOOKED');
 
 		$booking_parts[ 'TOTAL' ] = output_price($bookingDeets[ 'contract_total' ]);
 
-		$booking_parts[ 'HDEPOSIT' ] = jr_gettext('_JOMRES_COM_MR_EB_PAYM_DEPOSITREQUIRED', '_JOMRES_COM_MR_EB_PAYM_DEPOSITREQUIRED');
+		$booking_parts[ 'HDEPOSIT' ] = jr_gettext('_CASTOR_COM_MR_EB_PAYM_DEPOSITREQUIRED', '_CASTOR_COM_MR_EB_PAYM_DEPOSITREQUIRED');
 		$booking_parts[ 'DEPOSIT' ] = output_price($bookingDeets[ 'deposit_required' ]);
 
-		$booking_parts[ 'EDITBOOKING' ] = jr_gettext('_JOMRES_COM_MR_EDITBOOKINGTITLE', '_JOMRES_COM_MR_EDITBOOKINGTITLE');
+		$booking_parts[ 'EDITBOOKING' ] = jr_gettext('_CASTOR_COM_MR_EDITBOOKINGTITLE', '_CASTOR_COM_MR_EDITBOOKINGTITLE');
 		$booking_parts[ 'ARRIVAL' ] = outputDate($bookingDeets[ 'arrivalDate' ]);
 
 
-		$booking_parts[ 'JOMRES_CITY_TAX_HEADING' ] = jr_gettext('JOMRES_CITY_TAX_HEADING', 'JOMRES_CITY_TAX_HEADING');
+		$booking_parts[ 'CASTOR_CITY_TAX_HEADING' ] = jr_gettext('CASTOR_CITY_TAX_HEADING', 'CASTOR_CITY_TAX_HEADING');
 		$booking_parts[ 'CITY_TAX' ] = output_price($bookingDeets[ 'city_tax' ]);
 
-		$booking_parts[ 'JOMRES_CLEANING_FEE_HEADING' ] = jr_gettext('JOMRES_CLEANING_FEE_HEADING', 'JOMRES_CLEANING_FEE_HEADING');
+		$booking_parts[ 'CASTOR_CLEANING_FEE_HEADING' ] = jr_gettext('CASTOR_CLEANING_FEE_HEADING', 'CASTOR_CLEANING_FEE_HEADING');
 		$booking_parts[ 'CLEANING_FEE' ] = output_price($bookingDeets[ 'cleaning_fee' ]);
 
 
@@ -243,7 +243,7 @@ class j02990showconfirmation
 		}
 
 		if ((float) $bookingDeets[ 'coupon_discount_value' ] > 0.0) {
-			$booking_parts[ 'HCOUPON_DISCOUNTVALUE' ] = jr_gettext('_JOMRES_AJAXFORM_COUPON_DISCOUNTVALUE', '_JOMRES_AJAXFORM_COUPON_DISCOUNTVALUE');
+			$booking_parts[ 'HCOUPON_DISCOUNTVALUE' ] = jr_gettext('_CASTOR_AJAXFORM_COUPON_DISCOUNTVALUE', '_CASTOR_AJAXFORM_COUPON_DISCOUNTVALUE');
 			$booking_parts[ 'COUPON_DISCOUNT_VALUE' ] = output_price($bookingDeets[ 'coupon_discount_value' ]);
 		}
 
@@ -264,7 +264,7 @@ class j02990showconfirmation
 		$booking_parts[ 'NUMROOMS' ] = count($rooms);
 		
 		if ($booking_parts[ 'NUMROOMS' ] == 0 && get_showtime('include_room_booking_functionality')) {
-			jomresRedirect(get_booking_url($bookingDeets[ 'property_uid' ]), '');
+			castorRedirect(get_booking_url($bookingDeets[ 'property_uid' ]), '');
 		}
 		
 		
@@ -282,7 +282,7 @@ class j02990showconfirmation
 			$mrp_room_details[0][ 'NUMROOMS' ] = $booking_parts[ 'NUMROOMS' ];
 
 			if (!empty($rmids)) {
-				$query = 'SELECT room_number,room_name,room_classes_uid FROM #__jomres_rooms WHERE room_uid IN ('.jomres_implode($rmids).') ORDER BY room_classes_uid';
+				$query = 'SELECT room_number,room_name,room_classes_uid FROM #__castor_rooms WHERE room_uid IN ('.castor_implode($rmids).') ORDER BY room_classes_uid';
 				$roomList = doSelectSql($query);
 				$roomNumber = '';
 				$room_name = '';
@@ -299,7 +299,7 @@ class j02990showconfirmation
 					$room_name = $room->room_name;
 					$room_classes_uid = $room->room_classes_uid;
 
-					$room_info[ ] = array('ROOM_NAME' => $room_name, 'ROOM_NUMBER' => $room->room_number, 'HROOM_NAME' => jr_gettext('_JOMRES_COM_MR_EB_ROOM_NAME', '_JOMRES_COM_MR_EB_ROOM_NAME', false), 'HROOM_NUMBER' => jr_gettext('_JOMRES_COM_MR_EB_ROOM_NUMBER', '_JOMRES_COM_MR_EB_ROOM_NUMBER'));
+					$room_info[ ] = array('ROOM_NAME' => $room_name, 'ROOM_NUMBER' => $room->room_number, 'HROOM_NAME' => jr_gettext('_CASTOR_COM_MR_EB_ROOM_NAME', '_CASTOR_COM_MR_EB_ROOM_NAME', false), 'HROOM_NUMBER' => jr_gettext('_CASTOR_COM_MR_EB_ROOM_NUMBER', '_CASTOR_COM_MR_EB_ROOM_NUMBER'));
 
 					if ($room_classes_uid != $prevroomclass) {
 						if ($prevroomclass != 0) {
@@ -312,19 +312,19 @@ class j02990showconfirmation
 						}
 
 						$roomadd = 1;
-						$query = "SELECT room_class_abbv FROM #__jomres_room_classes WHERE property_uid = '".(int) $property_uid."' and room_classes_uid = '".(int) $room_classes_uid."' ";
+						$query = "SELECT room_class_abbv FROM #__castor_room_classes WHERE property_uid = '".(int) $property_uid."' and room_classes_uid = '".(int) $room_classes_uid."' ";
 						$roomclass = doSelectSql($query);
 
 						if (!empty($roomclass)) {
 							foreach ($roomclass as $class) {
-								$fulldesc = jr_gettext('_JOMRES_CUSTOMTEXT_ROOMTYPES_DESC'.(int) $room_classes_uid, stripslashes($class->room_class_abbv), false, false);
+								$fulldesc = jr_gettext('_CASTOR_CUSTOMTEXT_ROOMTYPES_DESC'.(int) $room_classes_uid, stripslashes($class->room_class_abbv), false, false);
 							}
 						} else {
-							$query = "SELECT room_class_abbv FROM #__jomres_room_classes WHERE property_uid = 0 and room_classes_uid = '$room_classes_uid'";
+							$query = "SELECT room_class_abbv FROM #__castor_room_classes WHERE property_uid = 0 and room_classes_uid = '$room_classes_uid'";
 							$roomclass = doSelectSql($query);
 							if (!empty($roomclass)) {
 								foreach ($roomclass as $class) {
-									$fulldesc = jr_gettext('_JOMRES_CUSTOMTEXT_ROOMTYPES_ABBV'.$room_classes_uid, stripslashes($class->room_class_abbv), false, false);
+									$fulldesc = jr_gettext('_CASTOR_CUSTOMTEXT_ROOMTYPES_ABBV'.$room_classes_uid, stripslashes($class->room_class_abbv), false, false);
 								}
 							}
 						}
@@ -348,7 +348,7 @@ class j02990showconfirmation
 		}
 		$room_total = $bookingDeets[ 'room_total' ];
 
-		$jrportal_taxrate = jomres_singleton_abstract::getInstance('jrportal_taxrate');
+		$jrportal_taxrate = castor_singleton_abstract::getInstance('jrportal_taxrate');
 
 		if (isset($mrConfig[ 'accommodation_tax_code' ]) && (int) $mrConfig[ 'accommodation_tax_code' ] > 0) {
 			$cfgcode = $mrConfig[ 'accommodation_tax_code' ];
@@ -368,7 +368,7 @@ class j02990showconfirmation
 				if (!empty($extraAll)) {
 					$extra = $extraAll;
 
-					$query = "SELECT price, name,tax_rate FROM #__jomres_extras WHERE uid = '$extra'";
+					$query = "SELECT price, name,tax_rate FROM #__castor_extras WHERE uid = '$extra'";
 					$thisPrice = doSelectSql($query, 2);
 					$query = "SELECT `model`,`params` FROM #__jomcomp_extrasmodels_models WHERE extra_id = '$extra'";
 					$model = doSelectSql($query, 2);
@@ -376,28 +376,28 @@ class j02990showconfirmation
 						case '1': // Per week
 							$numberOfWeeks = ceil($bookingDeets[ 'stayDays' ] / 7);
 							$calc = $numberOfWeeks * $thisPrice[ 'price' ];
-							$model_text = jr_gettext('_JOMRES_CUSTOMTEXT_EXTRAMODEL_PERWEEK', '_JOMRES_CUSTOMTEXT_EXTRAMODEL_PERWEEK');
+							$model_text = jr_gettext('_CASTOR_CUSTOMTEXT_EXTRAMODEL_PERWEEK', '_CASTOR_CUSTOMTEXT_EXTRAMODEL_PERWEEK');
 							break;
 						case '2': // per days
 							$calc = $bookingDeets[ 'stayDays' ] * $thisPrice[ 'price' ];
-							$model_text = jr_gettext('_JOMRES_CUSTOMTEXT_EXTRAMODEL_PERDAYS', '_JOMRES_CUSTOMTEXT_EXTRAMODEL_PERDAYS');
+							$model_text = jr_gettext('_CASTOR_CUSTOMTEXT_EXTRAMODEL_PERDAYS', '_CASTOR_CUSTOMTEXT_EXTRAMODEL_PERDAYS');
 							break;
 						case '3': // per booking
 							$calc = $thisPrice[ 'price' ];
-							$model_text = jr_gettext('_JOMRES_CUSTOMTEXT_EXTRAMODEL_PERBOOKING', '_JOMRES_CUSTOMTEXT_EXTRAMODEL_PERBOOKING');
+							$model_text = jr_gettext('_CASTOR_CUSTOMTEXT_EXTRAMODEL_PERBOOKING', '_CASTOR_CUSTOMTEXT_EXTRAMODEL_PERBOOKING');
 							break;
 						case '4': // per person per booking
 							$calc = $bookingDeets[ 'total_in_party' ] * $thisPrice[ 'price' ];
-							$model_text = jr_gettext('_JOMRES_CUSTOMTEXT_EXTRAMODEL_PERPERSONPERBOOKING', '_JOMRES_CUSTOMTEXT_EXTRAMODEL_PERPERSONPERBOOKING');
+							$model_text = jr_gettext('_CASTOR_CUSTOMTEXT_EXTRAMODEL_PERPERSONPERBOOKING', '_CASTOR_CUSTOMTEXT_EXTRAMODEL_PERPERSONPERBOOKING');
 							break;
 						case '5': // per person per day
 							$calc = $bookingDeets[ 'total_in_party' ] * $bookingDeets[ 'stayDays' ] * $thisPrice[ 'price' ];
-							$model_text = jr_gettext('_JOMRES_CUSTOMTEXT_EXTRAMODEL_PERPERSONPERDAY', '_JOMRES_CUSTOMTEXT_EXTRAMODEL_PERPERSONPERDAY');
+							$model_text = jr_gettext('_CASTOR_CUSTOMTEXT_EXTRAMODEL_PERPERSONPERDAY', '_CASTOR_CUSTOMTEXT_EXTRAMODEL_PERPERSONPERDAY');
 							break;
 						case '6': // per person per week
 							$numberOfWeeks = ceil($bookingDeets[ 'stayDays' ] / 7);
 							$calc = $bookingDeets[ 'total_in_party' ] * $numberOfWeeks * $thisPrice[ 'price' ];
-							$model_text = jr_gettext('_JOMRES_CUSTOMTEXT_EXTRAMODEL_PERPERSONPERWEEK', '_JOMRES_CUSTOMTEXT_EXTRAMODEL_PERPERSONPERWEEK');
+							$model_text = jr_gettext('_CASTOR_CUSTOMTEXT_EXTRAMODEL_PERPERSONPERWEEK', '_CASTOR_CUSTOMTEXT_EXTRAMODEL_PERPERSONPERWEEK');
 							break;
 						case '7': // per person per days min days
 							$mindays = $model[ 'params' ];
@@ -408,19 +408,19 @@ class j02990showconfirmation
 							}
 
 							$calc = $days * $thisPrice[ 'price' ];
-							$model_text = jr_gettext('_JOMRES_CUSTOMTEXT_EXTRAMODEL_PERDAYSMINDAYS', '_JOMRES_CUSTOMTEXT_EXTRAMODEL_PERDAYSMINDAYS');
+							$model_text = jr_gettext('_CASTOR_CUSTOMTEXT_EXTRAMODEL_PERDAYSMINDAYS', '_CASTOR_CUSTOMTEXT_EXTRAMODEL_PERDAYSMINDAYS');
 							break;
 						case '8': // per days per room
 							$calc = ($bookingDeets[ 'stayDays' ] * $thisPrice[ 'price' ]) * (int) $booking_parts[ 'NUMROOMS' ];
-							$model_text = jr_gettext('_JOMRES_CUSTOMTEXT_EXTRAMODEL_PERDAYSPERROOM', '_JOMRES_CUSTOMTEXT_EXTRAMODEL_PERDAYSPERROOM');
+							$model_text = jr_gettext('_CASTOR_CUSTOMTEXT_EXTRAMODEL_PERDAYSPERROOM', '_CASTOR_CUSTOMTEXT_EXTRAMODEL_PERDAYSPERROOM');
 							break;
 						case '9': // per room
 							$calc = $thisPrice[ 'price' ] * (int) $booking_parts[ 'NUMROOMS' ];
-							$model_text = jr_gettext('_JOMRES_CUSTOMTEXT_EXTRAMODEL_PERROOMPERBOOKING', '_JOMRES_CUSTOMTEXT_EXTRAMODEL_PERROOMPERBOOKING');
+							$model_text = jr_gettext('_CASTOR_CUSTOMTEXT_EXTRAMODEL_PERROOMPERBOOKING', '_CASTOR_CUSTOMTEXT_EXTRAMODEL_PERROOMPERBOOKING');
 							break;
 						case '100': // commission
 							$calc = ($room_total / 100) * $thisPrice[ 'price' ];
-							$model_text = jr_gettext('_JOMRES_COMMISSION', '_JOMRES_COMMISSION');
+							$model_text = jr_gettext('_CASTOR_COMMISSION', '_CASTOR_COMMISSION');
 							break;
 					}
 
@@ -446,7 +446,7 @@ class j02990showconfirmation
 						$extra_tax_output = ' ('.$rate.'%)';
 					}
 
-					$extra_name = jr_gettext('_JOMRES_CUSTOMTEXT_EXTRANAME'.$extra, htmlspecialchars(trim(stripslashes($thisPrice[ 'name' ])), ENT_QUOTES)).' ( '.$model_text.' )';
+					$extra_name = jr_gettext('_CASTOR_CUSTOMTEXT_EXTRANAME'.$extra, htmlspecialchars(trim(stripslashes($thisPrice[ 'name' ])), ENT_QUOTES)).' ( '.$model_text.' )';
 
 					$extra_parts[ 'NAME' ] = $extra_name.' X '.$extrasquantities[ $extra ].$extra_tax_output;
 					$extra_parts[ 'PRICE' ] = output_price($inc_price * $extrasquantities[ $extra ]);
@@ -486,31 +486,31 @@ class j02990showconfirmation
 
 		$extratext = array();
 		if ($mrConfig[ 'showExtras' ]) {
-			$extra_text[ 'AJAXFORM_EXTRAS' ] = jr_gettext('_JOMRES_AJAXFORM_EXTRAS', '_JOMRES_AJAXFORM_EXTRAS');
+			$extra_text[ 'AJAXFORM_EXTRAS' ] = jr_gettext('_CASTOR_AJAXFORM_EXTRAS', '_CASTOR_AJAXFORM_EXTRAS');
 			$extra_text[ 'EXTRASTOTAL' ] = output_price($bookingDeets[ 'extrasvalue' ]);
-			$extra_text[ 'HEXTRASTOTAL' ] = jr_gettext('_JOMRES_AJAXFORM_EXTRAS_TOTAL', '_JOMRES_AJAXFORM_EXTRAS_TOTAL');
+			$extra_text[ 'HEXTRASTOTAL' ] = jr_gettext('_CASTOR_AJAXFORM_EXTRAS_TOTAL', '_CASTOR_AJAXFORM_EXTRAS_TOTAL');
 			$extrastext[ ] = $extra_text;
 		}
 
-		$booking_parts[ 'HEADER' ] = jr_gettext('_JOMRES_CONFIRMATION_HEADER', '_JOMRES_CONFIRMATION_HEADER');
-		$booking_parts[ 'AJAXFORM_PARTICULARS' ] = jr_gettext('_JOMRES_AJAXFORM_PARTICULARS', '_JOMRES_AJAXFORM_PARTICULARS');
-		$booking_parts[ 'BILLING_ROOMTOTAL' ] = jr_gettext('_JOMRES_AJAXFORM_BILLING_ROOM_TOTAL', '_JOMRES_AJAXFORM_BILLING_ROOM_TOTAL');
-		$booking_parts[ 'AJAXFORM_ADDRESS' ] = jr_gettext('_JOMRES_AJAXFORM_ADDRESS', '_JOMRES_AJAXFORM_ADDRESS');
-		$booking_parts[ 'AMENDTEXT' ] = jr_gettext('_JOMRES_CONFIRMATION_AMENDTEXT', '_JOMRES_CONFIRMATION_AMENDTEXT');
+		$booking_parts[ 'HEADER' ] = jr_gettext('_CASTOR_CONFIRMATION_HEADER', '_CASTOR_CONFIRMATION_HEADER');
+		$booking_parts[ 'AJAXFORM_PARTICULARS' ] = jr_gettext('_CASTOR_AJAXFORM_PARTICULARS', '_CASTOR_AJAXFORM_PARTICULARS');
+		$booking_parts[ 'BILLING_ROOMTOTAL' ] = jr_gettext('_CASTOR_AJAXFORM_BILLING_ROOM_TOTAL', '_CASTOR_AJAXFORM_BILLING_ROOM_TOTAL');
+		$booking_parts[ 'AJAXFORM_ADDRESS' ] = jr_gettext('_CASTOR_AJAXFORM_ADDRESS', '_CASTOR_AJAXFORM_ADDRESS');
+		$booking_parts[ 'AMENDTEXT' ] = jr_gettext('_CASTOR_CONFIRMATION_AMENDTEXT', '_CASTOR_CONFIRMATION_AMENDTEXT');
 
 		if ($mrConfig[ 'requireApproval' ] == '1' && !$thisJRUser->userIsManager && !$secret_key_payment) {
-			$booking_parts[ 'AMEND' ] = jr_gettext('_JOMRES_BOOKING_ENQUIRY_AMEND', '_JOMRES_BOOKING_ENQUIRY_AMEND', false);
+			$booking_parts[ 'AMEND' ] = jr_gettext('_CASTOR_BOOKING_ENQUIRY_AMEND', '_CASTOR_BOOKING_ENQUIRY_AMEND', false);
 		} else {
-			$booking_parts[ 'AMEND' ] = jr_gettext('_JOMRES_CONFIRMATION_AMEND', '_JOMRES_CONFIRMATION_AMEND', false);
+			$booking_parts[ 'AMEND' ] = jr_gettext('_CASTOR_CONFIRMATION_AMEND', '_CASTOR_CONFIRMATION_AMEND', false);
 		}
 
-		$booking_parts[ 'SPECIALS' ] = jr_gettext('_JOMRES_CONFIRMATION_SPECIALS', '_JOMRES_CONFIRMATION_SPECIALS');
-		$booking_parts[ 'ACCOMMODATION_TOTAL' ] = jr_gettext('_JOMRES_AJAXFORM_ACCOMMODATION_TOTAL', '_JOMRES_AJAXFORM_ACCOMMODATION_TOTAL').$accommodation_tax_output;
-		$booking_parts[ 'ACCOMMODATION_NIGHTS' ] = jr_gettext('_JOMRES_AJAXFORM_ACCOMMODATION_NIGHTS', '_JOMRES_AJAXFORM_ACCOMMODATION_NIGHTS');
-		$booking_parts[ 'ACCOMMODATION_PERROOM' ] = jr_gettext('_JOMRES_AJAXFORM_ACCOMMODATION_PERROOM', '_JOMRES_AJAXFORM_ACCOMMODATION_PERROOM');
-		$booking_parts[ 'PRICE_SUMMARY' ] = jr_gettext('_JOMRES_AJAXFORM_PRICE_SUMMARY', '_JOMRES_AJAXFORM_PRICE_SUMMARY');
+		$booking_parts[ 'SPECIALS' ] = jr_gettext('_CASTOR_CONFIRMATION_SPECIALS', '_CASTOR_CONFIRMATION_SPECIALS');
+		$booking_parts[ 'ACCOMMODATION_TOTAL' ] = jr_gettext('_CASTOR_AJAXFORM_ACCOMMODATION_TOTAL', '_CASTOR_AJAXFORM_ACCOMMODATION_TOTAL').$accommodation_tax_output;
+		$booking_parts[ 'ACCOMMODATION_NIGHTS' ] = jr_gettext('_CASTOR_AJAXFORM_ACCOMMODATION_NIGHTS', '_CASTOR_AJAXFORM_ACCOMMODATION_NIGHTS');
+		$booking_parts[ 'ACCOMMODATION_PERROOM' ] = jr_gettext('_CASTOR_AJAXFORM_ACCOMMODATION_PERROOM', '_CASTOR_AJAXFORM_ACCOMMODATION_PERROOM');
+		$booking_parts[ 'PRICE_SUMMARY' ] = jr_gettext('_CASTOR_AJAXFORM_PRICE_SUMMARY', '_CASTOR_AJAXFORM_PRICE_SUMMARY');
 		if (get_showtime('include_room_booking_functionality')) {
-			$booking_parts[ 'HTOTALINPARTY' ] = jr_gettext('_JOMRES_AJAXFORM_BILLING_TOTALINPARTY', '_JOMRES_AJAXFORM_BILLING_TOTALINPARTY');
+			$booking_parts[ 'HTOTALINPARTY' ] = jr_gettext('_CASTOR_AJAXFORM_BILLING_TOTALINPARTY', '_CASTOR_AJAXFORM_BILLING_TOTALINPARTY');
 		}
 
 		$booking_parts[ 'TOTALINPARTY' ] = $bookingDeets[ 'total_in_party' ];
@@ -528,15 +528,15 @@ class j02990showconfirmation
 		$booking_parts[ 'TOTALINPARTY' ] =  $inparty;
 
 		if ($bookingDeets[ 'single_person_suppliment' ] != 0) {
-			$booking_parts[ 'HSINGLEPERSON_COST' ] = jr_gettext('_JOMRES_COM_A_SUPPLIMENTS_SINGLEPERSON_COST', '_JOMRES_COM_A_SUPPLIMENTS_SINGLEPERSON_COST');
+			$booking_parts[ 'HSINGLEPERSON_COST' ] = jr_gettext('_CASTOR_COM_A_SUPPLIMENTS_SINGLEPERSON_COST', '_CASTOR_COM_A_SUPPLIMENTS_SINGLEPERSON_COST');
 			$booking_parts[ 'SINGLEPERSON_COST' ] = output_price($bookingDeets[ 'single_person_suppliment' ]);
 		}
 
 		$booking_parts[ 'LIVESITE' ] = get_showtime('live_site');
 		
 		if (isset($_POST[ 'specialReqs' ])) {
-			$booking_parts[ 'HSPECIAL_REQUIREMENTS' ] = jr_gettext('_JOMRES_COM_MR_EB_ROOM_BOOKINGSPECIALREQ', '_JOMRES_COM_MR_EB_ROOM_BOOKINGSPECIALREQ');
-			$booking_parts[ 'SPECIAL_REQUIREMENTS' ] = getEscaped(jomresGetParam($_POST, 'specialReqs', ''));
+			$booking_parts[ 'HSPECIAL_REQUIREMENTS' ] = jr_gettext('_CASTOR_COM_MR_EB_ROOM_BOOKINGSPECIALREQ', '_CASTOR_COM_MR_EB_ROOM_BOOKINGSPECIALREQ');
+			$booking_parts[ 'SPECIAL_REQUIREMENTS' ] = getEscaped(castorGetParam($_POST, 'specialReqs', ''));
 		}
 
 		$booking_parts[ 'FIRSTNAME' ] = $guestList[ 'firstname' ];
@@ -552,47 +552,47 @@ class j02990showconfirmation
 		$booking_parts[ 'EMAIL' ] = $guestList[ 'email' ];
 
 		if ($mrConfig[ 'wholeday_booking' ] == '1') {
-			$booking_parts[ 'HARRIVAL' ] = jr_gettext('_JOMRES_COM_MR_VIEWBOOKINGS_ARRIVAL_WHOLEDAY', '_JOMRES_COM_MR_VIEWBOOKINGS_ARRIVAL_WHOLEDAY');
+			$booking_parts[ 'HARRIVAL' ] = jr_gettext('_CASTOR_COM_MR_VIEWBOOKINGS_ARRIVAL_WHOLEDAY', '_CASTOR_COM_MR_VIEWBOOKINGS_ARRIVAL_WHOLEDAY');
 			if ($mrConfig[ 'showdepartureinput' ] == '1') {
-				$booking_parts[ 'HDEPARTURE' ] = jr_gettext('_JOMRES_COM_MR_VIEWBOOKINGS_DEPARTURE_WHOLEDAY', '_JOMRES_COM_MR_VIEWBOOKINGS_DEPARTURE_WHOLEDAY');
+				$booking_parts[ 'HDEPARTURE' ] = jr_gettext('_CASTOR_COM_MR_VIEWBOOKINGS_DEPARTURE_WHOLEDAY', '_CASTOR_COM_MR_VIEWBOOKINGS_DEPARTURE_WHOLEDAY');
 			}
 		} else {
-			$booking_parts[ 'HARRIVAL' ] = jr_gettext('_JOMRES_COM_MR_VIEWBOOKINGS_ARRIVAL', '_JOMRES_COM_MR_VIEWBOOKINGS_ARRIVAL');
-			$booking_parts[ 'HDEPARTURE' ] = jr_gettext('_JOMRES_COM_MR_VIEWBOOKINGS_DEPARTURE', '_JOMRES_COM_MR_VIEWBOOKINGS_DEPARTURE');
+			$booking_parts[ 'HARRIVAL' ] = jr_gettext('_CASTOR_COM_MR_VIEWBOOKINGS_ARRIVAL', '_CASTOR_COM_MR_VIEWBOOKINGS_ARRIVAL');
+			$booking_parts[ 'HDEPARTURE' ] = jr_gettext('_CASTOR_COM_MR_VIEWBOOKINGS_DEPARTURE', '_CASTOR_COM_MR_VIEWBOOKINGS_DEPARTURE');
 		}
 
-		$booking_parts[ 'HDAYSSTAYING' ] = jr_gettext('_JOMRES_COM_MR_QUICKRES_STEP4_STAYDAYS', '_JOMRES_COM_MR_QUICKRES_STEP4_STAYDAYS');
-		$booking_parts[ 'BOOKINGSPECIALREQ' ] = jr_gettext('_JOMRES_COM_MR_EB_ROOM_BOOKINGSPECIALREQ', '_JOMRES_COM_MR_EB_ROOM_BOOKINGSPECIALREQ');
-		$booking_parts[ 'DISCLAIMER' ] = jr_gettext('_JOMRES_COM_MR_EB_ROOM_BOOKINGSPECIALREQ_DISCLAIMER', '_JOMRES_COM_MR_EB_ROOM_BOOKINGSPECIALREQ_DISCLAIMER');
+		$booking_parts[ 'HDAYSSTAYING' ] = jr_gettext('_CASTOR_COM_MR_QUICKRES_STEP4_STAYDAYS', '_CASTOR_COM_MR_QUICKRES_STEP4_STAYDAYS');
+		$booking_parts[ 'BOOKINGSPECIALREQ' ] = jr_gettext('_CASTOR_COM_MR_EB_ROOM_BOOKINGSPECIALREQ', '_CASTOR_COM_MR_EB_ROOM_BOOKINGSPECIALREQ');
+		$booking_parts[ 'DISCLAIMER' ] = jr_gettext('_CASTOR_COM_MR_EB_ROOM_BOOKINGSPECIALREQ_DISCLAIMER', '_CASTOR_COM_MR_EB_ROOM_BOOKINGSPECIALREQ_DISCLAIMER');
 
 		if ($mrConfig[ 'requireApproval' ] == '1' && !$thisJRUser->userIsManager && !$secret_key_payment) {
-			$booking_parts[ 'THEBUTTON' ] = jr_gettext('_JOMRES_BOOKING_ENQUIRY_CONFIRM', '_JOMRES_BOOKING_ENQUIRY_CONFIRM', false);
+			$booking_parts[ 'THEBUTTON' ] = jr_gettext('_CASTOR_BOOKING_ENQUIRY_CONFIRM', '_CASTOR_BOOKING_ENQUIRY_CONFIRM', false);
 		} else {
-			$booking_parts[ 'THEBUTTON' ] = jr_gettext('_JOMRES_COM_MR_CONFIRMBOOKING', '_JOMRES_COM_MR_CONFIRMBOOKING', false);
+			$booking_parts[ 'THEBUTTON' ] = jr_gettext('_CASTOR_COM_MR_CONFIRMBOOKING', '_CASTOR_COM_MR_CONFIRMBOOKING', false);
 		}
 
-		$booking_parts[ 'HFIRSTNAME' ] = jr_gettext('_JOMRES_FRONT_MR_DISPGUEST_FIRSTNAME', '_JOMRES_FRONT_MR_DISPGUEST_FIRSTNAME');
-		$booking_parts[ 'HSURNAME' ] = jr_gettext('_JOMRES_FRONT_MR_DISPGUEST_SURNAME', '_JOMRES_FRONT_MR_DISPGUEST_SURNAME');
-		$booking_parts[ 'HHOUSENO' ] = jr_gettext('_JOMRES_FRONT_MR_EB_GUEST_JOMRES_HOUSE_EXPL', '_JOMRES_FRONT_MR_EB_GUEST_JOMRES_HOUSE_EXPL');
-		$booking_parts[ 'HSTREET' ] = jr_gettext('_JOMRES_FRONT_MR_EB_GUEST_JOMRES_STREET_EXPL', '_JOMRES_FRONT_MR_EB_GUEST_JOMRES_STREET_EXPL');
-		$booking_parts[ 'HTOWN' ] = jr_gettext('_JOMRES_FRONT_MR_EB_GUEST_JOMRES_TOWN_EXPL', '_JOMRES_FRONT_MR_EB_GUEST_JOMRES_TOWN_EXPL');
-		$booking_parts[ 'HPOSTCODE' ] = jr_gettext('_JOMRES_FRONT_MR_EB_GUEST_JOMRES_POSTCODE_EXPL', '_JOMRES_FRONT_MR_EB_GUEST_JOMRES_POSTCODE_EXPL');
-		$booking_parts[ 'HREGION' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_REGION', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_REGION');
-		$booking_parts[ 'HCOUNTRY' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY');
-		$booking_parts[ 'HTEL' ] = jr_gettext('_JOMRES_FRONT_MR_EB_GUEST_JOMRES_LANDLINE_EXPL', '_JOMRES_FRONT_MR_EB_GUEST_JOMRES_LANDLINE_EXPL');
-		$booking_parts[ 'HMOBILE' ] = jr_gettext('_JOMRES_FRONT_MR_EB_GUEST_JOMRES_MOBILE_EXPL', '_JOMRES_FRONT_MR_EB_GUEST_JOMRES_MOBILE_EXPL');
-		$booking_parts[ 'HEMAIL' ] = jr_gettext('_JOMRES_COM_MR_EB_GUEST_JOMRES_EMAIL_EXPL', '_JOMRES_COM_MR_EB_GUEST_JOMRES_EMAIL_EXPL');
+		$booking_parts[ 'HFIRSTNAME' ] = jr_gettext('_CASTOR_FRONT_MR_DISPGUEST_FIRSTNAME', '_CASTOR_FRONT_MR_DISPGUEST_FIRSTNAME');
+		$booking_parts[ 'HSURNAME' ] = jr_gettext('_CASTOR_FRONT_MR_DISPGUEST_SURNAME', '_CASTOR_FRONT_MR_DISPGUEST_SURNAME');
+		$booking_parts[ 'HHOUSENO' ] = jr_gettext('_CASTOR_FRONT_MR_EB_GUEST_CASTOR_HOUSE_EXPL', '_CASTOR_FRONT_MR_EB_GUEST_CASTOR_HOUSE_EXPL');
+		$booking_parts[ 'HSTREET' ] = jr_gettext('_CASTOR_FRONT_MR_EB_GUEST_CASTOR_STREET_EXPL', '_CASTOR_FRONT_MR_EB_GUEST_CASTOR_STREET_EXPL');
+		$booking_parts[ 'HTOWN' ] = jr_gettext('_CASTOR_FRONT_MR_EB_GUEST_CASTOR_TOWN_EXPL', '_CASTOR_FRONT_MR_EB_GUEST_CASTOR_TOWN_EXPL');
+		$booking_parts[ 'HPOSTCODE' ] = jr_gettext('_CASTOR_FRONT_MR_EB_GUEST_CASTOR_POSTCODE_EXPL', '_CASTOR_FRONT_MR_EB_GUEST_CASTOR_POSTCODE_EXPL');
+		$booking_parts[ 'HREGION' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_REGION', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_REGION');
+		$booking_parts[ 'HCOUNTRY' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY');
+		$booking_parts[ 'HTEL' ] = jr_gettext('_CASTOR_FRONT_MR_EB_GUEST_CASTOR_LANDLINE_EXPL', '_CASTOR_FRONT_MR_EB_GUEST_CASTOR_LANDLINE_EXPL');
+		$booking_parts[ 'HMOBILE' ] = jr_gettext('_CASTOR_FRONT_MR_EB_GUEST_CASTOR_MOBILE_EXPL', '_CASTOR_FRONT_MR_EB_GUEST_CASTOR_MOBILE_EXPL');
+		$booking_parts[ 'HEMAIL' ] = jr_gettext('_CASTOR_COM_MR_EB_GUEST_CASTOR_EMAIL_EXPL', '_CASTOR_COM_MR_EB_GUEST_CASTOR_EMAIL_EXPL');
 		if ($mrConfig[ 'roomTaxYesNo' ] == '1' || $mrConfig[ 'euroTaxYesNo' ] == '1') {
-			$booking_parts[ 'HTAX' ] = jr_gettext('_JOMRES_COM_FRONT_ROOMTAX', '_JOMRES_COM_FRONT_ROOMTAX');
+			$booking_parts[ 'HTAX' ] = jr_gettext('_CASTOR_COM_FRONT_ROOMTAX', '_CASTOR_COM_FRONT_ROOMTAX');
 		} else {
 			$booking_parts[ 'HTAX' ] = '';
 		}
 
-		$booking_parts[ 'TERMS' ] = makePopupLink(JOMRES_SITEPAGE_URL.'&task=terms&popup=1&tmpl='.get_showtime('tmplcomponent')."&property_uid=$property_uid", jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_POLICIESDISCLAIMERS', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_POLICIESDISCLAIMERS'), true, 750, 500);
-		$booking_parts[ 'TERMS_NO_POPUP' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_POLICIESDISCLAIMERS', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_POLICIESDISCLAIMERS', false, false);
-		$booking_parts[ 'TERMSPRETEXT' ] = jr_gettext('_JOMRES_CONFIRMATION_TERMS_PRETEXT', '_JOMRES_CONFIRMATION_TERMS_PRETEXT');
-		$booking_parts[ 'TERMSTEXT' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_POLICIESDISCLAIMERS', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_POLICIESDISCLAIMERS', false);
-		$booking_parts[ 'ALERT' ] = jr_gettext('_JOMRES_CONFIRMATION_ALERT', '_JOMRES_CONFIRMATION_ALERT', false);
+		$booking_parts[ 'TERMS' ] = makePopupLink(CASTOR_SITEPAGE_URL.'&task=terms&popup=1&tmpl='.get_showtime('tmplcomponent')."&property_uid=$property_uid", jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_POLICIESDISCLAIMERS', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_POLICIESDISCLAIMERS'), true, 750, 500);
+		$booking_parts[ 'TERMS_NO_POPUP' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_POLICIESDISCLAIMERS', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_POLICIESDISCLAIMERS', false, false);
+		$booking_parts[ 'TERMSPRETEXT' ] = jr_gettext('_CASTOR_CONFIRMATION_TERMS_PRETEXT', '_CASTOR_CONFIRMATION_TERMS_PRETEXT');
+		$booking_parts[ 'TERMSTEXT' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_POLICIESDISCLAIMERS', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_POLICIESDISCLAIMERS', false);
+		$booking_parts[ 'ALERT' ] = jr_gettext('_CASTOR_CONFIRMATION_ALERT', '_CASTOR_CONFIRMATION_ALERT', false);
 
 		$gatewayDeets = array();
 		$gateways = array();
@@ -630,7 +630,7 @@ class j02990showconfirmation
 								}
 								$gw[ 'GWNAME_INTERNAL' ] = $gateway_name;
 								$gw[ 'GWINPUT' ] = '<input type="radio" id="'.$gateway_name.'" name="plugin" value="'.$gateway_name.'" '.$checked.' /> ';
-								$gatewaydir = str_replace(JOMRESCONFIG_ABSOLUTE_PATH, get_showtime('live_site').'/', $tmpgatewaydir);
+								$gatewaydir = str_replace(CASTORCONFIG_ABSOLUTE_PATH, get_showtime('live_site').'/', $tmpgatewaydir);
 								$gatewaydir = str_replace('\\', '/', $gatewaydir);
 
 
@@ -642,10 +642,10 @@ class j02990showconfirmation
 									} elseif (file_exists($result[ 'filepath' ].'j00510'.$gateway_name.'.jpg')) {
 										$gw[ 'GWIMAGE' ] = '<img src="'.$gatewaydir.'j00510'.$gateway_name.'.jpg" border="0"  width="200" alt="'.$gateway_name.' logo">';
 									} else {
-										$gw[ 'GWIMAGE' ] = '<img src="'.JOMRES_IMAGES_RELPATH.'noimage.svg" border="0"  width="200" alt="No logo found">';
+										$gw[ 'GWIMAGE' ] = '<img src="'.CASTOR_IMAGES_RELPATH.'noimage.svg" border="0"  width="200" alt="No logo found">';
 									}
 								} else {
-									$gw[ 'GWIMAGE' ] = '<img src="'.JOMRES_IMAGES_RELPATH.'j00510'.$gateway_name.'.png" border="0"  width="200" alt="'.$gateway_name.' logo">';
+									$gw[ 'GWIMAGE' ] = '<img src="'.CASTOR_IMAGES_RELPATH.'j00510'.$gateway_name.'.png" border="0"  width="200" alt="'.$gateway_name.' logo">';
 								}
 
 
@@ -662,7 +662,7 @@ class j02990showconfirmation
 				}
 
 				if (!empty($gateways)) {
-					$gwo[ 'GATEWAYCHOICEINTRO' ] = jr_gettext('_JOMRES_COM_A_GATEWAY_BOOKING_CHOOSE', '_JOMRES_COM_A_GATEWAY_BOOKING_CHOOSE');
+					$gwo[ 'GATEWAYCHOICEINTRO' ] = jr_gettext('_CASTOR_COM_A_GATEWAY_BOOKING_CHOOSE', '_CASTOR_COM_A_GATEWAY_BOOKING_CHOOSE');
 					$gateway_output[] = $gwo;
 				}
 			//}
@@ -673,7 +673,7 @@ class j02990showconfirmation
 
 		if ($amend_contract) {
 			$amend_contractuid = $tmpBookingHandler->getBookingFieldVal('amend_contractuid');
-			$booking_parts[ 'BOOKINGFORMURL' ] = jomresURL(JOMRES_SITEPAGE_URL_NOSEF.'&task=amendBooking&no_html=1&contractUid='.$amend_contractuid);
+			$booking_parts[ 'BOOKINGFORMURL' ] = castorURL(CASTOR_SITEPAGE_URL_NOSEF.'&task=amendBooking&no_html=1&contractUid='.$amend_contractuid);
 		} else {
 			$booking_parts[ 'BOOKINGFORMURL' ] = get_booking_url($bookingDeets[ 'property_uid' ], 'nosef');
 		}
@@ -682,9 +682,9 @@ class j02990showconfirmation
 		if (isset($MiniComponents->registeredClasses[ '06000']['show_cart' ])) {
 			$site_paypal_settings = get_plugin_settings('paypal', 0);
 			if ((isset($site_paypal_settings['override']) && $site_paypal_settings['override'] == '1' && $jrConfig[ 'useshoppingcart' ] == '1') || empty($gatewayDeets)) {
-				$booking_parts[ '_JOMRES_CART_OR' ] = jr_gettext('_JOMRES_CART_OR', '_JOMRES_CART_OR');
-				$booking_parts[ '_JOMRES_SAVEFORLATER' ] = '<input class="fg-button ui-state-default ui-corner-all" type="submit" id="send" name="send" value="'.jr_gettext('_JOMRES_CART_SAVEFORLATER', '_JOMRES_CART_SAVEFORLATER', false, false).'" class="button" onclick="return confirmation_validate(true);" />';
-				$cartoutput[ ] = array('_JOMRES_SAVEFORLATER' => jr_gettext('_JOMRES_CART_SAVEFORLATER', '_JOMRES_CART_SAVEFORLATER', false, false), '_JOMRES_CART_OR' => $booking_parts[ '_JOMRES_CART_OR' ]);
+				$booking_parts[ '_CASTOR_CART_OR' ] = jr_gettext('_CASTOR_CART_OR', '_CASTOR_CART_OR');
+				$booking_parts[ '_CASTOR_SAVEFORLATER' ] = '<input class="fg-button ui-state-default ui-corner-all" type="submit" id="send" name="send" value="'.jr_gettext('_CASTOR_CART_SAVEFORLATER', '_CASTOR_CART_SAVEFORLATER', false, false).'" class="button" onclick="return confirmation_validate(true);" />';
+				$cartoutput[ ] = array('_CASTOR_SAVEFORLATER' => jr_gettext('_CASTOR_CART_SAVEFORLATER', '_CASTOR_CART_SAVEFORLATER', false, false), '_CASTOR_CART_OR' => $booking_parts[ '_CASTOR_CART_OR' ]);
 			}
 		}
 		// v 4.5.7 stripping out the room specific stuff into a new array.
@@ -739,7 +739,7 @@ class j02990showconfirmation
 					}
 				}
 				if ($active_gateway_found) {
-					echo '<script>window.location.href = \''.JOMRES_SITEPAGE_URL_NOSEF.'&no_html=1&jrajax=1&task=processpayment&jsid='.$tmpBookingHandler->jomressession.'&plugin='.$plugin.'\'</script>';
+					echo '<script>window.location.href = \''.CASTOR_SITEPAGE_URL_NOSEF.'&no_html=1&jrajax=1&task=processpayment&jsid='.$tmpBookingHandler->castorsession.'&plugin='.$plugin.'\'</script>';
 					exit;
 				}
 			}
@@ -772,7 +772,7 @@ class j02990showconfirmation
 		} elseif ($MiniComponents->eventFileExistsCheck('00206')) {
 			$MiniComponents->triggerEvent('00206', $componentArgs);
 		} else {
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 			if (get_showtime('include_room_booking_functionality')) {
 				$tmpl->readTemplatesFromInput('bookings_showconfirmation.html');
 			} else {
@@ -785,7 +785,7 @@ class j02990showconfirmation
 		// Trigger point. Not currently used, but available if somebody wants a trigger point after the confirm booking phase
 		$MiniComponents->triggerEvent('03010', $componentArgs);
 
-		$tmpBookingHandler->close_jomres_session();  // This ensures that the new guest numbers, if they have been added, are saved to the session.
+		$tmpBookingHandler->close_castor_session();  // This ensures that the new guest numbers, if they have been added, are saved to the session.
 	}
 
 
@@ -798,3 +798,4 @@ class j02990showconfirmation
 		return null;
 	}
 }
+

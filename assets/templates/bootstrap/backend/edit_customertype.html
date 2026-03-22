@@ -1,7 +1,7 @@
-<patTemplate:tmpl name="pageoutput" unusedvars="strip">
+﻿<patTemplate:tmpl name="pageoutput" unusedvars="strip">
 	<h2 class="page-header">{PAGETITLE}</h2>
 
-	<form action="{JOMRES_SITEPAGE_URL_NOSEF}" method="post" name="adminForm" class="form-horizontal">
+	<form action="{CASTOR_SITEPAGE_URL_NOSEF}" method="post" name="adminForm" class="form-horizontal">
 		<fieldset>
 			<div class="control-group">
 				<label class="control-label" for="type">{HTYPE}</label>
@@ -57,17 +57,17 @@
 			</div>
 
 			<div class="control-group">
-				<label class="control-label" for="is_child">{H_JOMRES_GUESTTYPES_IS_CHILD}</label>
+				<label class="control-label" for="is_child">{H_CASTOR_GUESTTYPES_IS_CHILD}</label>
 
 				<div class="controls">
 					{ISCHILD}
-					<p class="help-block">{HJOMRES_GUESTTYPES_IS_CHILD_T_TEXT}</p>
+					<p class="help-block">{HCASTOR_GUESTTYPES_IS_CHILD_T_TEXT}</p>
 				</div>
 				</div>
 			</div>
 
 			<div class="form-actions">
-				{JOMRESTOOLBAR}
+				{CASTORTOOLBAR}
 			</div>
 			<input type="hidden" name="typeid" value="{ID}"/>
 			<input type="hidden" name="task" value="savecustomertype"/>

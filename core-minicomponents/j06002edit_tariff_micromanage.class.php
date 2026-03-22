@@ -1,17 +1,17 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('Direct Access to this file is not allowed.');
+defined('_CASTOR_INITCHECK') or die('Direct Access to this file is not allowed.');
 // ################################################################
 
 use function \PHP81_BC\strftime;
@@ -21,7 +21,7 @@ class j06002edit_tariff_micromanage
 	function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents =jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents =castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = true;
 			return;
@@ -31,7 +31,7 @@ class j06002edit_tariff_micromanage
 		
 		$ePointFilepath = get_showtime('ePointFilepath');
 		
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 		
 		$defaultProperty = getDefaultProperty();
@@ -44,16 +44,16 @@ class j06002edit_tariff_micromanage
 		
 		$this->rates = array();
 		
-		$tarifftype_id = (int)jomresGetParam($_REQUEST, 'tarifftypeid', 0);
-		$clone = (int)jomresGetParam($_REQUEST, 'clone', 0);
+		$tarifftype_id = (int)castorGetParam($_REQUEST, 'tarifftypeid', 0);
+		$clone = (int)castorGetParam($_REQUEST, 'clone', 0);
 		
 		//get all property details
-		$basic_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+		$basic_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 		$basic_property_details->gather_data($defaultProperty);
 		
 		//check if this property type has room types assigned
 		if (empty($basic_property_details->this_property_room_classes)) {
-			throw new Exception('Error, there are no room types for this property type. You can assign room types to this property type by visiting Administrator -> Jomres -> Site Structure -> and editing the room/resource types.');
+			throw new Exception('Error, there are no room types for this property type. You can assign room types to this property type by visiting Administrator -> Castor -> Site Structure -> and editing the room/resource types.');
 			return;
 		}
 		
@@ -95,8 +95,8 @@ class j06002edit_tariff_micromanage
 				$output['MAXDAYS'] = $r['maxdays'];
 				$output['MINPEOPLE'] = $r['minpeople'];
 				$output['MAXPEOPLE'] = $r['maxpeople'];
-				$already_selected['MINROOMS_ALREADYSELECTED'] = jomresHTML::integerSelectList(0, 100, 1, 'minrooms_alreadyselected', '', $r['minrooms_alreadyselected']);
-				$already_selected['MAXROOMS_ALREADYSELECTED'] = jomresHTML::integerSelectList(0, 100, 1, 'maxrooms_alreadyselected', '', $r['maxrooms_alreadyselected']);
+				$already_selected['MINROOMS_ALREADYSELECTED'] = castorHTML::integerSelectList(0, 100, 1, 'minrooms_alreadyselected', '', $r['minrooms_alreadyselected']);
+				$already_selected['MAXROOMS_ALREADYSELECTED'] = castorHTML::integerSelectList(0, 100, 1, 'maxrooms_alreadyselected', '', $r['maxrooms_alreadyselected']);
 				
 				$ignore_pppn = $r['ignore_pppn'];
 				$allow_we = $r['allow_we'];
@@ -111,8 +111,8 @@ class j06002edit_tariff_micromanage
 			$output['MAXDAYS'] = $jrportal_rates->rates_defaults['maxdays'];
 			$output['MINPEOPLE'] = $jrportal_rates->rates_defaults['minpeople'];
 			$output['MAXPEOPLE'] = $jrportal_rates->rates_defaults['maxpeople'];
-			$already_selected['MINROOMS_ALREADYSELECTED'] = jomresHTML::integerSelectList(0, $jrportal_rates->rates_defaults['maxrooms_alreadyselected'], 1, 'minrooms_alreadyselected', '', $jrportal_rates->rates_defaults['minrooms_alreadyselected']);
-			$already_selected['MAXROOMS_ALREADYSELECTED'] = jomresHTML::integerSelectList(0, $jrportal_rates->rates_defaults['maxrooms_alreadyselected'], 1, 'maxrooms_alreadyselected', '', $jrportal_rates->rates_defaults['maxrooms_alreadyselected']);
+			$already_selected['MINROOMS_ALREADYSELECTED'] = castorHTML::integerSelectList(0, $jrportal_rates->rates_defaults['maxrooms_alreadyselected'], 1, 'minrooms_alreadyselected', '', $jrportal_rates->rates_defaults['minrooms_alreadyselected']);
+			$already_selected['MAXROOMS_ALREADYSELECTED'] = castorHTML::integerSelectList(0, $jrportal_rates->rates_defaults['maxrooms_alreadyselected'], 1, 'maxrooms_alreadyselected', '', $jrportal_rates->rates_defaults['maxrooms_alreadyselected']);
 			
 			$ignore_pppn = $jrportal_rates->rates_defaults['ignore_pppn'];
 			$allow_we = $jrportal_rates->rates_defaults['allow_we'];
@@ -121,36 +121,36 @@ class j06002edit_tariff_micromanage
 			$fixed_dayofweek = $jrportal_rates->rates_defaults['dayofweek'];
 		}
 			
-		$output['MINDAYS_DROPDOWN'] = jomresHTML::integerSelectList(0, $jrportal_rates->rates_defaults['maxdays'], 1, 'mindays', '', $output['MINDAYS']);
-		$output['MAXDAYS_DROPDOWN'] = jomresHTML::integerSelectList(1, $jrportal_rates->rates_defaults['maxdays'], 1, 'maxdays', '', $output['MAXDAYS']);
-		$output['MINPEOPLE_DROPDOWN'] = jomresHTML::integerSelectList(0, $jrportal_rates->rates_defaults['maxpeople'], 1, 'minpeople', '', $output['MINPEOPLE']);
-		$output['MAXPEOPLE_DROPDOWN'] = jomresHTML::integerSelectList(0, $jrportal_rates->rates_defaults['maxpeople'], 1, 'maxpeople', '', $output['MAXPEOPLE']);
+		$output['MINDAYS_DROPDOWN'] = castorHTML::integerSelectList(0, $jrportal_rates->rates_defaults['maxdays'], 1, 'mindays', '', $output['MINDAYS']);
+		$output['MAXDAYS_DROPDOWN'] = castorHTML::integerSelectList(1, $jrportal_rates->rates_defaults['maxdays'], 1, 'maxdays', '', $output['MAXDAYS']);
+		$output['MINPEOPLE_DROPDOWN'] = castorHTML::integerSelectList(0, $jrportal_rates->rates_defaults['maxpeople'], 1, 'minpeople', '', $output['MINPEOPLE']);
+		$output['MAXPEOPLE_DROPDOWN'] = castorHTML::integerSelectList(0, $jrportal_rates->rates_defaults['maxpeople'], 1, 'maxpeople', '', $output['MAXPEOPLE']);
 		
 		$yesno = array();
-		$yesno[] = jomresHTML::makeOption('0', jr_gettext('_JOMRES_COM_MR_NO', '_JOMRES_COM_MR_NO', false));
-		$yesno[] = jomresHTML::makeOption('1', jr_gettext('_JOMRES_COM_MR_YES', '_JOMRES_COM_MR_YES', false));
+		$yesno[] = castorHTML::makeOption('0', jr_gettext('_CASTOR_COM_MR_NO', '_CASTOR_COM_MR_NO', false));
+		$yesno[] = castorHTML::makeOption('1', jr_gettext('_CASTOR_COM_MR_YES', '_CASTOR_COM_MR_YES', false));
 		
-		$output['IGNOREPPPNDROPDOWN'] = jomresHTML::selectList($yesno, 'ignore_pppn', '', 'value', 'text', $ignore_pppn);
-		$output['ALLOWWEEKENDSDROPDOWN'] = jomresHTML::selectList($yesno, 'allow_we', '', 'value', 'text', $allow_we);
-		$output['WEEKENDONLY'] = jomresHTML::selectList($yesno, 'weekendonly', '', 'value', 'text', $weekendonly);
+		$output['IGNOREPPPNDROPDOWN'] = castorHTML::selectList($yesno, 'ignore_pppn', '', 'value', 'text', $ignore_pppn);
+		$output['ALLOWWEEKENDSDROPDOWN'] = castorHTML::selectList($yesno, 'allow_we', '', 'value', 'text', $allow_we);
+		$output['WEEKENDONLY'] = castorHTML::selectList($yesno, 'weekendonly', '', 'value', 'text', $weekendonly);
 
 		//room classes for this property
 		if (!empty($basic_property_details->this_property_room_classes)) {
 			$currentPropertyRoomClasses = array();
 			
 			//first let`s see what room types this property uses
-			$query = "SELECT DISTINCT `room_classes_uid` FROM #__jomres_rooms WHERE `propertys_uid` = ".(int)$defaultProperty." AND `room_classes_uid` IN (".jomres_implode(array_keys($basic_property_details->this_property_room_classes)).") ";
+			$query = "SELECT DISTINCT `room_classes_uid` FROM #__castor_rooms WHERE `propertys_uid` = ".(int)$defaultProperty." AND `room_classes_uid` IN (".castor_implode(array_keys($basic_property_details->this_property_room_classes)).") ";
 			$result = doSelectSql($query);
 			if (empty($result)) {
 				$message = '<p class="alert alert-danger">';
-				$message .= jr_gettext("_JOMRES_MICROMANAGE_CREATE_ROOM_1", '_JOMRES_MICROMANAGE_CREATE_ROOM_1', false);
+				$message .= jr_gettext("_CASTOR_MICROMANAGE_CREATE_ROOM_1", '_CASTOR_MICROMANAGE_CREATE_ROOM_1', false);
 				$message .= "<br/><ul>";
 
 				foreach ($basic_property_details->this_property_room_classes as $room_type) {
 					$message .= "<li>".$room_type['abbv']."</li>";
 				}
 				$message .= "</ul>";
-				$message .= jr_gettext("_JOMRES_MICROMANAGE_CREATE_ROOM_2", '_JOMRES_MICROMANAGE_CREATE_ROOM_2', false);
+				$message .= jr_gettext("_CASTOR_MICROMANAGE_CREATE_ROOM_2", '_CASTOR_MICROMANAGE_CREATE_ROOM_2', false);
 				$message .= "</p>";
 				echo $message;
 				return;
@@ -169,11 +169,11 @@ class j06002edit_tariff_micromanage
 			$options = array();
 			foreach ($basic_property_details->this_property_room_classes as $k => $v) {
 				if (in_array($k, $currentPropertyRoomClasses)) {
-					$options[] = jomresHTML::makeOption($k, $v['abbv']);
+					$options[] = castorHTML::makeOption($k, $v['abbv']);
 				}
 			}
 			
-			$output['ROOMTYPEDROPDOWN'] = jomresHTML::selectList($options, 'roomClass', '', 'value', 'text', $roomclassid, false);
+			$output['ROOMTYPEDROPDOWN'] = castorHTML::selectList($options, 'roomClass', '', 'value', 'text', $roomclassid, false);
 		}
 
 		// Let's make our years/months/days array
@@ -222,25 +222,25 @@ class j06002edit_tariff_micromanage
 						
 						switch ($dowInit) {
 							case "Su":
-								$dowInit = jr_gettext("_JOMRES_COM_MR_WEEKDAYS_SUNDAY_ABBR", '_JOMRES_COM_MR_WEEKDAYS_SUNDAY_ABBR', false);
+								$dowInit = jr_gettext("_CASTOR_COM_MR_WEEKDAYS_SUNDAY_ABBR", '_CASTOR_COM_MR_WEEKDAYS_SUNDAY_ABBR', false);
 								break;
 							case "Mo":
-								$dowInit = jr_gettext("_JOMRES_COM_MR_WEEKDAYS_MONDAY_ABBR", '_JOMRES_COM_MR_WEEKDAYS_MONDAY_ABBR', false);
+								$dowInit = jr_gettext("_CASTOR_COM_MR_WEEKDAYS_MONDAY_ABBR", '_CASTOR_COM_MR_WEEKDAYS_MONDAY_ABBR', false);
 								break;
 							case "Tu":
-								$dowInit = jr_gettext("_JOMRES_COM_MR_WEEKDAYS_TUESDAY_ABBR", '_JOMRES_COM_MR_WEEKDAYS_TUESDAY_ABBR', false);
+								$dowInit = jr_gettext("_CASTOR_COM_MR_WEEKDAYS_TUESDAY_ABBR", '_CASTOR_COM_MR_WEEKDAYS_TUESDAY_ABBR', false);
 								break;
 							case "We":
-								$dowInit = jr_gettext("_JOMRES_COM_MR_WEEKDAYS_WEDNESDAY_ABBR", '_JOMRES_COM_MR_WEEKDAYS_WEDNESDAY_ABBR', false);
+								$dowInit = jr_gettext("_CASTOR_COM_MR_WEEKDAYS_WEDNESDAY_ABBR", '_CASTOR_COM_MR_WEEKDAYS_WEDNESDAY_ABBR', false);
 								break;
 							case "Th":
-								$dowInit = jr_gettext("_JOMRES_COM_MR_WEEKDAYS_THURSDAY_ABBR", '_JOMRES_COM_MR_WEEKDAYS_THURSDAY_ABBR', false);
+								$dowInit = jr_gettext("_CASTOR_COM_MR_WEEKDAYS_THURSDAY_ABBR", '_CASTOR_COM_MR_WEEKDAYS_THURSDAY_ABBR', false);
 								break;
 							case "Fr":
-								$dowInit = jr_gettext("_JOMRES_COM_MR_WEEKDAYS_FRIDAY_ABBR", '_JOMRES_COM_MR_WEEKDAYS_FRIDAY_ABBR', false);
+								$dowInit = jr_gettext("_CASTOR_COM_MR_WEEKDAYS_FRIDAY_ABBR", '_CASTOR_COM_MR_WEEKDAYS_FRIDAY_ABBR', false);
 								break;
 							case "Sa":
-								$dowInit = jr_gettext("_JOMRES_COM_MR_WEEKDAYS_SATURDAY_ABBR", '_JOMRES_COM_MR_WEEKDAYS_SATURDAY_ABBR', false);
+								$dowInit = jr_gettext("_CASTOR_COM_MR_WEEKDAYS_SATURDAY_ABBR", '_CASTOR_COM_MR_WEEKDAYS_SATURDAY_ABBR', false);
 								break;
 						}
 
@@ -250,10 +250,10 @@ class j06002edit_tariff_micromanage
 							$datesInyearsArray[$currYear][$currMonth][$day]['dom'] = '<font color="'.$fontcolour.'">'.$dowInit.' '.$day.'</font>';
 						}
 						
-						$datesInyearsArray[$currYear][$currMonth][$day]['class'] = "jomres_te_".$dowInit;
+						$datesInyearsArray[$currYear][$currMonth][$day]['class'] = "castor_te_".$dowInit;
 						
-						if (!in_array("jomres_te_".$dowInit, $dowInitArrays)) {
-							$dowInitArrays["jomres_te_".$dowInit] = array("class"=>"jomres_te_".$dowInit,"text"=>$dowInit,"dom"=>$datesInyearsArray[$currYear][$currMonth][$day]['dom']);
+						if (!in_array("castor_te_".$dowInit, $dowInitArrays)) {
+							$dowInitArrays["castor_te_".$dowInit] = array("class"=>"castor_te_".$dowInit,"text"=>$dowInit,"dom"=>$datesInyearsArray[$currYear][$currMonth][$day]['dom']);
 						}
 						
 						$datesInyearsArray[$currYear][$currMonth][$day]['epoch'] = $epoch;
@@ -300,8 +300,8 @@ class j06002edit_tariff_micromanage
 		$output['PICKER_TO_SMALL_VIEWPORT'] = generateDateInput("picker_to_smallviewport", "");
 		$output['DATE_FORMAT'] = $jrConfig['cal_input'];
 
-		$price_text = jr_gettext('_JOMRES_MICROMANAGE_PRICE', '_JOMRES_MICROMANAGE_PRICE', false);
-		$mindays_text = jr_gettext('_JOMRES_MICROMANAGE_MINDAYS', '_JOMRES_MICROMANAGE_MINDAYS', false);
+		$price_text = jr_gettext('_CASTOR_MICROMANAGE_PRICE', '_CASTOR_MICROMANAGE_PRICE', false);
+		$mindays_text = jr_gettext('_CASTOR_MICROMANAGE_MINDAYS', '_CASTOR_MICROMANAGE_MINDAYS', false);
 		
 		$output['MININTERVAL'] = $mrConfig['minimuminterval'];
 		
@@ -363,77 +363,77 @@ class j06002edit_tariff_micromanage
 		}
 
 		$options = array();
-		$options[] = jomresHTML::makeOption(7, jr_gettext('_JOMRES_SEARCH_ALL', '_JOMRES_SEARCH_ALL', false, false));
-		$options[] = jomresHTML::makeOption(1, jr_gettext("_JOMRES_COM_MR_WEEKDAYS_MONDAY", '_JOMRES_COM_MR_WEEKDAYS_MONDAY'));
-		$options[] = jomresHTML::makeOption(2, jr_gettext("_JOMRES_COM_MR_WEEKDAYS_TUESDAY", '_JOMRES_COM_MR_WEEKDAYS_TUESDAY'));
-		$options[] = jomresHTML::makeOption(3, jr_gettext("_JOMRES_COM_MR_WEEKDAYS_WEDNESDAY", '_JOMRES_COM_MR_WEEKDAYS_WEDNESDAY'));
-		$options[] = jomresHTML::makeOption(4, jr_gettext("_JOMRES_COM_MR_WEEKDAYS_THURSDAY", '_JOMRES_COM_MR_WEEKDAYS_THURSDAY'));
-		$options[] = jomresHTML::makeOption(5, jr_gettext("_JOMRES_COM_MR_WEEKDAYS_FRIDAY", '_JOMRES_COM_MR_WEEKDAYS_FRIDAY'));
-		$options[] = jomresHTML::makeOption(6, jr_gettext("_JOMRES_COM_MR_WEEKDAYS_SATURDAY", '_JOMRES_COM_MR_WEEKDAYS_SATURDAY'));
-		$options[] = jomresHTML::makeOption(0, jr_gettext("_JOMRES_COM_MR_WEEKDAYS_SUNDAY", '_JOMRES_COM_MR_WEEKDAYS_SUNDAY'));
+		$options[] = castorHTML::makeOption(7, jr_gettext('_CASTOR_SEARCH_ALL', '_CASTOR_SEARCH_ALL', false, false));
+		$options[] = castorHTML::makeOption(1, jr_gettext("_CASTOR_COM_MR_WEEKDAYS_MONDAY", '_CASTOR_COM_MR_WEEKDAYS_MONDAY'));
+		$options[] = castorHTML::makeOption(2, jr_gettext("_CASTOR_COM_MR_WEEKDAYS_TUESDAY", '_CASTOR_COM_MR_WEEKDAYS_TUESDAY'));
+		$options[] = castorHTML::makeOption(3, jr_gettext("_CASTOR_COM_MR_WEEKDAYS_WEDNESDAY", '_CASTOR_COM_MR_WEEKDAYS_WEDNESDAY'));
+		$options[] = castorHTML::makeOption(4, jr_gettext("_CASTOR_COM_MR_WEEKDAYS_THURSDAY", '_CASTOR_COM_MR_WEEKDAYS_THURSDAY'));
+		$options[] = castorHTML::makeOption(5, jr_gettext("_CASTOR_COM_MR_WEEKDAYS_FRIDAY", '_CASTOR_COM_MR_WEEKDAYS_FRIDAY'));
+		$options[] = castorHTML::makeOption(6, jr_gettext("_CASTOR_COM_MR_WEEKDAYS_SATURDAY", '_CASTOR_COM_MR_WEEKDAYS_SATURDAY'));
+		$options[] = castorHTML::makeOption(0, jr_gettext("_CASTOR_COM_MR_WEEKDAYS_SUNDAY", '_CASTOR_COM_MR_WEEKDAYS_SUNDAY'));
 		
-		$output['FIXED_ARRIVAL_DAYOFWEEK'] = jomresHTML::selectList($options, 'fixed_dayofweek', '', 'value', 'text', $fixed_dayofweek);
+		$output['FIXED_ARRIVAL_DAYOFWEEK'] = castorHTML::selectList($options, 'fixed_dayofweek', '', 'value', 'text', $fixed_dayofweek);
 		
 		//labels
-		$output['HTARIFFTITLE']=jr_gettext('_JOMRES_COM_MR_LISTTARIFF_RATETITLE', '_JOMRES_COM_MR_LISTTARIFF_RATETITLE', false);
-		$output['HTARIFFDESC']=jr_gettext('_JOMRES_COM_MR_LISTTARIFF_RATEDESCRIPTION', '_JOMRES_COM_MR_LISTTARIFF_RATEDESCRIPTION', false);
-		$output['HMINDAYS']=jr_gettext('_JOMRES_COM_MR_LISTTARIFF_MINDAYS', '_JOMRES_COM_MR_LISTTARIFF_MINDAYS', false);
-		$output['HMAXDAYS']=jr_gettext('_JOMRES_MICROMANAGE_MAXDAYS', '_JOMRES_MICROMANAGE_MAXDAYS', false);
-		$output['HMINPEOPLE']=jr_gettext('_JOMRES_COM_MR_LISTTARIFF_MINPEOPLE', '_JOMRES_COM_MR_LISTTARIFF_MINPEOPLE', false);
-		$output['HMAXPEOPLE']=jr_gettext('_JOMRES_COM_MR_LISTTARIFF_MAXPEOPLE', '_JOMRES_COM_MR_LISTTARIFF_MAXPEOPLE', false);
-		$output['HROOMTYPEDROPDOWN']=jr_gettext('_JOMRES_COM_MR_LISTTARIFF_ROOMCLASS', '_JOMRES_COM_MR_LISTTARIFF_ROOMCLASS', false);
-		$output['HIGNOREPPPNDROPDOWN']=jr_gettext('_JOMRES_COM_MR_LISTTARIFF_IGNOREPPN', '_JOMRES_COM_MR_LISTTARIFF_IGNOREPPN', false);
-		$output['HALLOWWEEKENDSDROPDOWN']=jr_gettext('_JOMRES_COM_MR_LISTTARIFF_ALLOWWE', '_JOMRES_COM_MR_LISTTARIFF_ALLOWWE', false);
-		$output['HWEEKENDONLY']=jr_gettext('_JOMRES_COM_WEEKENDONLY', '_JOMRES_COM_WEEKENDONLY', false);
-		$output['PICKER_DAYSOFWEEK']=jr_gettext('_JOMRES_MICROMANAGE_PICKER_DAYSOFWEEK', '_JOMRES_MICROMANAGE_PICKER_DAYSOFWEEK', false);
-		$output['PICKER_DATERANGES']=jr_gettext('_JOMRES_MICROMANAGE_PICKER_DATERANGES', '_JOMRES_MICROMANAGE_PICKER_DATERANGES', false);
-		$output['PICKER_DATERANGES_START']=jr_gettext('_JOMRES_MICROMANAGE_PICKER_DATERANGES_START', '_JOMRES_MICROMANAGE_PICKER_DATERANGES_START', false);
-		$output['PICKER_DATERANGES_END']=jr_gettext('_JOMRES_MICROMANAGE_PICKER_DATERANGES_END', '_JOMRES_MICROMANAGE_PICKER_DATERANGES_END', false);
-		$output['PICKER_DATERANGES_RATE']=jr_gettext('_JOMRES_MICROMANAGE_PICKER_DATERANGES_RATE', '_JOMRES_MICROMANAGE_PICKER_DATERANGES_RATE', false);
-		$output['_JOMRES_MICROMANAGE_SET_PRICES']=jr_gettext('_JOMRES_MICROMANAGE_SET_PRICES', '_JOMRES_MICROMANAGE_SET_PRICES', false, false);
-		$output['_JOMRES_COM_MR_LISTTARIFF_LINKTEXT']=jr_gettext('_JOMRES_COM_MR_LISTTARIFF_LINKTEXT', '_JOMRES_COM_MR_LISTTARIFF_LINKTEXT', false);
-		$output['_JOMRES_MICROMANAGE_PICKERDROPDOWN_EDITPRICES']=jr_gettext('_JOMRES_MICROMANAGE_PICKERDROPDOWN_EDITPRICES', '_JOMRES_MICROMANAGE_PICKERDROPDOWN_EDITPRICES', false);
-		$output['_JOMRES_MICROMANAGE_PICKERDROPDOWN_EDITMINDAYS']=jr_gettext('_JOMRES_MICROMANAGE_PICKERDROPDOWN_EDITMINDAYS', '_JOMRES_MICROMANAGE_PICKERDROPDOWN_EDITMINDAYS', false);
-		$output['_JOMRES_MICROMANAGE_PICKER_SETMINDAYS']=jr_gettext('_JOMRES_MICROMANAGE_PICKER_SETMINDAYS', '_JOMRES_MICROMANAGE_PICKER_SETMINDAYS', false);
-		$output['_JOMRES_MICROMANAGE_PICKER_TYPE_DOW']=jr_gettext('_JOMRES_MICROMANAGE_PICKER_TYPE_DOW', '_JOMRES_MICROMANAGE_PICKER_TYPE_DOW', false);
-		$output['_JOMRES_MICROMANAGE_PICKER_TYPE_INTERVAL_RATES']=jr_gettext('_JOMRES_MICROMANAGE_PICKER_TYPE_INTERVAL_RATES', '_JOMRES_MICROMANAGE_PICKER_TYPE_INTERVAL_RATES', false);
-		$output['_JOMRES_MICROMANAGE_PICKER_TYPE_INTERVAL_MINDAYS']=jr_gettext('_JOMRES_MICROMANAGE_PICKER_TYPE_INTERVAL_MINDAYS', '_JOMRES_MICROMANAGE_PICKER_TYPE_INTERVAL_MINDAYS', false);
-		$output['_JOMRES_MICROMANAGE_PICKER_INSTRUCTIONS_RATES']=jr_gettext('_JOMRES_MICROMANAGE_PICKER_INSTRUCTIONS_RATES', '_JOMRES_MICROMANAGE_PICKER_INSTRUCTIONS_RATES', false);
-		$output['_JOMRES_MICROMANAGE_PICKER_INSTRUCTIONS_MINDAYS']=jr_gettext('_JOMRES_MICROMANAGE_PICKER_INSTRUCTIONS_MINDAYS', '_JOMRES_MICROMANAGE_PICKER_INSTRUCTIONS_MINDAYS', false);
-		$output['_JOMRES_MICROMANAGE_PICKERS_SELECTOR_INFO']=jr_gettext('_JOMRES_MICROMANAGE_PICKERS_SELECTOR_INFO', '_JOMRES_MICROMANAGE_PICKERS_SELECTOR_INFO', false);
-		$output['_JOMRES_MICROMANAGE_PICKERS_SELECTOR']=jr_gettext('_JOMRES_MICROMANAGE_PICKERS_SELECTOR', '_JOMRES_MICROMANAGE_PICKERS_SELECTOR', false);
-		$output['_JOMRES_MICROMANAGE_PICKER_BYDOW']=jr_gettext('_JOMRES_MICROMANAGE_PICKER_BYDOW', '_JOMRES_MICROMANAGE_PICKER_BYDOW', false);
-		$output['_JOMRES_MICROMANAGE_PICKER_BYDOW_INFO']=jr_gettext('_JOMRES_MICROMANAGE_PICKER_BYDOW_INFO', '_JOMRES_MICROMANAGE_PICKER_BYDOW_INFO', false);
-		$output['HFIXED_DAYOFWEEK']=jr_gettext('_JOMRES_COM_MR_VIEWBOOKINGS_ARRIVAL', '_JOMRES_COM_MR_VIEWBOOKINGS_ARRIVAL')." ".jr_gettext('_JOMRES_DTV_DOW', '_JOMRES_DTV_DOW', false);
-		$output['_JOMRES_MICROMANAGE_MODAL_BUTTON']=jr_gettext('_JOMRES_MICROMANAGE_MODAL_BUTTON', '_JOMRES_MICROMANAGE_MODAL_BUTTON', false);
-		$output['_JOMRES_MICROMANAGE_EXTRAOPTIONS']=jr_gettext('_JOMRES_MICROMANAGE_EXTRAOPTIONS', '_JOMRES_MICROMANAGE_EXTRAOPTIONS', false);
-		$output['_JOMRES_MICROMANAGE_MANUALLY']=jr_gettext('_JOMRES_MICROMANAGE_MANUALLY', '_JOMRES_MICROMANAGE_MANUALLY', false);
-		$output['_JOMRES_MICROMANAGE_SET_MINDAYS']=jr_gettext('_JOMRES_MICROMANAGE_SET_MINDAYS', '_JOMRES_MICROMANAGE_SET_MINDAYS', false);
-		$output['_JOMRES_MICROMANAGE_BASIC_SETTINGS']=jr_gettext('_JOMRES_MICROMANAGE_BASIC_SETTINGS', '_JOMRES_MICROMANAGE_BASIC_SETTINGS', false);
-		$output['_JOMRES_MICROMANAGE_INTRO']=jr_gettext('_JOMRES_MICROMANAGE_INTRO', '_JOMRES_MICROMANAGE_INTRO', false);
-		$output['_JOMRES_MICROMANAGE_INFO']=jr_gettext('_JOMRES_MICROMANAGE_INFO', '_JOMRES_MICROMANAGE_INFO', false);
-		$output['_JOMRES_MICROMANAGE_EXTRA_OPTIONS']=jr_gettext('_JOMRES_MICROMANAGE_EXTRA_OPTIONS', '_JOMRES_MICROMANAGE_EXTRA_OPTIONS', false);
-		$output['_JOMRES_MICROMANAGE_MULTIPLE_TARIFFS']=jr_gettext('_JOMRES_MICROMANAGE_MULTIPLE_TARIFFS', '_JOMRES_MICROMANAGE_MULTIPLE_TARIFFS', false);
-		$output['_JOMRES_MICROMANAGE_PICKERS_SELECTOR_INFO_SMALL_VIEWPORT']=jr_gettext('_JOMRES_MICROMANAGE_PICKERS_SELECTOR_INFO_SMALL_VIEWPORT', '_JOMRES_MICROMANAGE_PICKERS_SELECTOR_INFO_SMALL_VIEWPORT', false);
-		$output['_JOMRES_MICROMANAGE_USE_SELECTED_DATES']=jr_gettext('_JOMRES_MICROMANAGE_USE_SELECTED_DATES', '_JOMRES_MICROMANAGE_USE_SELECTED_DATES', false);
+		$output['HTARIFFTITLE']=jr_gettext('_CASTOR_COM_MR_LISTTARIFF_RATETITLE', '_CASTOR_COM_MR_LISTTARIFF_RATETITLE', false);
+		$output['HTARIFFDESC']=jr_gettext('_CASTOR_COM_MR_LISTTARIFF_RATEDESCRIPTION', '_CASTOR_COM_MR_LISTTARIFF_RATEDESCRIPTION', false);
+		$output['HMINDAYS']=jr_gettext('_CASTOR_COM_MR_LISTTARIFF_MINDAYS', '_CASTOR_COM_MR_LISTTARIFF_MINDAYS', false);
+		$output['HMAXDAYS']=jr_gettext('_CASTOR_MICROMANAGE_MAXDAYS', '_CASTOR_MICROMANAGE_MAXDAYS', false);
+		$output['HMINPEOPLE']=jr_gettext('_CASTOR_COM_MR_LISTTARIFF_MINPEOPLE', '_CASTOR_COM_MR_LISTTARIFF_MINPEOPLE', false);
+		$output['HMAXPEOPLE']=jr_gettext('_CASTOR_COM_MR_LISTTARIFF_MAXPEOPLE', '_CASTOR_COM_MR_LISTTARIFF_MAXPEOPLE', false);
+		$output['HROOMTYPEDROPDOWN']=jr_gettext('_CASTOR_COM_MR_LISTTARIFF_ROOMCLASS', '_CASTOR_COM_MR_LISTTARIFF_ROOMCLASS', false);
+		$output['HIGNOREPPPNDROPDOWN']=jr_gettext('_CASTOR_COM_MR_LISTTARIFF_IGNOREPPN', '_CASTOR_COM_MR_LISTTARIFF_IGNOREPPN', false);
+		$output['HALLOWWEEKENDSDROPDOWN']=jr_gettext('_CASTOR_COM_MR_LISTTARIFF_ALLOWWE', '_CASTOR_COM_MR_LISTTARIFF_ALLOWWE', false);
+		$output['HWEEKENDONLY']=jr_gettext('_CASTOR_COM_WEEKENDONLY', '_CASTOR_COM_WEEKENDONLY', false);
+		$output['PICKER_DAYSOFWEEK']=jr_gettext('_CASTOR_MICROMANAGE_PICKER_DAYSOFWEEK', '_CASTOR_MICROMANAGE_PICKER_DAYSOFWEEK', false);
+		$output['PICKER_DATERANGES']=jr_gettext('_CASTOR_MICROMANAGE_PICKER_DATERANGES', '_CASTOR_MICROMANAGE_PICKER_DATERANGES', false);
+		$output['PICKER_DATERANGES_START']=jr_gettext('_CASTOR_MICROMANAGE_PICKER_DATERANGES_START', '_CASTOR_MICROMANAGE_PICKER_DATERANGES_START', false);
+		$output['PICKER_DATERANGES_END']=jr_gettext('_CASTOR_MICROMANAGE_PICKER_DATERANGES_END', '_CASTOR_MICROMANAGE_PICKER_DATERANGES_END', false);
+		$output['PICKER_DATERANGES_RATE']=jr_gettext('_CASTOR_MICROMANAGE_PICKER_DATERANGES_RATE', '_CASTOR_MICROMANAGE_PICKER_DATERANGES_RATE', false);
+		$output['_CASTOR_MICROMANAGE_SET_PRICES']=jr_gettext('_CASTOR_MICROMANAGE_SET_PRICES', '_CASTOR_MICROMANAGE_SET_PRICES', false, false);
+		$output['_CASTOR_COM_MR_LISTTARIFF_LINKTEXT']=jr_gettext('_CASTOR_COM_MR_LISTTARIFF_LINKTEXT', '_CASTOR_COM_MR_LISTTARIFF_LINKTEXT', false);
+		$output['_CASTOR_MICROMANAGE_PICKERDROPDOWN_EDITPRICES']=jr_gettext('_CASTOR_MICROMANAGE_PICKERDROPDOWN_EDITPRICES', '_CASTOR_MICROMANAGE_PICKERDROPDOWN_EDITPRICES', false);
+		$output['_CASTOR_MICROMANAGE_PICKERDROPDOWN_EDITMINDAYS']=jr_gettext('_CASTOR_MICROMANAGE_PICKERDROPDOWN_EDITMINDAYS', '_CASTOR_MICROMANAGE_PICKERDROPDOWN_EDITMINDAYS', false);
+		$output['_CASTOR_MICROMANAGE_PICKER_SETMINDAYS']=jr_gettext('_CASTOR_MICROMANAGE_PICKER_SETMINDAYS', '_CASTOR_MICROMANAGE_PICKER_SETMINDAYS', false);
+		$output['_CASTOR_MICROMANAGE_PICKER_TYPE_DOW']=jr_gettext('_CASTOR_MICROMANAGE_PICKER_TYPE_DOW', '_CASTOR_MICROMANAGE_PICKER_TYPE_DOW', false);
+		$output['_CASTOR_MICROMANAGE_PICKER_TYPE_INTERVAL_RATES']=jr_gettext('_CASTOR_MICROMANAGE_PICKER_TYPE_INTERVAL_RATES', '_CASTOR_MICROMANAGE_PICKER_TYPE_INTERVAL_RATES', false);
+		$output['_CASTOR_MICROMANAGE_PICKER_TYPE_INTERVAL_MINDAYS']=jr_gettext('_CASTOR_MICROMANAGE_PICKER_TYPE_INTERVAL_MINDAYS', '_CASTOR_MICROMANAGE_PICKER_TYPE_INTERVAL_MINDAYS', false);
+		$output['_CASTOR_MICROMANAGE_PICKER_INSTRUCTIONS_RATES']=jr_gettext('_CASTOR_MICROMANAGE_PICKER_INSTRUCTIONS_RATES', '_CASTOR_MICROMANAGE_PICKER_INSTRUCTIONS_RATES', false);
+		$output['_CASTOR_MICROMANAGE_PICKER_INSTRUCTIONS_MINDAYS']=jr_gettext('_CASTOR_MICROMANAGE_PICKER_INSTRUCTIONS_MINDAYS', '_CASTOR_MICROMANAGE_PICKER_INSTRUCTIONS_MINDAYS', false);
+		$output['_CASTOR_MICROMANAGE_PICKERS_SELECTOR_INFO']=jr_gettext('_CASTOR_MICROMANAGE_PICKERS_SELECTOR_INFO', '_CASTOR_MICROMANAGE_PICKERS_SELECTOR_INFO', false);
+		$output['_CASTOR_MICROMANAGE_PICKERS_SELECTOR']=jr_gettext('_CASTOR_MICROMANAGE_PICKERS_SELECTOR', '_CASTOR_MICROMANAGE_PICKERS_SELECTOR', false);
+		$output['_CASTOR_MICROMANAGE_PICKER_BYDOW']=jr_gettext('_CASTOR_MICROMANAGE_PICKER_BYDOW', '_CASTOR_MICROMANAGE_PICKER_BYDOW', false);
+		$output['_CASTOR_MICROMANAGE_PICKER_BYDOW_INFO']=jr_gettext('_CASTOR_MICROMANAGE_PICKER_BYDOW_INFO', '_CASTOR_MICROMANAGE_PICKER_BYDOW_INFO', false);
+		$output['HFIXED_DAYOFWEEK']=jr_gettext('_CASTOR_COM_MR_VIEWBOOKINGS_ARRIVAL', '_CASTOR_COM_MR_VIEWBOOKINGS_ARRIVAL')." ".jr_gettext('_CASTOR_DTV_DOW', '_CASTOR_DTV_DOW', false);
+		$output['_CASTOR_MICROMANAGE_MODAL_BUTTON']=jr_gettext('_CASTOR_MICROMANAGE_MODAL_BUTTON', '_CASTOR_MICROMANAGE_MODAL_BUTTON', false);
+		$output['_CASTOR_MICROMANAGE_EXTRAOPTIONS']=jr_gettext('_CASTOR_MICROMANAGE_EXTRAOPTIONS', '_CASTOR_MICROMANAGE_EXTRAOPTIONS', false);
+		$output['_CASTOR_MICROMANAGE_MANUALLY']=jr_gettext('_CASTOR_MICROMANAGE_MANUALLY', '_CASTOR_MICROMANAGE_MANUALLY', false);
+		$output['_CASTOR_MICROMANAGE_SET_MINDAYS']=jr_gettext('_CASTOR_MICROMANAGE_SET_MINDAYS', '_CASTOR_MICROMANAGE_SET_MINDAYS', false);
+		$output['_CASTOR_MICROMANAGE_BASIC_SETTINGS']=jr_gettext('_CASTOR_MICROMANAGE_BASIC_SETTINGS', '_CASTOR_MICROMANAGE_BASIC_SETTINGS', false);
+		$output['_CASTOR_MICROMANAGE_INTRO']=jr_gettext('_CASTOR_MICROMANAGE_INTRO', '_CASTOR_MICROMANAGE_INTRO', false);
+		$output['_CASTOR_MICROMANAGE_INFO']=jr_gettext('_CASTOR_MICROMANAGE_INFO', '_CASTOR_MICROMANAGE_INFO', false);
+		$output['_CASTOR_MICROMANAGE_EXTRA_OPTIONS']=jr_gettext('_CASTOR_MICROMANAGE_EXTRA_OPTIONS', '_CASTOR_MICROMANAGE_EXTRA_OPTIONS', false);
+		$output['_CASTOR_MICROMANAGE_MULTIPLE_TARIFFS']=jr_gettext('_CASTOR_MICROMANAGE_MULTIPLE_TARIFFS', '_CASTOR_MICROMANAGE_MULTIPLE_TARIFFS', false);
+		$output['_CASTOR_MICROMANAGE_PICKERS_SELECTOR_INFO_SMALL_VIEWPORT']=jr_gettext('_CASTOR_MICROMANAGE_PICKERS_SELECTOR_INFO_SMALL_VIEWPORT', '_CASTOR_MICROMANAGE_PICKERS_SELECTOR_INFO_SMALL_VIEWPORT', false);
+		$output['_CASTOR_MICROMANAGE_USE_SELECTED_DATES']=jr_gettext('_CASTOR_MICROMANAGE_USE_SELECTED_DATES', '_CASTOR_MICROMANAGE_USE_SELECTED_DATES', false);
 
 		if ($mrConfig['singleRoomProperty'] ==  '0') {
-			$already_selected['HMINROOMS'] = jr_gettext('_JOMRES_COM_MR_EB_ROOM_MINROOMS', '_JOMRES_COM_MR_EB_ROOM_MINROOMS', false);
-			$already_selected['HMAXROOMS'] = jr_gettext('_JOMRES_COM_MR_EB_ROOM_MAXROOMS', '_JOMRES_COM_MR_EB_ROOM_MAXROOMS', false);
-			$already_selected['MINROOMS_DESC'] = jr_gettext('_JOMRES_COM_MR_EB_ROOM_MINROOMS_DESC', '_JOMRES_COM_MR_EB_ROOM_MINROOMS_DESC', false);
-			$already_selected['MAXROOMS_DESC'] = jr_gettext('_JOMRES_COM_MR_EB_ROOM_MAXROOMS_DESC', '_JOMRES_COM_MR_EB_ROOM_MAXROOMS_DESC', false);
+			$already_selected['HMINROOMS'] = jr_gettext('_CASTOR_COM_MR_EB_ROOM_MINROOMS', '_CASTOR_COM_MR_EB_ROOM_MINROOMS', false);
+			$already_selected['HMAXROOMS'] = jr_gettext('_CASTOR_COM_MR_EB_ROOM_MAXROOMS', '_CASTOR_COM_MR_EB_ROOM_MAXROOMS', false);
+			$already_selected['MINROOMS_DESC'] = jr_gettext('_CASTOR_COM_MR_EB_ROOM_MINROOMS_DESC', '_CASTOR_COM_MR_EB_ROOM_MINROOMS_DESC', false);
+			$already_selected['MAXROOMS_DESC'] = jr_gettext('_CASTOR_COM_MR_EB_ROOM_MAXROOMS_DESC', '_CASTOR_COM_MR_EB_ROOM_MAXROOMS_DESC', false);
 		}
 
-		$jrtbar =jomres_singleton_abstract::getInstance('jomres_toolbar');
+		$jrtbar =castor_singleton_abstract::getInstance('castor_toolbar');
 		$jrtb  = $jrtbar->startTable();
-		$jrtb .= $jrtbar->toolbarItem('cancel', jomresURL(JOMRES_SITEPAGE_URL."&task=list_tariffs_micromanage"), jr_gettext('_JOMRES_COM_A_CANCEL', '_JOMRES_COM_A_CANCEL', false));
-		$jrtb .= $jrtbar->toolbarItem('save', jomresURL(JOMRES_SITEPAGE_URL."&task=save_tariff_micromanage"), jr_gettext('_JOMRES_COM_MR_SAVE', '_JOMRES_COM_MR_SAVE', false), true, 'save_tariff_micromanage');
+		$jrtb .= $jrtbar->toolbarItem('cancel', castorURL(CASTOR_SITEPAGE_URL."&task=list_tariffs_micromanage"), jr_gettext('_CASTOR_COM_A_CANCEL', '_CASTOR_COM_A_CANCEL', false));
+		$jrtb .= $jrtbar->toolbarItem('save', castorURL(CASTOR_SITEPAGE_URL."&task=save_tariff_micromanage"), jr_gettext('_CASTOR_COM_MR_SAVE', '_CASTOR_COM_MR_SAVE', false), true, 'save_tariff_micromanage');
 		$jrtb .= $jrtbar->endTable();
-		$output['JOMRESTOOLBAR'] = $jrtb;
+		$output['CASTORTOOLBAR'] = $jrtb;
 
 		$pageoutput[] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 		$tmpl->readTemplatesFromInput('edit_micromanage_tariff.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->addRows('prefills', $prefills);
@@ -478,22 +478,22 @@ class j06002edit_tariff_micromanage
 	function touch_template_language()
 	{
 		$output=array();
-		$output[]		=jr_gettext('_JOMRES_COM_MR_LISTTARIFF_RATETITLE', '_JOMRES_COM_MR_LISTTARIFF_RATETITLE');
-		$output[]		=jr_gettext('_JOMRES_COM_MR_LISTTARIFF_MINDAYS', '_JOMRES_COM_MR_LISTTARIFF_MINDAYS');
-		$output[]		=jr_gettext('_JOMRES_COM_MR_LISTTARIFF_MAXDAYS', '_JOMRES_COM_MR_LISTTARIFF_MAXDAYS');
-		$output[]		=jr_gettext('_JOMRES_COM_MR_LISTTARIFF_MINPEOPLE', '_JOMRES_COM_MR_LISTTARIFF_MINPEOPLE');
-		$output[]		=jr_gettext('_JOMRES_COM_MR_LISTTARIFF_MAXPEOPLE', '_JOMRES_COM_MR_LISTTARIFF_MAXPEOPLE');
-		$output[]		=jr_gettext('_JOMRES_COM_MR_LISTTARIFF_ROOMCLASS', '_JOMRES_COM_MR_LISTTARIFF_ROOMCLASS');
-		$output[]		=jr_gettext('_JOMRES_COM_MR_LISTTARIFF_IGNOREPPN', '_JOMRES_COM_MR_LISTTARIFF_IGNOREPPN');
-		$output[]		=jr_gettext('_JOMRES_COM_MR_LISTTARIFF_ALLOWWE', '_JOMRES_COM_MR_LISTTARIFF_ALLOWWE');
-		$output[]		=jr_gettext('_JOMRES_COM_MR_LISTTARIFF_IGNOREPPN', '_JOMRES_COM_MR_LISTTARIFF_IGNOREPPN');
-		$output[]		=jr_gettext('_JOMRES_COM_WEEKENDONLY', '_JOMRES_COM_WEEKENDONLY');
-		$output[]		=jr_gettext('_JOMRES_MICROMANAGE_PICKER_DAYSOFWEEK', '_JOMRES_MICROMANAGE_PICKER_DAYSOFWEEK');
-		$output[]		=jr_gettext('_JOMRES_MICROMANAGE_PICKER_DATERANGES', '_JOMRES_MICROMANAGE_PICKER_DATERANGES');
-		$output[]		=jr_gettext('_JOMRES_MICROMANAGE_PICKER_DATERANGES_START', '_JOMRES_MICROMANAGE_PICKER_DATERANGES_START');
-		$output[]		=jr_gettext('_JOMRES_MICROMANAGE_PICKER_DATERANGES_END', '_JOMRES_MICROMANAGE_PICKER_DATERANGES_END');
-		$output[]		=jr_gettext('_JOMRES_MICROMANAGE_PICKER_DATERANGES_RATE', '_JOMRES_MICROMANAGE_PICKER_DATERANGES_RATE');
-		$output[]		=jr_gettext('_JOMRES_MICROMANAGE_PICKER_DATERANGES_SET', '_JOMRES_MICROMANAGE_PICKER_DATERANGES_SET');
+		$output[]		=jr_gettext('_CASTOR_COM_MR_LISTTARIFF_RATETITLE', '_CASTOR_COM_MR_LISTTARIFF_RATETITLE');
+		$output[]		=jr_gettext('_CASTOR_COM_MR_LISTTARIFF_MINDAYS', '_CASTOR_COM_MR_LISTTARIFF_MINDAYS');
+		$output[]		=jr_gettext('_CASTOR_COM_MR_LISTTARIFF_MAXDAYS', '_CASTOR_COM_MR_LISTTARIFF_MAXDAYS');
+		$output[]		=jr_gettext('_CASTOR_COM_MR_LISTTARIFF_MINPEOPLE', '_CASTOR_COM_MR_LISTTARIFF_MINPEOPLE');
+		$output[]		=jr_gettext('_CASTOR_COM_MR_LISTTARIFF_MAXPEOPLE', '_CASTOR_COM_MR_LISTTARIFF_MAXPEOPLE');
+		$output[]		=jr_gettext('_CASTOR_COM_MR_LISTTARIFF_ROOMCLASS', '_CASTOR_COM_MR_LISTTARIFF_ROOMCLASS');
+		$output[]		=jr_gettext('_CASTOR_COM_MR_LISTTARIFF_IGNOREPPN', '_CASTOR_COM_MR_LISTTARIFF_IGNOREPPN');
+		$output[]		=jr_gettext('_CASTOR_COM_MR_LISTTARIFF_ALLOWWE', '_CASTOR_COM_MR_LISTTARIFF_ALLOWWE');
+		$output[]		=jr_gettext('_CASTOR_COM_MR_LISTTARIFF_IGNOREPPN', '_CASTOR_COM_MR_LISTTARIFF_IGNOREPPN');
+		$output[]		=jr_gettext('_CASTOR_COM_WEEKENDONLY', '_CASTOR_COM_WEEKENDONLY');
+		$output[]		=jr_gettext('_CASTOR_MICROMANAGE_PICKER_DAYSOFWEEK', '_CASTOR_MICROMANAGE_PICKER_DAYSOFWEEK');
+		$output[]		=jr_gettext('_CASTOR_MICROMANAGE_PICKER_DATERANGES', '_CASTOR_MICROMANAGE_PICKER_DATERANGES');
+		$output[]		=jr_gettext('_CASTOR_MICROMANAGE_PICKER_DATERANGES_START', '_CASTOR_MICROMANAGE_PICKER_DATERANGES_START');
+		$output[]		=jr_gettext('_CASTOR_MICROMANAGE_PICKER_DATERANGES_END', '_CASTOR_MICROMANAGE_PICKER_DATERANGES_END');
+		$output[]		=jr_gettext('_CASTOR_MICROMANAGE_PICKER_DATERANGES_RATE', '_CASTOR_MICROMANAGE_PICKER_DATERANGES_RATE');
+		$output[]		=jr_gettext('_CASTOR_MICROMANAGE_PICKER_DATERANGES_SET', '_CASTOR_MICROMANAGE_PICKER_DATERANGES_SET');
 
 		foreach ($output as $o) {
 			echo $o;
@@ -507,3 +507,4 @@ class j06002edit_tariff_micromanage
 		return null;
 	}
 }
+

@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,19 +35,19 @@ class j06005oauth_authorise
 	 
 	function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			return;
 		}
 
 		$ePointFilepath=get_showtime('ePointFilepath');
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 
-		$client_id			= jomresGetParam($_REQUEST, 'client_id', "");
+		$client_id			= castorGetParam($_REQUEST, 'client_id', "");
 
 		if ($client_id != "") {
-			$query = "SELECT client_id,client_secret,scope,redirect_uri FROM #__jomres_oauth_clients WHERE user_id = ".(int)$thisJRUser->userid;
+			$query = "SELECT client_id,client_secret,scope,redirect_uri FROM #__castor_oauth_clients WHERE user_id = ".(int)$thisJRUser->userid;
 			$result = doSelectSql($query);
 			if (count($result) > 0) {
 				$user_client_ids = array();
@@ -67,15 +67,15 @@ class j06005oauth_authorise
 			die("Client id not passed");
 		}
 		
-		define('JOMRES_API_CMS_ROOT', JOMRESCONFIG_ABSOLUTE_PATH);
+		define('CASTOR_API_CMS_ROOT', CASTORCONFIG_ABSOLUTE_PATH);
 
 		// include our OAuth2 Server object
 		
-		if (file_exists(JOMRESPATH_BASE . '/api/oauth/inc_configs.php')) { // Check for the existance of this file, which in 9.9.5 doesn't exist, but in 9.9.6. Allows transition between versions and should be removed sometime after July 2018
-			require_once JOMRESPATH_BASE . '/api/oauth/inc_configs.php';
+		if (file_exists(CASTORPATH_BASE . '/api/oauth/inc_configs.php')) { // Check for the existance of this file, which in 9.9.5 doesn't exist, but in 9.9.6. Allows transition between versions and should be removed sometime after July 2018
+			require_once CASTORPATH_BASE . '/api/oauth/inc_configs.php';
 		}
 		
-		require_once JOMRESPATH_BASE.'/api/oauth/server.php';
+		require_once CASTORPATH_BASE.'/api/oauth/server.php';
 
 		$request = OAuth2\Request::createFromGlobals();
 		$response = new OAuth2\Response();
@@ -115,3 +115,4 @@ class j06005oauth_authorise
 		return null;
 	}
 }
+

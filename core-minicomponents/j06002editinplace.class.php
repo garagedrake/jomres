@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,39 +36,39 @@ class j06002editinplace
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 		if (!$thisJRUser->userIsManager) {
 			return;
 		}
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 		$property_uid = (int) getDefaultProperty();
 
 		if ($jrConfig[ 'allowHTMLeditor' ] == '1') {
-			$customText = jomresGetParam($_POST, 'value', '');
+			$customText = castorGetParam($_POST, 'value', '');
 		} else {
-			$customText = jomresGetParam($_POST, 'value', '');
+			$customText = castorGetParam($_POST, 'value', '');
 		}
 
 		$theConstant = filter_var($_POST[ 'pk' ], FILTER_SANITIZE_SPECIAL_CHARS);
 
-		$jomres_target_language = get_showtime('lang');
-		if (isset($_POST[ 'jomres_target_language' ])) {
-			$jomres_target_language = jomresGetParam($_POST, 'jomres_target_language', '');
+		$castor_target_language = get_showtime('lang');
+		if (isset($_POST[ 'castor_target_language' ])) {
+			$castor_target_language = castorGetParam($_POST, 'castor_target_language', '');
 		}
 		$theConstant = filter_var($_POST[ 'pk' ], FILTER_SANITIZE_SPECIAL_CHARS);
 
-		$result = updateCustomText($theConstant, $customText, true, $property_uid, 0, $jomres_target_language);
+		$result = updateCustomText($theConstant, $customText, true, $property_uid, 0, $castor_target_language);
 		//$result = false;
 		if ($result) {
 			header('Status: 200');
-			echo jomres_decode($customText);
+			echo castor_decode($customText);
 		} else {
 			header('Status: 500');
 			echo 'Something burped';
@@ -89,3 +89,4 @@ class j06002editinplace
 		return null;
 	}
 }
+

@@ -1,4 +1,4 @@
-<patTemplate:tmpl name="pageoutput" unusedvars="strip">
+﻿<patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <script type="text/javascript">
 <!--
 var geocoder;
@@ -6,7 +6,7 @@ var map;
 var latLng;
 
 
-jomresJquery(document).ready(function(){
+castorJquery(document).ready(function(){
 	init_map_{RANDOM_IDENTIFIER}();
 	});
 
@@ -41,8 +41,8 @@ function build_address()
 	var property_name = document.getElementById('property_name').value;
 	var property_street = document.getElementById('property_street').value;
 	var property_town = document.getElementById('property_town').value;
-	var region = jomresJquery("#region :selected").text();
-	var country = jomresJquery("#country :selected").text();
+	var region = castorJquery("#region :selected").text();
+	var country = castorJquery("#country :selected").text();
 	var postcode = document.getElementById('property_postcode').value;
 	
 	var address = "";
@@ -77,8 +77,8 @@ function codeAddress(address) {
     });
 }
 
-jomresJquery(document).ready(function() {
-	jomresJquery('body').on('shown','#mapTab', function (e) {
+castorJquery(document).ready(function() {
+	castorJquery('body').on('shown','#mapTab', function (e) {
 		init_map_{RANDOM_IDENTIFIER}();
 		});
 	});

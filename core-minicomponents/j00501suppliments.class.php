@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Property Configuration page tabs. Offers settings related to single person suppliments (charges for rooms that should have two people in, but in fact only have one)
 	 *
@@ -38,7 +38,7 @@ class j00501suppliments
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			return;
@@ -55,19 +55,19 @@ class j00501suppliments
 		}
 		$lists = $componentArgs[ 'lists' ];
 		if ($mrConfig[ 'singleRoomProperty' ] != '1') {
-			$configurationPanel->startPanel(jr_gettext('_JOMRES_COM_A_SUPPLIMENTS', '_JOMRES_COM_A_SUPPLIMENTS', false));
+			$configurationPanel->startPanel(jr_gettext('_CASTOR_COM_A_SUPPLIMENTS', '_CASTOR_COM_A_SUPPLIMENTS', false));
 
-			$configurationPanel->setleft(jr_gettext('_JOMRES_COM_A_SUPPLIMENTS_SINGLEPERSON', '_JOMRES_COM_A_SUPPLIMENTS_SINGLEPERSON', false));
+			$configurationPanel->setleft(jr_gettext('_CASTOR_COM_A_SUPPLIMENTS_SINGLEPERSON', '_CASTOR_COM_A_SUPPLIMENTS_SINGLEPERSON', false));
 			$configurationPanel->setmiddle($lists[ 'singlePersonSuppliment' ]);
-			$configurationPanel->setright(jr_gettext('_JOMRES_COM_A_SUPPLIMENTS_SINGLEPERSON_DESC', '_JOMRES_COM_A_SUPPLIMENTS_SINGLEPERSON_DESC', false));
+			$configurationPanel->setright(jr_gettext('_CASTOR_COM_A_SUPPLIMENTS_SINGLEPERSON_DESC', '_CASTOR_COM_A_SUPPLIMENTS_SINGLEPERSON_DESC', false));
 			$configurationPanel->insertSetting();
 
-			$configurationPanel->setleft(jr_gettext('_JOMRES_COM_A_SUPPLIMENTS_SINGLEPERSON_ISPERCENTAGE', '_JOMRES_COM_A_SUPPLIMENTS_SINGLEPERSON_ISPERCENTAGE', false));
+			$configurationPanel->setleft(jr_gettext('_CASTOR_COM_A_SUPPLIMENTS_SINGLEPERSON_ISPERCENTAGE', '_CASTOR_COM_A_SUPPLIMENTS_SINGLEPERSON_ISPERCENTAGE', false));
 			$configurationPanel->setmiddle($lists[ 'supplimentChargeIsPercentage' ]);
-			$configurationPanel->setright(jr_gettext('_JOMRES_COM_A_SUPPLIMENTS_SINGLEPERSON_ISPERCENTAGE_DESC', '_JOMRES_COM_A_SUPPLIMENTS_SINGLEPERSON_ISPERCENTAGE_DESC', false));
+			$configurationPanel->setright(jr_gettext('_CASTOR_COM_A_SUPPLIMENTS_SINGLEPERSON_ISPERCENTAGE_DESC', '_CASTOR_COM_A_SUPPLIMENTS_SINGLEPERSON_ISPERCENTAGE_DESC', false));
 			$configurationPanel->insertSetting();
 
-			$configurationPanel->setleft(jr_gettext('_JOMRES_COM_A_SUPPLIMENTS_SINGLEPERSON_COST', '_JOMRES_COM_A_SUPPLIMENTS_SINGLEPERSON_COST', false));
+			$configurationPanel->setleft(jr_gettext('_CASTOR_COM_A_SUPPLIMENTS_SINGLEPERSON_COST', '_CASTOR_COM_A_SUPPLIMENTS_SINGLEPERSON_COST', false));
 			$configurationPanel->setmiddle('<input type="text" class="inputbox form-control"  size="5" name="cfg_singlePersonSupplimentCost" value="'.$mrConfig[ 'singlePersonSupplimentCost' ].'" />');
 			$configurationPanel->setright();
 			$configurationPanel->insertSetting();
@@ -87,3 +87,4 @@ class j00501suppliments
 		return null;
 	}
 }
+

@@ -1,9 +1,9 @@
-<?PHP
+﻿<?PHP
 // ################################################################
-defined( '_JOMRES_INITCHECK' ) or die( '' );
+defined( '_CASTOR_INITCHECK' ) or die( '' );
 // ################################################################
 /**
- * patTemplate function that parses PHP code in your templates. Custom Jomres patTemplate function
+ * patTemplate function that parses PHP code in your templates. Custom Castor patTemplate function
  *
  * $Id: PhpParse.php
  *

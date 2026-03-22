@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,18 +36,18 @@ class j06000immediatepay
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
-		$invoice_id = (int) jomresGetParam($_GET, 'id', 0);
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
+		$invoice_id = (int) castorGetParam($_GET, 'id', 0);
 
 		// a quick anti hack check
 		$userid = $thisJRUser->id;
-		$query = 'SELECT id FROM #__jomresportal_invoices WHERE `cms_user_id`= '.(int) $thisJRUser->id.' AND `id` = '.(int) $invoice_id.' ';
+		$query = 'SELECT id FROM #__castorportal_invoices WHERE `cms_user_id`= '.(int) $thisJRUser->id.' AND `id` = '.(int) $invoice_id.' ';
 		$result = doSelectSql($query);
 
 		if (count($result) < 1 || count($result) > 1) {
@@ -73,14 +73,14 @@ class j06000immediatepay
 				}
 			}
 		} else {
-			$paypal_settings = jomres_singleton_abstract::getInstance('jrportal_paypal_settings');
+			$paypal_settings = castor_singleton_abstract::getInstance('jrportal_paypal_settings');
 			$paypal_settings->get_paypal_settings();
 			$this->paypal_settings = $paypal_settings->paypalConfigOptions;
 		}
 
-		$ourCallbackURL = JOMRES_SITEPAGE_URL_NOSEF.'&task=ospayment&no_html=1&Itemid='.$Itemid.'&subscription_id='.$invoice->subscription_id;
+		$ourCallbackURL = CASTOR_SITEPAGE_URL_NOSEF.'&task=ospayment&no_html=1&Itemid='.$Itemid.'&subscription_id='.$invoice->subscription_id;
 
-		$transactionName = 'Paypal Invoice from '.$jomresConfig_sitename;
+		$transactionName = 'Paypal Invoice from '.$castorConfig_sitename;
 		if ($this->paypal_settings[ 'usesandbox' ] == '1') {
 			$transactionName .= ' Test Service';
 		}
@@ -94,19 +94,19 @@ class j06000immediatepay
 		$this->add_field('custom', $invoice_id);
 		$this->add_field('no_shipping', '1');
 		$this->add_field('amount', number_format($invoice->init_total, 2));
-		$this->add_field('return', JOMRES_SITEPAGE_URL_NOSEF);
-		//$this->add_field('cancel_return', JOMRES_SITEPAGE_URL.'&task=canc_subscribed&Itemid='.$Itemid);
+		$this->add_field('return', CASTOR_SITEPAGE_URL_NOSEF);
+		//$this->add_field('cancel_return', CASTOR_SITEPAGE_URL.'&task=canc_subscribed&Itemid='.$Itemid);
 		$this->add_field('notify_url', $ourCallbackURL.'&action=ipn');
 		$this->add_field('no_note', '1');
 		$this->add_field('currency_code', $this->paypal_settings[ 'currencycode' ]); ?>
 			<script>
-				jomresJquery(document).ready(function () {
+				castorJquery(document).ready(function () {
 					document.paypal_form.submit();
 				});
 			</script>
 
 		<?php
-		echo '<center><h2>'.jr_gettext('_JOMRES_PAYPAL_REDIRECTMESSAGE', '_JOMRES_PAYPAL_REDIRECTMESSAGE', false, false)."</h2></center>\n";
+		echo '<center><h2>'.jr_gettext('_CASTOR_PAYPAL_REDIRECTMESSAGE', '_CASTOR_PAYPAL_REDIRECTMESSAGE', false, false)."</h2></center>\n";
 		echo '<form method="post" name="paypal_form" ';
 		echo 'action="'.$this->paypal_settings[ 'submit_url' ]."\">\n";
 		$txt = '';
@@ -115,8 +115,8 @@ class j06000immediatepay
 			echo "<input type=\"hidden\" name=\"$name\" value=\"$value\"/>\n";
 		}
 		gateway_log($txt);
-		echo '<center><br/><br/>'.jr_gettext('_JOMRES_PAYPAL_REDIRECTMESSAGE_IFNOTREDIRECTED', '_JOMRES_PAYPAL_REDIRECTMESSAGE_IFNOTREDIRECTED', false, false)."<br/><br/>\n";
-		echo '<input type="submit" value="'.jr_gettext('_JOMRES_PAYPAL_REDIRECTMESSAGE_CLICKHERE', '_JOMRES_PAYPAL_REDIRECTMESSAGE_CLICKHERE', false, false)."\"></center>\n";
+		echo '<center><br/><br/>'.jr_gettext('_CASTOR_PAYPAL_REDIRECTMESSAGE_IFNOTREDIRECTED', '_CASTOR_PAYPAL_REDIRECTMESSAGE_IFNOTREDIRECTED', false, false)."<br/><br/>\n";
+		echo '<input type="submit" value="'.jr_gettext('_CASTOR_PAYPAL_REDIRECTMESSAGE_CLICKHERE', '_CASTOR_PAYPAL_REDIRECTMESSAGE_CLICKHERE', false, false)."\"></center>\n";
 		echo "</form>\n";
 	}
 
@@ -137,3 +137,4 @@ class j06000immediatepay
 		return null;
 	}
 }
+

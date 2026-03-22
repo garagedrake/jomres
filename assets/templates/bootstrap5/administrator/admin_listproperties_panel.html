@@ -1,4 +1,4 @@
-<patTemplate:tmpl name="pageoutput" unusedvars="strip">
+﻿<patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <script type="text/javascript">
 			document.addEventListener('DOMContentLoaded', function(){
 		make_datatable('admin_listproperties', '{PAGETITLE}', '{LIVESITE}', '{AJAX_URL}');
@@ -8,16 +8,16 @@
 	
 	function savecrates(property_uid, crate_id) 
 		{
-		cmd = '{JOMRES_SITEPAGE_URL_ADMIN_AJAX}&task=savecrates_ajax&property_uid=' + property_uid + '&crate_id=' + crate_id;
-		jomresJquery.get(cmd, function (data) {
+		cmd = '{CASTOR_SITEPAGE_URL_ADMIN_AJAX}&task=savecrates_ajax&property_uid=' + property_uid + '&crate_id=' + crate_id;
+		castorJquery.get(cmd, function (data) {
 			//alert "OK"
 			});
 		}
 	
 	function setApproval(property_uid, approved) 
 		{
-		cmd = '{JOMRES_SITEPAGE_URL_ADMIN_AJAX}&task=ajax_list_properties_approve&property_uid=' + property_uid + '&approved=' + approved;
-		jomresJquery.get(cmd, function (data) {
+		cmd = '{CASTOR_SITEPAGE_URL_ADMIN_AJAX}&task=ajax_list_properties_approve&property_uid=' + property_uid + '&approved=' + approved;
+		castorJquery.get(cmd, function (data) {
 			//alert "OK"
 			});
 		}

@@ -1,18 +1,18 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 //#################################################################
-defined('_JOMRES_INITCHECK') or die('');
-defined('_JOMRES_INITCHECK_ADMIN') or die('');
+defined('_CASTOR_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK_ADMIN') or die('');
 //#################################################################
 
 /**
@@ -30,10 +30,10 @@ require_once dirname(__FILE__).'/integration.php';
 
 try {
 	//minicomponents object
-	$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+	$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 
 	//site config object
-	$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+	$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 	$jrConfig = $siteConfig->get();
 
 	//request log
@@ -41,24 +41,24 @@ try {
 		request_log();
 	}
 
-	jr_import('jomres_api_capability_test');
-	$jomres_api_capability_test = new jomres_api_capability_test();
-	$jomres_api_capability_test->is_system_capable();
+	jr_import('castor_api_capability_test');
+	$castor_api_capability_test = new castor_api_capability_test();
+	$castor_api_capability_test->is_system_capable();
 
 	//get all properties in system.
-	$jomres_properties = jomres_singleton_abstract::getInstance('jomres_properties');
-	$jomres_properties->get_all_properties();
+	$castor_properties = castor_singleton_abstract::getInstance('castor_properties');
+	$castor_properties->get_all_properties();
 
     //trigger 07090 event (see README/md)
     $MiniComponents->triggerEvent('07090');
 
 	//language object - load default language file for context
-	$jomres_language = jomres_singleton_abstract::getInstance('jomres_language');
-    $jomres_language->init();
-	$jomres_language->get_language();
+	$castor_language = castor_singleton_abstract::getInstance('castor_language');
+    $castor_language->init();
+	$castor_language->get_language();
 
 	//custom text object
-	$customTextObj = jomres_singleton_abstract::getInstance('custom_text');
+	$customTextObj = castor_singleton_abstract::getInstance('custom_text');
 	
 	//trigger 00001 event
 	$MiniComponents->triggerEvent('00001');
@@ -67,37 +67,37 @@ try {
 	$MiniComponents->triggerEvent('00002');
 
 	//user object
-	$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+	$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 
 	//input filtering
 	$MiniComponents->triggerEvent('00003');
 
 	//cron jobs
-	$cron = jomres_singleton_abstract::getInstance('jomres_cron');
+	$cron = castor_singleton_abstract::getInstance('castor_cron');
 	if ($cron->method == 'Minicomponent' && !AJAXCALL) {
 		$cron->triggerJobs();
 	}
 
 	//session
-	$tmpBookingHandler = jomres_singleton_abstract::getInstance('jomres_temp_booking_handler');
+	$tmpBookingHandler = castor_singleton_abstract::getInstance('castor_temp_booking_handler');
 	$tmpBookingHandler->initBookingSession();
 
-	$jomressession = $tmpBookingHandler->getJomressession();
-	set_showtime('jomressession', $jomressession);
+	$castorsession = $tmpBookingHandler->getCastorsession();
+	set_showtime('castorsession', $castorsession);
 
 	//set task showtime
-	$task = jomresGetParam($_REQUEST, 'task', 'cpanel');
+	$task = castorGetParam($_REQUEST, 'task', 'cpanel');
 	$task = str_replace('&#60;x&#62;', '', $task);
 	set_showtime('task', $task);
 
 	//currency conversion object
-	$jomres_currency_exchange_rates = jomres_singleton_abstract::getInstance('jomres_currency_exchange_rates');
+	$castor_currency_exchange_rates = castor_singleton_abstract::getInstance('castor_currency_exchange_rates');
 	
 	//set currency code to the appropriate one for the detected location
-	$jomres_geolocation = jomres_singleton_abstract::getInstance('jomres_geolocation');
-	$jomres_geolocation->auto_set_user_currency_code();
+	$castor_geolocation = castor_singleton_abstract::getInstance('castor_geolocation');
+	$castor_geolocation->auto_set_user_currency_code();
 
-	require_once JOMRES_FUNCTIONS_ABSPATH.'siteconfig.functions.php';
+	require_once CASTOR_FUNCTIONS_ABSPATH.'siteconfig.functions.php';
 
 	if (!AJAXCALL) {
 		//add javascript to head
@@ -123,18 +123,18 @@ try {
 		$output[ 'CONTROL_PANEL_MENU' ] = $MiniComponents->miniComponentData[ '19997' ][ 'menu' ];
 
 		//frequently asked questions
-		$output['_JOMRES_FAQ'] = jr_gettext('_JOMRES_FAQ', '_JOMRES_FAQ', false);
+		$output['_CASTOR_FAQ'] = jr_gettext('_CASTOR_FAQ', '_CASTOR_FAQ', false);
 
 		//video tutorials
-		$jomres_video_tutorials = jomres_singleton_abstract::getInstance('jomres_video_tutorials');
-		$jomres_video_tutorials->property_uid = 0;
-		$output[ 'VIDEO_TUTORIALS' ] = $jomres_video_tutorials->build_modal();
+		$castor_video_tutorials = castor_singleton_abstract::getInstance('castor_video_tutorials');
+		$castor_video_tutorials->property_uid = 0;
+		$output[ 'VIDEO_TUTORIALS' ] = $castor_video_tutorials->build_modal();
 		
 		//manage properties button
-		$output['HMANAGE_PROPERTIES'] = jr_gettext('_JOMRES_MANAGE_PROPERTIES', '_JOMRES_MANAGE_PROPERTIES', false);
+		$output['HMANAGE_PROPERTIES'] = jr_gettext('_CASTOR_MANAGE_PROPERTIES', '_CASTOR_MANAGE_PROPERTIES', false);
 
 		//language dropdown
-		$output[ 'LANGDROPDOWN' ] = $jomres_language->get_languageselection_dropdown();
+		$output[ 'LANGDROPDOWN' ] = $castor_language->get_languageselection_dropdown();
 
 
 
@@ -144,9 +144,9 @@ try {
 		//output top area
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 
-		if (_JOMRES_DETECTED_CMS == 'joomla3') {
+		if (_CASTOR_DETECTED_CMS == 'joomla3') {
 			$tmpl->readTemplatesFromInput('administrator_content_area_top_vertical.html');
 		} else {
 			$tmpl->readTemplatesFromInput('administrator_content_area_top.html');
@@ -174,8 +174,8 @@ try {
 	if (!AJAXCALL) {
 //		$pageoutput[] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
-		if (_JOMRES_DETECTED_CMS == 'joomla3') {
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
+		if (_CASTOR_DETECTED_CMS == 'joomla3') {
 			$tmpl->readTemplatesFromInput('administrator_content_area_bottom_vertical.html');
 		} else {
 			$tmpl->readTemplatesFromInput('administrator_content_area_bottom.html');
@@ -187,7 +187,7 @@ try {
 	//trigger 99994 event for webhooks
 	$MiniComponents->triggerEvent('99994');
 
-	//trigger 99998 event - jomres feedback messages
+	//trigger 99998 event - castor feedback messages
 	if (!AJAXCALL) {
 		$MiniComponents->triggerEvent('99998');
 	}
@@ -195,8 +195,8 @@ try {
 	$componentArgs = array();
 	$MiniComponents->triggerEvent('99999', $componentArgs);
 	
-	//close/save jomres session
-	$tmpBookingHandler->close_jomres_session();
+	//close/save castor session
+	$tmpBookingHandler->close_castor_session();
 
 	//done
 	endrun();
@@ -204,17 +204,17 @@ try {
 	output_fatal_error($e);
 }
 
-if (defined('JOMRES_RETURNDATA')) {
+if (defined('CASTOR_RETURNDATA')) {
 	$contents = ob_get_contents();
 	$contents = $head_contents.$contents;
-	define('JOMRES_RETURNDATA_CONTENT', $contents);
+	define('CASTOR_RETURNDATA_CONTENT', $contents);
 	unset($contents);
 	ob_end_clean();
 } else {
 	ob_end_flush();
 }
 
-// Jomres 4.7.8 strips BOM from all areas of the output, not just the beginning.
+// Castor 4.7.8 strips BOM from all areas of the output, not just the beginning.
 function removeBOMadmin($str = '')
 {
 	$bom = pack('CCC', 0xef, 0xbb, 0xbf);
@@ -226,3 +226,4 @@ function removeBOMadmin($str = '')
 	// }
 	return $str;
 }
+

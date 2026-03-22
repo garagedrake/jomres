@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Property Configuration page tabs. Offers business details related settings. These are details that are shown on the invoice and are different to those stored against the hotel.
 	 *
@@ -38,7 +38,7 @@ class j00501businessdetails
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			return;
@@ -48,7 +48,7 @@ class j00501businessdetails
 			return;
 		}
 
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 		
 		$mrConfig = getPropertySpecificSettings();
@@ -92,62 +92,62 @@ class j00501businessdetails
 		$lists = $componentArgs[ 'lists' ];
 		$editIconSize = $componentArgs[ 'editIconSize' ];
 
-		$configurationPanel->startPanel(jr_gettext('_JOMRES_COM_YOURBUSINESS', '_JOMRES_COM_YOURBUSINESS', false));
+		$configurationPanel->startPanel(jr_gettext('_CASTOR_COM_YOURBUSINESS', '_CASTOR_COM_YOURBUSINESS', false));
 
-		$configurationPanel->insertDescription(jr_gettext('_JOMRES_COM_YOURBUSINESS_DESC', '_JOMRES_COM_YOURBUSINESS_DESC', false));
+		$configurationPanel->insertDescription(jr_gettext('_CASTOR_COM_YOURBUSINESS_DESC', '_CASTOR_COM_YOURBUSINESS_DESC', false));
 		
-		$configurationPanel->setleft(jr_gettext('_JOMRES_COM_YOURBUSINESS_NAME', '_JOMRES_COM_YOURBUSINESS_NAME', false));
-		$configurationPanel->setmiddle('<input type="text" class="inputbox form-control" size="50" name="cfg_property_business_name" value="'.jomres_decode($mrConfig['property_business_name']).'" />');
+		$configurationPanel->setleft(jr_gettext('_CASTOR_COM_YOURBUSINESS_NAME', '_CASTOR_COM_YOURBUSINESS_NAME', false));
+		$configurationPanel->setmiddle('<input type="text" class="inputbox form-control" size="50" name="cfg_property_business_name" value="'.castor_decode($mrConfig['property_business_name']).'" />');
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
 		if (isset($mrConfig[ 'vat_number_validated' ]) && $mrConfig[ 'vat_number_validated' ] == '1') {
-			$status = jr_gettext('_JOMRES_VAT_PROPERTY_VAT_NUMBER_VALIDATED', '_JOMRES_VAT_PROPERTY_VAT_NUMBER_VALIDATED', false);
+			$status = jr_gettext('_CASTOR_VAT_PROPERTY_VAT_NUMBER_VALIDATED', '_CASTOR_VAT_PROPERTY_VAT_NUMBER_VALIDATED', false);
 		} else {
-			$status = jr_gettext('_JOMRES_VAT_PROPERTY_VAT_NUMBER_NOT_VALIDATED', '_JOMRES_VAT_PROPERTY_VAT_NUMBER_NOT_VALIDATED', false);
+			$status = jr_gettext('_CASTOR_VAT_PROPERTY_VAT_NUMBER_NOT_VALIDATED', '_CASTOR_VAT_PROPERTY_VAT_NUMBER_NOT_VALIDATED', false);
 		}
-		$configurationPanel->setleft(jr_gettext('_JOMRES_COM_YOURBUSINESS_VATNO', '_JOMRES_COM_YOURBUSINESS_VATNO', false));
+		$configurationPanel->setleft(jr_gettext('_CASTOR_COM_YOURBUSINESS_VATNO', '_CASTOR_COM_YOURBUSINESS_VATNO', false));
 		$configurationPanel->setmiddle('<input type="text" class="inputbox form-control" size="50" name="cfg_property_vat_number" value="'.$mrConfig[ 'property_vat_number' ].'" />'.$status);
-		$configurationPanel->setright(jr_gettext('_JOMRES_VAT_PROPERTY_NUMBER_DESC', '_JOMRES_VAT_PROPERTY_NUMBER_DESC', false));
+		$configurationPanel->setright(jr_gettext('_CASTOR_VAT_PROPERTY_NUMBER_DESC', '_CASTOR_VAT_PROPERTY_NUMBER_DESC', false));
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_COM_YOURBUSINESSADDRESS', '_JOMRES_COM_YOURBUSINESSADDRESS', false));
-		$configurationPanel->setmiddle('<input type="number" class="inputbox form-control" size="50" name="cfg_property_business_houseno" value="'.jomres_decode($mrConfig['property_business_houseno']).'" />');
+		$configurationPanel->setleft(jr_gettext('_CASTOR_COM_YOURBUSINESSADDRESS', '_CASTOR_COM_YOURBUSINESSADDRESS', false));
+		$configurationPanel->setmiddle('<input type="number" class="inputbox form-control" size="50" name="cfg_property_business_houseno" value="'.castor_decode($mrConfig['property_business_houseno']).'" />');
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_STREET', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_STREET', false));
-		$configurationPanel->setmiddle('<input type="text" class="inputbox form-control" size="50" name="cfg_property_business_street" value="'.jomres_decode($mrConfig['property_business_street']).'" />');
+		$configurationPanel->setleft(jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_STREET', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_STREET', false));
+		$configurationPanel->setmiddle('<input type="text" class="inputbox form-control" size="50" name="cfg_property_business_street" value="'.castor_decode($mrConfig['property_business_street']).'" />');
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TOWN', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TOWN', false));
-		$configurationPanel->setmiddle('<input type="text" class="inputbox form-control" size="50" name="cfg_property_business_town" value="'.jomres_decode($mrConfig['property_business_town']).'" />');
+		$configurationPanel->setleft(jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TOWN', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TOWN', false));
+		$configurationPanel->setmiddle('<input type="text" class="inputbox form-control" size="50" name="cfg_property_business_town" value="'.castor_decode($mrConfig['property_business_town']).'" />');
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_REGION', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_REGION', false));
-		$configurationPanel->setmiddle('<input type="text" class="inputbox form-control" size="50" name="cfg_property_business_region" value="'.jomres_decode($mrConfig['property_business_region']).'" />');
+		$configurationPanel->setleft(jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_REGION', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_REGION', false));
+		$configurationPanel->setmiddle('<input type="text" class="inputbox form-control" size="50" name="cfg_property_business_region" value="'.castor_decode($mrConfig['property_business_region']).'" />');
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', false));
-		$configurationPanel->setmiddle('<input type="text" class="inputbox form-control" size="50" name="cfg_property_business_country" value="'.jomres_decode($mrConfig['property_business_country']).'" />');
+		$configurationPanel->setleft(jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', false));
+		$configurationPanel->setmiddle('<input type="text" class="inputbox form-control" size="50" name="cfg_property_business_country" value="'.castor_decode($mrConfig['property_business_country']).'" />');
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_POSTCODE', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_POSTCODE', false));
-		$configurationPanel->setmiddle('<input type="text" class="inputbox form-control" size="50" name="cfg_property_business_postcode" value="'.jomres_decode($mrConfig['property_business_postcode']).'" />');
+		$configurationPanel->setleft(jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_POSTCODE', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_POSTCODE', false));
+		$configurationPanel->setmiddle('<input type="text" class="inputbox form-control" size="50" name="cfg_property_business_postcode" value="'.castor_decode($mrConfig['property_business_postcode']).'" />');
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE', false));
-		$configurationPanel->setmiddle('<input type="tel" class="inputbox form-control" size="50" name="cfg_property_business_telephone" value="'.jomres_decode($mrConfig['property_business_telephone']).'" />');
+		$configurationPanel->setleft(jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE', false));
+		$configurationPanel->setmiddle('<input type="tel" class="inputbox form-control" size="50" name="cfg_property_business_telephone" value="'.castor_decode($mrConfig['property_business_telephone']).'" />');
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_COM_MR_EB_GUEST_JOMRES_EMAIL_EXPL', '_JOMRES_COM_MR_EB_GUEST_JOMRES_EMAIL_EXPL', false));
-		$configurationPanel->setmiddle('<input type="email" class="inputbox form-control" size="50" name="cfg_property_business_email" value="'.jomres_decode($mrConfig['property_business_email']).'" />');
+		$configurationPanel->setleft(jr_gettext('_CASTOR_COM_MR_EB_GUEST_CASTOR_EMAIL_EXPL', '_CASTOR_COM_MR_EB_GUEST_CASTOR_EMAIL_EXPL', false));
+		$configurationPanel->setmiddle('<input type="email" class="inputbox form-control" size="50" name="cfg_property_business_email" value="'.castor_decode($mrConfig['property_business_email']).'" />');
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
@@ -165,3 +165,4 @@ class j00501businessdetails
 		return null;
 	}
 }
+

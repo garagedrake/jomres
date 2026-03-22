@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,7 +36,7 @@ class j16000obsolete_files_check
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -46,8 +46,8 @@ class j16000obsolete_files_check
 		$obsolete_dirs_output = '';
 		$obsolete_files_output = '';
 		
-		jr_import('jomres_obsolete_file_handling');
-		$obsolete_files = new jomres_obsolete_file_handling();
+		jr_import('castor_obsolete_file_handling');
+		$obsolete_files = new castor_obsolete_file_handling();
 		
 		if (empty($obsolete_files->obs_directories) && empty($obsolete_files->obs_files)) {
 			echo '
@@ -73,7 +73,7 @@ class j16000obsolete_files_check
 	<p>'
 			.$obsolete_dirs_output.$obsolete_files_output.
 			'</p>
-	<a href="'.jomresUrl(JOMRES_SITEPAGE_URL_ADMIN.'&task=delete_obsolete_files').'" class="btn btn-warning">Remove obsolete files and directories</a>
+	<a href="'.castorUrl(CASTOR_SITEPAGE_URL_ADMIN.'&task=delete_obsolete_files').'" class="btn btn-warning">Remove obsolete files and directories</a>
 </div>';
 		}
 	}
@@ -84,3 +84,4 @@ class j16000obsolete_files_check
 		return null;
 	}
 }
+

@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 	/**
 	 * Core file.
 	 *
-	 * @author Vince Wooll <sales@jomres.net>
+	 * @author Vince Wooll <sales@castor.net>
 	 *
-	  *  @version Jomres 10.7.2
+	  *  @version Castor 10.7.2
 	 *
 	 * @copyright	2005-2023 Vince Wooll
-	 * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+	 * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
 	 **/
 
 // ################################################################
-	defined('_JOMRES_INITCHECK') or die('');
+	defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -34,15 +34,15 @@ class j06000terms
 
 	public function __construct($componentArgs)
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			$this->shortcode_data = array(
 				'task' => 'terms',
-				'info' => '_JOMRES_SHORTCODES_06000TERMS',
+				'info' => '_CASTOR_SHORTCODES_06000TERMS',
 				'arguments' => array(0 => array(
 					'argument' => 'property_uid',
-					'arg_info' => '_JOMRES_SHORTCODES_06000TERMS_ARG_PROPERTY_UID',
+					'arg_info' => '_CASTOR_SHORTCODES_06000TERMS_ARG_PROPERTY_UID',
 					'arg_example' => '1',
 				),
 				),
@@ -56,13 +56,13 @@ class j06000terms
 		if (isset($componentArgs['property_uid'])) {
 			$property_uid = (int)$componentArgs['property_uid'];
 		} else {
-			$property_uid = intval(jomresGetParam($_REQUEST, 'property_uid', 0));
+			$property_uid = intval(castorGetParam($_REQUEST, 'property_uid', 0));
 		}
 
 		if (isset($componentArgs['as_pdf'])) {
 			$as_pdf = (bool)$componentArgs['as_pdf'];
 		} elseif (isset($_REQUEST['as_pdf'])) {
-			$as_pdf = (bool)jomresGetParam($_REQUEST, 'as_pdf', false);
+			$as_pdf = (bool)castorGetParam($_REQUEST, 'as_pdf', false);
 		} else {
 			$as_pdf = false;
 		}
@@ -74,25 +74,25 @@ class j06000terms
 		if (isset($componentArgs['output_now'])) {
 			$output_now = (bool)$componentArgs['output_now'];
 		} elseif (isset($_REQUEST['output_now'])) {
-			$output_now = (bool)jomresGetParam($_REQUEST, 'output_now', false);
+			$output_now = (bool)castorGetParam($_REQUEST, 'output_now', false);
 		} else {
 			$output_now = false;
 		}
 
 		$this->retVals = '';
 
-		jr_import('jomres_markdown');
-		$jomres_markdown = new jomres_markdown();
+		jr_import('castor_markdown');
+		$castor_markdown = new castor_markdown();
 
-		$query = "SELECT property_policies_disclaimers FROM #__jomres_propertys WHERE propertys_uid = '".$property_uid."' LIMIT 1";
+		$query = "SELECT property_policies_disclaimers FROM #__castor_propertys WHERE propertys_uid = '".$property_uid."' LIMIT 1";
 		$property_policiesdisclaimers = doSelectSql($query, 1);
 
-		$property_policiesdisclaimers = jomres_cmsspecific_parseByBots($jomres_markdown->get_markdown(jr_gettext('_JOMRES_CUSTOMTEXT_ROOMTYPE_DISCLAIMERS_'.$property_uid, $property_policiesdisclaimers, false, false)));
+		$property_policiesdisclaimers = castor_cmsspecific_parseByBots($castor_markdown->get_markdown(jr_gettext('_CASTOR_CUSTOMTEXT_ROOMTYPE_DISCLAIMERS_'.$property_uid, $property_policiesdisclaimers, false, false)));
 
 		$property = array();
 		$property[ 'LIVESITE' ] = get_showtime('live_site');
-		$property[ 'HPROPERTYNAME' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_NAME', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_NAME');
-		$property[ 'HPOLICIESDISCLAIMERS' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_POLICIESDISCLAIMERS', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_POLICIESDISCLAIMERS');
+		$property[ 'HPROPERTYNAME' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_NAME', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_NAME');
+		$property[ 'HPOLICIESDISCLAIMERS' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_POLICIESDISCLAIMERS', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_POLICIESDISCLAIMERS');
 
 		$property[ 'POLICIESDISCLAIMERS' ] = $property_policiesdisclaimers;
 		if (empty($property[ 'POLICIESDISCLAIMERS' ])) {
@@ -102,7 +102,7 @@ class j06000terms
 		$property_deets[ ] = $property;
 
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 		$tmpl->addRows('property_deets', $property_deets);
 
 		if ($pdf_test_mode == true) {
@@ -138,3 +138,4 @@ class j06000terms
 		return $this->retVals;
 	}
 }
+

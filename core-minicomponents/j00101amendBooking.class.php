@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Sets up the $tmpBookingHandler with data required to amend an existing booking, then displays the original booking information at the top of the booking form.
 	 *
@@ -37,29 +37,29 @@ class j00101amendBooking
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = true;
 
 			return;
 		}
 		$mrConfig = getPropertySpecificSettings();
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
-		$tmpBookingHandler = jomres_singleton_abstract::getInstance('jomres_temp_booking_handler');
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$tmpBookingHandler = castor_singleton_abstract::getInstance('castor_temp_booking_handler');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 
-		$selectedProperty = (int)jomresGetParam($_REQUEST, 'selectedProperty', 0);
+		$selectedProperty = (int)castorGetParam($_REQUEST, 'selectedProperty', 0);
 
 		if (!$thisJRUser->userIsManager || ($selectedProperty > 0 && !in_array($selectedProperty, $thisJRUser->authorisedProperties))) {
 			return;
 		}
 
-		$amend = intval(jomresGetParam($_REQUEST, 'amend', 0));
+		$amend = intval(castorGetParam($_REQUEST, 'amend', 0));
 
 		if ($amend) {
-			$contract_uid = intval(jomresGetParam($_REQUEST, 'contractuid', 0));
-			$selectedProperty = intval(jomresGetParam($_REQUEST, 'selectedProperty', 0));
+			$contract_uid = intval(castorGetParam($_REQUEST, 'contractuid', 0));
+			$selectedProperty = intval(castorGetParam($_REQUEST, 'selectedProperty', 0));
 
 			if (isset($tmpBookingHandler->tmpbooking[ 'override_contract_deposit' ])) {
 				$tmpBookingHandler->updateBookingField('override_contract_deposit', '');
@@ -73,10 +73,10 @@ class j00101amendBooking
 				$tmpBookingHandler->updateBookingField('amend_contract', true);
 				$tmpBookingHandler->updateBookingField('amend_contractuid', $contract_uid);
 
-				jr_import('jomres_encryption');
-				$jomres_encryption = new jomres_encryption();
+				jr_import('castor_encryption');
+				$castor_encryption = new castor_encryption();
 	
-				$query = "SELECT * FROM #__jomres_contracts WHERE contract_uid = '".(int) $contract_uid."' LIMIT 1";
+				$query = "SELECT * FROM #__castor_contracts WHERE contract_uid = '".(int) $contract_uid."' LIMIT 1";
 				$contract = doSelectSql($query);
 				
 				$original_rooms = array();
@@ -113,23 +113,23 @@ class j00101amendBooking
 						}
 					}
 
-					$query = "SELECT * FROM #__jomres_guests WHERE guests_uid = '".(int) $c->guest_uid."' LIMIT 1";
+					$query = "SELECT * FROM #__castor_guests WHERE guests_uid = '".(int) $c->guest_uid."' LIMIT 1";
 					$guest = doSelectSql($query);
 					foreach ($guest as $g) {
 						$tmpBookingHandler->tmpguest[ 'guests_uid' ] = $g->guests_uid;
 						$tmpBookingHandler->tmpguest[ 'mos_userid' ] = $g->mos_userid;
 						$tmpBookingHandler->tmpguest[ 'existing_id' ] = $g->guests_uid;
-						$tmpBookingHandler->tmpguest[ 'firstname' ] = getEscaped($jomres_encryption->decrypt($g->enc_firstname));
-						$tmpBookingHandler->tmpguest[ 'surname' ] = getEscaped($jomres_encryption->decrypt($g->enc_surname));
-						$tmpBookingHandler->tmpguest[ 'house' ] = getEscaped($jomres_encryption->decrypt($g->enc_house));
-						$tmpBookingHandler->tmpguest[ 'street' ] = getEscaped($jomres_encryption->decrypt($g->enc_street));
-						$tmpBookingHandler->tmpguest[ 'town' ] = getEscaped($jomres_encryption->decrypt($g->enc_town));
-						$tmpBookingHandler->tmpguest[ 'region' ] = getEscaped($jomres_encryption->decrypt($g->enc_county));
-						$tmpBookingHandler->tmpguest[ 'country' ] = getEscaped($jomres_encryption->decrypt($g->enc_country));
-						$tmpBookingHandler->tmpguest[ 'postcode' ] = getEscaped($jomres_encryption->decrypt($g->enc_postcode));
-						$tmpBookingHandler->tmpguest[ 'tel_landline' ] = getEscaped($jomres_encryption->decrypt($g->enc_tel_landline));
-						$tmpBookingHandler->tmpguest[ 'tel_mobile' ] = getEscaped($jomres_encryption->decrypt($g->enc_tel_mobile));
-						$tmpBookingHandler->tmpguest[ 'email' ] = getEscaped($jomres_encryption->decrypt($g->enc_email));
+						$tmpBookingHandler->tmpguest[ 'firstname' ] = getEscaped($castor_encryption->decrypt($g->enc_firstname));
+						$tmpBookingHandler->tmpguest[ 'surname' ] = getEscaped($castor_encryption->decrypt($g->enc_surname));
+						$tmpBookingHandler->tmpguest[ 'house' ] = getEscaped($castor_encryption->decrypt($g->enc_house));
+						$tmpBookingHandler->tmpguest[ 'street' ] = getEscaped($castor_encryption->decrypt($g->enc_street));
+						$tmpBookingHandler->tmpguest[ 'town' ] = getEscaped($castor_encryption->decrypt($g->enc_town));
+						$tmpBookingHandler->tmpguest[ 'region' ] = getEscaped($castor_encryption->decrypt($g->enc_county));
+						$tmpBookingHandler->tmpguest[ 'country' ] = getEscaped($castor_encryption->decrypt($g->enc_country));
+						$tmpBookingHandler->tmpguest[ 'postcode' ] = getEscaped($castor_encryption->decrypt($g->enc_postcode));
+						$tmpBookingHandler->tmpguest[ 'tel_landline' ] = getEscaped($castor_encryption->decrypt($g->enc_tel_landline));
+						$tmpBookingHandler->tmpguest[ 'tel_mobile' ] = getEscaped($castor_encryption->decrypt($g->enc_tel_mobile));
+						$tmpBookingHandler->tmpguest[ 'email' ] = getEscaped($castor_encryption->decrypt($g->enc_email));
 					}
 
 					if ($c->property_uid != $selectedProperty) {
@@ -180,7 +180,7 @@ class j00101amendBooking
 								$original_room_ids[] = $combo_bang[0];
 							}
 							
-							$basic_room_details = jomres_singleton_abstract::getInstance('basic_room_details');
+							$basic_room_details = castor_singleton_abstract::getInstance('basic_room_details');
 							$basic_room_details->get_all_rooms($c->property_uid);
 							
 							foreach ($original_room_ids as $room_id) {
@@ -234,35 +234,35 @@ class j00101amendBooking
 					}
 				}
 
-				$currfmt = jomres_singleton_abstract::getInstance('jomres_currency_format');
+				$currfmt = castor_singleton_abstract::getInstance('castor_currency_format');
 				$mrConfig = getPropertySpecificSettings($tmpBookingHandler->tmpbooking[ 'amend_property_uid' ]);
 				$output[ 'HEADER' ] = jr_gettext('_JOMCOMP_AMEND_HEADER', '_JOMCOMP_AMEND_HEADER');
-				$output[ 'HTOTAL' ] = jr_gettext('_JOMRES_AJAXFORM_BILLING_TOTAL', '_JOMRES_AJAXFORM_BILLING_TOTAL');
+				$output[ 'HTOTAL' ] = jr_gettext('_CASTOR_AJAXFORM_BILLING_TOTAL', '_CASTOR_AJAXFORM_BILLING_TOTAL');
 				$output[ 'TOTAL' ] = output_price($c->contract_total);
-				$output[ 'HROOMTOTAL' ] = jr_gettext('_JOMRES_AJAXFORM_BILLING_ROOM_TOTAL', '_JOMRES_AJAXFORM_BILLING_ROOM_TOTAL');
+				$output[ 'HROOMTOTAL' ] = jr_gettext('_CASTOR_AJAXFORM_BILLING_ROOM_TOTAL', '_CASTOR_AJAXFORM_BILLING_ROOM_TOTAL');
 				$output[ 'ROOMTOTAL' ] = output_price($c->room_total);
-				$output[ 'HARRIVAL' ] = jr_gettext('_JOMRES_COM_MR_VIEWBOOKINGS_ARRIVAL', '_JOMRES_COM_MR_VIEWBOOKINGS_ARRIVAL');
+				$output[ 'HARRIVAL' ] = jr_gettext('_CASTOR_COM_MR_VIEWBOOKINGS_ARRIVAL', '_CASTOR_COM_MR_VIEWBOOKINGS_ARRIVAL');
 				$output[ 'ARRIVAL' ] = outputDate($c->arrival);
-				$output[ 'HDEPARTURE' ] = jr_gettext('_JOMRES_COM_MR_VIEWBOOKINGS_DEPARTURE', '_JOMRES_COM_MR_VIEWBOOKINGS_DEPARTURE');
+				$output[ 'HDEPARTURE' ] = jr_gettext('_CASTOR_COM_MR_VIEWBOOKINGS_DEPARTURE', '_CASTOR_COM_MR_VIEWBOOKINGS_DEPARTURE');
 				$output[ 'DEPARTURE' ] = outputDate($c->departure);
 
 				if ($totalinparty != 0) {
-					$output[ 'HTOTALINPARTY' ] = jr_gettext('_JOMRES_AJAXFORM_BILLING_TOTALINPARTY', '_JOMRES_AJAXFORM_BILLING_TOTALINPARTY');
+					$output[ 'HTOTALINPARTY' ] = jr_gettext('_CASTOR_AJAXFORM_BILLING_TOTALINPARTY', '_CASTOR_AJAXFORM_BILLING_TOTALINPARTY');
 					$output[ 'TOTALINPARTY' ] = $totalinparty;
 				}
 
 				if ($mrConfig[ 'showExtras' ] == '1') {
-					$output[ 'HEXTRAS' ] = jr_gettext('_JOMRES_AJAXFORM_BILLING_EXTRAS', '_JOMRES_AJAXFORM_BILLING_EXTRAS');
+					$output[ 'HEXTRAS' ] = jr_gettext('_CASTOR_AJAXFORM_BILLING_EXTRAS', '_CASTOR_AJAXFORM_BILLING_EXTRAS');
 					$output[ 'EXTRAS' ] = output_price($c->extrasvalue);
 				}
 
 				if ($mrConfig[ 'roomTaxYesNo' ] == '1' || $mrConfig[ 'euroTaxYesNo' ] == '1') {
-					$output[ 'HTAX' ] = jr_gettext('_JOMRES_AJAXFORM_BILLING_TAX', '_JOMRES_AJAXFORM_BILLING_TAX');
+					$output[ 'HTAX' ] = jr_gettext('_CASTOR_AJAXFORM_BILLING_TAX', '_CASTOR_AJAXFORM_BILLING_TAX');
 					$output[ 'TAX' ] = output_price($c->tax);
 				}
 
 				if ($c->discount != 0) {
-					$output[ 'HDISCOUNT' ] = jr_gettext('_JOMRES_AJAXFORM_BILLING_DISCOUNT', '_JOMRES_AJAXFORM_BILLING_DISCOUNT');
+					$output[ 'HDISCOUNT' ] = jr_gettext('_CASTOR_AJAXFORM_BILLING_DISCOUNT', '_CASTOR_AJAXFORM_BILLING_DISCOUNT');
 					$output[ 'DISCOUNT' ] = output_price($c->discount);
 				}
 
@@ -279,7 +279,7 @@ class j00101amendBooking
 				$pageoutput[ ] = $output;
 				$tmpl = new patTemplate();
 
-				$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+				$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 				$tmpl->readTemplatesFromInput('original_details.html');
 				$tmpl->addRows('pageoutput', $pageoutput);
 				$tmpl->addRows('original_rooms', $original_rooms);
@@ -306,14 +306,14 @@ class j00101amendBooking
 		$output = array();
 
 		$output[ ] = jr_gettext('_JOMCOMP_AMEND_HEADER', '_JOMCOMP_AMEND_HEADER');
-		$output[ ] = jr_gettext('_JOMRES_AJAXFORM_BILLING_TOTAL', '_JOMRES_AJAXFORM_BILLING_TOTAL');
-		$output[ ] = jr_gettext('_JOMRES_AJAXFORM_BILLING_ROOM_TOTAL', '_JOMRES_AJAXFORM_BILLING_ROOM_TOTAL');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_VIEWBOOKINGS_ARRIVAL', '_JOMRES_COM_MR_VIEWBOOKINGS_ARRIVAL');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_VIEWBOOKINGS_DEPARTURE', '_JOMRES_COM_MR_VIEWBOOKINGS_DEPARTURE');
-		$output[ ] = jr_gettext('_JOMRES_AJAXFORM_BILLING_TOTALINPARTY', '_JOMRES_AJAXFORM_BILLING_TOTALINPARTY');
-		$output[ ] = jr_gettext('_JOMRES_AJAXFORM_BILLING_EXTRAS', '_JOMRES_AJAXFORM_BILLING_EXTRAS');
-		$output[ ] = jr_gettext('_JOMRES_AJAXFORM_BILLING_TAX', '_JOMRES_AJAXFORM_BILLING_TAX');
-		$output[ ] = jr_gettext('_JOMRES_AJAXFORM_BILLING_DISCOUNT', '_JOMRES_AJAXFORM_BILLING_DISCOUNT');
+		$output[ ] = jr_gettext('_CASTOR_AJAXFORM_BILLING_TOTAL', '_CASTOR_AJAXFORM_BILLING_TOTAL');
+		$output[ ] = jr_gettext('_CASTOR_AJAXFORM_BILLING_ROOM_TOTAL', '_CASTOR_AJAXFORM_BILLING_ROOM_TOTAL');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_VIEWBOOKINGS_ARRIVAL', '_CASTOR_COM_MR_VIEWBOOKINGS_ARRIVAL');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_VIEWBOOKINGS_DEPARTURE', '_CASTOR_COM_MR_VIEWBOOKINGS_DEPARTURE');
+		$output[ ] = jr_gettext('_CASTOR_AJAXFORM_BILLING_TOTALINPARTY', '_CASTOR_AJAXFORM_BILLING_TOTALINPARTY');
+		$output[ ] = jr_gettext('_CASTOR_AJAXFORM_BILLING_EXTRAS', '_CASTOR_AJAXFORM_BILLING_EXTRAS');
+		$output[ ] = jr_gettext('_CASTOR_AJAXFORM_BILLING_TAX', '_CASTOR_AJAXFORM_BILLING_TAX');
+		$output[ ] = jr_gettext('_CASTOR_AJAXFORM_BILLING_DISCOUNT', '_CASTOR_AJAXFORM_BILLING_DISCOUNT');
 		$output[ ] = jr_gettext('_JOMCOMP_AMEND_DEPOSITPAID', '_JOMCOMP_AMEND_DEPOSITPAID');
 		$output[ ] = jr_gettext('_JOMCOMP_AMEND_DEPOSITDUE', '_JOMCOMP_AMEND_DEPOSITDUE');
 
@@ -333,3 +333,4 @@ class j00101amendBooking
 		return null;
 	}
 }
+

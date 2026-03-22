@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,22 +36,22 @@ class j06000show_user_profile
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 		
-		jr_import('jomres_encryption');
-		$jomres_encryption = new jomres_encryption();
+		jr_import('castor_encryption');
+		$castor_encryption = new castor_encryption();
 		
 		$this->retVals = '';
 		
-		$cms_user_id = (int)jomresGetParam($_REQUEST, 'cms_user_id', 0);
+		$cms_user_id = (int)castorGetParam($_REQUEST, 'cms_user_id', 0);
 		if (!isset($_REQUEST['cms_user_id']) && isset($_REQUEST['id'])) {
-			$cms_user_id = (int)jomresGetParam($_REQUEST, 'id', 0);
+			$cms_user_id = (int)castorGetParam($_REQUEST, 'id', 0);
 		}
 
 		if (isset($componentArgs['cms_user_id']) && $cms_user_id == 0) {
@@ -68,15 +68,15 @@ class j06000show_user_profile
 		}
 		
 		if (isset($_REQUEST[ 'output_now' ])) {
-			$output_now = (bool) jomresGetParam($_REQUEST, 'output_now', 1);
+			$output_now = (bool) castorGetParam($_REQUEST, 'output_now', 1);
 		} elseif (isset($componentArgs[ 'output_now' ])) {
 			$output_now = (bool)$componentArgs[ 'output_now' ];
 		} else {
 			$output_now = true;
 		}
 		
-		jr_import('jomres_markdown');
-		$jomres_markdown = new jomres_markdown();
+		jr_import('castor_markdown');
+		$castor_markdown = new castor_markdown();
 		
 		
 		
@@ -84,7 +84,7 @@ class j06000show_user_profile
 		
 		if (($thisJRUser->userIsManager && isset($componentArgs['cms_user_id'])) || $thisJRUser->superPropertyManager) { // This is a property manager attempting to view a guest's profile, probably for inclusion in the Booking details page, or a super property manager
 			$property_uid = getDefaultProperty();
-			$query = "SELECT mos_userid FROM #__jomres_guests WHERE mos_userid = ".(int) $cms_user_id." AND property_uid = ".(int)$property_uid;  // We'll check that the guest has been a guest of this property
+			$query = "SELECT mos_userid FROM #__castor_guests WHERE mos_userid = ".(int) $cms_user_id." AND property_uid = ".(int)$property_uid;  // We'll check that the guest has been a guest of this property
 			$result = doSelectSql($query);
 			if (count($result) == 1) {
 				$can_view_private_details = true;
@@ -104,13 +104,13 @@ class j06000show_user_profile
 
 		if ($result == false) { // Can't find that user, have they been deleted?
 			if ((int)$thisJRUser->id == $cms_user_id) {
-				jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL.'&task=edit_my_account'), '');
+				castorRedirect(castorURL(CASTOR_SITEPAGE_URL.'&task=edit_my_account'), '');
 			} else {
 				$output = array();
 				$output['GUEST_PROFILE_UNKNOWN'] = jr_gettext('GUEST_PROFILE_UNKNOWN', 'GUEST_PROFILE_UNKNOWN', false);
 				$pageoutput[ ] = $output;
 				$tmpl = new patTemplate();
-				$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+				$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 				$tmpl->readTemplatesFromInput('unknown_user.html');
 				$tmpl->addRows('pageoutput', $pageoutput);
 				$this->retVals = $tmpl->getParsedTemplate();
@@ -122,7 +122,7 @@ class j06000show_user_profile
 		}
 
 		if ( trim($jrportal_guest_profile->firstname) == '' && trim($jrportal_guest_profile->surname) == '' && $cms_user_id == $thisJRUser->id ) { // User hasn't saved any data yet, we'll redirect them to the edit my account page
-			jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL.'&task=edit_my_account'), '');
+			castorRedirect(castorURL(CASTOR_SITEPAGE_URL.'&task=edit_my_account'), '');
 		}
 
 		$output = array();
@@ -130,7 +130,7 @@ class j06000show_user_profile
 		
 		$guest_is_also_a_manager = false;
 		
-		$query = "SELECT access_level FROM #__jomres_managers WHERE userid = ".(int)$cms_user_id;
+		$query = "SELECT access_level FROM #__castor_managers WHERE userid = ".(int)$cms_user_id;
 		$manager_state = doSelectSql($query, 2);
 
 		$output[ 'MY_PROPERTIES' ]		= '';
@@ -142,7 +142,7 @@ class j06000show_user_profile
 			}
 			
 			if (!$is_super_manager) {
-				$query = "SELECT property_uid FROM  FROM #__jomres_managers_propertys_xref WHERE manager_id = ".(int)$cms_user_id;
+				$query = "SELECT property_uid FROM  FROM #__castor_managers_propertys_xref WHERE manager_id = ".(int)$cms_user_id;
 			}
 			
 			$output[ 'HOST_PROPERTIES' ]		= $MiniComponents->specificEvent('06000', 'show_host_properties', array ('output_now' => false , "manager_id" => (int)$cms_user_id ));
@@ -157,16 +157,16 @@ class j06000show_user_profile
 		$output[ 'FIRSTNAME' ]		= $jrportal_guest_profile->firstname;
 		$output[ 'SURNAME' ]		= $jrportal_guest_profile->surname;
 
-		jomres_set_page_title( 0 ,  jr_gettext('GUEST_PROFILE_MY_NAME', 'GUEST_PROFILE_MY_NAME', false).' '.$output[ 'FIRSTNAME' ].' '. $output[ 'SURNAME' ] );
+		castor_set_page_title( 0 ,  jr_gettext('GUEST_PROFILE_MY_NAME', 'GUEST_PROFILE_MY_NAME', false).' '.$output[ 'FIRSTNAME' ].' '. $output[ 'SURNAME' ] );
 
 		$output[ 'REGION' ]			= find_region_name($jrportal_guest_profile->region);
 		$output[ 'COUNTRY' ]		= getSimpleCountry($jrportal_guest_profile->country);
-		$output[ 'ABOUT_ME' ]		= $jomres_markdown->get_markdown($jrportal_guest_profile->about_me);
+		$output[ 'ABOUT_ME' ]		= $castor_markdown->get_markdown($jrportal_guest_profile->about_me);
 
 		$output[ 'IMAGE' ]			= $jrportal_guest_profile->image;
 
-		$output[ 'HREGION' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_REGION', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_REGION', false);
-		$output[ 'HCOUNTRY' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', false);
+		$output[ 'HREGION' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_REGION', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_REGION', false);
+		$output[ 'HCOUNTRY' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', false);
 		$output[ 'GUEST_PROFILE_ABOUT_ME' ] = jr_gettext('GUEST_PROFILE_ABOUT_ME', 'GUEST_PROFILE_ABOUT_ME', false);
 		
 		$output[ 'GUEST_PROFILE_WELCOME' ] = jr_gettext('GUEST_PROFILE_WELCOME', 'GUEST_PROFILE_WELCOME', false);
@@ -188,14 +188,14 @@ class j06000show_user_profile
 			$private_output[0][ 'PASSPORT_NUMBER' ]	= $jrportal_guest_profile->passport_number;
 			$private_output[0][ 'IBAN' ]				= $jrportal_guest_profile->iban;
 
-			$private_output[0][ 'HSURNAME' ] = jr_gettext('_JOMRES_COM_MR_DISPGUEST_SURNAME', '_JOMRES_COM_MR_DISPGUEST_SURNAME', false);
-			$private_output[0][ 'HHOUSE' ] = jr_gettext('_JOMRES_COM_MR_DISPGUEST_HOUSE', '_JOMRES_COM_MR_DISPGUEST_HOUSE', false);
-			$private_output[0][ 'HSTREET' ] = jr_gettext('_JOMRES_COM_MR_DISPGUEST_STREET', '_JOMRES_COM_MR_DISPGUEST_STREET', false);
-			$private_output[0][ 'HTOWN' ] = jr_gettext('_JOMRES_COM_MR_DISPGUEST_TOWN', '_JOMRES_COM_MR_DISPGUEST_TOWN', false);
-			$private_output[0][ 'HPOSTCODE' ] = jr_gettext('_JOMRES_COM_MR_DISPGUEST_POSTCODE', '_JOMRES_COM_MR_DISPGUEST_POSTCODE', false);
-			$private_output[0][ 'HLANDLINE' ] = jr_gettext('_JOMRES_COM_MR_DISPGUEST_LANDLINE', '_JOMRES_COM_MR_DISPGUEST_LANDLINE', false);
-			$private_output[0][ 'HMOBILE' ] = jr_gettext('_JOMRES_COM_MR_DISPGUEST_MOBILE', '_JOMRES_COM_MR_DISPGUEST_MOBILE', false);
-			$private_output[0][ 'HEMAIL' ] = jr_gettext('_JOMRES_COM_MR_EB_GUEST_JOMRES_EMAIL_EXPL', '_JOMRES_COM_MR_EB_GUEST_JOMRES_EMAIL_EXPL', false);
+			$private_output[0][ 'HSURNAME' ] = jr_gettext('_CASTOR_COM_MR_DISPGUEST_SURNAME', '_CASTOR_COM_MR_DISPGUEST_SURNAME', false);
+			$private_output[0][ 'HHOUSE' ] = jr_gettext('_CASTOR_COM_MR_DISPGUEST_HOUSE', '_CASTOR_COM_MR_DISPGUEST_HOUSE', false);
+			$private_output[0][ 'HSTREET' ] = jr_gettext('_CASTOR_COM_MR_DISPGUEST_STREET', '_CASTOR_COM_MR_DISPGUEST_STREET', false);
+			$private_output[0][ 'HTOWN' ] = jr_gettext('_CASTOR_COM_MR_DISPGUEST_TOWN', '_CASTOR_COM_MR_DISPGUEST_TOWN', false);
+			$private_output[0][ 'HPOSTCODE' ] = jr_gettext('_CASTOR_COM_MR_DISPGUEST_POSTCODE', '_CASTOR_COM_MR_DISPGUEST_POSTCODE', false);
+			$private_output[0][ 'HLANDLINE' ] = jr_gettext('_CASTOR_COM_MR_DISPGUEST_LANDLINE', '_CASTOR_COM_MR_DISPGUEST_LANDLINE', false);
+			$private_output[0][ 'HMOBILE' ] = jr_gettext('_CASTOR_COM_MR_DISPGUEST_MOBILE', '_CASTOR_COM_MR_DISPGUEST_MOBILE', false);
+			$private_output[0][ 'HEMAIL' ] = jr_gettext('_CASTOR_COM_MR_EB_GUEST_CASTOR_EMAIL_EXPL', '_CASTOR_COM_MR_EB_GUEST_CASTOR_EMAIL_EXPL', false);
 			$private_output[0][ 'GUEST_PROFILE_DRIVING_LICENSE' ] = jr_gettext('GUEST_PROFILE_DRIVING_LICENSE', 'GUEST_PROFILE_DRIVING_LICENSE', false);
 			$private_output[0][ 'GUEST_PROFILE_PASSPORT_NUMBER' ] = jr_gettext('GUEST_PROFILE_PASSPORT_NUMBER', 'GUEST_PROFILE_PASSPORT_NUMBER', false);
 			$private_output[0][ 'GUEST_PROFILE_IBAN' ] = jr_gettext('GUEST_PROFILE_IBAN', 'GUEST_PROFILE_IBAN', false);
@@ -207,7 +207,7 @@ class j06000show_user_profile
 		$pageoutput[ ] = $output;
 
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 		$tmpl->readTemplatesFromInput('show_user_profile.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->addRows('private_output', $private_output);
@@ -224,3 +224,4 @@ class j06000show_user_profile
 		return $this->retVals;
 	}
 }
+

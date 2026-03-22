@@ -1,28 +1,28 @@
-<patTemplate:tmpl name="pageoutput" unusedvars="strip">
+﻿<patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <script type="text/javascript">
 var RecaptchaOptions = {
 	custom_translations: {
-		instructions_visual: "{JOMRES_RECAPTCHA_INSTRUCTIONS_VISUAL}",
-		instructions_audio: "{JOMRES_RECAPTCHA_INSTRUCTIONS_AUDIO}",
-		play_again: "{JOMRES_RECAPTCHA_PLAY_AGAIN}",
-		cant_hear_this: "{JOMRES_RECAPTCHA_CANT_HEAR_THIS}",
-		visual_challenge: "{JOMRES_RECAPTCHA_VISUAL_CHALLENGE}",
-		audio_challenge: "{JOMRES_RECAPTCHA_AUDIO_CHALLENGE}",
-		refresh_btn: "{JOMRES_RECAPTCHA_REFRESH_BTN}",
-		help_btn: "{JOMRES_RECAPTCHA_HELP_BTN}",
-		incorrect_try_again: "{JOMRES_RECAPTCHA_INCORRECT_TRY_AGAIN}",
+		instructions_visual: "{CASTOR_RECAPTCHA_INSTRUCTIONS_VISUAL}",
+		instructions_audio: "{CASTOR_RECAPTCHA_INSTRUCTIONS_AUDIO}",
+		play_again: "{CASTOR_RECAPTCHA_PLAY_AGAIN}",
+		cant_hear_this: "{CASTOR_RECAPTCHA_CANT_HEAR_THIS}",
+		visual_challenge: "{CASTOR_RECAPTCHA_VISUAL_CHALLENGE}",
+		audio_challenge: "{CASTOR_RECAPTCHA_AUDIO_CHALLENGE}",
+		refresh_btn: "{CASTOR_RECAPTCHA_REFRESH_BTN}",
+		help_btn: "{CASTOR_RECAPTCHA_HELP_BTN}",
+		incorrect_try_again: "{CASTOR_RECAPTCHA_INCORRECT_TRY_AGAIN}",
 	},
 	lang: 'en', // Unavailable while writing this code (just for audio challenge)
 	theme: 'clean' //can be changed to 'red','white','blackglass'
 };
 
-jomresJquery().ready(function() {
-	jomresJquery.validator.setDefaults({
+castorJquery().ready(function() {
+	castorJquery.validator.setDefaults({
 		highlight: function(element) {
-			jomresJquery(element).closest('.form-group').addClass('has-error');
+			castorJquery(element).closest('.form-group').addClass('has-error');
 		},
 		unhighlight: function(element) {
-			jomresJquery(element).closest('.form-group').removeClass('has-error');
+			castorJquery(element).closest('.form-group').removeClass('has-error');
 		},
 		errorElement: 'span',
 		errorClass: 'help-block',
@@ -36,10 +36,10 @@ jomresJquery().ready(function() {
 	});
 
 	jQuery.extend(jQuery.validator.messages, {
-	  required: "{_JOMRES_REQUIREDFIELDS}"
+	  required: "{_CASTOR_REQUIREDFIELDS}"
 	})
 
-	jomresJquery('#regForm').validate({
+	castorJquery('#regForm').validate({
 		rules: {
 			guest_name: {
 				minlength: 3,
@@ -61,10 +61,10 @@ jomresJquery().ready(function() {
 			
 		},
 		highlight: function(element) {
-			jomresJquery(element).closest('.form-group').addClass('has-error');
+			castorJquery(element).closest('.form-group').addClass('has-error');
 		},
 		unhighlight: function(element) {
-			jomresJquery(element).closest('.form-group').removeClass('has-error');
+			castorJquery(element).closest('.form-group').removeClass('has-error');
 		},
 		success: function (label) {
 			label
@@ -78,7 +78,7 @@ jomresJquery().ready(function() {
 
 <p>{SUBJECT}</p>
 
-<form id="regForm" name="contact_form" action="{JOMRES_SITEPAGE_URL_NOSEF}&task=contactowner" method="POST" class="form-horizontal" role="form">
+<form id="regForm" name="contact_form" action="{CASTOR_SITEPAGE_URL_NOSEF}&task=contactowner" method="POST" class="form-horizontal" role="form">
 	<div class="form-group">
 		<label class="col-md-2 control-label" for="guest_name">{HNAME}</label>
 		<div class="col-md-10">

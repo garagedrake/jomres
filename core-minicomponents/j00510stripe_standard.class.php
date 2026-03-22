@@ -1,22 +1,22 @@
-<?php
+﻿<?php
 /**
-* Jomres CMS Agnostic Plugin
-* @author Woollyinwales IT <sales@jomres.net>
-* @version Jomres 9 
-* @package Jomres
+* Castor CMS Agnostic Plugin
+* @author Woollyinwales IT <sales@castor.net>
+* @version Castor 9 
+* @package Castor
 * @copyright	2005-2022 Woollyinwales IT
-* Jomres (tm) PHP files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project.
+* Castor (tm) PHP files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project.
 **/
 
 // ################################################################
-defined( '_JOMRES_INITCHECK' ) or die( 'Direct Access to this file is not allowed.' );
+defined( '_CASTOR_INITCHECK' ) or die( 'Direct Access to this file is not allowed.' );
 // ################################################################
 	#[AllowDynamicProperties]
 class j00510stripe_standard {
 	function __construct()
 		{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return 
-		$MiniComponents =jomres_getSingleton('mcHandler');
+		$MiniComponents =castor_getSingleton('mcHandler');
 		if ($MiniComponents->template_touch)
 			{
 			$this->template_touchable=false; return;
@@ -38,21 +38,21 @@ class j00510stripe_standard {
 		$settingArray['live_signing_secret']="";
 
 		$yesno = array();
-		$yesno[] = jomresHTML::makeOption( '0', jr_gettext('_JOMRES_COM_MR_NO','_JOMRES_COM_MR_NO',FALSE) );
-		$yesno[] = jomresHTML::makeOption( '1', jr_gettext('_JOMRES_COM_MR_YES','_JOMRES_COM_MR_YES',FALSE) );
+		$yesno[] = castorHTML::makeOption( '0', jr_gettext('_CASTOR_COM_MR_NO','_CASTOR_COM_MR_NO',FALSE) );
+		$yesno[] = castorHTML::makeOption( '1', jr_gettext('_CASTOR_COM_MR_YES','_CASTOR_COM_MR_YES',FALSE) );
 
 		$output = [];
 
-		$query="SELECT setting,value FROM #__jomres_pluginsettings WHERE prid = '".(int)$defaultProperty."' AND plugin = '$plugin' ";
+		$query="SELECT setting,value FROM #__castor_pluginsettings WHERE prid = '".(int)$defaultProperty."' AND plugin = '$plugin' ";
 		$settingsList=doSelectSql($query);
 		foreach ($settingsList as $set) {
 			$settingArray[$set->setting]=$set->value;
 		}
 
-		$output['LOGO'] = JOMRES_IMAGES_RELPATH."j00510".$plugin.".png";
+		$output['LOGO'] = CASTOR_IMAGES_RELPATH."j00510".$plugin.".png";
 
-		$output['JR_GATEWAY_CONFIG_ACTIVE']	= jr_gettext('_JOMRES_CUSTOMTEXT_GATEWAY_CONFIG_ACTIVE'.$plugin,"Active");
-		$output['ACTIVE']					= jomresHTML::selectList( $yesno, 'active', '', 'value', 'text', $settingArray['active'] );
+		$output['JR_GATEWAY_CONFIG_ACTIVE']	= jr_gettext('_CASTOR_CUSTOMTEXT_GATEWAY_CONFIG_ACTIVE'.$plugin,"Active");
+		$output['ACTIVE']					= castorHTML::selectList( $yesno, 'active', '', 'value', 'text', $settingArray['active'] );
 
 		$output['TEST_PUBLISHABLE_KEY']		= $settingArray['test_publishable_key'];
 		$output['TEST_SECRET_KEY']			= $settingArray['test_secret_key'];
@@ -62,7 +62,7 @@ class j00510stripe_standard {
 		$output['LIVE_SIGNING_SECRET']			= $settingArray['live_signing_secret'];
 		$output['TEST_SIGNING_SECRET']			= $settingArray['test_signing_secret'];
 
-		$output['TEST_MODE']				= jomresHTML::selectList( $yesno, 'test_mode', '', 'value', 'text', $settingArray['test_mode']);
+		$output['TEST_MODE']				= castorHTML::selectList( $yesno, 'test_mode', '', 'value', 'text', $settingArray['test_mode']);
 
 		$output['STRIPE_STANDARD_TITLE']					= jr_gettext('STRIPE_STANDARD_TITLE','STRIPE_STANDARD_TITLE');
 		$output['STRIPE_STANDARD_MARKETING']				= jr_gettext('STRIPE_STANDARD_MARKETING','STRIPE_STANDARD_MARKETING');
@@ -79,7 +79,7 @@ class j00510stripe_standard {
 		$output['COMMON_SUBMIT']				= jr_gettext('COMMON_SUBMIT','COMMON_SUBMIT');
 		$output['GATEWAY']						= 'stripe_standard';
 
-		$output['WEBHOOK_URL'] = JOMRES_SITEPAGE_URL_AJAX.'&task=stripe_standard_callback';
+		$output['WEBHOOK_URL'] = CASTOR_SITEPAGE_URL_AJAX.'&task=stripe_standard_callback';
 		$output['STRIPE_STANDARD_WEBHOOK_URL']	= jr_gettext('STRIPE_STANDARD_WEBHOOK_URL','STRIPE_STANDARD_WEBHOOK_URL');
 		$output['STRIPE_STANDARD_WEBHOOK_URL_DESC']	= jr_gettext('STRIPE_STANDARD_WEBHOOK_URL_DESC','STRIPE_STANDARD_WEBHOOK_URL_DESC');
 
@@ -90,7 +90,7 @@ class j00510stripe_standard {
 
 		$pageoutput[]=$output;
 		$tmpl = new patTemplate();
-			$tmpl->setRoot( JOMRES_TEMPLATEPATH_BACKEND );
+			$tmpl->setRoot( CASTOR_TEMPLATEPATH_BACKEND );
 		$tmpl->readTemplatesFromInput( 'stripe_standard_edit_gateway.html' );
 		$tmpl->addRows( 'edit_gateway', $pageoutput );
 		$tmpl->displayParsedTemplate();
@@ -109,3 +109,4 @@ class j00510stripe_standard {
 		return null;
 		}
 	}
+

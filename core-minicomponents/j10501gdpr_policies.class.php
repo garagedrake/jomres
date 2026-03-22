@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,14 +36,14 @@ class j10501gdpr_policies
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 
 		if (!isset($jrConfig[ 'admin_options_level' ])) {
@@ -58,23 +58,23 @@ class j10501gdpr_policies
 
 		$this->addCountryRegionJs();
 
-		$configurationPanel->startPanel(jr_gettext('_JOMRES_GDPR_POLICIES', '_JOMRES_GDPR_POLICIES', false));
+		$configurationPanel->startPanel(jr_gettext('_CASTOR_GDPR_POLICIES', '_CASTOR_GDPR_POLICIES', false));
 		$lists = $componentArgs[ 'lists' ];
-		$configurationPanel->insertDescription(jr_gettext('_JOMRES_GDPR_POLICIES_DESC', '_JOMRES_GDPR_POLICIES_DESC', false));
+		$configurationPanel->insertDescription(jr_gettext('_CASTOR_GDPR_POLICIES_DESC', '_CASTOR_GDPR_POLICIES_DESC', false));
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_GDPR_CONFIG_ENABLE', '_JOMRES_GDPR_CONFIG_ENABLE', false));
+		$configurationPanel->setleft(jr_gettext('_CASTOR_GDPR_CONFIG_ENABLE', '_CASTOR_GDPR_CONFIG_ENABLE', false));
 		$configurationPanel->setmiddle($lists[ 'enable_gdpr_compliant_fucntionality' ]);
-		$configurationPanel->setright(jr_gettext('_JOMRES_GDPR_CONFIG_ENABLE_DESC', '_JOMRES_GDPR_CONFIG_ENABLE_DESC', false));
+		$configurationPanel->setright(jr_gettext('_CASTOR_GDPR_CONFIG_ENABLE_DESC', '_CASTOR_GDPR_CONFIG_ENABLE_DESC', false));
 		$configurationPanel->insertSetting();
 		
-		$configurationPanel->setleft(jr_gettext('_JOMRES_GDPR_BOOKING_RETENTION', '_JOMRES_GDPR_BOOKING_RETENTION', false));
+		$configurationPanel->setleft(jr_gettext('_CASTOR_GDPR_BOOKING_RETENTION', '_CASTOR_GDPR_BOOKING_RETENTION', false));
 		$configurationPanel->setmiddle('<input type="text" class="input-large" name="cfg_gdpr_booking_retention_period" value="'.$jrConfig[ 'gdpr_booking_retention_period' ].'" />');
-		$configurationPanel->setright(jr_gettext('_JOMRES_GDPR_BOOKING_RETENTION_DESC', '_JOMRES_GDPR_BOOKING_RETENTION_DESC', false));
+		$configurationPanel->setright(jr_gettext('_CASTOR_GDPR_BOOKING_RETENTION_DESC', '_CASTOR_GDPR_BOOKING_RETENTION_DESC', false));
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_GDPR_INVOICE_RETENTION', '_JOMRES_GDPR_INVOICE_RETENTION', false));
+		$configurationPanel->setleft(jr_gettext('_CASTOR_GDPR_INVOICE_RETENTION', '_CASTOR_GDPR_INVOICE_RETENTION', false));
 		$configurationPanel->setmiddle('<input type="text" class="input-large" name="cfg_gdpr_other_invoice_retention_period" value="'.$jrConfig[ 'gdpr_other_invoice_retention_period' ].'" />');
-		$configurationPanel->setright(jr_gettext('_JOMRES_GDPR_INVOICE_RETENTION_DESC', '_JOMRES_GDPR_INVOICE_RETENTION_DESC', false));
+		$configurationPanel->setright(jr_gettext('_CASTOR_GDPR_INVOICE_RETENTION_DESC', '_CASTOR_GDPR_INVOICE_RETENTION_DESC', false));
 		$configurationPanel->insertSetting();
 
 
@@ -90,9 +90,9 @@ class j10501gdpr_policies
 		?>
 <script type="text/javascript">
 	document.addEventListener('DOMContentLoaded', function(){
-	jomresJquery("#cfg_business_country").change(function(){
-		var selectedValue = jomresJquery(this).val();
-		jomresJquery.ajax({
+	castorJquery("#cfg_business_country").change(function(){
+		var selectedValue = castorJquery(this).val();
+		castorJquery.ajax({
 			type: 'GET',
 			url: live_site_ajax + '&task=get_region_dropdown_for_country_code',
 			data: {
@@ -116,3 +116,4 @@ class j10501gdpr_policies
 		return null;
 	}
 }
+

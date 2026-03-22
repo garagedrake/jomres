@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,7 +35,7 @@ class j16000touch_templates
 	 
 	public function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -45,38 +45,38 @@ class j16000touch_templates
 			return;
 		}
 
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 
 		if ($jrConfig['language_context'] == '') {
 			$jrConfig['language_context'] = '0';
 		}
 
-		$language_context = jomresGetParam($_GET, 'language_context', $jrConfig['language_context']);
+		$language_context = castorGetParam($_GET, 'language_context', $jrConfig['language_context']);
 		set_showtime('property_type', $language_context);
 
 		echo '<script type="text/javascript">
-			var jomres_target_language = "'.get_showtime('lang').'"
+			var castor_target_language = "'.get_showtime('lang').'"
 			</script>';
 
 		$javascript = 'onchange="switch_language_context(this.value);"';
 
-		echo '<h2 class="page-header">'.jr_gettext('_JOMRES_TOUCHTEMPLATES', '_JOMRES_TOUCHTEMPLATES', false).' - '.get_showtime('lang').'</h2>';
+		echo '<h2 class="page-header">'.jr_gettext('_CASTOR_TOUCHTEMPLATES', '_CASTOR_TOUCHTEMPLATES', false).' - '.get_showtime('lang').'</h2>';
 
-		$jomres_property_types = jomres_singleton_abstract::getInstance('jomres_property_types');
-		echo '<p>'.jr_gettext('_JOMRES_COM_LANGUAGE_CONTEXT', '_JOMRES_COM_LANGUAGE_CONTEXT', false) . ' ' . $jomres_property_types->getPropertyTypeDescDropdown($language_context, 'language_context', $javascript).'</p>';
+		$castor_property_types = castor_singleton_abstract::getInstance('castor_property_types');
+		echo '<p>'.jr_gettext('_CASTOR_COM_LANGUAGE_CONTEXT', '_CASTOR_COM_LANGUAGE_CONTEXT', false) . ' ' . $castor_property_types->getPropertyTypeDescDropdown($language_context, 'language_context', $javascript).'</p>';
 
-		echo simple_template_output(JOMRES_TEMPLATEPATH_ADMINISTRATOR, $template = 'translate_lang_file_strings_header.html', jr_gettext( '_JOMRES_COM_TRANSLATE_LANGUAGEFILES_INFO', '_JOMRES_COM_TRANSLATE_LANGUAGEFILES_INFO' , false ));
+		echo simple_template_output(CASTOR_TEMPLATEPATH_ADMINISTRATOR, $template = 'translate_lang_file_strings_header.html', jr_gettext( '_CASTOR_COM_TRANSLATE_LANGUAGEFILES_INFO', '_CASTOR_COM_TRANSLATE_LANGUAGEFILES_INFO' , false ));
 
 
-		$basic_subscription_package_details = jomres_singleton_abstract::getInstance('basic_subscription_package_details');
+		$basic_subscription_package_details = castor_singleton_abstract::getInstance('basic_subscription_package_details');
 
 		if (!empty($basic_subscription_package_details->allPackages)) {
 			echo jr_gettext('_JRPORTAL_SUBSCRIPTIONS_PACKAGES_TITLE', '_JRPORTAL_SUBSCRIPTIONS_PACKAGES_TITLE', false).'<br/>';
 
 			foreach ($basic_subscription_package_details->allPackages as $package) {
-				$pack_name = jr_gettext('_JOMRES_CUSTOMTEXT_SUBSCRIPTIONPACKAGES_NAME'.$package[ 'id' ], stripslashes($package[ 'name' ]));
-				$pack_desc = jr_gettext('_JOMRES_CUSTOMTEXT_SUBSCRIPTIONPACKAGES_DESC'.$package[ 'id' ], stripslashes($package[ 'description' ]));
+				$pack_name = jr_gettext('_CASTOR_CUSTOMTEXT_SUBSCRIPTIONPACKAGES_NAME'.$package[ 'id' ], stripslashes($package[ 'name' ]));
+				$pack_desc = jr_gettext('_CASTOR_CUSTOMTEXT_SUBSCRIPTIONPACKAGES_DESC'.$package[ 'id' ], stripslashes($package[ 'description' ]));
 				echo $pack_name;
 				echo '&nbsp;';
 				echo $pack_desc;
@@ -85,14 +85,14 @@ class j16000touch_templates
 		}
 
 		echo '<hr/>';
-		$query = "SELECT room_classes_uid,room_class_abbv FROM #__jomres_room_classes WHERE property_uid = '0' ";
+		$query = "SELECT room_classes_uid,room_class_abbv FROM #__castor_room_classes WHERE property_uid = '0' ";
 		$roomtypes = doSelectSql($query);
-		echo jr_gettext('_JOMRES_COM_MR_VRCT_TAB_ROOMTYPES', '_JOMRES_COM_MR_VRCT_TAB_ROOMTYPES', false).'<br/>';
+		echo jr_gettext('_CASTOR_COM_MR_VRCT_TAB_ROOMTYPES', '_CASTOR_COM_MR_VRCT_TAB_ROOMTYPES', false).'<br/>';
 
 		foreach ($roomtypes as $rType) {
-			$roomtype_abbv = jr_gettext('_JOMRES_CUSTOMTEXT_ROOMTYPES_ABBV'.$rType->room_classes_uid, stripslashes($rType->room_class_abbv));
-			//$roomtype_desc = jr_gettext('_JOMRES_CUSTOMTEXT_ROOMTYPES_DESC'.$rType->room_classes_uid,		stripslashes($rType->room_class_full_desc) );
-			//echo '<img src="'.get_showtime('live_site').'/'.$rType->image.'" />'; // Do not re-enable this line, if you do then Jomres will not 'hold' the current language because for some reason showtime triggers the creation of a phantom session file in the root directory.
+			$roomtype_abbv = jr_gettext('_CASTOR_CUSTOMTEXT_ROOMTYPES_ABBV'.$rType->room_classes_uid, stripslashes($rType->room_class_abbv));
+			//$roomtype_desc = jr_gettext('_CASTOR_CUSTOMTEXT_ROOMTYPES_DESC'.$rType->room_classes_uid,		stripslashes($rType->room_class_full_desc) );
+			//echo '<img src="'.get_showtime('live_site').'/'.$rType->image.'" />'; // Do not re-enable this line, if you do then Castor will not 'hold' the current language because for some reason showtime triggers the creation of a phantom session file in the root directory.
 			echo '&nbsp;';
 			echo $roomtype_abbv;
 			//echo "&nbsp;";
@@ -100,15 +100,15 @@ class j16000touch_templates
 			echo '<br/>';
 		}
 		echo '<hr/>';
-		$query = "SELECT hotel_features_uid,hotel_feature_abbv,hotel_feature_full_desc FROM #__jomres_hotel_features WHERE property_uid = '0' ORDER BY hotel_feature_abbv ";
+		$query = "SELECT hotel_features_uid,hotel_feature_abbv,hotel_feature_full_desc FROM #__castor_hotel_features WHERE property_uid = '0' ORDER BY hotel_feature_abbv ";
 		$propertyFeaturesList = doSelectSql($query);
-		echo jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTYFEATURES_HEADER_LINK', '_JOMRES_COM_MR_VRCT_PROPERTYFEATURES_HEADER_LINK', false).'<br/>';
+		echo jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTYFEATURES_HEADER_LINK', '_CASTOR_COM_MR_VRCT_PROPERTYFEATURES_HEADER_LINK', false).'<br/>';
 
 		foreach ($propertyFeaturesList as $propertyFeature) {
-			$feature_abbv = jr_gettext('_JOMRES_CUSTOMTEXT_FEATURES_ABBV'.$propertyFeature->hotel_features_uid, stripslashes($propertyFeature->hotel_feature_abbv));
-			$feature_desc = jr_gettext('_JOMRES_CUSTOMTEXT_FEATURES_DESC'.$propertyFeature->hotel_features_uid, stripslashes($propertyFeature->hotel_feature_full_desc));
+			$feature_abbv = jr_gettext('_CASTOR_CUSTOMTEXT_FEATURES_ABBV'.$propertyFeature->hotel_features_uid, stripslashes($propertyFeature->hotel_feature_abbv));
+			$feature_desc = jr_gettext('_CASTOR_CUSTOMTEXT_FEATURES_DESC'.$propertyFeature->hotel_features_uid, stripslashes($propertyFeature->hotel_feature_full_desc));
 
-			//echo '<img src="'.get_showtime('live_site').'/'.$propertyFeature->image.'" />';  // Do not re-enable this line, if you do then Jomres will not 'hold' the current language because for some reason showtime triggers the creation of a phantom session file in the root directory.
+			//echo '<img src="'.get_showtime('live_site').'/'.$propertyFeature->image.'" />';  // Do not re-enable this line, if you do then Castor will not 'hold' the current language because for some reason showtime triggers the creation of a phantom session file in the root directory.
 			echo '&nbsp;';
 			echo $feature_abbv;
 			echo '&nbsp;';
@@ -118,29 +118,29 @@ class j16000touch_templates
 		echo '<hr/>';
 
 		//property features categories
-		$query = 'SELECT `id`,`title` FROM #__jomres_hotel_features_categories ORDER BY title ';
+		$query = 'SELECT `id`,`title` FROM #__castor_hotel_features_categories ORDER BY title ';
 		$result = doSelectSql($query);
 		if (!empty($result)) {
-			echo jr_gettext('_JOMRES_PROPERTYFEATURES_HCATEGORIES', '_JOMRES_PROPERTYFEATURES_HCATEGORIES', false).'<br/>';
+			echo jr_gettext('_CASTOR_PROPERTYFEATURES_HCATEGORIES', '_CASTOR_PROPERTYFEATURES_HCATEGORIES', false).'<br/>';
 			foreach ($result as $r) {
-				echo jr_gettext('_JOMRES_PROPERTY_FEATURES_CATEGORY'.(int) $r->id, stripslashes($r->title));
+				echo jr_gettext('_CASTOR_PROPERTY_FEATURES_CATEGORY'.(int) $r->id, stripslashes($r->title));
 				echo '<br/>';
 			}
 		}
 		echo '<hr/>';
 
-		$jomres_property_types = jomres_singleton_abstract::getInstance('jomres_property_types');
-		$jomres_property_types->get_all_property_types();
+		$castor_property_types = castor_singleton_abstract::getInstance('castor_property_types');
+		$castor_property_types->get_all_property_types();
 
-		if (!empty($jomres_property_types->property_types)) {
-			echo jr_gettext('_JOMRES_COM_PTYPES_LIST_TITLE', '_JOMRES_COM_PTYPES_LIST_TITLE', false).'<br/>';
-			foreach ($jomres_property_types->property_types as $pt) {
+		if (!empty($castor_property_types->property_types)) {
+			echo jr_gettext('_CASTOR_COM_PTYPES_LIST_TITLE', '_CASTOR_COM_PTYPES_LIST_TITLE', false).'<br/>';
+			foreach ($castor_property_types->property_types as $pt) {
 			   // $this->all_property_types[ $pt['id'] ] = $pt['ptype_desc'];
 			   // $this->all_property_type_titles[ $pt['id'] ] = $pt['ptype'];
 
 
 			   // foreach ($result as $r) {
-					echo jr_gettext('_JOMRES_CUSTOMTEXT_PROPERTYTYPE'.(int) $pt['id'], stripslashes($pt['ptype']));
+					echo jr_gettext('_CASTOR_CUSTOMTEXT_PROPERTYTYPE'.(int) $pt['id'], stripslashes($pt['ptype']));
 					echo '<br/>';
 			  //  }
 			}
@@ -148,12 +148,12 @@ class j16000touch_templates
 
 
 		//property categories
-		$query = 'SELECT `id`,`title` FROM #__jomres_property_categories ORDER BY title ';
+		$query = 'SELECT `id`,`title` FROM #__castor_property_categories ORDER BY title ';
 		$result = doSelectSql($query);
 		if (!empty($result)) {
-			echo jr_gettext('_JOMRES_PROPERTY_HCATEGORIES', '_JOMRES_PROPERTY_HCATEGORIES').'<br/>';
+			echo jr_gettext('_CASTOR_PROPERTY_HCATEGORIES', '_CASTOR_PROPERTY_HCATEGORIES').'<br/>';
 			foreach ($result as $r) {
-				echo jr_gettext('_JOMRES_PROPERTY_CATEGORY'.(int) $r->id, stripslashes($r->title));
+				echo jr_gettext('_CASTOR_PROPERTY_CATEGORY'.(int) $r->id, stripslashes($r->title));
 				echo '<br/>';
 			}
 		}
@@ -161,15 +161,15 @@ class j16000touch_templates
 
 
 		if (isset($MiniComponents->registeredClasses["00005"]["custom_property_fields"])) {
-			jr_import('jomres_custom_property_field_handler');
+			jr_import('castor_custom_property_field_handler');
 
-			if (class_exists('jomres_custom_property_field_handler')) {
-				$custom_fields = new jomres_custom_property_field_handler();
-				$jomres_property_types = jomres_singleton_abstract::getInstance('jomres_property_types');
-				$jomres_property_types->get_all_property_types();
-				echo jr_gettext('_JOMRES_CUSTOM_PROPERTY_FIELDS_TITLE', '_JOMRES_CUSTOM_PROPERTY_FIELDS_TITLE', false).'<br/>';
+			if (class_exists('castor_custom_property_field_handler')) {
+				$custom_fields = new castor_custom_property_field_handler();
+				$castor_property_types = castor_singleton_abstract::getInstance('castor_property_types');
+				$castor_property_types->get_all_property_types();
+				echo jr_gettext('_CASTOR_CUSTOM_PROPERTY_FIELDS_TITLE', '_CASTOR_CUSTOM_PROPERTY_FIELDS_TITLE', false).'<br/>';
 				$shown_fields = array();
-				foreach ($jomres_property_types->property_types as $p) {
+				foreach ($castor_property_types->property_types as $p) {
 					$fields = $custom_fields->getAllCustomFields($p['id']);
 					if (!is_null($fields) && !empty($fields)) {
 						foreach ($fields as $t) {
@@ -192,3 +192,4 @@ class j16000touch_templates
 		return null;
 	}
 }
+

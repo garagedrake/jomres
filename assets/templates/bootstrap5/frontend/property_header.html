@@ -1,4 +1,4 @@
-<pattemplate:tmpl name="pageoutput" unusedvars="strip">
+﻿<pattemplate:tmpl name="pageoutput" unusedvars="strip">
 	<style>
         .fixedElement {
             background-color: #c0c0c0;
@@ -37,7 +37,7 @@
 										</div>
 									</div>
 									<pattemplate:tmpl name="permit" type="simpleCondition" requiredvars="permit_number">
-										<p class="badge bg-info">{_JOMRES_PERMIT_NUMBER_TITLE} {PERMIT_NUMBER}</p>
+										<p class="badge bg-info">{_CASTOR_PERMIT_NUMBER_TITLE} {PERMIT_NUMBER}</p>
 									</pattemplate:tmpl>
 									<div class="row">
 										
@@ -47,7 +47,7 @@
 											<span class="d-block d-sm-none">
 											<br>
 												<a href="tel:{TELEPHONE}" class="btn btn-success"><i class="fa fa-phone"></i>
-													{JOMRES_TAPTOCALL} {TELEPHONE}
+													{CASTOR_TAPTOCALL} {TELEPHONE}
 												</a>
 												<a href="whatsapp://send?phone={WHATSAPP_TELEPHONE}" class="btn btn-success d-none d-lg-block"><i class="fa fa-whatsapp"></i></a>
 											</span>
@@ -117,15 +117,15 @@
 	<script>
         function moveScroller() {
             var enabled = {STICKY_BOOKING_BUTTON_ENABLED};
-            var $anchor = jomresJquery("#scroller-anchor");
-            var $scroller = jomresJquery('#scroller');
+            var $anchor = castorJquery("#scroller-anchor");
+            var $scroller = castorJquery('#scroller');
 
             if ( enabled === false ) {
                 return;
             }
             
             var move = function() {
-                var st = jomresJquery(window).scrollTop();
+                var st = castorJquery(window).scrollTop();
                 var ot = $anchor.offset().top;
                 if(st > ot) {
                     $scroller.css({
@@ -139,11 +139,11 @@
                     });
                 }
             };
-            jomresJquery(window).scroll(move);
+            castorJquery(window).scroll(move);
             move();
         }
 
-        jomresJquery(function() {
+        castorJquery(function() {
             moveScroller();
         });
 	

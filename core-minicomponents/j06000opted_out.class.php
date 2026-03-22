@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,7 +36,7 @@ class j06000opted_out
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -50,15 +50,15 @@ class j06000opted_out
 			$output['RETURN_URL'] = $_REQUEST['jr_redirect_url'];
 		}
 		
-		$output['_JOMRES_GDPR_NOCONSENT_INTRO']						= jr_gettext('_JOMRES_GDPR_NOCONSENT_INTRO', '_JOMRES_GDPR_NOCONSENT_INTRO', false);
-		$output['_JOMRES_GDPR_NOCONSENT_DIDNOTCONSENT']				= jr_gettext('_JOMRES_GDPR_NOCONSENT_DIDNOTCONSENT', '_JOMRES_GDPR_NOCONSENT_DIDNOTCONSENT', false);
-		$output['_JOMRES_GDPR_NOCONSENT_DIDNOTCONSENT_LINK_TEXT']	= jr_gettext('_JOMRES_GDPR_NOCONSENT_DIDNOTCONSENT_LINK_TEXT', '_JOMRES_GDPR_NOCONSENT_DIDNOTCONSENT_LINK_TEXT', false);
-		$output['_JOMRES_GDPR_NOCONSENT_DIDNOTCONSENT_LINK_CONTINUE']	= jr_gettext('_JOMRES_GDPR_NOCONSENT_DIDNOTCONSENT_LINK_CONTINUE', '_JOMRES_GDPR_NOCONSENT_DIDNOTCONSENT_LINK_CONTINUE', false);
+		$output['_CASTOR_GDPR_NOCONSENT_INTRO']						= jr_gettext('_CASTOR_GDPR_NOCONSENT_INTRO', '_CASTOR_GDPR_NOCONSENT_INTRO', false);
+		$output['_CASTOR_GDPR_NOCONSENT_DIDNOTCONSENT']				= jr_gettext('_CASTOR_GDPR_NOCONSENT_DIDNOTCONSENT', '_CASTOR_GDPR_NOCONSENT_DIDNOTCONSENT', false);
+		$output['_CASTOR_GDPR_NOCONSENT_DIDNOTCONSENT_LINK_TEXT']	= jr_gettext('_CASTOR_GDPR_NOCONSENT_DIDNOTCONSENT_LINK_TEXT', '_CASTOR_GDPR_NOCONSENT_DIDNOTCONSENT_LINK_TEXT', false);
+		$output['_CASTOR_GDPR_NOCONSENT_DIDNOTCONSENT_LINK_CONTINUE']	= jr_gettext('_CASTOR_GDPR_NOCONSENT_DIDNOTCONSENT_LINK_CONTINUE', '_CASTOR_GDPR_NOCONSENT_DIDNOTCONSENT_LINK_CONTINUE', false);
 		
 
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 		$tmpl->readTemplatesFromInput('opted_out.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->displayParsedTemplate();
@@ -75,3 +75,4 @@ class j06000opted_out
 		return null;
 	}
 }
+

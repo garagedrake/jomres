@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,7 +36,7 @@ class j06001save_deposit
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -45,17 +45,17 @@ class j06001save_deposit
 		$MiniComponents->triggerEvent('02202'); // There is a 02202 script that will update the invoice
 		
 		$defaultProperty = getDefaultProperty();
-		$contractUid = intval(jomresGetParam($_POST, 'contractUid', 0));
-		$depositRef = getEscaped(jomresGetParam($_POST, 'depositRef', ''));
+		$contractUid = intval(castorGetParam($_POST, 'contractUid', 0));
+		$depositRef = getEscaped(castorGetParam($_POST, 'depositRef', ''));
 
 		if ($contractUid > 0) {
-			$saveMessage = jr_gettext('_JOMRES_COM_MR_EB_PAYM_DEPOSITSAVEMESSAGE', '_JOMRES_COM_MR_EB_PAYM_DEPOSITSAVEMESSAGE', false);
+			$saveMessage = jr_gettext('_CASTOR_COM_MR_EB_PAYM_DEPOSITSAVEMESSAGE', '_CASTOR_COM_MR_EB_PAYM_DEPOSITSAVEMESSAGE', false);
 
-			$jomres_messaging = jomres_singleton_abstract::getInstance('jomres_messages');
-			$jomres_messaging->set_message($saveMessage);
+			$castor_messaging = castor_singleton_abstract::getInstance('castor_messages');
+			$castor_messaging->set_message($saveMessage);
 
-			$query = "UPDATE #__jomres_contracts SET `deposit_paid`='1',`deposit_ref`='$depositRef' WHERE contract_uid='".(int) $contractUid."' AND property_uid = '".(int) $defaultProperty."'";
-			if (!doInsertSql($query, jr_gettext('_JOMRES_MR_AUDIT_ENTEREDDEPOSIT', '_JOMRES_MR_AUDIT_ENTEREDDEPOSIT', false))) {
+			$query = "UPDATE #__castor_contracts SET `deposit_paid`='1',`deposit_ref`='$depositRef' WHERE contract_uid='".(int) $contractUid."' AND property_uid = '".(int) $defaultProperty."'";
+			if (!doInsertSql($query, jr_gettext('_CASTOR_MR_AUDIT_ENTEREDDEPOSIT', '_CASTOR_MR_AUDIT_ENTEREDDEPOSIT', false))) {
 				trigger_error('Unable to update deposit entry, mysql db failure', E_USER_ERROR);
 			}
 			
@@ -69,7 +69,7 @@ class j06001save_deposit
 			$webhook_notification->data->depositref			 = $depositRef;
 			add_webhook_notification($webhook_notification);
 			
-			jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL.'&task=edit_booking&contract_uid='.(int) $contractUid), $saveMessage);
+			castorRedirect(castorURL(CASTOR_SITEPAGE_URL.'&task=edit_booking&contract_uid='.(int) $contractUid), $saveMessage);
 		} else {
 			trigger_error('Incorrect contract uid when saving deposit', E_USER_ERROR);
 		}
@@ -86,3 +86,4 @@ class j06001save_deposit
 		return null;
 	}
 }
+

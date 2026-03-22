@@ -1,4 +1,4 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 	<script type="text/javascript">
 		<!--
@@ -14,8 +14,8 @@
 	</script>
 	<h2>{PAGETITLE}: {PROPERTY_NAME}</h2>
 
-	<form action="{JOMRES_SITEPAGE_URL_ADMIN}" method="post" name="adminForm">
-		{JOMRESTOOLBAR}
+	<form action="{CASTOR_SITEPAGE_URL_ADMIN}" method="post" name="adminForm">
+		{CASTORTOOLBAR}
 		<table width="100%" border="0">
 			<tr>
 				<td width="50%" valign="top">
@@ -142,7 +142,7 @@
 			</tr>
 		</table>
 		<input type="hidden" name="id" value="{ID}"/>
-		<input type="hidden" name="option" value="com_jomres"/>
+		<input type="hidden" name="option" value="com_castor"/>
 		<input type="hidden" name="task" value="viewproperty"/>
 		{CSRF_TOKEN}
 	</form>

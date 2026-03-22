@@ -1,8 +1,8 @@
-<patTemplate:tmpl name="pageoutput" unusedvars="strip">
+﻿<patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <script type="text/javascript"> 
 
 function get_auth_form(authmethod) {
-		jomresJquery.ajax({ url:'{JOMRES_SITEPAGE_URL_AJAX}&task=ajax_webhooks_build_auth_form&auth_method='+authmethod+'&integration_id='+{INTEGRATION_ID},success: function(data)
+		castorJquery.ajax({ url:'{CASTOR_SITEPAGE_URL_AJAX}&task=ajax_webhooks_build_auth_form&auth_method='+authmethod+'&integration_id='+{INTEGRATION_ID},success: function(data)
 				{
 				populateDiv("auth_method_form_fields",data);
 				}, async: true
@@ -12,7 +12,7 @@ function get_auth_form(authmethod) {
     
 <h2 class="page-header">{PAGETITLE}</h2>
 
-<form action="{JOMRES_SITEPAGE_URL_NOSEF}" method="post" name="adminForm" class="form-horizontal" role="form">
+<form action="{CASTOR_SITEPAGE_URL_NOSEF}" method="post" name="adminForm" class="form-horizontal" role="form">
 	<fieldset>
 		<div class="control-group">
 			<label class="control-label" for="url">{WEBHOOKS_INTEGRATION_URL}</label>
@@ -37,7 +37,7 @@ function get_auth_form(authmethod) {
 {NOTES}
 	<div class="form-actions">
 		<div class="col-md-10 col-md-offset-2">
-			{JOMRESTOOLBAR}
+			{CASTORTOOLBAR}
 		</div>
 	</div>
 	

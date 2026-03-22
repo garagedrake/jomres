@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,16 +35,16 @@ class j06000show_property_reviews_stars
 	 
 	public function __construct($componentArgs)
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			$this->shortcode_data = array(
 				'task' => 'show_property_reviews_stars',
-				'info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_REVIEWS_SUMMARY',
+				'info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_REVIEWS_SUMMARY',
 				'arguments' => array(
 					0 => array(
 						'argument' => 'property_uid',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_REVIEWS_SUMMARY_ARG_PROPERTY_UID',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_REVIEWS_SUMMARY_ARG_PROPERTY_UID',
 						'arg_example' => '1',
 						),
 					),
@@ -54,13 +54,13 @@ class j06000show_property_reviews_stars
 		}
 		$this->retVals = '';
 
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 
 		if (isset($componentArgs[ 'property_uid' ])) {
 			$property_uid = (int)$componentArgs[ 'property_uid' ];
 		} else {
-			$property_uid = (int)jomresGetParam($_REQUEST, 'property_uid', 0);
+			$property_uid = (int)castorGetParam($_REQUEST, 'property_uid', 0);
 		}
 		
 		if ($property_uid == 0) {
@@ -84,8 +84,8 @@ class j06000show_property_reviews_stars
 		$output = array();
 		$pageoutput = array();
 
-		jr_import('jomres_reviews');
-		$Reviews = new jomres_reviews();
+		jr_import('castor_reviews');
+		$Reviews = new castor_reviews();
 		$Reviews->property_uid = $property_uid;
 		$itemRating = $Reviews->showRating($property_uid);
 
@@ -93,10 +93,10 @@ class j06000show_property_reviews_stars
 
 		$output[ 'RATING_STARS' ] = '';
 		for ($i = 1; $i <= floor($output[ 'AVERAGE_RATING' ]); ++$i) {
-			$output[ 'RATING_STARS' ] .= simple_template_output(JOMRES_TEMPLATEPATH_FRONTEND, $template = 'review_star_icon.html', '');
+			$output[ 'RATING_STARS' ] .= simple_template_output(CASTOR_TEMPLATEPATH_FRONTEND, $template = 'review_star_icon.html', '');
 		}
 
-		$output[ 'ONE_STAR' ] = simple_template_output(JOMRES_TEMPLATEPATH_FRONTEND, $template = 'review_star_icon.html', '');
+		$output[ 'ONE_STAR' ] = simple_template_output(CASTOR_TEMPLATEPATH_FRONTEND, $template = 'review_star_icon.html', '');
 		;
 
 
@@ -112,7 +112,7 @@ class j06000show_property_reviews_stars
 
 		$tmpl = new patTemplate();
 		$tmpl->addRows('pageoutput', $pageoutput);
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 		$tmpl->readTemplatesFromInput('show_property_reviews_stars.html');
 		$result = $tmpl->getParsedTemplate();
 
@@ -129,3 +129,4 @@ class j06000show_property_reviews_stars
 		return $this->retVals;
 	}
 }
+

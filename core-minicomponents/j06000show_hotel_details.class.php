@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,15 +36,15 @@ class j06000show_hotel_details
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			$this->shortcode_data = array(
 				'task' => 'show_hotel_details',
-				'info' => '_JOMRES_SHORTCODES_06000SHOW_HOTEL_DETAILS',
+				'info' => '_CASTOR_SHORTCODES_06000SHOW_HOTEL_DETAILS',
 				'arguments' => array(0 => array(
 						'argument' => 'property_uid',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SHOW_HOTEL_DETAILS_ARG_PROPERTY_UID',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SHOW_HOTEL_DETAILS_ARG_PROPERTY_UID',
 						'arg_example' => '5',
 						),
 					),
@@ -57,11 +57,11 @@ class j06000show_hotel_details
 		if (isset($componentArgs[ 'property_uid' ])) {
 			$property_uid = (int)$componentArgs[ 'property_uid' ];
 		} else {
-			$property_uid = (int)jomresGetParam($_REQUEST, 'property_uid', 0);
+			$property_uid = (int)castorGetParam($_REQUEST, 'property_uid', 0);
 		}
 
 		if ($property_uid == 0) {
-			$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+			$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 			if ($thisJRUser->userIsManager) {
 				$property_uid = getDefaultProperty();
 			} else {
@@ -73,21 +73,21 @@ class j06000show_hotel_details
 
 		$mrConfig = getPropertySpecificSettings($property_uid);
 
-		jomres_set_page_title( $property_uid ,  jr_gettext('_JOMRES_PATHWAY_PROPERTYDETAILS', '_JOMRES_PATHWAY_PROPERTYDETAILS', false) );
+		castor_set_page_title( $property_uid ,  jr_gettext('_CASTOR_PATHWAY_PROPERTYDETAILS', '_CASTOR_PATHWAY_PROPERTYDETAILS', false) );
 
 		if (isset($mrConfig['property_business_name']) && $mrConfig['property_business_name'] == '') {
-			$basic_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+			$basic_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 			$basic_property_details->gather_data($property_uid);
 
-			$output[ 'HPROPERTYNAME' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_NAME', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_NAME');
-			$output[ 'HSTREET' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_STREET', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_STREET');
-			$output[ 'HTOWN' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TOWN', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TOWN');
-			$output[ 'HREGION' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_REGION', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_REGION');
-			$output[ 'HCOUNTRY' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY');
-			$output[ 'HPOSTCODE' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_POSTCODE', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_POSTCODE');
-			$output[ 'HTELEPHONE' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE');
-			$output[ 'HFAX' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_FAX', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_FAX');
-			$output[ 'HEMAIL' ] = jr_gettext('_JOMRES_COM_MR_EB_GUEST_JOMRES_EMAIL_EXPL', '_JOMRES_COM_MR_EB_GUEST_JOMRES_EMAIL_EXPL');
+			$output[ 'HPROPERTYNAME' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_NAME', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_NAME');
+			$output[ 'HSTREET' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_STREET', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_STREET');
+			$output[ 'HTOWN' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TOWN', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TOWN');
+			$output[ 'HREGION' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_REGION', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_REGION');
+			$output[ 'HCOUNTRY' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY');
+			$output[ 'HPOSTCODE' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_POSTCODE', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_POSTCODE');
+			$output[ 'HTELEPHONE' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE');
+			$output[ 'HFAX' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_FAX', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_FAX');
+			$output[ 'HEMAIL' ] = jr_gettext('_CASTOR_COM_MR_EB_GUEST_CASTOR_EMAIL_EXPL', '_CASTOR_COM_MR_EB_GUEST_CASTOR_EMAIL_EXPL');
 
 			$output[ 'PROPERTY_NAME' ] = $basic_property_details->property_name;
 			$output[ 'STREET' ] = $basic_property_details->property_street;
@@ -101,21 +101,21 @@ class j06000show_hotel_details
 
 			$pageoutput[ ] = $output;
 			$tmpl = new patTemplate();
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 			$tmpl->readTemplatesFromInput('show_hotel_details.html');
 			$tmpl->addRows('pageoutput', $pageoutput);
 			$this->retVals = $tmpl->getParsedTemplate();
 		} else {
-			$output[ 'HBUSINESSNAME' ] = jr_gettext('_JOMRES_COM_YOURBUSINESS_NAME', '_JOMRES_COM_YOURBUSINESS_NAME');
-			$output[ 'HHOUSENO' ] = jr_gettext('_JOMRES_COM_YOURBUSINESSADDRESS', '_JOMRES_COM_YOURBUSINESSADDRESS');
-			$output[ 'HSTREET' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_STREET', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_STREET');
-			$output[ 'HTOWN' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TOWN', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TOWN');
-			$output[ 'HREGION' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_REGION', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_REGION');
-			$output[ 'HCOUNTRY' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY');
-			$output[ 'HPOSTCODE' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_POSTCODE', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_POSTCODE');
-			$output[ 'HTELEPHONE' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE');
-			$output[ 'HEMAIL' ] = jr_gettext('_JOMRES_COM_MR_EB_GUEST_JOMRES_EMAIL_EXPL', '_JOMRES_COM_MR_EB_GUEST_JOMRES_EMAIL_EXPL');
-			$output[ '_JOMRES_COM_YOURBUSINESS_VATNO' ] = jr_gettext('_JOMRES_COM_YOURBUSINESS_VATNO', '_JOMRES_COM_YOURBUSINESS_VATNO');
+			$output[ 'HBUSINESSNAME' ] = jr_gettext('_CASTOR_COM_YOURBUSINESS_NAME', '_CASTOR_COM_YOURBUSINESS_NAME');
+			$output[ 'HHOUSENO' ] = jr_gettext('_CASTOR_COM_YOURBUSINESSADDRESS', '_CASTOR_COM_YOURBUSINESSADDRESS');
+			$output[ 'HSTREET' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_STREET', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_STREET');
+			$output[ 'HTOWN' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TOWN', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TOWN');
+			$output[ 'HREGION' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_REGION', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_REGION');
+			$output[ 'HCOUNTRY' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY');
+			$output[ 'HPOSTCODE' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_POSTCODE', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_POSTCODE');
+			$output[ 'HTELEPHONE' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE');
+			$output[ 'HEMAIL' ] = jr_gettext('_CASTOR_COM_MR_EB_GUEST_CASTOR_EMAIL_EXPL', '_CASTOR_COM_MR_EB_GUEST_CASTOR_EMAIL_EXPL');
+			$output[ '_CASTOR_COM_YOURBUSINESS_VATNO' ] = jr_gettext('_CASTOR_COM_YOURBUSINESS_VATNO', '_CASTOR_COM_YOURBUSINESS_VATNO');
 
 			if (!isset($mrConfig['property_business_name'])) {
 				$mrConfig['property_business_name'] = '';
@@ -164,7 +164,7 @@ class j06000show_hotel_details
 
 			$pageoutput[ ] = $output;
 			$tmpl = new patTemplate();
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 			$tmpl->readTemplatesFromInput('show_property_business_details.html');
 			$tmpl->addRows('pageoutput', $pageoutput);
 			$this->retVals = $tmpl->getParsedTemplate();
@@ -181,3 +181,4 @@ class j06000show_hotel_details
 		return $this->retVals;
 	}
 }
+

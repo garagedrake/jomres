@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,14 +35,14 @@ class j06000cron_booking_data_archive_cleanup
 	 
 	public function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-			$query = "DELETE FROM #__jomres_booking_data_archive WHERE `date` <= DATE_SUB(CURRENT_TIMESTAMP(), INTERVAL 59 DAY)";
+			$query = "DELETE FROM #__castor_booking_data_archive WHERE `date` <= DATE_SUB(CURRENT_TIMESTAMP(), INTERVAL 59 DAY)";
 			doInsertSql($query, '');
 	}
 
@@ -52,3 +52,4 @@ class j06000cron_booking_data_archive_cleanup
 		return null;
 	}
 }
+

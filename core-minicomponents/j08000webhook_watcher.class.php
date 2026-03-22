@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('Direct Access to this file is not allowed.');
+defined('_CASTOR_INITCHECK') or die('Direct Access to this file is not allowed.');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,7 +35,7 @@ class j08000webhook_watcher
 	 
 	function __construct()
 	{
-		$MiniComponents =jomres_getSingleton('mcHandler');
+		$MiniComponents =castor_getSingleton('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable=false;
 			return;
@@ -51,3 +51,4 @@ class j08000webhook_watcher
 		return null;
 	}
 }
+

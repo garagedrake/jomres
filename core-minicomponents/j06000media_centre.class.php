@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 	/**
 	 * Core file.
 	 *
-	 * @author Vince Wooll <sales@jomres.net>
+	 * @author Vince Wooll <sales@castor.net>
 	 *
-	 *  @version Jomres 10.7.2
+	 *  @version Castor 10.7.2
 	 *
 	 * @copyright	2005-2023 Vince Wooll
-	 * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+	 * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
 	 **/
 
 // ################################################################
-	defined('_JOMRES_INITCHECK') or die('');
+	defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,26 +36,26 @@
 		public function __construct($componentArgs)
 		{
 			// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-			$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+			$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 			if ($MiniComponents->template_touch) {
 				$this->template_touchable = false;
 
 				return;
 			}
 
-			$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+			$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 			if (!$thisJRUser->userIsManager) {
 				echo "Error, user must be a property manager to use this feature.";
 				return;
 			}
 
-			$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+			$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 			$jrConfig = $siteConfig->get();
 
 			$output = array();
 			$pageoutput = array();
 
-			if (jomres_cmsspecific_areweinadminarea()) {
+			if (castor_cmsspecific_areweinadminarea()) {
 				$result = $MiniComponents->triggerEvent('11010');
 				$resource_types = $MiniComponents->miniComponentData[ '11010' ];
 			} else {
@@ -88,7 +88,7 @@
 						continue;
 					}
 					if (isset($type['name']) && $type['name'] != '') {
-						$resource_type_options[ ] = jomresHTML::makeOption($type['resource_type'], $type['name']);
+						$resource_type_options[ ] = castorHTML::makeOption($type['resource_type'], $type['name']);
 						if (isset($type['notes'])) {
 							$notes[] = array('NOTE' => str_replace('"', '&#34;', $type['notes']));
 						}
@@ -99,63 +99,63 @@
 				}
 				$javascript = 'onchange="get_resource_ids_for_resource_type(this.value);"';
 
-				$output['RESOURCE_TYPE_OPTIONS'] = jomresHTML::selectList($resource_type_options, 'resource_types', ' autocomplete="off" class="btn btn-primary btn-lg" size="1" '.$javascript.'', 'value', 'text', '', false);
+				$output['RESOURCE_TYPE_OPTIONS'] = castorHTML::selectList($resource_type_options, 'resource_types', ' autocomplete="off" class="btn btn-primary btn-lg" size="1" '.$javascript.'', 'value', 'text', '', false);
 
-				$output['_JOMRES_MEDIA_CENTRE_BUTTON_ADD']					  = jr_gettext('_JOMRES_MEDIA_CENTRE_BUTTON_ADD', '_JOMRES_MEDIA_CENTRE_BUTTON_ADD', false);
-				$output['TITLE']												= jr_gettext('_JOMRES_MEDIA_CENTRE_TITLE', '_JOMRES_MEDIA_CENTRE_TITLE', false);
-				$output['_JOMRES_MEDIA_CENTRE_RESOURCE_TYPES_INSTRUCTIONS']	 = jr_gettext('_JOMRES_MEDIA_CENTRE_RESOURCE_TYPES_INSTRUCTIONS', '_JOMRES_MEDIA_CENTRE_RESOURCE_TYPES_INSTRUCTIONS', false);
-				$output['_JOMRES_MEDIA_CENTRE_CLEAR']						   = jr_gettext('_JOMRES_MEDIA_CENTRE_CLEAR', '_JOMRES_MEDIA_CENTRE_CLEAR', false);
-				$output['_JOMRES_MEDIA_CENTRE_DRAGNDROP']					   = jr_gettext('_JOMRES_MEDIA_CENTRE_DRAGNDROP', '_JOMRES_MEDIA_CENTRE_DRAGNDROP', false);
-				$output['_JOMRES_MEDIA_CENTRE_BUTTON_DELETE']				   = jr_gettext('_JOMRES_MEDIA_CENTRE_BUTTON_DELETE', '_JOMRES_MEDIA_CENTRE_BUTTON_DELETE', false);
-				$output['_JOMRES_MEDIA_CENTRE_BUTTON_VIEW']					 = jr_gettext('_JOMRES_MEDIA_CENTRE_BUTTON_VIEW', '_JOMRES_MEDIA_CENTRE_BUTTON_VIEW', false);
-				$output['_JOMRES_MEDIA_CENTRE_BUTTON_UPLOAD']				   = jr_gettext('_JOMRES_MEDIA_CENTRE_BUTTON_UPLOAD', '_JOMRES_MEDIA_CENTRE_BUTTON_UPLOAD', false);
-				$output['_JOMRES_MEDIA_CENTRE_BUTTON_UPLOAD_ALL']			   = jr_gettext('_JOMRES_MEDIA_CENTRE_BUTTON_UPLOAD_ALL', '_JOMRES_MEDIA_CENTRE_BUTTON_UPLOAD_ALL', false);
-				$output['HUPLOAD_FORM']										 = jr_gettext('_JOMRES_UPLOAD_IMAGE', '_JOMRES_UPLOAD_IMAGE', false);
-				$output['_JOMRES_FRONT_PREVIEW']								= jr_gettext('_JOMRES_FRONT_PREVIEW', '_JOMRES_FRONT_PREVIEW', false);
-				$output['_JOMRES_MEDIA_CENTRE_RESOURCE']						= jr_gettext('_JOMRES_MEDIA_CENTRE_RESOURCE', '_JOMRES_MEDIA_CENTRE_RESOURCE', false);
-				$output['_JOMRES_MEDIA_CENTRE_RESOURCE_SPECIFIC']			   = jr_gettext('_JOMRES_MEDIA_CENTRE_RESOURCE_SPECIFIC', '_JOMRES_MEDIA_CENTRE_RESOURCE_SPECIFIC', false);
-				$output['_JOMRES_MEDIA_CENTRE_INSTRUCTIONS_GENERIC']			= jr_gettext('_JOMRES_MEDIA_CENTRE_INSTRUCTIONS_GENERIC', '_JOMRES_MEDIA_CENTRE_INSTRUCTIONS_GENERIC', false);
-				$output['_JOMRES_MEDIA_CENTRE_INSTRUCTIONS_PREVIEW']			= jr_gettext('_JOMRES_MEDIA_CENTRE_INSTRUCTIONS_PREVIEW', '_JOMRES_MEDIA_CENTRE_INSTRUCTIONS_PREVIEW', false);
-				$output['_JOMRES_MEDIA_CENTRE_INSTRUCTIONS_LIMITATIONS']		= jr_gettext('_JOMRES_MEDIA_CENTRE_INSTRUCTIONS_LIMITATIONS', '_JOMRES_MEDIA_CENTRE_INSTRUCTIONS_LIMITATIONS', false);
-				$output['_JOMRES_MEDIA_CENTRE_INSTRUCTIONS_IMAGE_RESOLUTION_PRE'] = jr_gettext('_JOMRES_MEDIA_CENTRE_INSTRUCTIONS_IMAGE_RESOLUTION_PRE', '_JOMRES_MEDIA_CENTRE_INSTRUCTIONS_IMAGE_RESOLUTION_PRE', false);
-				$output['_JOMRES_MEDIA_CENTRE_INSTRUCTIONS_IMAGE_RESOLUTION_POST'] = jr_gettext('_JOMRES_MEDIA_CENTRE_INSTRUCTIONS_IMAGE_RESOLUTION_POST', '_JOMRES_MEDIA_CENTRE_INSTRUCTIONS_IMAGE_RESOLUTION_POST', false);
-				$output['_JOMRES_MEDIA_CENTRE_INSTRUCTIONS_FILESIZE_PRE']	   = jr_gettext('_JOMRES_MEDIA_CENTRE_INSTRUCTIONS_FILESIZE_PRE', '_JOMRES_MEDIA_CENTRE_INSTRUCTIONS_FILESIZE_PRE', false);
-				$output['_JOMRES_MEDIA_CENTRE_INSTRUCTIONS_FILESIZE_POST']	  = jr_gettext('_JOMRES_MEDIA_CENTRE_INSTRUCTIONS_FILESIZE_POST', '_JOMRES_MEDIA_CENTRE_INSTRUCTIONS_FILESIZE_POST', false);
-				$output['_JOMRES_COM_A_UPLOADS_FILESIZE']					   = jr_gettext('_JOMRES_COM_A_UPLOADS_FILESIZE', '_JOMRES_COM_A_UPLOADS_FILESIZE', false);
-				$output['_JOMRES_MEDIA_CENTRE_RESOURCE_ALREADY_UPLOADED']	   = jr_gettext('_JOMRES_MEDIA_CENTRE_RESOURCE_ALREADY_UPLOADED', '_JOMRES_MEDIA_CENTRE_RESOURCE_ALREADY_UPLOADED', false);
+				$output['_CASTOR_MEDIA_CENTRE_BUTTON_ADD']					  = jr_gettext('_CASTOR_MEDIA_CENTRE_BUTTON_ADD', '_CASTOR_MEDIA_CENTRE_BUTTON_ADD', false);
+				$output['TITLE']												= jr_gettext('_CASTOR_MEDIA_CENTRE_TITLE', '_CASTOR_MEDIA_CENTRE_TITLE', false);
+				$output['_CASTOR_MEDIA_CENTRE_RESOURCE_TYPES_INSTRUCTIONS']	 = jr_gettext('_CASTOR_MEDIA_CENTRE_RESOURCE_TYPES_INSTRUCTIONS', '_CASTOR_MEDIA_CENTRE_RESOURCE_TYPES_INSTRUCTIONS', false);
+				$output['_CASTOR_MEDIA_CENTRE_CLEAR']						   = jr_gettext('_CASTOR_MEDIA_CENTRE_CLEAR', '_CASTOR_MEDIA_CENTRE_CLEAR', false);
+				$output['_CASTOR_MEDIA_CENTRE_DRAGNDROP']					   = jr_gettext('_CASTOR_MEDIA_CENTRE_DRAGNDROP', '_CASTOR_MEDIA_CENTRE_DRAGNDROP', false);
+				$output['_CASTOR_MEDIA_CENTRE_BUTTON_DELETE']				   = jr_gettext('_CASTOR_MEDIA_CENTRE_BUTTON_DELETE', '_CASTOR_MEDIA_CENTRE_BUTTON_DELETE', false);
+				$output['_CASTOR_MEDIA_CENTRE_BUTTON_VIEW']					 = jr_gettext('_CASTOR_MEDIA_CENTRE_BUTTON_VIEW', '_CASTOR_MEDIA_CENTRE_BUTTON_VIEW', false);
+				$output['_CASTOR_MEDIA_CENTRE_BUTTON_UPLOAD']				   = jr_gettext('_CASTOR_MEDIA_CENTRE_BUTTON_UPLOAD', '_CASTOR_MEDIA_CENTRE_BUTTON_UPLOAD', false);
+				$output['_CASTOR_MEDIA_CENTRE_BUTTON_UPLOAD_ALL']			   = jr_gettext('_CASTOR_MEDIA_CENTRE_BUTTON_UPLOAD_ALL', '_CASTOR_MEDIA_CENTRE_BUTTON_UPLOAD_ALL', false);
+				$output['HUPLOAD_FORM']										 = jr_gettext('_CASTOR_UPLOAD_IMAGE', '_CASTOR_UPLOAD_IMAGE', false);
+				$output['_CASTOR_FRONT_PREVIEW']								= jr_gettext('_CASTOR_FRONT_PREVIEW', '_CASTOR_FRONT_PREVIEW', false);
+				$output['_CASTOR_MEDIA_CENTRE_RESOURCE']						= jr_gettext('_CASTOR_MEDIA_CENTRE_RESOURCE', '_CASTOR_MEDIA_CENTRE_RESOURCE', false);
+				$output['_CASTOR_MEDIA_CENTRE_RESOURCE_SPECIFIC']			   = jr_gettext('_CASTOR_MEDIA_CENTRE_RESOURCE_SPECIFIC', '_CASTOR_MEDIA_CENTRE_RESOURCE_SPECIFIC', false);
+				$output['_CASTOR_MEDIA_CENTRE_INSTRUCTIONS_GENERIC']			= jr_gettext('_CASTOR_MEDIA_CENTRE_INSTRUCTIONS_GENERIC', '_CASTOR_MEDIA_CENTRE_INSTRUCTIONS_GENERIC', false);
+				$output['_CASTOR_MEDIA_CENTRE_INSTRUCTIONS_PREVIEW']			= jr_gettext('_CASTOR_MEDIA_CENTRE_INSTRUCTIONS_PREVIEW', '_CASTOR_MEDIA_CENTRE_INSTRUCTIONS_PREVIEW', false);
+				$output['_CASTOR_MEDIA_CENTRE_INSTRUCTIONS_LIMITATIONS']		= jr_gettext('_CASTOR_MEDIA_CENTRE_INSTRUCTIONS_LIMITATIONS', '_CASTOR_MEDIA_CENTRE_INSTRUCTIONS_LIMITATIONS', false);
+				$output['_CASTOR_MEDIA_CENTRE_INSTRUCTIONS_IMAGE_RESOLUTION_PRE'] = jr_gettext('_CASTOR_MEDIA_CENTRE_INSTRUCTIONS_IMAGE_RESOLUTION_PRE', '_CASTOR_MEDIA_CENTRE_INSTRUCTIONS_IMAGE_RESOLUTION_PRE', false);
+				$output['_CASTOR_MEDIA_CENTRE_INSTRUCTIONS_IMAGE_RESOLUTION_POST'] = jr_gettext('_CASTOR_MEDIA_CENTRE_INSTRUCTIONS_IMAGE_RESOLUTION_POST', '_CASTOR_MEDIA_CENTRE_INSTRUCTIONS_IMAGE_RESOLUTION_POST', false);
+				$output['_CASTOR_MEDIA_CENTRE_INSTRUCTIONS_FILESIZE_PRE']	   = jr_gettext('_CASTOR_MEDIA_CENTRE_INSTRUCTIONS_FILESIZE_PRE', '_CASTOR_MEDIA_CENTRE_INSTRUCTIONS_FILESIZE_PRE', false);
+				$output['_CASTOR_MEDIA_CENTRE_INSTRUCTIONS_FILESIZE_POST']	  = jr_gettext('_CASTOR_MEDIA_CENTRE_INSTRUCTIONS_FILESIZE_POST', '_CASTOR_MEDIA_CENTRE_INSTRUCTIONS_FILESIZE_POST', false);
+				$output['_CASTOR_COM_A_UPLOADS_FILESIZE']					   = jr_gettext('_CASTOR_COM_A_UPLOADS_FILESIZE', '_CASTOR_COM_A_UPLOADS_FILESIZE', false);
+				$output['_CASTOR_MEDIA_CENTRE_RESOURCE_ALREADY_UPLOADED']	   = jr_gettext('_CASTOR_MEDIA_CENTRE_RESOURCE_ALREADY_UPLOADED', '_CASTOR_MEDIA_CENTRE_RESOURCE_ALREADY_UPLOADED', false);
 
 				$output['MAX_WIDTH']											= $jrConfig[ 'maxwidth' ];
 				$output['ALLOWED_FILE_TYPES']								   = '(jpe?g|png)';
 				$output['MAX_UPLOAD_SIZE']									  = $this->filesize_formatted($this->file_upload_max_size());
 				$output['WIDTH_PIXELS']										 = $jrConfig[ 'maxwidth' ];
 
-				$output['_JOMRES_MEDIA_CENTRE_BUTTON_UPLOAD_FORM']			   = jr_gettext('_JOMRES_MEDIA_CENTRE_BUTTON_UPLOAD_FORM', '_JOMRES_MEDIA_CENTRE_BUTTON_UPLOAD_FORM', false);
+				$output['_CASTOR_MEDIA_CENTRE_BUTTON_UPLOAD_FORM']			   = jr_gettext('_CASTOR_MEDIA_CENTRE_BUTTON_UPLOAD_FORM', '_CASTOR_MEDIA_CENTRE_BUTTON_UPLOAD_FORM', false);
 
 
 				$property_uid = getDefaultProperty();
 				$mrConfig = getPropertySpecificSettings($property_uid);
 
 				if ($mrConfig[ 'singleRoomProperty' ] == '1') {
-					$output['_JOMRES_MEDIA_CENTRE_INSTRUCTIONS']			   = jr_gettext('_JOMRES_MEDIA_CENTRE_INSTRUCTIONS_SRP', '_JOMRES_MEDIA_CENTRE_INSTRUCTIONS_SRP', false);
+					$output['_CASTOR_MEDIA_CENTRE_INSTRUCTIONS']			   = jr_gettext('_CASTOR_MEDIA_CENTRE_INSTRUCTIONS_SRP', '_CASTOR_MEDIA_CENTRE_INSTRUCTIONS_SRP', false);
 				} else {
-					$output['_JOMRES_MEDIA_CENTRE_INSTRUCTIONS']			   = jr_gettext('_JOMRES_MEDIA_CENTRE_INSTRUCTIONS_MRP', '_JOMRES_MEDIA_CENTRE_INSTRUCTIONS_MRP', false);
+					$output['_CASTOR_MEDIA_CENTRE_INSTRUCTIONS']			   = jr_gettext('_CASTOR_MEDIA_CENTRE_INSTRUCTIONS_MRP', '_CASTOR_MEDIA_CENTRE_INSTRUCTIONS_MRP', false);
 				}
 
-				$output['DEFAULT_PREVIEW_LINK']								= JOMRES_SITEPAGE_URL_AJAX.'&task=show_property_header&property_uid='.$property_uid;
+				$output['DEFAULT_PREVIEW_LINK']								= CASTOR_SITEPAGE_URL_AJAX.'&task=show_property_header&property_uid='.$property_uid;
 
-				if (!jomres_cmsspecific_areweinadminarea()) {
-					$output['AJAX_URL'] = JOMRES_SITEPAGE_URL_AJAX;
+				if (!castor_cmsspecific_areweinadminarea()) {
+					$output['AJAX_URL'] = CASTOR_SITEPAGE_URL_AJAX;
 				} else {
-					$output['AJAX_URL'] = JOMRES_SITEPAGE_URL_ADMIN_AJAX;
+					$output['AJAX_URL'] = CASTOR_SITEPAGE_URL_ADMIN_AJAX;
 				}
 
 				$pageoutput[] = $output;
 				$tmpl = new patTemplate();
 
-				if (jomres_cmsspecific_areweinadminarea()) {
-					$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+				if (castor_cmsspecific_areweinadminarea()) {
+					$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 				} else {
-					$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+					$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 				}
 
 				$tmpl->readTemplatesFromInput('media_centre_main.html');
@@ -243,3 +243,4 @@
 			return null;
 		}
 	}
+

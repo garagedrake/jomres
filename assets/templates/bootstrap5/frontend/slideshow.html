@@ -1,4 +1,4 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <div id="galleria_{RANDOM_IDENTIFIER}">
 	<patTemplate:tmpl name="rows">
@@ -8,7 +8,7 @@
 
 <script type="text/javascript">
 	document.addEventListener('DOMContentLoaded', function(){
-		jomresJquery('#galleria_{RANDOM_IDENTIFIER}').galleria({
+		castorJquery('#galleria_{RANDOM_IDENTIFIER}').galleria({
 			responsive: true,
 			width: '100%',
 			height: {HEIGHT},
@@ -26,4 +26,5 @@
 	}, false);
 </script>
 </patTemplate:tmpl>
+
 

@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Property Configuration page tabs. Offers booking form related configuration options.
 	 *
@@ -37,7 +37,7 @@ class j00501booking_form
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			return;
@@ -48,8 +48,8 @@ class j00501booking_form
 		}
 
 		$configurationPanel = $componentArgs[ 'configurationPanel' ];
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 		$mrConfig = getPropertySpecificSettings();
 		if ($mrConfig[ 'is_real_estate_listing' ] == 1) {
@@ -65,87 +65,87 @@ class j00501booking_form
 			$mrConfig[ 'externalBookingFormUrl' ] = '';
 		}
 
-		$configurationPanel->startPanel(jr_gettext('_JOMRES_HBOOKING_FORM', '_JOMRES_HBOOKING_FORM', false));
+		$configurationPanel->startPanel(jr_gettext('_CASTOR_HBOOKING_FORM', '_CASTOR_HBOOKING_FORM', false));
 
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_BOOKING_FORM_EXTERNAL_URL', '_JOMRES_BOOKING_FORM_EXTERNAL_URL', false));
+		$configurationPanel->setleft(jr_gettext('_CASTOR_BOOKING_FORM_EXTERNAL_URL', '_CASTOR_BOOKING_FORM_EXTERNAL_URL', false));
 		$configurationPanel->setmiddle('<input type="url" class="inputbox form-control"  size="50" name="cfg_externalBookingFormUrl" value="' . $mrConfig['externalBookingFormUrl'] . '" />');
-		$configurationPanel->setright(jr_gettext('_JOMRES_BOOKING_FORM_EXTERNAL_URL_DESC', '_JOMRES_BOOKING_FORM_EXTERNAL_URL_DESC', false));
+		$configurationPanel->setright(jr_gettext('_CASTOR_BOOKING_FORM_EXTERNAL_URL_DESC', '_CASTOR_BOOKING_FORM_EXTERNAL_URL_DESC', false));
 		$configurationPanel->insertSetting();
 
 		if ($mrConfig[ 'singleRoomProperty' ] != '1') {
-			$configurationPanel->setleft(jr_gettext('_JOMRES_ROOMMSLIST_STYLE', '_JOMRES_ROOMMSLIST_STYLE', false));
+			$configurationPanel->setleft(jr_gettext('_CASTOR_ROOMMSLIST_STYLE', '_CASTOR_ROOMMSLIST_STYLE', false));
 			$configurationPanel->setmiddle($booking_form_rooms_list_style);
-			$configurationPanel->setright(jr_gettext('_JOMRES_ROOMMSLIST_STYLE_DESC', '_JOMRES_ROOMMSLIST_STYLE_DESC', false));
+			$configurationPanel->setright(jr_gettext('_CASTOR_ROOMMSLIST_STYLE_DESC', '_CASTOR_ROOMMSLIST_STYLE_DESC', false));
 			$configurationPanel->insertSetting();
 
-			$configurationPanel->setleft(jr_gettext('_JOMRES_COM_LIMITROOMSLIST', '_JOMRES_COM_LIMITROOMSLIST', false));
+			$configurationPanel->setleft(jr_gettext('_CASTOR_COM_LIMITROOMSLIST', '_CASTOR_COM_LIMITROOMSLIST', false));
 			$configurationPanel->setmiddle('<input type="number" class="inputbox form-control" size="5" name="cfg_returnRoomsLimit" value="'.$mrConfig[ 'returnRoomsLimit' ].'">');
-			$configurationPanel->setright(jr_gettext('_JOMRES_COM_LIMITROOMSLIST_DESC', '_JOMRES_COM_LIMITROOMSLIST_DESC', false));
+			$configurationPanel->setright(jr_gettext('_CASTOR_COM_LIMITROOMSLIST_DESC', '_CASTOR_COM_LIMITROOMSLIST_DESC', false));
 			$configurationPanel->insertSetting();
 		}
 
 		if ($mrConfig['tariffmode'] != '5') {
-			$configurationPanel->setleft(jr_gettext('_JOMRES_COM_CONFIGCOUNTRIES_AUTODETECT', '_JOMRES_COM_CONFIGCOUNTRIES_AUTODETECT', false));
+			$configurationPanel->setleft(jr_gettext('_CASTOR_COM_CONFIGCOUNTRIES_AUTODETECT', '_CASTOR_COM_CONFIGCOUNTRIES_AUTODETECT', false));
 			$configurationPanel->setmiddle($lists['auto_detect_country_for_booking_form']);
-			$configurationPanel->setright(jr_gettext('_JOMRES_COM_CONFIGCOUNTRIES_AUTODETECT_DESC', '_JOMRES_COM_CONFIGCOUNTRIES_AUTODETECT_DESC', false));
+			$configurationPanel->setright(jr_gettext('_CASTOR_COM_CONFIGCOUNTRIES_AUTODETECT_DESC', '_CASTOR_COM_CONFIGCOUNTRIES_AUTODETECT_DESC', false));
 			$configurationPanel->insertSetting();
 
-			$configurationPanel->setleft(jr_gettext('_JOMRES_COM_CONFIGCOUNTRIES', '_JOMRES_COM_CONFIGCOUNTRIES', false));
+			$configurationPanel->setleft(jr_gettext('_CASTOR_COM_CONFIGCOUNTRIES', '_CASTOR_COM_CONFIGCOUNTRIES', false));
 			$configurationPanel->setmiddle(configCountries());
 			$configurationPanel->setright();
 			$configurationPanel->insertSetting();
 
 			if (!get_showtime('is_jintour_property')) {
-				$configurationPanel->setleft(jr_gettext('_JOMRES_COM_A_EXTRAS', '_JOMRES_COM_A_EXTRAS', false));
+				$configurationPanel->setleft(jr_gettext('_CASTOR_COM_A_EXTRAS', '_CASTOR_COM_A_EXTRAS', false));
 				$configurationPanel->setmiddle($lists[ 'showExtras' ]);
-				$configurationPanel->setright(jr_gettext('_JOMRES_COM_A_EXTRAS_DESC', '_JOMRES_COM_A_EXTRAS_DESC', false));
+				$configurationPanel->setright(jr_gettext('_CASTOR_COM_A_EXTRAS_DESC', '_CASTOR_COM_A_EXTRAS_DESC', false));
 				$configurationPanel->insertSetting();
 			}
 		}
 		if ($mrConfig['tariffmode'] != '5') {
 			if ($mrConfig[ 'wholeday_booking' ] == '1') {
-				$configurationPanel->setleft(jr_gettext('_JOMRES_COM_A_SHOWDEPARTUREINPUT_WHOLEDAY', '_JOMRES_COM_A_SHOWDEPARTUREINPUT_WHOLEDAY', false));
+				$configurationPanel->setleft(jr_gettext('_CASTOR_COM_A_SHOWDEPARTUREINPUT_WHOLEDAY', '_CASTOR_COM_A_SHOWDEPARTUREINPUT_WHOLEDAY', false));
 				$configurationPanel->setmiddle($lists[ 'showdepartureinput' ]);
-				$configurationPanel->setright(jr_gettext('_JOMRES_COM_A_SHOWDEPARTUREINPUT_DESC_WHOLEDAY', '_JOMRES_COM_A_SHOWDEPARTUREINPUT_DESC_WHOLEDAY', false));
+				$configurationPanel->setright(jr_gettext('_CASTOR_COM_A_SHOWDEPARTUREINPUT_DESC_WHOLEDAY', '_CASTOR_COM_A_SHOWDEPARTUREINPUT_DESC_WHOLEDAY', false));
 				$configurationPanel->insertSetting();
 			} else {
-				$configurationPanel->setleft(jr_gettext('_JOMRES_COM_A_SHOWDEPARTUREINPUT', '_JOMRES_COM_A_SHOWDEPARTUREINPUT', false));
+				$configurationPanel->setleft(jr_gettext('_CASTOR_COM_A_SHOWDEPARTUREINPUT', '_CASTOR_COM_A_SHOWDEPARTUREINPUT', false));
 				$configurationPanel->setmiddle($lists[ 'showdepartureinput' ]);
-				$configurationPanel->setright(jr_gettext('_JOMRES_COM_A_SHOWDEPARTUREINPUT_DESC', '_JOMRES_COM_A_SHOWDEPARTUREINPUT_DESC', false));
+				$configurationPanel->setright(jr_gettext('_CASTOR_COM_A_SHOWDEPARTUREINPUT_DESC', '_CASTOR_COM_A_SHOWDEPARTUREINPUT_DESC', false));
 				$configurationPanel->insertSetting();
 			}
 		}
 
 
-		$configurationPanel->insertHeading(jr_gettext('_JOMRES_HREQUIRED_FIELDS', '_JOMRES_HREQUIRED_FIELDS', false));
+		$configurationPanel->insertHeading(jr_gettext('_CASTOR_HREQUIRED_FIELDS', '_CASTOR_HREQUIRED_FIELDS', false));
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_FRONT_MR_EB_GUEST_JOMRES_HOUSE_EXPL', '_JOMRES_FRONT_MR_EB_GUEST_JOMRES_HOUSE_EXPL'));
+		$configurationPanel->setleft(jr_gettext('_CASTOR_FRONT_MR_EB_GUEST_CASTOR_HOUSE_EXPL', '_CASTOR_FRONT_MR_EB_GUEST_CASTOR_HOUSE_EXPL'));
 		$configurationPanel->setmiddle($lists[ 'bookingform_requiredfields_houseno' ]);
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_FRONT_MR_EB_GUEST_JOMRES_STREET_EXPL', '_JOMRES_FRONT_MR_EB_GUEST_JOMRES_STREET_EXPL'));
+		$configurationPanel->setleft(jr_gettext('_CASTOR_FRONT_MR_EB_GUEST_CASTOR_STREET_EXPL', '_CASTOR_FRONT_MR_EB_GUEST_CASTOR_STREET_EXPL'));
 		$configurationPanel->setmiddle($lists[ 'bookingform_requiredfields_street' ]);
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_FRONT_MR_EB_GUEST_JOMRES_TOWN_EXPL', '_JOMRES_FRONT_MR_EB_GUEST_JOMRES_TOWN_EXPL'));
+		$configurationPanel->setleft(jr_gettext('_CASTOR_FRONT_MR_EB_GUEST_CASTOR_TOWN_EXPL', '_CASTOR_FRONT_MR_EB_GUEST_CASTOR_TOWN_EXPL'));
 		$configurationPanel->setmiddle($lists[ 'bookingform_requiredfields_town' ]);
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_FRONT_MR_EB_GUEST_JOMRES_POSTCODE_EXPL', '_JOMRES_FRONT_MR_EB_GUEST_JOMRES_POSTCODE_EXPL'));
+		$configurationPanel->setleft(jr_gettext('_CASTOR_FRONT_MR_EB_GUEST_CASTOR_POSTCODE_EXPL', '_CASTOR_FRONT_MR_EB_GUEST_CASTOR_POSTCODE_EXPL'));
 		$configurationPanel->setmiddle($lists[ 'bookingform_requiredfields_postcode' ]);
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_FRONT_MR_EB_GUEST_JOMRES_LANDLINE_EXPL', '_JOMRES_FRONT_MR_EB_GUEST_JOMRES_LANDLINE_EXPL'));
+		$configurationPanel->setleft(jr_gettext('_CASTOR_FRONT_MR_EB_GUEST_CASTOR_LANDLINE_EXPL', '_CASTOR_FRONT_MR_EB_GUEST_CASTOR_LANDLINE_EXPL'));
 		$configurationPanel->setmiddle($lists[ 'bookingform_requiredfields_tel' ]);
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_FRONT_MR_EB_GUEST_JOMRES_MOBILE_EXPL', '_JOMRES_FRONT_MR_EB_GUEST_JOMRES_MOBILE_EXPL'));
+		$configurationPanel->setleft(jr_gettext('_CASTOR_FRONT_MR_EB_GUEST_CASTOR_MOBILE_EXPL', '_CASTOR_FRONT_MR_EB_GUEST_CASTOR_MOBILE_EXPL'));
 		$configurationPanel->setmiddle($lists[ 'bookingform_requiredfields_mobile' ]);
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
@@ -153,7 +153,7 @@ class j00501booking_form
 
 		$mrConfig[ 'bookingform_requiredfields_email' ] = "1"; // For GDPR compliance, bookings will always require an email address and the property manager will not be allowed to change this setting
 		
-		/* $configurationPanel->setleft(jr_gettext('_JOMRES_COM_MR_EB_GUEST_JOMRES_EMAIL_EXPL', '_JOMRES_COM_MR_EB_GUEST_JOMRES_EMAIL_EXPL'));
+		/* $configurationPanel->setleft(jr_gettext('_CASTOR_COM_MR_EB_GUEST_CASTOR_EMAIL_EXPL', '_CASTOR_COM_MR_EB_GUEST_CASTOR_EMAIL_EXPL'));
 		$configurationPanel->setmiddle($lists[ 'bookingform_requiredfields_email' ]);
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting(); */
@@ -167,3 +167,4 @@ class j00501booking_form
 		return null;
 	}
 }
+

@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,7 +36,7 @@ class j06001dashboard_insertbooking_ajax
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -45,33 +45,33 @@ class j06001dashboard_insertbooking_ajax
 
 		$this->retVals = false;
 
-		$property_uid = jomresGetParam($_GET, 'property_uid', 0);
+		$property_uid = castorGetParam($_GET, 'property_uid', 0);
 		if ($property_uid == 0) {
 			$property_uid = getDefaultProperty();
 		}
 
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 		if (!in_array($property_uid, $thisJRUser->authorisedProperties)) {
 			return;
 		}
 
 		$insertSuccessful = false;
 
-		jr_import('jomres_generic_booking_insert');
-		$bkg = new jomres_generic_booking_insert();
+		jr_import('castor_generic_booking_insert');
+		$bkg = new castor_generic_booking_insert();
 
-		$current_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+		$current_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 		$current_property_details->gather_data($property_uid);
 
 		$mrConfig = getPropertySpecificSettings($property_uid);
 
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 
 		// Let`s handle some passed variables first
-		$room_uid = (int) jomresGetParam($_GET, 'room_uid', '0');
-		$startDate = jomresGetParam($_GET, 'start', '');
-		$endDate = jomresGetParam($_GET, 'end', '');
+		$room_uid = (int) castorGetParam($_GET, 'room_uid', '0');
+		$startDate = castorGetParam($_GET, 'start', '');
+		$endDate = castorGetParam($_GET, 'end', '');
 		if ($startDate == '') {
 			$insertMessage = 'Error: An empty start date was sent  ';
 			echo json_encode(array('insertStatus' => 0, 'insertMessage' => $insertMessage));
@@ -93,16 +93,16 @@ class j06001dashboard_insertbooking_ajax
 			$lastDay = $departureDate;
 		}
 		$dates_array = findDateRangeForDates($arrivalDate, $lastDay);
-		$deposit_paid = (int) jomresGetParam($_GET, 'deposit_paid', '0');
-		$booked_in = (int) jomresGetParam($_GET, 'booked_in', '0');
+		$deposit_paid = (int) castorGetParam($_GET, 'deposit_paid', '0');
+		$booked_in = (int) castorGetParam($_GET, 'booked_in', '0');
 		$booking_number = set_booking_number();
-		$firstname = jomresGetParam($_GET, 'firstname', '');
-		$surname = jomresGetParam($_GET, 'surname', '');
-		$contract_total = (float) jomresGetParam($_GET, 'contract_total', '0');
+		$firstname = castorGetParam($_GET, 'firstname', '');
+		$surname = castorGetParam($_GET, 'surname', '');
+		$contract_total = (float) castorGetParam($_GET, 'contract_total', '0');
 		$contract_total_nett = $current_property_details->get_nett_accommodation_price($contract_total, $property_uid);
 		$tax = $contract_total - $contract_total_nett;
 
-		$booking_note = jomresGetParam($_GET, 'booking_note', '');
+		$booking_note = castorGetParam($_GET, 'booking_note', '');
 
 		if ($jrConfig['useGlobalCurrency'] == '1') {
 			$currency_code = $jrConfig['globalCurrencyCode'];
@@ -118,7 +118,7 @@ class j06001dashboard_insertbooking_ajax
 			return;
 		}
 
-		$query = "SELECT contract_uid FROM #__jomres_room_bookings WHERE `property_uid` = '".$property_uid."' AND `room_uid`='".$room_uid."' AND `date` IN (".jomres_implode($dates_array, false).')';
+		$query = "SELECT contract_uid FROM #__castor_room_bookings WHERE `property_uid` = '".$property_uid."' AND `room_uid`='".$room_uid."' AND `date` IN (".castor_implode($dates_array, false).')';
 		$bookingsList = doSelectSql($query);
 		if (!empty($bookingsList)) {
 			$insertMessage = 'Error: Room already booked. Exitting.';
@@ -133,34 +133,34 @@ class j06001dashboard_insertbooking_ajax
 		$bkg->booking_details['departureDate'] = $departureDate;
 		$bkg->booking_details['requestedRoom'] = $room_uid.'^0'; //it needs to have the ^tariff_uid too
 		$bkg->booking_details['dateRangeString'] = implode(',', $dates_array);
-		$bkg->booking_details['guests_uid'] = (int) jomresGetParam($_GET, 'existing_id', 0);
+		$bkg->booking_details['guests_uid'] = (int) castorGetParam($_GET, 'existing_id', 0);
 		$bkg->booking_details['contract_total'] = $contract_total;
 		$bkg->booking_details['tax'] = $tax;
-		$bkg->booking_details['deposit_required'] = (float) jomresGetParam($_GET, 'deposit_required', '0');
+		$bkg->booking_details['deposit_required'] = (float) castorGetParam($_GET, 'deposit_required', '0');
 		$bkg->booking_details['room_total'] = $contract_total_nett; //has to be without tax
 		$bkg->booking_details['room_total_nodiscount'] = $contract_total_nett; //has to be without tax
 		$bkg->booking_details['currency_code'] = $currency_code;
 		$bkg->booking_details['depositpaidsuccessfully'] = (bool) $deposit_paid;
-		$bkg->booking_details['property_currencycode'] = jomresGetParam($_GET, 'currencyCode', 'GBP');
+		$bkg->booking_details['property_currencycode'] = castorGetParam($_GET, 'currencyCode', 'GBP');
 		$bkg->booking_details['booking_number'] = $booking_number;
 		$bkg->booking_details['booked_in'] = (bool) $booked_in;
 		$bkg->booking_details['sendGuestEmail'] = true;
 		$bkg->booking_details['sendHotelEmail'] = true;
 
 		//Now let`s set the new guest details
-		$bkg->guest_details['existing_id'] = (int) jomresGetParam($_GET, 'existing_id', 0);
-		$bkg->guest_details['mos_userid'] = (int) jomresGetParam($_GET, 'mos_userid', 0);
+		$bkg->guest_details['existing_id'] = (int) castorGetParam($_GET, 'existing_id', 0);
+		$bkg->guest_details['mos_userid'] = (int) castorGetParam($_GET, 'mos_userid', 0);
 		$bkg->guest_details['firstname'] = $firstname;
 		$bkg->guest_details['surname'] = $surname;
-		$bkg->guest_details['house'] = jomresGetParam($_GET, 'house', '');
-		$bkg->guest_details['street'] = jomresGetParam($_GET, 'street', '');
-		$bkg->guest_details['town'] = jomresGetParam($_GET, 'town', '');
-		$bkg->guest_details['region'] = jomresGetParam($_GET, 'region', '');
-		$bkg->guest_details['country'] = jomresGetParam($_GET, 'guest_country', '');
-		$bkg->guest_details['postcode'] = jomresGetParam($_GET, 'postcode', '');
-		$bkg->guest_details['tel_landline'] = jomresGetParam($_GET, 'landline', '');
-		$bkg->guest_details['tel_mobile'] = jomresGetParam($_GET, 'mobile', '');
-		$bkg->guest_details['email'] = jomresGetParam($_GET, 'email', '');
+		$bkg->guest_details['house'] = castorGetParam($_GET, 'house', '');
+		$bkg->guest_details['street'] = castorGetParam($_GET, 'street', '');
+		$bkg->guest_details['town'] = castorGetParam($_GET, 'town', '');
+		$bkg->guest_details['region'] = castorGetParam($_GET, 'region', '');
+		$bkg->guest_details['country'] = castorGetParam($_GET, 'guest_country', '');
+		$bkg->guest_details['postcode'] = castorGetParam($_GET, 'postcode', '');
+		$bkg->guest_details['tel_landline'] = castorGetParam($_GET, 'landline', '');
+		$bkg->guest_details['tel_mobile'] = castorGetParam($_GET, 'mobile', '');
+		$bkg->guest_details['email'] = castorGetParam($_GET, 'email', '');
 
 		//Finally let`s insert the new booking
 		$insertSuccessful = $bkg->create_booking();
@@ -176,10 +176,10 @@ class j06001dashboard_insertbooking_ajax
 				addBookingNote($contract_uid, $property_uid, $booking_note);
 			}
 
-			$url = jomresUrl(JOMRES_SITEPAGE_URL.'&task=edit_booking&contract_uid='.$contract_uid);
-			$description = jr_gettext('_JOMRES_BOOKING_NUMBER', '_JOMRES_BOOKING_NUMBER', false).': '.$booking_number.'<br/>';
-			$description .= jr_gettext('_JOMRES_HFROM', '_JOMRES_HFROM', false).': '.outputDate($startDate).'<br/>';
-			$description .= jr_gettext('_JOMRES_HTO', '_JOMRES_HTO', false).': '.outputDate($endDate);
+			$url = castorUrl(CASTOR_SITEPAGE_URL.'&task=edit_booking&contract_uid='.$contract_uid);
+			$description = jr_gettext('_CASTOR_BOOKING_NUMBER', '_CASTOR_BOOKING_NUMBER', false).': '.$booking_number.'<br/>';
+			$description .= jr_gettext('_CASTOR_HFROM', '_CASTOR_HFROM', false).': '.outputDate($startDate).'<br/>';
+			$description .= jr_gettext('_CASTOR_HTO', '_CASTOR_HTO', false).': '.outputDate($endDate);
 
 			$from = date('Y-m-d', strtotime($startDate)).'T12:00:00';
 			$to = date('Y-m-d', strtotime($endDate)).'T11:59:59';
@@ -268,3 +268,4 @@ class j06001dashboard_insertbooking_ajax
 		return $this->retVals;
 	}
 }
+

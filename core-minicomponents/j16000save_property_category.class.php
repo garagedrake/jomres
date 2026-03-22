@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,30 +36,30 @@ class j16000save_property_category
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		$jomres_property_categories = jomres_singleton_abstract::getInstance('jomres_property_categories');
+		$castor_property_categories = castor_singleton_abstract::getInstance('castor_property_categories');
 		
-		$jomres_property_categories->id = (int)jomresGetParam($_POST, 'id', 0);
-		$jomres_property_categories->title = jomresGetParam($_POST, 'title', '');
-		$jomres_property_categories->description = jomresGetParam($_POST, 'description', '');
+		$castor_property_categories->id = (int)castorGetParam($_POST, 'id', 0);
+		$castor_property_categories->title = castorGetParam($_POST, 'title', '');
+		$castor_property_categories->description = castorGetParam($_POST, 'description', '');
 		
-		if ($jomres_property_categories->title != '') {
-			if ($jomres_property_categories->id > 0) {
-				$jomres_property_categories->commit_update_property_category();
+		if ($castor_property_categories->title != '') {
+			if ($castor_property_categories->id > 0) {
+				$castor_property_categories->commit_update_property_category();
 			} else {
-				$jomres_property_categories->commit_new_property_category();
+				$castor_property_categories->commit_new_property_category();
 			}
 		} else {
-			jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL_ADMIN.'&task=edit_property_category'), 'Please enter a category title');
+			castorRedirect(castorURL(CASTOR_SITEPAGE_URL_ADMIN.'&task=edit_property_category'), 'Please enter a category title');
 		}
 
-		jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL_ADMIN.'&task=list_property_categories'), '');
+		castorRedirect(castorURL(CASTOR_SITEPAGE_URL_ADMIN.'&task=list_property_categories'), '');
 	}
 
 
@@ -68,3 +68,4 @@ class j16000save_property_category
 		return null;
 	}
 }
+

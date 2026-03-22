@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,24 +36,24 @@ class j06001add_review_reply
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		$rating_id = jomresGetParam($_REQUEST, 'rating_id', 0);
+		$rating_id = castorGetParam($_REQUEST, 'rating_id', 0);
 		$property_uid = getDefaultProperty();
 		
 		if ($rating_id == 0) {
 			throw new Exception('Rating id is empty. ');
 		}
 		
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 		
-		jr_import('jomres_reviews');
-		$Reviews = new jomres_reviews();
+		jr_import('castor_reviews');
+		$Reviews = new castor_reviews();
 		$Reviews->property_uid = $property_uid;
 		$itemReviews = $Reviews->showReviews($property_uid);
 		
@@ -63,28 +63,28 @@ class j06001add_review_reply
 			$output = array();
 			$pageoutput = array();
 			
-			$output['PAGETITLE'] = jr_gettext('_JOMRES_REVIEWS_REPLY_OPPORTUNITY', '_JOMRES_REVIEWS_REPLY_OPPORTUNITY', false);
+			$output['PAGETITLE'] = jr_gettext('_CASTOR_REVIEWS_REPLY_OPPORTUNITY', '_CASTOR_REVIEWS_REPLY_OPPORTUNITY', false);
 			
-			$output['_JOMRES_REVIEWS_TITLE'] = jr_gettext('_JOMRES_REVIEWS_TITLE', '_JOMRES_REVIEWS_TITLE', false);
-			$output['_JOMRES_REVIEWS_REVIEWBODY'] = jr_gettext('_JOMRES_REVIEWS_REVIEWBODY', '_JOMRES_REVIEWS_REVIEWBODY', false);
-			$output['_JOMRES_REVIEWS_PROS'] = jr_gettext('_JOMRES_REVIEWS_PROS', '_JOMRES_REVIEWS_PROS', false);
-			$output['_JOMRES_REVIEWS_CONS'] = jr_gettext('_JOMRES_REVIEWS_CONS', '_JOMRES_REVIEWS_CONS', false);
-			$output['_JOMRES_REVIEWS_SUBMITTEDDATE'] = jr_gettext('_JOMRES_REVIEWS_SUBMITTEDDATE', '_JOMRES_REVIEWS_SUBMITTEDDATE', false);
-			$output['_JOMRES_REVIEWS_REPLY_SAID'] = jr_gettext('_JOMRES_REVIEWS_REPLY_SAID', '_JOMRES_REVIEWS_REPLY_SAID', false);
-			$output['_JOMRES_REVIEWS_AVERAGE_RATING'] = jr_gettext('_JOMRES_REVIEWS_AVERAGE_RATING', '_JOMRES_REVIEWS_AVERAGE_RATING', false);
-			$output['_JOMRES_REVIEWS_PLACEHOLDER_REPLY'] = jr_gettext('_JOMRES_REVIEWS_PLACEHOLDER_REPLY', '_JOMRES_REVIEWS_PLACEHOLDER_REPLY', false);
-			$output['_JOMRES_REVIEWS_REPLY_COMMENT'] = jr_gettext('_JOMRES_REVIEWS_REPLY_COMMENT', '_JOMRES_REVIEWS_REPLY_COMMENT', false);
+			$output['_CASTOR_REVIEWS_TITLE'] = jr_gettext('_CASTOR_REVIEWS_TITLE', '_CASTOR_REVIEWS_TITLE', false);
+			$output['_CASTOR_REVIEWS_REVIEWBODY'] = jr_gettext('_CASTOR_REVIEWS_REVIEWBODY', '_CASTOR_REVIEWS_REVIEWBODY', false);
+			$output['_CASTOR_REVIEWS_PROS'] = jr_gettext('_CASTOR_REVIEWS_PROS', '_CASTOR_REVIEWS_PROS', false);
+			$output['_CASTOR_REVIEWS_CONS'] = jr_gettext('_CASTOR_REVIEWS_CONS', '_CASTOR_REVIEWS_CONS', false);
+			$output['_CASTOR_REVIEWS_SUBMITTEDDATE'] = jr_gettext('_CASTOR_REVIEWS_SUBMITTEDDATE', '_CASTOR_REVIEWS_SUBMITTEDDATE', false);
+			$output['_CASTOR_REVIEWS_REPLY_SAID'] = jr_gettext('_CASTOR_REVIEWS_REPLY_SAID', '_CASTOR_REVIEWS_REPLY_SAID', false);
+			$output['_CASTOR_REVIEWS_AVERAGE_RATING'] = jr_gettext('_CASTOR_REVIEWS_AVERAGE_RATING', '_CASTOR_REVIEWS_AVERAGE_RATING', false);
+			$output['_CASTOR_REVIEWS_PLACEHOLDER_REPLY'] = jr_gettext('_CASTOR_REVIEWS_PLACEHOLDER_REPLY', '_CASTOR_REVIEWS_PLACEHOLDER_REPLY', false);
+			$output['_CASTOR_REVIEWS_REPLY_COMMENT'] = jr_gettext('_CASTOR_REVIEWS_REPLY_COMMENT', '_CASTOR_REVIEWS_REPLY_COMMENT', false);
 			$output[ 'PROPERTY_DETAILS_URL' ] = get_property_details_url($property_uid);
-			$output['_JOMRES_REVIEWS_REPLY_OPPORTUNITY'] = jr_gettext('_JOMRES_REVIEWS_REPLY_OPPORTUNITY', '_JOMRES_REVIEWS_REPLY_OPPORTUNITY', false);
+			$output['_CASTOR_REVIEWS_REPLY_OPPORTUNITY'] = jr_gettext('_CASTOR_REVIEWS_REPLY_OPPORTUNITY', '_CASTOR_REVIEWS_REPLY_OPPORTUNITY', false);
 			
-			$output['_JOMRES_REVIEWS_REPLY_RULES_WARNING'] = jr_gettext('_JOMRES_REVIEWS_REPLY_RULES_WARNING', '_JOMRES_REVIEWS_REPLY_RULES_WARNING', false);
-			$output['_JOMRES_REVIEWS_REPLY_RULES_GUIDELINES'] = jr_gettext('_JOMRES_REVIEWS_REPLY_RULES_GUIDELINES', '_JOMRES_REVIEWS_REPLY_RULES_GUIDELINES', false);
-			$output['_JOMRES_REVIEWS_REPLY_RULES_REPORT'] = jr_gettext('_JOMRES_REVIEWS_REPLY_RULES_REPORT', '_JOMRES_REVIEWS_REPLY_RULES_REPORT', false);
-			$output['_JOMRES_REVIEWS_REPLY_RULES_FIRM'] = jr_gettext('_JOMRES_REVIEWS_REPLY_RULES_FIRM', '_JOMRES_REVIEWS_REPLY_RULES_FIRM', false);
-			$output['_JOMRES_REVIEWS_REPLY_RULES_ALLOWED_TITLE'] = jr_gettext('_JOMRES_REVIEWS_REPLY_RULES_ALLOWED_TITLE', '_JOMRES_REVIEWS_REPLY_RULES_ALLOWED_TITLE', false);
-			$output['_JOMRES_REVIEWS_REPLY_RULES_ALLOWED_TEXT'] = jr_gettext('_JOMRES_REVIEWS_REPLY_RULES_ALLOWED_TEXT', '_JOMRES_REVIEWS_REPLY_RULES_ALLOWED_TEXT', false);
-			$output['_JOMRES_REVIEWS_REPLY_RULES_NOTALLOWED_TITLE'] = jr_gettext('_JOMRES_REVIEWS_REPLY_RULES_NOTALLOWED_TITLE', '_JOMRES_REVIEWS_REPLY_RULES_NOTALLOWED_TITLE', false);
-			$output['_JOMRES_REVIEWS_REPLY_RULES_NOTALLOWED_TEXT'] = jr_gettext('_JOMRES_REVIEWS_REPLY_RULES_NOTALLOWED_TEXT', '_JOMRES_REVIEWS_REPLY_RULES_NOTALLOWED_TEXT', false);
+			$output['_CASTOR_REVIEWS_REPLY_RULES_WARNING'] = jr_gettext('_CASTOR_REVIEWS_REPLY_RULES_WARNING', '_CASTOR_REVIEWS_REPLY_RULES_WARNING', false);
+			$output['_CASTOR_REVIEWS_REPLY_RULES_GUIDELINES'] = jr_gettext('_CASTOR_REVIEWS_REPLY_RULES_GUIDELINES', '_CASTOR_REVIEWS_REPLY_RULES_GUIDELINES', false);
+			$output['_CASTOR_REVIEWS_REPLY_RULES_REPORT'] = jr_gettext('_CASTOR_REVIEWS_REPLY_RULES_REPORT', '_CASTOR_REVIEWS_REPLY_RULES_REPORT', false);
+			$output['_CASTOR_REVIEWS_REPLY_RULES_FIRM'] = jr_gettext('_CASTOR_REVIEWS_REPLY_RULES_FIRM', '_CASTOR_REVIEWS_REPLY_RULES_FIRM', false);
+			$output['_CASTOR_REVIEWS_REPLY_RULES_ALLOWED_TITLE'] = jr_gettext('_CASTOR_REVIEWS_REPLY_RULES_ALLOWED_TITLE', '_CASTOR_REVIEWS_REPLY_RULES_ALLOWED_TITLE', false);
+			$output['_CASTOR_REVIEWS_REPLY_RULES_ALLOWED_TEXT'] = jr_gettext('_CASTOR_REVIEWS_REPLY_RULES_ALLOWED_TEXT', '_CASTOR_REVIEWS_REPLY_RULES_ALLOWED_TEXT', false);
+			$output['_CASTOR_REVIEWS_REPLY_RULES_NOTALLOWED_TITLE'] = jr_gettext('_CASTOR_REVIEWS_REPLY_RULES_NOTALLOWED_TITLE', '_CASTOR_REVIEWS_REPLY_RULES_NOTALLOWED_TITLE', false);
+			$output['_CASTOR_REVIEWS_REPLY_RULES_NOTALLOWED_TEXT'] = jr_gettext('_CASTOR_REVIEWS_REPLY_RULES_NOTALLOWED_TEXT', '_CASTOR_REVIEWS_REPLY_RULES_NOTALLOWED_TEXT', false);
 			
 			$output['TITLE'] = $review['review_title'];
 			$output['REVIEWBODY'] =  $review['review_description'];
@@ -98,7 +98,7 @@ class j06001add_review_reply
 			$pageoutput[ ] = $output;
 			$tmpl = new patTemplate();
 			$tmpl->addRows('pageoutput', $pageoutput);
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 			$tmpl->readTemplatesFromInput('add_review_reply.html');
 			echo $tmpl->getParsedTemplate();
 		} else {
@@ -112,3 +112,4 @@ class j06001add_review_reply
 		return null;
 	}
 }
+

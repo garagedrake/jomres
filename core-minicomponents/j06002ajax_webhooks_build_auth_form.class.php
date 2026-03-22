@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -34,7 +34,7 @@ class j06002ajax_webhooks_build_auth_form
 	 
 	function __construct($componentArgs)
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			return;
@@ -55,8 +55,8 @@ class j06002ajax_webhooks_build_auth_form
 			$auth_method		= (string) $componentArgs[ 'auth_method' ];
 			$integration_id	 = (int) $componentArgs[ 'integration_id' ];
 		} elseif (isset($_REQUEST['auth_method'])) {
-			$auth_method		= (string) jomresGetParam($_REQUEST, 'auth_method', '');
-			$integration_id	 = (int) jomresGetParam($_REQUEST, 'integration_id', '');
+			$auth_method		= (string) castorGetParam($_REQUEST, 'auth_method', '');
+			$integration_id	 = (int) castorGetParam($_REQUEST, 'integration_id', '');
 		} else {
 			return;
 		}
@@ -68,7 +68,7 @@ class j06002ajax_webhooks_build_auth_form
 		}
 		
 		$this->ePointFilepath=get_showtime('ePointFilepath');
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 		
 		jr_import("webhooks");
 		$webhooks = new webhooks($thisJRUser->id);
@@ -125,7 +125,7 @@ class j06002ajax_webhooks_build_auth_form
 		
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 		$tmpl->readTemplatesFromInput('edit_integration_auth_method.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->addRows('snippets', $snippets);
@@ -141,7 +141,7 @@ class j06002ajax_webhooks_build_auth_form
 		// Allows gateway developers to supply their own html if
 	public function get_snippet_html($key, $setting)
 	{
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 
 		$index = $key;
@@ -156,7 +156,7 @@ class j06002ajax_webhooks_build_auth_form
 
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 		$tmpl->readTemplatesFromInput('edit_integration_snippet_html.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 
@@ -177,7 +177,7 @@ class j06002ajax_webhooks_build_auth_form
 
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 		$tmpl->readTemplatesFromInput('edit_integration_snippet_area.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 
@@ -198,7 +198,7 @@ class j06002ajax_webhooks_build_auth_form
 
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 		$tmpl->readTemplatesFromInput('edit_integration_snippet_input.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 
@@ -219,7 +219,7 @@ class j06002ajax_webhooks_build_auth_form
 
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 		$tmpl->readTemplatesFromInput('edit_integration_snippet_password.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 
@@ -231,10 +231,10 @@ class j06002ajax_webhooks_build_auth_form
 		$index = $key;
 
 		$yesno = array();
-		$yesno[] = jomresHTML::makeOption('0', jr_gettext('_JOMRES_COM_MR_NO', '_JOMRES_COM_MR_NO', false));
-		$yesno[] = jomresHTML::makeOption('1', jr_gettext('_JOMRES_COM_MR_YES', '_JOMRES_COM_MR_YES', false));
+		$yesno[] = castorHTML::makeOption('0', jr_gettext('_CASTOR_COM_MR_NO', '_CASTOR_COM_MR_NO', false));
+		$yesno[] = castorHTML::makeOption('1', jr_gettext('_CASTOR_COM_MR_YES', '_CASTOR_COM_MR_YES', false));
 
-		$input = jomresHTML::selectList($yesno, $index, '', 'value', 'text', $webhook_setting);
+		$input = castorHTML::selectList($yesno, $index, '', 'value', 'text', $webhook_setting);
 
 		$output = array();
 		$pageoutput = array();
@@ -246,7 +246,7 @@ class j06002ajax_webhooks_build_auth_form
 
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 		$tmpl->readTemplatesFromInput('edit_integration_snippet_bool.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 
@@ -260,10 +260,10 @@ class j06002ajax_webhooks_build_auth_form
 
 			$options = array();
 			foreach ($setting['options'] as $selection => $text) {
-				$options[] = jomresHTML::makeOption($selection, $text);
+				$options[] = castorHTML::makeOption($selection, $text);
 			}
 
-			$input = jomresHTML::selectList($options, $index, '', 'value', 'text', $webhook_setting);
+			$input = castorHTML::selectList($options, $index, '', 'value', 'text', $webhook_setting);
 
 			$output = array();
 			$pageoutput = array();
@@ -275,7 +275,7 @@ class j06002ajax_webhooks_build_auth_form
 
 			$pageoutput[ ] = $output;
 			$tmpl = new patTemplate();
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 			$tmpl->readTemplatesFromInput('edit_integration_snippet_select.html');
 			$tmpl->addRows('pageoutput', $pageoutput);
 
@@ -290,3 +290,4 @@ class j06002ajax_webhooks_build_auth_form
 		return $this->retVals;
 	}
 }
+

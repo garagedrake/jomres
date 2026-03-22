@@ -1,8 +1,8 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
-jomresJquery(function() {
+castorJquery(function() {
   var $demo, duration, remaining, tour;
-  $demo = jomresJquery("#demo");
+  $demo = castorJquery("#demo");
   duration = 5000;
   remaining = duration;
   tour = new Tour({
@@ -28,17 +28,17 @@ jomresJquery(function() {
   });
 
   
-  jomresJquery(document).on("click", "#product_tour_start", function(e) {
+  castorJquery(document).on("click", "#product_tour_start", function(e) {
     e.preventDefault();
-    if (jomresJquery(this).hasClass("disabled")) {
+    if (castorJquery(this).hasClass("disabled")) {
       return;
     }
     tour.restart();
-    return jomresJquery(".alert").alert("close");
+    return castorJquery(".alert").alert("close");
   });
 });
 
-jomresJquery('#product_tour_start').click(function(e){
+castorJquery('#product_tour_start').click(function(e){
 	tour.init();
     tour.start();
 

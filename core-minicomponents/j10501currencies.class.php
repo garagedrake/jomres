@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,40 +36,40 @@ class j10501currencies
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 
 		$configurationPanel = $componentArgs[ 'configurationPanel' ];
 		$lists = $componentArgs[ 'lists' ];
 		$currency_codes_dropdown = $componentArgs[ 'currency_codes_dropdown' ];
 
-		$configurationPanel->startPanel(jr_gettext('_JOMRES_CURRENCYCONVERSION_TAB', '_JOMRES_CURRENCYCONVERSION_TAB', false));
+		$configurationPanel->startPanel(jr_gettext('_CASTOR_CURRENCYCONVERSION_TAB', '_CASTOR_CURRENCYCONVERSION_TAB', false));
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_COM_JRCONFIG_GLOBALCURRENCYYESNO', '_JOMRES_COM_JRCONFIG_GLOBALCURRENCYYESNO', false));
+		$configurationPanel->setleft(jr_gettext('_CASTOR_COM_JRCONFIG_GLOBALCURRENCYYESNO', '_CASTOR_COM_JRCONFIG_GLOBALCURRENCYYESNO', false));
 		$configurationPanel->setmiddle($lists['useGlobalCurrency']);
-		$configurationPanel->setright(jr_gettext('_JOMRES_COM_JRCONFIG_GLOBALCURRENCYYESNO_DESC', '_JOMRES_COM_JRCONFIG_GLOBALCURRENCYYESNO_DESC', false));
+		$configurationPanel->setright(jr_gettext('_CASTOR_COM_JRCONFIG_GLOBALCURRENCYYESNO_DESC', '_CASTOR_COM_JRCONFIG_GLOBALCURRENCYYESNO_DESC', false));
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_COM_A_CURRENCYCODE', '_JOMRES_COM_A_CURRENCYCODE', false));
+		$configurationPanel->setleft(jr_gettext('_CASTOR_COM_A_CURRENCYCODE', '_CASTOR_COM_A_CURRENCYCODE', false));
 		$configurationPanel->setmiddle($currency_codes_dropdown);
 		$configurationPanel->setright();
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_COM_A_TARIFFS_SWAP', '_JOMRES_COM_A_TARIFFS_SWAP', false));
+		$configurationPanel->setleft(jr_gettext('_CASTOR_COM_A_TARIFFS_SWAP', '_CASTOR_COM_A_TARIFFS_SWAP', false));
 		$configurationPanel->setmiddle($lists[ 'currency_symbol_swap' ]);
-		$configurationPanel->setright(jr_gettext('_JOMRES_COM_A_TARIFFS_SWAP_DESC', '_JOMRES_COM_A_TARIFFS_SWAP_DESC', false));
+		$configurationPanel->setright(jr_gettext('_CASTOR_COM_A_TARIFFS_SWAP_DESC', '_CASTOR_COM_A_TARIFFS_SWAP_DESC', false));
 		$configurationPanel->insertSetting();
 
-		$configurationPanel->setleft(jr_gettext('_JOMRES_CONVERSION_TITLE', '_JOMRES_CONVERSION_TITLE', false));
+		$configurationPanel->setleft(jr_gettext('_CASTOR_CONVERSION_TITLE', '_CASTOR_CONVERSION_TITLE', false));
 		$configurationPanel->setmiddle($lists['use_conversion_feature']);
-		$configurationPanel->setright(jr_gettext('_JOMRES_CONVERSION_TITLE_DESC', '_JOMRES_CONVERSION_TITLE_DESC', false));
+		$configurationPanel->setright(jr_gettext('_CASTOR_CONVERSION_TITLE_DESC', '_CASTOR_CONVERSION_TITLE_DESC', false));
 		$configurationPanel->insertSetting();
 
 		$configurationPanel->endPanel();
@@ -81,3 +81,4 @@ class j10501currencies
 		return null;
 	}
 }
+

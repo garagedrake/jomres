@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -34,19 +34,19 @@ class j06002webhooks_core
 	 
 	function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			$this->shortcode_data = array (
 				"task" => "webhooks_core",
-				"info" => "_JOMRES_SHORTCODES_06005WEBHOOKS_CLIENT_ADMIN",
+				"info" => "_CASTOR_SHORTCODES_06005WEBHOOKS_CLIENT_ADMIN",
 				"arguments" => array ()
 				);
 			return;
 		}
 		$ePointFilepath=get_showtime('ePointFilepath');
 		
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 		$manager_2_property_uid_xref_array = build_property_manager_xref_array();
 		
 		// We don't use the authorisedProperties variable in jrUser because super property managers contain the ids of all properties. When a webhook is triggered, the currently "assigned" manager's id is used to find webhook data, so here we have to find the actual assigned manager's ids and highlight to the user which properties will actually have the created webhoooks triggered for them.
@@ -68,12 +68,12 @@ class j06002webhooks_core
 			
 			$pageoutput[]=$output;
 			$tmpl = new patTemplate();
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 			$tmpl->readTemplatesFromInput('manager_properties_none.html');
 			$tmpl->addRows('pageoutput', $pageoutput);
 			$manager_properties_template = $tmpl->getParsedTemplate();
 		} else {
-			$current_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+			$current_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 			$property_names = $current_property_details->get_property_name_multi($manager_assigned_properties);
 			$rows = array();
 			foreach ($property_names as $property_name) {
@@ -90,7 +90,7 @@ class j06002webhooks_core
 			
 			$pageoutput[]=$output;
 			$tmpl = new patTemplate();
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 			$tmpl->readTemplatesFromInput('manager_properties.html');
 			$tmpl->addRows('pageoutput', $pageoutput);
 			$tmpl->addRows('rows', $rows);
@@ -106,11 +106,11 @@ class j06002webhooks_core
 		$webhooks = new webhooks($thisJRUser->id);
 		$all_webhooks = $webhooks->get_all_webhooks();
 
-		$toolbar = jomres_singleton_abstract::getInstance('jomresItemToolbar');
+		$toolbar = castor_singleton_abstract::getInstance('castorItemToolbar');
 
 		$yesno = array();
-		$yesno[ ] = jomresHTML::makeOption('0', jr_gettext('_JOMRES_COM_MR_NO', '_JOMRES_COM_MR_NO', false));
-		$yesno[ ] = jomresHTML::makeOption('1', jr_gettext('_JOMRES_COM_MR_YES', '_JOMRES_COM_MR_YES', false));
+		$yesno[ ] = castorHTML::makeOption('0', jr_gettext('_CASTOR_COM_MR_NO', '_CASTOR_COM_MR_NO', false));
+		$yesno[ ] = castorHTML::makeOption('1', jr_gettext('_CASTOR_COM_MR_YES', '_CASTOR_COM_MR_YES', false));
 	
 		$rows = array();
 		if (!empty($all_webhooks)) {
@@ -120,9 +120,9 @@ class j06002webhooks_core
 					$r['INTEGRATION_ID']	= $webhook['id'];
 					$r['URL']  = $webhook['settings']['url'];
 
-					$r['ENABLED']  = jomresHTML::selectList($yesno, 'enabled', 'onchange="toggle_enabled('.$webhook['id'].');" size="1"', 'value', 'text', $webhook['enabled'], false);
+					$r['ENABLED']  = castorHTML::selectList($yesno, 'enabled', 'onchange="toggle_enabled('.$webhook['id'].');" size="1"', 'value', 'text', $webhook['enabled'], false);
 					$toolbar->newToolbar();
-					$toolbar->addItem('fa fa-pencil-square-o', 'btn btn-info', '', jomresURL(JOMRES_SITEPAGE_URL .'&task=edit_integration&id='.$r['INTEGRATION_ID']), jr_gettext('COMMON_EDIT', 'COMMON_EDIT', false));
+					$toolbar->addItem('fa fa-pencil-square-o', 'btn btn-info', '', castorURL(CASTOR_SITEPAGE_URL .'&task=edit_integration&id='.$r['INTEGRATION_ID']), jr_gettext('COMMON_EDIT', 'COMMON_EDIT', false));
 					$r['EDITLINK']=$toolbar->getToolbar();
 					$rows[]=$r;
 				}
@@ -137,12 +137,12 @@ class j06002webhooks_core
 		$output['MANAGER_PROPERTIES']	  = $manager_properties_template;
 		
 		$toolbar->newToolbar();
-		$toolbar->addItem('icon-edit', 'btn btn-info', '', jomresURL(JOMRES_SITEPAGE_URL . '&task=edit_integration&id='), jr_gettext('COMMON_NEW', 'COMMON_NEW', false));
-		$output['JOMRESTOOLBAR']=$toolbar->getToolbar();
+		$toolbar->addItem('icon-edit', 'btn btn-info', '', castorURL(CASTOR_SITEPAGE_URL . '&task=edit_integration&id='), jr_gettext('COMMON_NEW', 'COMMON_NEW', false));
+		$output['CASTORTOOLBAR']=$toolbar->getToolbar();
 
 		$pageoutput[]=$output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 		$tmpl->readTemplatesFromInput('list_integrations.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->addRows('rows', $rows);
@@ -156,3 +156,4 @@ class j06002webhooks_core
 		return null;
 	}
 }
+

@@ -1,6 +1,6 @@
-
+﻿
 <patTemplate:tmpl name="header_pageoutput" unusedvars="strip">
-<div class="jomres-propertylist-toolbar well">
+<div class="castor-propertylist-toolbar well">
 	<div class="row">
 		<div class="col-xs-7 col-sm-3 col-md-3 col-lg-3">
 			{ORDER_DROPDOWN}
@@ -25,20 +25,20 @@
 		</div>
 		</patTemplate:tmpl>
 		
-		<patTemplate:tmpl name="compare" type="simpleCondition" requiredVars="_jomres_compare">
+		<patTemplate:tmpl name="compare" type="simpleCondition" requiredVars="_castor_compare">
 		<div class="col-xs-6 col-sm-4 col-md-2 col-lg-2 hidden-xs hidden-sm">
 			{COMPARELINK}
 			<div class="btn-group">
-				<a href="javascript:void(0);" onclick="return trigger_comparison(this);" class="btn btn-default"><i class="fa fa-angle-left"></i> <i class="fa fa-angle-right"></i> {_JOMRES_COMPARE}</a>
+				<a href="javascript:void(0);" onclick="return trigger_comparison(this);" class="btn btn-default"><i class="fa fa-angle-left"></i> <i class="fa fa-angle-right"></i> {_CASTOR_COMPARE}</a>
 			</div>
 			<form action=""><input type="hidden" id="comparison_ids" name="ids" value=""/></form>
 		</div>
 		</patTemplate:tmpl>
 		
-		<patTemplate:tmpl name="shortlist" type="simpleCondition" requiredVars="_jomres_viewshortlist">
+		<patTemplate:tmpl name="shortlist" type="simpleCondition" requiredVars="_castor_viewshortlist">
 		<div class="col-xs-6 col-sm-3 col-md-2 col-lg-2 hidden-xs">
 			<div class="btn-group pull-right">
-				<a href="{SHORTLISTLINK}" class="btn btn-default"><i class="fa fa-heart"></i> {_JOMRES_VIEWSHORTLIST}</a>
+				<a href="{SHORTLISTLINK}" class="btn btn-default"><i class="fa fa-heart"></i> {_CASTOR_VIEWSHORTLIST}</a>
 			</div>
 		</div>
 		</patTemplate:tmpl>

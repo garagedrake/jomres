@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 	/**
 	 * Core file.
 	 *
-	 * @author Vince Wooll <sales@jomres.net>
+	 * @author Vince Wooll <sales@castor.net>
 	 *
-	 *  @version Jomres 10.7.2
+	 *  @version Castor 10.7.2
 	 *
 	 * @copyright	2005-2023 Vince Wooll
-	 * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+	 * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
 	 **/
 
 // ################################################################
-	defined('_JOMRES_INITCHECK') or die('');
+	defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Produces slideshows based on the Galleria slideshow functionality
 	 *
@@ -37,20 +37,20 @@
 		public function __construct($componentArgs)
 		{
 			// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-			$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+			$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 			if ($MiniComponents->template_touch) {
 				$this->template_touchable = false;
 
 				return;
 			}
-			$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+			$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 			$jrConfig = $siteConfig->get();
 
-			jr_import('jomres_image_captions');
-			$jomres_image_captions = new jomres_image_captions();
+			jr_import('castor_image_captions');
+			$castor_image_captions = new castor_image_captions();
 
 			$imagesArray = array();
-			$jomres_media_centre_images = jomres_singleton_abstract::getInstance('jomres_media_centre_images');
+			$castor_media_centre_images = castor_singleton_abstract::getInstance('castor_media_centre_images');
 
 			if (!isset($componentArgs[ 'size' ])) {
 				$componentArgs[ 'size' ] = 'large';
@@ -95,7 +95,7 @@
 				if (isset($componentArgs[ 'property_uid' ])) {
 					$property_uid = $componentArgs[ 'property_uid' ];
 				} else {
-					$property_uid = (int)jomresGetParam($_REQUEST, 'property_uid', 0);
+					$property_uid = (int)castorGetParam($_REQUEST, 'property_uid', 0);
 
 					if ($property_uid == 0) {
 						$property_uid = get_showtime('property_uid');
@@ -106,8 +106,8 @@
 					return;
 				}
 
-				$jomres_media_centre_images->get_images($property_uid, array('slideshow'));
-				$imagesArray = $jomres_media_centre_images->images ['slideshow'] [0];
+				$castor_media_centre_images->get_images($property_uid, array('slideshow'));
+				$imagesArray = $castor_media_centre_images->images ['slideshow'] [0];
 			} else {
 				$imagesArray = $componentArgs[ 'images' ];
 			}
@@ -130,7 +130,7 @@
 					break;
 			}
 
-			$output['RANDOM_IDENTIFIER'] = generateJomresRandomString(10);
+			$output['RANDOM_IDENTIFIER'] = generateCastorRandomString(10);
 			$output['LIGHTBOX'] = $lightbox;
 			$output['AUTOPLAY'] = $autoplay;
 			$output['THUMBNAILS'] = $thumbnails;
@@ -147,7 +147,7 @@
 					if (isset($imagesArray[ $i ][ 'large' ])) {
 						$r[ 'IMAGE' ] = $imagesArray[ $i ][ 'large' ];
 					} else {
-						$r[ 'IMAGE' ] = $jomres_media_centre_images->multi_query_images['noimage-large'];
+						$r[ 'IMAGE' ] = $castor_media_centre_images->multi_query_images['noimage-large'];
 					}
 
 					if (isset($imagesArray[ $i ][ 'small' ])) {
@@ -158,10 +158,10 @@
 						}
 
 					} else {
-						$r[ 'IMAGETHUMB' ] = $jomres_media_centre_images->multi_query_images['noimage-small'];
+						$r[ 'IMAGETHUMB' ] = $castor_media_centre_images->multi_query_images['noimage-small'];
 					}
 
-					$r['CAPTION'] = $jomres_image_captions->get_image_caption ( $r[ 'IMAGETHUMB' ] );
+					$r['CAPTION'] = $castor_image_captions->get_image_caption ( $r[ 'IMAGETHUMB' ] );
 
 					if ($link_to_property_details && (int) $componentArgs[ 'property_uid' ] > 0) {
 						$r[ 'LINK' ] = get_property_details_url((int)$componentArgs[ 'property_uid' ]);
@@ -174,16 +174,16 @@
 
 				$pageoutput[ ] = $output;
 				$tmpl = new patTemplate();
-				$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+				$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 				$tmpl->readTemplatesFromInput('slideshow.html');
 				$tmpl->addRows('pageoutput', $pageoutput);
 				$tmpl->addRows('rows', $rows);
 
 				$this->retVals[ 'slideshow' ] = $tmpl->getParsedTemplate();
 			} else {
-				$jomres_media_centre_images->get_images($property_uid, array('property'));
-				$caption = $jomres_image_captions->get_image_caption ( $jomres_media_centre_images->images['property'][0][0]['medium'] );
-				$this->retVals[ 'slideshow' ] = '<img src="'.$jomres_media_centre_images->images['property'][0][0]['medium'].'" class="responsive img-responsive" alt="'.$caption.'"/>';
+				$castor_media_centre_images->get_images($property_uid, array('property'));
+				$caption = $castor_image_captions->get_image_caption ( $castor_media_centre_images->images['property'][0][0]['medium'] );
+				$this->retVals[ 'slideshow' ] = '<img src="'.$castor_media_centre_images->images['property'][0][0]['medium'].'" class="responsive img-responsive" alt="'.$caption.'"/>';
 			}
 		}
 
@@ -193,3 +193,4 @@
 			return $this->retVals;
 		}
 	}
+

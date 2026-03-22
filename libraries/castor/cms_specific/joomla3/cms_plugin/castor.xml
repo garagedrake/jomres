@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="component" method="upgrade">
+	<name>com_castor</name>
+	<author>Vince Wooll</author>
+	<creationDate>September 2022</creationDate>
+	<copyright>Copyright (C) 2005-2022 Vince Wooll. All rights reserved.</copyright>
+	<license>GPL2 and MIT</license>
+	<authorEmail>sales@castor.net</authorEmail>
+	<authorUrl>https://www.castor.net</authorUrl>
+	<version>10.7.0</version>
+	<description>Castor - Complete Online Booking and Property Management Solution</description>
+	<targetplatform name="joomla" version=".*"/>
+
+	<scriptfile>script.php</scriptfile>
+	
+	<files folder="site">
+		<filename>castor.php</filename>
+		<filename>router.php</filename>
+		<folder>views</folder>
+	</files>
+
+	<administration>
+		<menu view="default" img="castor/assets/images/jrhouse.png">COM_CASTOR</menu>
+		
+		<files folder="admin">
+			<filename>castor.php</filename>
+			<folder>language</folder>
+		</files>
+		
+		<languages folder="admin">
+			<language tag="en-GB">language/en-GB/en-GB.com_castor.sys.ini</language>
+		</languages>
+	</administration>
+	
+	<updateservers>
+		<server type="extension" name="Castor Update">http://updates.castor.net/castor_updates.xml</server>
+	</updateservers>
+</extension>
+

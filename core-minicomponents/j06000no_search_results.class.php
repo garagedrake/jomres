@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,15 +35,15 @@ class j06000no_search_results
 	 
 	public function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
-		$pageoutput[ ] = array('MESSAGE' => jr_gettext('_JOMRES_FRONT_NORESULTS', '_JOMRES_FRONT_NORESULTS', $editable = true, $islink = false));
+		$pageoutput[ ] = array('MESSAGE' => jr_gettext('_CASTOR_FRONT_NORESULTS', '_CASTOR_FRONT_NORESULTS', $editable = true, $islink = false));
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 		$tmpl->readTemplatesFromInput('no_search_results.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$this->ret_vals = $tmpl->getParsedTemplate();
@@ -60,3 +60,4 @@ class j06000no_search_results
 		return $this->ret_vals;
 	}
 }
+

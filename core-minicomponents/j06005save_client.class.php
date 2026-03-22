@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,14 +36,14 @@ class j06005save_client
 	function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			return;
 		}
 
 		$ePointFilepath=get_showtime('ePointFilepath');
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 
 		if (!$thisJRUser->userIsManager) {
 			$available_scopes = array ( "user");
@@ -53,14 +53,14 @@ class j06005save_client
 			$available_scopes = array ( "user" , "manager" , "super" );
 		}
 		
-		jr_import("jomres_oauth_scopes");
-		$scopes_class = new jomres_oauth_scopes($ePointFilepath);
+		jr_import("castor_oauth_scopes");
+		$scopes_class = new castor_oauth_scopes($ePointFilepath);
 		
-		$identifier			= jomresGetParam($_POST, 'identifier', "");
-		$client_id			= jomresGetParam($_POST, 'client_id', "");
-		$client_secret		= jomresGetParam($_POST, 'client_secret', "");
-		$redirect_uri		= jomresGetParam($_POST, 'redirect_uri', "");
-		$posted_scopes		= jomresGetParam($_POST, 'scopes', array());
+		$identifier			= castorGetParam($_POST, 'identifier', "");
+		$client_id			= castorGetParam($_POST, 'client_id', "");
+		$client_secret		= castorGetParam($_POST, 'client_secret', "");
+		$redirect_uri		= castorGetParam($_POST, 'redirect_uri', "");
+		$posted_scopes		= castorGetParam($_POST, 'scopes', array());
 		
 		$requested_scopes = '';
 
@@ -77,19 +77,19 @@ class j06005save_client
 			$requested_scopes = rtrim($requested_scopes, ",");
 
 			if ($client_id == "" || $client_secret == "") {
-				jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL . "&task=oauth_edit_client&client_id=".$client_id), "");
+				castorRedirect(castorURL(CASTOR_SITEPAGE_URL . "&task=oauth_edit_client&client_id=".$client_id), "");
 			}
 
-			$query = "SELECT client_id FROM #__jomres_oauth_clients WHERE client_id = '".$client_id."' AND user_id = ".(int)$thisJRUser->id . ' LIMIT 1 ';
+			$query = "SELECT client_id FROM #__castor_oauth_clients WHERE client_id = '".$client_id."' AND user_id = ".(int)$thisJRUser->id . ' LIMIT 1 ';
 			$result = doSelectSql($query);
 
 			if (count($result)==0) {
-				$query = "INSERT INTO #__jomres_oauth_clients 
+				$query = "INSERT INTO #__castor_oauth_clients 
 					(`client_id`,`client_secret`,`redirect_uri`,`grant_types`,`scope`,`user_id` , `identifier` ) 
 					VALUES 
 					('".$client_id."','".$client_secret."','".$redirect_uri."',null,'".$requested_scopes."',".(int)$thisJRUser->id." , '".$identifier."' )";
 			} else {
-				$query = "UPDATE #__jomres_oauth_clients SET `client_secret`='".$client_secret."',`redirect_uri`='".$redirect_uri."',`grant_types`=null,`scope`='".$requested_scopes."',`identifier`='".$identifier."' WHERE user_id =".(int)$thisJRUser->id." AND client_id ='".$client_id."'";
+				$query = "UPDATE #__castor_oauth_clients SET `client_secret`='".$client_secret."',`redirect_uri`='".$redirect_uri."',`grant_types`=null,`scope`='".$requested_scopes."',`identifier`='".$identifier."' WHERE user_id =".(int)$thisJRUser->id." AND client_id ='".$client_id."'";
 			}
 
 			if (!doInsertSql($query, jr_gettext('_OAUTH_CREATED', '_OAUTH_CREATED', false))) {
@@ -98,18 +98,18 @@ class j06005save_client
 
 
 
-			jr_import('jomres_api_capability_test');
-			$jomres_api_capability_test = new jomres_api_capability_test();
-			$capability_test = $jomres_api_capability_test->is_system_capable();
+			jr_import('castor_api_capability_test');
+			$castor_api_capability_test = new castor_api_capability_test();
+			$capability_test = $castor_api_capability_test->is_system_capable();
 			if ($capability_test === true ) {
 
-				$query = "SELECT `client_id` FROM #__jomres_oauth_access_tokens WHERE 
+				$query = "SELECT `client_id` FROM #__castor_oauth_access_tokens WHERE 
             		`client_id` = '". $client_id."' 
             		AND expires >= CURRENT_TIMESTAMP";
 				$result = doSelectSql($query);
 
 				if (empty($result)) { // The client doesn't currently have any valid tokens, let's give 'em one
-					$token_request_url = get_showtime('live_site') . '/jomres/api/';
+					$token_request_url = get_showtime('live_site') . '/castor/api/';
 
 					$data = array('grant_type' => 'client_credentials', 'client_id' => $client_id, 'client_secret' => $client_secret, 'token_url' => $token_request_url);
 
@@ -130,7 +130,7 @@ class j06005save_client
 
 		}
 		
-		jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL . "&task=oauth_edit_client&client_id=".$client_id), "");
+		castorRedirect(castorURL(CASTOR_SITEPAGE_URL . "&task=oauth_edit_client&client_id=".$client_id), "");
 	}
 
 	/**
@@ -146,3 +146,4 @@ class j06005save_client
 		return null;
 	}
 }
+

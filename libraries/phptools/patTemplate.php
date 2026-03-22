@@ -1,6 +1,6 @@
-<?PHP
+﻿<?PHP
 // ################################################################
-defined( '_JOMRES_INITCHECK' ) or die( '' );
+defined( '_CASTOR_INITCHECK' ) or die( '' );
 // ################################################################
 /**
  * patTemplate
@@ -774,7 +774,7 @@ class patTemplate
             $rows = array();
         }
 
-        $common = $this->add_common_jomres_strings();
+        $common = $this->add_common_castor_strings();
         if ( !empty($rows))
         {
             $new_rows = array ();
@@ -815,7 +815,7 @@ class patTemplate
     }
 
     // Vince Added to add some commonly used elements to all templates
-    function add_common_jomres_strings()
+    function add_common_castor_strings()
     {
         $common_strings                    = get_showtime( 'common_template_strings' );
         if (is_null($common_strings))
@@ -823,15 +823,15 @@ class patTemplate
             $common_strings                    = array ();
         }
 
-        $common_strings[ 'JOMRES_ROOT_DIRECTORY' ]   = JOMRES_ROOT_DIRECTORY;
+        $common_strings[ 'CASTOR_ROOT_DIRECTORY' ]   = CASTOR_ROOT_DIRECTORY;
 
-        $common_strings[ 'JOMRES_SITEPAGE_URL' ]            = JOMRES_SITEPAGE_URL;
-        $common_strings[ 'JOMRES_SITEPAGE_URL_NOSEF' ]      = JOMRES_SITEPAGE_URL_NOSEF;
-        $common_strings[ 'JOMRES_SITEPAGE_URL_AJAX' ]       = JOMRES_SITEPAGE_URL_AJAX;
-        $common_strings[ 'JOMRES_SITEPAGE_URL_ADMIN' ]      = JOMRES_SITEPAGE_URL_ADMIN;
-        $common_strings[ 'JOMRES_SITEPAGE_URL_ADMIN_AJAX' ] = JOMRES_SITEPAGE_URL_ADMIN_AJAX;
+        $common_strings[ 'CASTOR_SITEPAGE_URL' ]            = CASTOR_SITEPAGE_URL;
+        $common_strings[ 'CASTOR_SITEPAGE_URL_NOSEF' ]      = CASTOR_SITEPAGE_URL_NOSEF;
+        $common_strings[ 'CASTOR_SITEPAGE_URL_AJAX' ]       = CASTOR_SITEPAGE_URL_AJAX;
+        $common_strings[ 'CASTOR_SITEPAGE_URL_ADMIN' ]      = CASTOR_SITEPAGE_URL_ADMIN;
+        $common_strings[ 'CASTOR_SITEPAGE_URL_ADMIN_AJAX' ] = CASTOR_SITEPAGE_URL_ADMIN_AJAX;
 
-        $common_strings[ 'JOMRES_IMAGES_RELPATH' ]   		= JOMRES_IMAGES_RELPATH;
+        $common_strings[ 'CASTOR_IMAGES_RELPATH' ]   		= CASTOR_IMAGES_RELPATH;
 
         $common_strings[ 'LIVE_SITE' ]                       = get_showtime( "live_site" );
         $common_strings[ 'LIVESITE' ]                        = get_showtime( "live_site" );
@@ -848,22 +848,22 @@ class patTemplate
         $common_strings[ 'COMMON_LANG' ] = get_showtime("lang");
         $common_strings[ 'COMMON_LANG_SHORT' ] = substr( get_showtime("lang"), 0, 2 );
 
-        $common_strings[ 'CSRF_TOKEN' ] = '<input type="hidden" name="jomres_csrf_token" value="' . csrf::setToken() . '"/>' ;
+        $common_strings[ 'CSRF_TOKEN' ] = '<input type="hidden" name="castor_csrf_token" value="' . csrf::setToken() . '"/>' ;
 
         if (function_exists('jr_gettext')){
-            $common_strings[ '_JOMRES_MENU_SHOW' ] = jr_gettext('_JOMRES_MENU_SHOW', '_JOMRES_MENU_SHOW', false);
-            $common_strings[ '_JOMRES_MENU_HIDE' ] = jr_gettext('_JOMRES_MENU_HIDE', '_JOMRES_MENU_HIDE', false);
+            $common_strings[ '_CASTOR_MENU_SHOW' ] = jr_gettext('_CASTOR_MENU_SHOW', '_CASTOR_MENU_SHOW', false);
+            $common_strings[ '_CASTOR_MENU_HIDE' ] = jr_gettext('_CASTOR_MENU_HIDE', '_CASTOR_MENU_HIDE', false);
         }
 
-        $common_strings[ 'COMMON_LOGIN_TEXT' ] = jr_gettext('_JOMRES_CUSTOMCODE_JOMRESMAINMENU_LOGIN', '_JOMRES_CUSTOMCODE_JOMRESMAINMENU_LOGIN', false);
-        $common_strings[ 'COMMON_LOGIN_URL' ] = get_showtime('live_site').'/'.jomres_cmsspecific_getlogin_task();
+        $common_strings[ 'COMMON_LOGIN_TEXT' ] = jr_gettext('_CASTOR_CUSTOMCODE_CASTORMAINMENU_LOGIN', '_CASTOR_CUSTOMCODE_CASTORMAINMENU_LOGIN', false);
+        $common_strings[ 'COMMON_LOGIN_URL' ] = get_showtime('live_site').'/'.castor_cmsspecific_getlogin_task();
 
-        $common_strings[ 'COMMON_LOGOUT_TEXT' ] = jr_gettext('_JOMRES_CUSTOMCODE_JOMRESMAINMENU_LOGOUT', '_JOMRES_CUSTOMCODE_JOMRESMAINMENU_LOGOUT', false);
-        $common_strings[ 'COMMON_LOGOUT_URL' ] = get_showtime('live_site').'/'.jomres_cmsspecific_getlogout_task();
+        $common_strings[ 'COMMON_LOGOUT_TEXT' ] = jr_gettext('_CASTOR_CUSTOMCODE_CASTORMAINMENU_LOGOUT', '_CASTOR_CUSTOMCODE_CASTORMAINMENU_LOGOUT', false);
+        $common_strings[ 'COMMON_LOGOUT_URL' ] = get_showtime('live_site').'/'.castor_cmsspecific_getlogout_task();
 
-        $common_strings[ 'COMMON_CANCEL' ] = jr_gettext('_JOMRES_COM_A_CANCEL', '_JOMRES_COM_A_CANCEL', false);
+        $common_strings[ 'COMMON_CANCEL' ] = jr_gettext('_CASTOR_COM_A_CANCEL', '_CASTOR_COM_A_CANCEL', false);
 
-        $siteConfig   = jomres_singleton_abstract::getInstance( 'jomres_config_site_singleton' );
+        $siteConfig   = castor_singleton_abstract::getInstance( 'castor_config_site_singleton' );
         $jrConfig     = $siteConfig->get();
         $common_strings[ 'SITE_BUSINESS_NAME' ] = $jrConfig[ 'business_name' ];
         $common_strings[ 'SITE_HOUSENO' ] = $jrConfig[ 'business_address' ];
@@ -874,7 +874,7 @@ class patTemplate
         $common_strings[ 'SITE_POSTCODE' ] = $jrConfig[ 'business_postcode' ];
         $common_strings[ 'SITE_TELEPHONE' ] = $jrConfig[ 'business_telephone' ];
         $common_strings[ 'SITE_EMAIL' ] = $jrConfig[ 'business_email' ];
-        $common_strings[ 'SITE_EMAIL_HIDDEN' ] = jomres_hide_email($jrConfig[ 'business_email' ]);
+        $common_strings[ 'SITE_EMAIL_HIDDEN' ] = castor_hide_email($jrConfig[ 'business_email' ]);
         $common_strings[ 'SITE_WHATSAPP_TELEPHONE' ] = str_replace(array ( "+" , "00"), "", $jrConfig[ 'business_telephone' ] );
         return $common_strings;
     }
@@ -1193,7 +1193,7 @@ class patTemplate
      *                    calls.
      * @return    boolean    true, if the template could be parsed, false otherwise
      */
-    function readTemplatesFromInput( $input, $reader = 'Jomres', $options = null, $parseInto = null )
+    function readTemplatesFromInput( $input, $reader = 'Castor', $options = null, $parseInto = null )
     {
         $this->rows_samples['patTemplate_file'] = $input;
 
@@ -1699,8 +1699,8 @@ class patTemplate
 
                     $filename = $bang[ count( $bang ) - 1 ];
 
-                    if ( strstr($trace[ 'file' ] , JOMRESPATH_BASE ) !== false ) {
-                        $path = str_replace( JOMRESPATH_BASE , '' , $trace[ 'file' ] );
+                    if ( strstr($trace[ 'file' ] , CASTORPATH_BASE ) !== false ) {
+                        $path = str_replace( CASTORPATH_BASE , '' , $trace[ 'file' ] );
 
                         if ( $filename != 'patTemplate.php' && $filename != 'index.php' && $filename != 'application.php' && $filename != 'helper.php' && $filename != 'mcHandler.class.php' ) {
                             $files .= " " . $filename . " on line ".$trace['line']." <span class='small'>(".$path.")</span><br/>";
@@ -1708,7 +1708,7 @@ class patTemplate
                     }
                 }
 
-                throw new Exception("PatTemplate Error : Path to template is not set. <br/>Related to " . $this->_options[ 'root' ][ '__default' ] . " <br/>Backtrace of Jomres files <br/>" . $files );
+                throw new Exception("PatTemplate Error : Path to template is not set. <br/>Related to " . $this->_options[ 'root' ][ '__default' ] . " <br/>Backtrace of Castor files <br/>" . $files );
             }
             else
             {
@@ -2629,7 +2629,7 @@ class patTemplate
             case 'ignore':
                 break;
             case 'import':
-                //$jomres_language_definitions = jomres_singleton_abstract::getInstance('jomres_language_definitions');
+                //$castor_language_definitions = castor_singleton_abstract::getInstance('castor_language_definitions');
                 $regex = '/{(.*?)}/';
                 preg_match_all($regex, $this->_templates[ $template ][ 'result' ], $matches);
                 if (!empty($matches[0])) {
@@ -2638,7 +2638,7 @@ class patTemplate
                         $check = str_replace(" " , "" , $matches[0][$i]);
                         $first_chars = substr($check, 0, 7);
                         $all_characters_are_uppercase = !preg_match("/[a-z]/", $matches[0][$i]);
-                        if ($first_chars !== '{jomres' && $all_characters_are_uppercase) {
+                        if ($first_chars !== '{castor' && $all_characters_are_uppercase) {
                             $lang_def = substr($matches[0][$i], 1, -1);
                             $new_string = jr_gettext( $lang_def , '', false );
                             $this->_templates[ $template ][ 'result' ] = str_replace( $matches[0][$i] , $new_string , $this->_templates[ $template ][ 'result' ]);
@@ -2719,20 +2719,20 @@ class patTemplate
         /*
         How to use
 
-        You can create shortcodes in template files to include script (minicomponents) generated output in different templates. This allows you to build pages in Jomres that are composites of different Jomres scripts, without needing to actually modify any individual minicomponents. All of the requests are done in the template itself.
+        You can create shortcodes in template files to include script (minicomponents) generated output in different templates. This allows you to build pages in Castor that are composites of different Castor scripts, without needing to actually modify any individual minicomponents. All of the requests are done in the template itself.
 
         For example, you can put
-        {jomres_script show_property_features PROPERTY_UID={UID}}
+        {castor_script show_property_features PROPERTY_UID={UID}}
         in list_properties.html inside the patTemplate property_details tag and the result will be the property features inserted into the property information panel/card for each property, if available.
         Because of how j01010listpropertys.class.php works, you have to include the {UID} code so that patTemplate will insert the property uid in the template.
 
         In templates that are shown for specific properties, you can use a similar shortcode, for example
-        both {jomres_script show_property_features PROPERTY_UID=N} and {jomres_script show_property_features PROPERTY_UID={PROPERTY_UID}} will work in the property_header.html template file.
+        both {castor_script show_property_features PROPERTY_UID=N} and {castor_script show_property_features PROPERTY_UID={PROPERTY_UID}} will work in the property_header.html template file.
 
         */
 
-        $regex = '/{jomres_script\s*.*?}/i';
-        // find all instances of jomres_script and put in $matches
+        $regex = '/{castor_script\s*.*?}/i';
+        // find all instances of castor_script and put in $matches
 
         preg_match_all( $regex, $result, $matches );
         if (!empty($matches))
@@ -2766,7 +2766,7 @@ class patTemplate
                                 $_REQUEST['property_uid']=$property_uid;
                                 $_GET['property_uid']=$property_uid;
                             }
-                        } elseif (substr($args_array[$i],0,12) == 'PROPERTY_UID' ) { // In list properties we can't check showtime because the list properties template script is called AFTER all of the data has been compiled. Therefore, we will allow writing of the property uid to the shortcode string and check the args here to see if it has been set to something like PROPERTY_UID=12 and use that instead. The example code this was tested against was {jomres_shortcode show_property_features PROPERTY_UID={UID}}
+                        } elseif (substr($args_array[$i],0,12) == 'PROPERTY_UID' ) { // In list properties we can't check showtime because the list properties template script is called AFTER all of the data has been compiled. Therefore, we will allow writing of the property uid to the shortcode string and check the args here to see if it has been set to something like PROPERTY_UID=12 and use that instead. The example code this was tested against was {castor_shortcode show_property_features PROPERTY_UID={UID}}
                             $vals = explode ("=",$args_array[$i] );
                             if (isset($vals[0]) && $vals[1] > 0) {
                                 $property_uid = (int)$vals[1];
@@ -2783,14 +2783,14 @@ class patTemplate
                     }
                 }
 
-                $siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+                $siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
                 $jrConfig = $siteConfig->get();
                 $old_language_context = $jrConfig[ 'language_context' ];
                 if (isset($_REQUEST['language_context'])) {
-                    $jomres_property_types = jomres_singleton_abstract::getInstance('jomres_property_types');
-                    $jomres_property_types->get_all_property_types();
+                    $castor_property_types = castor_singleton_abstract::getInstance('castor_property_types');
+                    $castor_property_types->get_all_property_types();
                     $valid_language_contexts = array();
-                    foreach ($jomres_property_types->property_types as $ptype) {
+                    foreach ($castor_property_types->property_types as $ptype) {
                         if (!in_array($ptype['ptype_desc'],$valid_language_contexts )) {
                             $valid_language_contexts[] = $ptype['ptype_desc'];
                         }
@@ -2805,10 +2805,10 @@ class patTemplate
 
                 if ( $our_task != $original_task ) // Can you say recurururururing?
                 {
-                    set_showtime('run_as_jomres_script' , true );
+                    set_showtime('run_as_castor_script' , true );
                     ob_start();
 
-                    $MiniComponents =jomres_getSingleton('mcHandler');
+                    $MiniComponents =castor_getSingleton('mcHandler');
                     set_showtime('task',$our_task);
                     $MiniComponents->specificEvent('06000',$our_task);
                     $contents = ob_get_contents();
@@ -2831,7 +2831,7 @@ class patTemplate
 
                     unset($contents);
                     ob_end_clean();
-                    set_showtime('run_as_jomres_script' , false );
+                    set_showtime('run_as_castor_script' , false );
                 }
 
                 $jrConfig[ 'language_context' ] = $old_language_context;
@@ -2840,16 +2840,16 @@ class patTemplate
 
         /*
         I wanted to be able to call QR codes through templates, however reasoned that creating a j06000 script to display a qr code with a url could be a potential security risk
-        On further consideration, I realised that what I really needed to do was output the content of a Jomres function, therefore have added this code to safely add a function call to a Jomres template.
+        On further consideration, I realised that what I really needed to do was output the content of a Castor function, therefore have added this code to safely add a function call to a Castor template.
 
         Example usage :
 
-        <img src="{jomres_function get_qr_code_relPath "https://www.jomres.net"}" />
+        <img src="{castor_function get_qr_code_relPath "https://www.castor.net"}" />
 
         Subject to change.
         */
 
-        /* 		$regex = '/{jomres_function\s*.*?}/i';
+        /* 		$regex = '/{castor_function\s*.*?}/i';
 
                 preg_match_all( $regex, $result, $matches );
                 if (!empty($matches)) {
@@ -2881,17 +2881,17 @@ class patTemplate
         if ( isset( $this->json_output ) )
             return json_encode( $this->json_output );
         else
-            return  jomres_parse_modules($result);
+            return  castor_parse_modules($result);
     }
 
     private function get_debugging_output()
     {
         $debugging_output = '';
-        $siteConfig   = jomres_singleton_abstract::getInstance( 'jomres_config_site_singleton' );
+        $siteConfig   = castor_singleton_abstract::getInstance( 'castor_config_site_singleton' );
         $jrConfig     = $siteConfig->get();
-        if ($jrConfig['dumpTemplate'] == "1" && jomres_bootstrap_version() == '5' && !jomres_cmsspecific_areweinadminarea() ) {
-            $unique_id = generateJomresRandomString(10);
-            $this->rows_samples['COMMON'] = $this->add_common_jomres_strings();
+        if ($jrConfig['dumpTemplate'] == "1" && castor_bootstrap_version() == '5' && !castor_cmsspecific_areweinadminarea() ) {
+            $unique_id = generateCastorRandomString(10);
+            $this->rows_samples['COMMON'] = $this->add_common_castor_strings();
             $debugging = '';
             $debugging .= 'Debugging output for template file <strong>'.$this->rows_samples["patTemplate_file"].'</strong>
 Path : <strong>'.$this->rows_samples['root_dir'].'</strong>		
@@ -2973,12 +2973,12 @@ Template row index <strong>'.$key.' </strong>
         if (!isset($patTemplate_files_already_shown))
             $patTemplate_files_already_shown = array();
 
-        $siteConfig   = jomres_singleton_abstract::getInstance( 'jomres_config_site_singleton' );
+        $siteConfig   = castor_singleton_abstract::getInstance( 'castor_config_site_singleton' );
         $jrConfig     = $siteConfig->get();
 
         $filename = implode ( " ",$files);
 
-        if ($jrConfig['dumpTemplate'] == "1" && !in_array('mainmenu_options_alternate.html',$files) && !in_array( $filename , $patTemplate_files_already_shown) && !jomres_cmsspecific_areweinadminarea() )
+        if ($jrConfig['dumpTemplate'] == "1" && !in_array('mainmenu_options_alternate.html',$files) && !in_array( $filename , $patTemplate_files_already_shown) && !castor_cmsspecific_areweinadminarea() )
         {
             $no = rand ( 1 , 4 );
             switch ($no)
@@ -3031,8 +3031,8 @@ Template row index <strong>'.$key.' </strong>
                 }
 
             }
-            $id = generateJomresRandomString( 10 );
-            $result = '<div class="alert alert-'.$alert.' "><a class="jomres_bt_tooltip_features" onclick="return false;" href="#" original-title=" <h4> '.$filename.' </h4> '.$variables.' "><strong>'.$file_output.'</strong></a>'.$output.'</div>';
+            $id = generateCastorRandomString( 10 );
+            $result = '<div class="alert alert-'.$alert.' "><a class="castor_bt_tooltip_features" onclick="return false;" href="#" original-title=" <h4> '.$filename.' </h4> '.$variables.' "><strong>'.$file_output.'</strong></a>'.$output.'</div>';
             $patTemplate_files_already_shown[] = $filename;
         }
         else

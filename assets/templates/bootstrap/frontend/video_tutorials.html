@@ -1,6 +1,6 @@
-<patTemplate:tmpl name="pageoutput" unusedvars="strip">
+﻿<patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <script type="text/javascript">
-jomresJquery(document).ready(function(){
+castorJquery(document).ready(function(){
     /* Get iframe src attribute value i.e. YouTube video url
     and store it in a variable */
 	<patTemplate:tmpl name="rows2" unusedvars="strip">
@@ -9,17 +9,17 @@ jomresJquery(document).ready(function(){
 	
     /* Assign empty url value to the iframe src attribute when
     modal hide, which stop the video playing */
-    jomresJquery("#helpModal").on('hide', function(){
+    castorJquery("#helpModal").on('hide', function(){
 		<patTemplate:tmpl name="rows3" unusedvars="strip">
-        jomresJquery("#{VIDEO_ID_SANITISED}").attr('src', '');
+        castorJquery("#{VIDEO_ID_SANITISED}").attr('src', '');
 		</patTemplate:tmpl>
     });
     
     /* Assign the initially stored url back to the iframe src
     attribute when modal is displayed again */
-    jomresJquery("#helpModal").on('show', function(){
+    castorJquery("#helpModal").on('show', function(){
 		<patTemplate:tmpl name="rows4" unusedvars="strip">
-        jomresJquery("#{VIDEO_ID_SANITISED}").attr('src', url_{VIDEO_ID_SANITISED});
+        castorJquery("#{VIDEO_ID_SANITISED}").attr('src', url_{VIDEO_ID_SANITISED});
 		</patTemplate:tmpl>
     });
 });

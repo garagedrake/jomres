@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,44 +36,44 @@ class j16000database_integrity_check
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 		
-		$jomres_version = '<p>Jomres files version: '.$jrConfig['version'].'</p>';
-		$jomres_db_version = '<p>Jomres database version: '.$jrConfig['jomres_db_version'].'</p>';
+		$castor_version = '<p>Castor files version: '.$jrConfig['version'].'</p>';
+		$castor_db_version = '<p>Castor database version: '.$jrConfig['castor_db_version'].'</p>';
 
 		// If we're in dev mode it's ok to go right ahead and run the installer
 		if ($jrConfig[ 'development_production' ] == 'development') {
-			jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL_ADMIN.'&task=jomres_install'), '');
+			castorRedirect(castorURL(CASTOR_SITEPAGE_URL_ADMIN.'&task=castor_install'), '');
 		}
 
-		if ($jrConfig['version'] > $jrConfig['jomres_db_version']) {
+		if ($jrConfig['version'] > $jrConfig['castor_db_version']) {
 			echo '
 <div class="alert alert-warning">
-	<h3>WARNING: Jomres database tables are not up to date.</h3>'
-			.$jomres_version.$jomres_db_version.
+	<h3>WARNING: Castor database tables are not up to date.</h3>'
+			.$castor_version.$castor_db_version.
 			'<p>Before attempting to solve this problem, please make a full site backup, then click the button below.</p>
-	<a href="'.jomresUrl(JOMRES_SITEPAGE_URL_ADMIN.'&task=jomres_install').'" class="btn btn-warning">Update database tables</a>
+	<a href="'.castorUrl(CASTOR_SITEPAGE_URL_ADMIN.'&task=castor_install').'" class="btn btn-warning">Update database tables</a>
 </div>';
-		} elseif ($jrConfig['version'] < $jrConfig['jomres_db_version']) {
+		} elseif ($jrConfig['version'] < $jrConfig['castor_db_version']) {
 			echo '
 <div class="alert alert-danger">
-	<h3>ERROR: Jomres files are older than the database version.<h3>'
-			.$jomres_version.$jomres_db_version.
-			'<p>To solve this problem, you`ll need to run the Jomres update again or contact support for further assistance.</p>
+	<h3>ERROR: Castor files are older than the database version.<h3>'
+			.$castor_version.$castor_db_version.
+			'<p>To solve this problem, you`ll need to run the Castor update again or contact support for further assistance.</p>
 </div>';
 		} else {
 			echo '
 <div class="alert alert-success">
 	<h3>Congratulations! No problems detected.</h3>'
-			.$jomres_version.$jomres_db_version.
+			.$castor_version.$castor_db_version.
 			'</div>';
 		}
 	}
@@ -84,3 +84,4 @@ class j16000database_integrity_check
 		return null;
 	}
 }
+

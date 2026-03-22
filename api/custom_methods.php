@@ -1,24 +1,24 @@
-<?php
+﻿<?php
 /**
  * Custom Flight methods that format json responses
  *
  * Customised methods for the Flight framework that is used by the REST API functionality. These methods allow us to include logging through Monolog. Also formats the API response in an envelope
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly.
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly.
  */
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	
 	/**
 	 *
-	 * @package Jomres\Core\REST_API
+	 * @package Castor\Core\REST_API
 	 *
 	 * Responds with JSON encoded values returned from individual REST API feature plugins
 	 *
@@ -26,9 +26,9 @@ defined('_JOMRES_INITCHECK') or die('');
 
 	Flight::map('json', function ($response_name, $data, $code = 200, $encode = true, $charset = 'utf-8') {
 
-		$headers = jomres_api_postrun_get_headers();
+		$headers = castor_api_postrun_get_headers();
 
-		if (isset($headers['X-JOMRES-NO-ENVELOPE']) && $headers['X-JOMRES-NO-ENVELOPE'] == 1) {
+		if (isset($headers['X-CASTOR-NO-ENVELOPE']) && $headers['X-CASTOR-NO-ENVELOPE'] == 1) {
 			Flight::response()
 				->status($code)
 				->header('Content-Type', 'application/json; charset='.$charset)
@@ -40,12 +40,12 @@ defined('_JOMRES_INITCHECK') or die('');
 		$envelope_data = Flight::response_envelope_data();
 
 		if (class_exists('mcHandler')) {  // The framework has been included, therefore there's a chance a webhook has been triggered. Let's fire up the watcher to respond to any events
-			$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+			$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 			$MiniComponents->triggerEvent('99994');
 			
-			if ( defined("FORCE_JOMRES_SESSION") && FORCE_JOMRES_SESSION == true ) {
-				$tmpBookingHandler = jomres_singleton_abstract::getInstance('jomres_temp_booking_handler');
-				$tmpBookingHandler->close_jomres_session();
+			if ( defined("FORCE_CASTOR_SESSION") && FORCE_CASTOR_SESSION == true ) {
+				$tmpBookingHandler = castor_singleton_abstract::getInstance('castor_temp_booking_handler');
+				$tmpBookingHandler->close_castor_session();
 			}
 		}
 
@@ -78,12 +78,12 @@ defined('_JOMRES_INITCHECK') or die('');
 		$envelope_data = Flight::response_envelope_data();
 
 		if (class_exists('mcHandler')) {  // The framework has been included, therefore there's a chance a webhook has been triggered. Let's fire up the watcher to respond to any events
-			$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+			$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 			$MiniComponents->triggerEvent('99994');
 
-			if ( defined("FORCE_JOMRES_SESSION") && FORCE_JOMRES_SESSION == true ) {
-				$tmpBookingHandler = jomres_singleton_abstract::getInstance('jomres_temp_booking_handler');
-				$tmpBookingHandler->close_jomres_session();
+			if ( defined("FORCE_CASTOR_SESSION") && FORCE_CASTOR_SESSION == true ) {
+				$tmpBookingHandler = castor_singleton_abstract::getInstance('castor_temp_booking_handler');
+				$tmpBookingHandler->close_castor_session();
 			}
 		}
 
@@ -117,7 +117,7 @@ defined('_JOMRES_INITCHECK') or die('');
 		$property_uid = Flight::get('response_envelope_property_uid');
 
 		if ( (int) $property_uid > 0 && function_exists("get_showtime") ) {
-			$basic_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+			$basic_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 			$basic_property_details->gather_data($property_uid);
 			$data['property_name'] =  str_replace('&#39;', "'", $basic_property_details->property_name);
 		}
@@ -138,7 +138,7 @@ defined('_JOMRES_INITCHECK') or die('');
 	 * Here and not in core functions.php because framework isn't always loaded
 	 *
 	 */
-	function jomres_api_postrun_get_headers()
+	function castor_api_postrun_get_headers()
 	{
 		$all_headers = getallheaders();
 

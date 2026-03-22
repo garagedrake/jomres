@@ -1,0 +1,18 @@
+﻿<patTemplate:tmpl name="pageoutput" unusedvars="strip">
+<div class="card">
+	<div class="card-body">
+		<h5 class="card-title">{_ADMIN_CPANEL_SYSTEM_INFO}</h5>
+		<div class="">
+			<div class="castor-system-info">
+				<p>{_CASTOR_VERSIONCHECK_THISCASTORVERSION} <span class="badge bg-success float-end">{THIS_CASTOR_VERSION}</span><p>
+				<p>{_CASTOR_VERSIONCHECK_LATESTCASTORVERSION} <span class="badge bg-success {CASTOR_VERSION_LABEL_CLASS} float-end">{LATEST_CASTOR_VERSION}</span></p>
+				<div id="version_check_warning">
+					<div class="{HIGHLIGHT}">{ALERT}{ERROR}</div>
+					<div class="{HIGHLIGHT}">{UPDATEINFO} </div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</patTemplate:tmpl>
+

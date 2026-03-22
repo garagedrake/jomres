@@ -1,6 +1,6 @@
-<?PHP
+﻿<?PHP
 // ################################################################
-defined( '_JOMRES_INITCHECK' ) or die( '' );
+defined( '_CASTOR_INITCHECK' ) or die( '' );
 // ################################################################
 /**
  * patTemplate function that returns a complete imagetag and

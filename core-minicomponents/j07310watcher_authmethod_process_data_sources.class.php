@@ -1,17 +1,17 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- * @version Jomres 9.8.21
+ * @version Castor 9.8.21
  *
  * @copyright	2005-2017 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 class j07310watcher_authmethod_process_data_sources
@@ -19,7 +19,7 @@ class j07310watcher_authmethod_process_data_sources
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			return;
@@ -53,8 +53,8 @@ class j07310watcher_authmethod_process_data_sources
 						case 'property_unpublished':
 						case 'property_saved':
 						case 'property_updated':
-							$jomres_data_source_maintainer = new jomres_data_source_maintainer();
-							$jomres_data_source_maintainer->build_all_libraries();
+							$castor_data_source_maintainer = new castor_data_source_maintainer();
+							$castor_data_source_maintainer->build_all_libraries();
 							break;
 					}
 				}
@@ -70,3 +70,4 @@ class j07310watcher_authmethod_process_data_sources
 		return null;
 	}
 }
+

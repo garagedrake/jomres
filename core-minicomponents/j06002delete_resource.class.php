@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,19 +36,19 @@ class j06002delete_resource
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
-		$roomUid = intval(jomresGetParam($_REQUEST, 'roomUid', 0));
+		$roomUid = intval(castorGetParam($_REQUEST, 'roomUid', 0));
 		$defaultProperty = getDefaultProperty();
 
 		$mrConfig = getPropertySpecificSettings();
 
 		if ($mrConfig[ 'singleRoomProperty' ] == '1') {
-			jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL.'&task=list_resources'), jr_gettext('_JOMRES_COM_MR_ROOM_UNABLETODELETE', '_JOMRES_COM_MR_ROOM_UNABLETODELETE', false));
+			castorRedirect(castorURL(CASTOR_SITEPAGE_URL.'&task=list_resources'), jr_gettext('_CASTOR_COM_MR_ROOM_UNABLETODELETE', '_CASTOR_COM_MR_ROOM_UNABLETODELETE', false));
 		}
 
 		jr_import('jrportal_rooms');
@@ -59,9 +59,9 @@ class j06002delete_resource
 		$success = $jrportal_rooms->delete_room();
 
 		if ($success) {
-			$save_message = jr_gettext('_JOMRES_COM_MR_ROOM_DELETED', '_JOMRES_COM_MR_ROOM_DELETED', false);
+			$save_message = jr_gettext('_CASTOR_COM_MR_ROOM_DELETED', '_CASTOR_COM_MR_ROOM_DELETED', false);
 		} else {
-			$save_message = jr_gettext('_JOMRES_COM_MR_ROOM_UNABLETODELETE', '_JOMRES_COM_MR_ROOM_UNABLETODELETE', false);
+			$save_message = jr_gettext('_CASTOR_COM_MR_ROOM_UNABLETODELETE', '_CASTOR_COM_MR_ROOM_UNABLETODELETE', false);
 		}
 		
 		$webhook_notification							   = new stdClass();
@@ -80,7 +80,7 @@ class j06002delete_resource
 		$webhook_notification->data->property_uid	   	= $defaultProperty;
 		add_webhook_notification($webhook_notification);
 
-		jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL.'&task=list_resources'), $save_message);
+		castorRedirect(castorURL(CASTOR_SITEPAGE_URL.'&task=list_resources'), $save_message);
 	}
 
 
@@ -89,3 +89,4 @@ class j06002delete_resource
 		return null;
 	}
 }
+

@@ -1,21 +1,21 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <script type="text/javascript">
-jomresJquery(document).ready(function () {
-	make_datatable('jomres_users', '{_JOMRES_MANAGER_CHOOSE_EXISTINGTITLE}', '{LIVESITE}');
+castorJquery(document).ready(function () {
+	make_datatable('castor_users', '{_CASTOR_MANAGER_CHOOSE_EXISTINGTITLE}', '{LIVESITE}');
 });
 </script>
 
-<form action="{JOMRES_SITEPAGE_URL_ADMIN}" method="post" name="adminForm">
-{JOMRESTOOLBAR}
+<form action="{CASTOR_SITEPAGE_URL_ADMIN}" method="post" name="adminForm">
+{CASTORTOOLBAR}
 {CSRF_TOKEN}
 </form>
 
 <h2 class="page-header">{PAGETITLE}</h2>
 
-<p>{_JOMRES_GDPR_RTBF_ANONYMISE_GUEST_INTRO}</p>
+<p>{_CASTOR_GDPR_RTBF_ANONYMISE_GUEST_INTRO}</p>
 
-<table id="jomres_users" width="100%" class="table table-striped">
+<table id="castor_users" width="100%" class="table table-striped">
 	<thead>
 	<tr>
 		<th></th>

@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Inserts a booking after confirmation and payment, triggers a variety of configuration numbers, creates the guest user if required
 	 */
@@ -40,35 +40,35 @@ class j03020insertbooking
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 		$mrConfig = getPropertySpecificSettings();
-		$tmpBookingHandler = jomres_singleton_abstract::getInstance('jomres_temp_booking_handler');
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
-		$current_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+		$tmpBookingHandler = castor_singleton_abstract::getInstance('castor_temp_booking_handler');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
+		$current_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 
-		$jrConfig[ 'useNewusers' ] = '1'; // For Jomres v9.11 and GDPR compliance we are now forcing the system to create new users whenever a booking is made
+		$jrConfig[ 'useNewusers' ] = '1'; // For Castor v9.11 and GDPR compliance we are now forcing the system to create new users whenever a booking is made
 		
 		$secret_key_payment = false;
 
 		$depositPaid = $componentArgs[ 'depositPaid' ];
-		if (isset($componentArgs[ 'usejomressessionasCartid' ])) {
-			$usejomressessionasCartid = $componentArgs[ 'usejomressessionasCartid' ];
+		if (isset($componentArgs[ 'usecastorsessionasCartid' ])) {
+			$usecastorsessionasCartid = $componentArgs[ 'usecastorsessionasCartid' ];
 		} else {
-			$usejomressessionasCartid = false;
+			$usecastorsessionasCartid = false;
 		}
-		$usejomressessionasCartid = false;
-		$jomresProccessingBookingObject = getCurrentBookingData(get_showtime('jomressession'));
-		$guestDetails = $jomresProccessingBookingObject->guestDetails;
-		$tempBookingDataList = $jomresProccessingBookingObject->tempBookingDataList;
-		system_log('j03020insertbooking :: Attempting to insert booking jsid: '.get_showtime('jomressession'));
+		$usecastorsessionasCartid = false;
+		$castorProccessingBookingObject = getCurrentBookingData(get_showtime('castorsession'));
+		$guestDetails = $castorProccessingBookingObject->guestDetails;
+		$tempBookingDataList = $castorProccessingBookingObject->tempBookingDataList;
+		system_log('j03020insertbooking :: Attempting to insert booking jsid: '.get_showtime('castorsession'));
 
 		if ($jrConfig['useGlobalCurrency'] == 1) {
 			$ccode = $jrConfig['globalCurrencyCode'];
@@ -83,7 +83,7 @@ class j03020insertbooking
 			$this->insertSuccessful = false;
 		}
 		if (empty($tempBookingDataList)) {
-			system_log('j03020insertbooking :: Failed to insert booking: Booking data not found. Probably already booking inserted. '.get_showtime('jomressession'));
+			system_log('j03020insertbooking :: Failed to insert booking: Booking data not found. Probably already booking inserted. '.get_showtime('castorsession'));
 			$this->insertSuccessful = false;
 			echo 'Booking already made';
 		}
@@ -110,9 +110,9 @@ class j03020insertbooking
 
 			if ($amend_contract && $amend_contractuid != 0 && $thisJRUser->userIsManager) {
 				//Booking amendment code
-				system_log('j03020insertbooking :: Amending contract. '.$amend_contractuid.' for '.get_showtime('jomressession'));
+				system_log('j03020insertbooking :: Amending contract. '.$amend_contractuid.' for '.get_showtime('castorsession'));
 
-				$guests_uid = insertGuestDeets(get_showtime('jomressession'));
+				$guests_uid = insertGuestDeets(get_showtime('castorsession'));
 
 				foreach ($tempBookingDataList as $tempBookingData) {
 					$requestedRoom = $tempBookingData->requestedRoom;
@@ -171,7 +171,7 @@ class j03020insertbooking
 					$mrConfig = getPropertySpecificSettings($property_uid);
 				}
 
-				$query = "UPDATE #__jomres_contracts SET
+				$query = "UPDATE #__castor_contracts SET
 					`arrival` 					= '$arrivalDate',
 					`departure`					= '$departureDate',
 					`rates_uid`					= '".(int) $rates_uid."',
@@ -201,7 +201,7 @@ class j03020insertbooking
 					$this->insertSuccessful = false;
 				}
 
-				jomres_audit(get_showtime('jomressession'), 'Amend booking - contract updated '.$amend_contractuid);
+				castor_audit(get_showtime('castorsession'), 'Amend booking - contract updated '.$amend_contractuid);
 				$dt = date('Y-m-d H:i:s');
 				$query = "INSERT INTO #__jomcomp_notes (`contract_uid`,`note`,`timestamp`,`property_uid`) VALUES ('".(int) $amend_contractuid."','".RemoveXSS('Amend booking - contract updated '.$amend_contractuid)."','$dt','".(int) $property_uid."')";
 				doInsertSql($query, '');
@@ -209,7 +209,7 @@ class j03020insertbooking
 				$rates_uids = array();
 				if (get_showtime('include_room_booking_functionality')) {
 					// Delete exisiting room booking - may be the same but easier to delete and insert
-					$query = "DELETE FROM #__jomres_room_bookings WHERE contract_uid = '$amend_contractuid'";
+					$query = "DELETE FROM #__castor_room_bookings WHERE contract_uid = '$amend_contractuid'";
 					if (!doInsertSql($query, '')) {
 						trigger_error('Unable to delete from room bookings table, mysql db failure', E_USER_ERROR);
 					}
@@ -225,7 +225,7 @@ class j03020insertbooking
 							$rmuid = $rm[ 0 ];
 							$rates_uids[ ] = $rm[ 1 ];
 
-							$query = "INSERT INTO #__jomres_room_bookings (`room_uid`,`date`,`contract_uid`,`internet_booking`,`reception_booking`,`property_uid`) VALUES ('$rmuid','$roomBookedDate','$amend_contractuid','$internetBooking','$receptionBooking','$property_uid')";
+							$query = "INSERT INTO #__castor_room_bookings (`room_uid`,`date`,`contract_uid`,`internet_booking`,`reception_booking`,`property_uid`) VALUES ('$rmuid','$roomBookedDate','$amend_contractuid','$internetBooking','$receptionBooking','$property_uid')";
 							if (!doInsertSql($query, '')) {
 								trigger_error('Failed to insert booking when inserting to contracts table ', E_USER_ERROR);
 								$this->insertSuccessful = false;
@@ -241,9 +241,9 @@ class j03020insertbooking
 					doInsertSql($query, '');
 				}
 				
-				jomres_audit(get_showtime('jomressession'), 'Amend booking - updated room booking '.$amend_contractuid);
-				$jomres_messaging = jomres_singleton_abstract::getInstance('jomres_messages');
-				$jomres_messaging->set_message('Amend booking - updated room booking '.$amend_contractuid);
+				castor_audit(get_showtime('castorsession'), 'Amend booking - updated room booking '.$amend_contractuid);
+				$castor_messaging = castor_singleton_abstract::getInstance('castor_messages');
+				$castor_messaging->set_message('Amend booking - updated room booking '.$amend_contractuid);
 				
 				$rates_uids = array_unique($rates_uids);
 
@@ -283,7 +283,7 @@ class j03020insertbooking
 				$new_user_id = 0;
 
 				if ($jrConfig[ 'useNewusers' ] == '1') {
-					$all_cms_users = jomres_cmsspecific_getCMSUsers();
+					$all_cms_users = castor_cmsspecific_getCMSUsers();
 					
 					$cms_user_id = 0;
 					foreach ($all_cms_users as $id => $user) {  // It's possible that it's a manager making a booking, therefore we will search the existing cms users to find their cms_user_id. If found, we'll set the new_booking_user_id variable to this id
@@ -294,7 +294,7 @@ class j03020insertbooking
 					}
 
 					if ($cms_user_id == 0) {
-						$cms_user_id = jomres_cmsspecific_createNewUser($guestDetails->email);
+						$cms_user_id = castor_cmsspecific_createNewUser($guestDetails->email);
 					}
 
 					if ($cms_user_id > 0) {
@@ -309,17 +309,17 @@ class j03020insertbooking
 								$already_exists =true;
 								$cms_user_id = $thisJRUser->id;
 							} else {
-								$query = "SELECT cms_user_id FROM #__jomres_guest_profile WHERE cms_user_id = ".(int)$new_booking_user_id;
+								$query = "SELECT cms_user_id FROM #__castor_guest_profile WHERE cms_user_id = ".(int)$new_booking_user_id;
 								$cms_user_id = doSelectSql($query, 1);
 								if ($cms_user_id> 0) {
 									$already_exists =true;
 								}
 							}
-							jr_import('jomres_encryption');
-							$jomres_encryption = new jomres_encryption();
+							jr_import('castor_encryption');
+							$castor_encryption = new castor_encryption();
 							
 							if (!$already_exists) {
-								$query = "INSERT INTO #__jomres_guest_profile (
+								$query = "INSERT INTO #__castor_guest_profile (
 									`cms_user_id`,
 									`enc_firstname`,
 									`enc_surname`,
@@ -334,32 +334,32 @@ class j03020insertbooking
 									`enc_email`
 									) VALUES (
 									'".(int)$new_booking_user_id."',
-									'".$jomres_encryption->encrypt($tmpBookingHandler->tmpguest['firstname'])."',
-									'".$jomres_encryption->encrypt($tmpBookingHandler->tmpguest['surname'])."',
-									'".$jomres_encryption->encrypt($tmpBookingHandler->tmpguest['house'])."',
-									'".$jomres_encryption->encrypt($tmpBookingHandler->tmpguest['street'])."',
-									'".$jomres_encryption->encrypt($tmpBookingHandler->tmpguest['town'])."',
-									'".$jomres_encryption->encrypt($tmpBookingHandler->tmpguest['region'])."',
-									'".$jomres_encryption->encrypt($tmpBookingHandler->tmpguest['country'])."',
-									'".$jomres_encryption->encrypt($tmpBookingHandler->tmpguest['postcode'])."',
-									'".$jomres_encryption->encrypt($tmpBookingHandler->tmpguest['tel_landline'])."',
-									'".$jomres_encryption->encrypt($tmpBookingHandler->tmpguest['tel_mobile'])."',
-									'".$jomres_encryption->encrypt($tmpBookingHandler->tmpguest['email'])."'
+									'".$castor_encryption->encrypt($tmpBookingHandler->tmpguest['firstname'])."',
+									'".$castor_encryption->encrypt($tmpBookingHandler->tmpguest['surname'])."',
+									'".$castor_encryption->encrypt($tmpBookingHandler->tmpguest['house'])."',
+									'".$castor_encryption->encrypt($tmpBookingHandler->tmpguest['street'])."',
+									'".$castor_encryption->encrypt($tmpBookingHandler->tmpguest['town'])."',
+									'".$castor_encryption->encrypt($tmpBookingHandler->tmpguest['region'])."',
+									'".$castor_encryption->encrypt($tmpBookingHandler->tmpguest['country'])."',
+									'".$castor_encryption->encrypt($tmpBookingHandler->tmpguest['postcode'])."',
+									'".$castor_encryption->encrypt($tmpBookingHandler->tmpguest['tel_landline'])."',
+									'".$castor_encryption->encrypt($tmpBookingHandler->tmpguest['tel_mobile'])."',
+									'".$castor_encryption->encrypt($tmpBookingHandler->tmpguest['email'])."'
 									)";
 								doInsertSql($query, '');
 							} else {
-								$query = "UPDATE #__jomres_guest_profile SET 
-									`enc_firstname` = '".$jomres_encryption->encrypt($tmpBookingHandler->tmpguest['firstname'])."',
-									`enc_surname` = '".$jomres_encryption->encrypt($tmpBookingHandler->tmpguest['surname'])."',
-									`enc_house` = '".$jomres_encryption->encrypt($tmpBookingHandler->tmpguest['house'])."',
-									`enc_street` = '".$jomres_encryption->encrypt($tmpBookingHandler->tmpguest['street'])."',
-									`enc_town` = '".$jomres_encryption->encrypt($tmpBookingHandler->tmpguest['town'])."',
-									`enc_county` = '".$jomres_encryption->encrypt($tmpBookingHandler->tmpguest['region'])."',
-									`enc_country` = '".$jomres_encryption->encrypt($tmpBookingHandler->tmpguest['country'])."',
-									`enc_postcode` = '".$jomres_encryption->encrypt($tmpBookingHandler->tmpguest['postcode'])."',
-									`enc_tel_landline` = '".$jomres_encryption->encrypt($tmpBookingHandler->tmpguest['tel_landline'])."',
-									`enc_tel_mobile` = '".$jomres_encryption->encrypt($tmpBookingHandler->tmpguest['tel_mobile'])."',
-									`enc_email` = '".$jomres_encryption->encrypt($tmpBookingHandler->tmpguest['email'])."'
+								$query = "UPDATE #__castor_guest_profile SET 
+									`enc_firstname` = '".$castor_encryption->encrypt($tmpBookingHandler->tmpguest['firstname'])."',
+									`enc_surname` = '".$castor_encryption->encrypt($tmpBookingHandler->tmpguest['surname'])."',
+									`enc_house` = '".$castor_encryption->encrypt($tmpBookingHandler->tmpguest['house'])."',
+									`enc_street` = '".$castor_encryption->encrypt($tmpBookingHandler->tmpguest['street'])."',
+									`enc_town` = '".$castor_encryption->encrypt($tmpBookingHandler->tmpguest['town'])."',
+									`enc_county` = '".$castor_encryption->encrypt($tmpBookingHandler->tmpguest['region'])."',
+									`enc_country` = '".$castor_encryption->encrypt($tmpBookingHandler->tmpguest['country'])."',
+									`enc_postcode` = '".$castor_encryption->encrypt($tmpBookingHandler->tmpguest['postcode'])."',
+									`enc_tel_landline` = '".$castor_encryption->encrypt($tmpBookingHandler->tmpguest['tel_landline'])."',
+									`enc_tel_mobile` = '".$castor_encryption->encrypt($tmpBookingHandler->tmpguest['tel_mobile'])."',
+									`enc_email` = '".$castor_encryption->encrypt($tmpBookingHandler->tmpguest['email'])."'
 									WHERE 
 									`cms_user_id` = ".(int)$new_booking_user_id;
 								doInsertSql($query, '');
@@ -372,12 +372,12 @@ class j03020insertbooking
 					}
 				}
 
-				$guests_uid = insertGuestDeets(get_showtime('jomressession'));
+				$guests_uid = insertGuestDeets(get_showtime('castorsession'));
 
 				$cartnumber = get_booking_number();
 
 				if (trim($cartnumber) == '') {
-					$cartnumber = jomresGetParam($_REQUEST, 'booking_number', '');
+					$cartnumber = castorGetParam($_REQUEST, 'booking_number', '');
 				}
 
 				if ((int) $mrConfig['requireApproval'] == 1) {
@@ -391,7 +391,7 @@ class j03020insertbooking
 					$approved = 1;
 				}
 
-				system_log('j03020insertbooking :: Setting cart number. '.$cartnumber.' for '.get_showtime('jomressession'));
+				system_log('j03020insertbooking :: Setting cart number. '.$cartnumber.' for '.get_showtime('castorsession'));
 
 				foreach ($tempBookingDataList as $tempBookingData) {
 					$requestedRoom = $tempBookingData->requestedRoom;
@@ -422,10 +422,10 @@ class j03020insertbooking
 					}
 
 					if ($thisJRUser->userIsRegistered) { // The user is already registered
-						$user = jomres_cmsspecific_getCMS_users_frontend_userdetails_by_id($thisJRUser->id);
+						$user = castor_cmsspecific_getCMS_users_frontend_userdetails_by_id($thisJRUser->id);
 						$bookersUsername = $user[ $thisJRUser->id ][ 'username' ];
 					} elseif ($new_user_id > 0 && !$thisJRUser->userIsRegistered) { // If a new user isn't created, then $new_user_id will be -1. The idea here is to get the new username of the newly created users
-						$user = jomres_cmsspecific_getCMS_users_frontend_userdetails_by_id($new_user_id);
+						$user = castor_cmsspecific_getCMS_users_frontend_userdetails_by_id($new_user_id);
 						$bookersUsername = $user[ $new_user_id ][ 'username' ];
 					} else { // Booked by a non-logged in user
 						$bookersUsername = $tmpBookingHandler->tmpguest['firstname'].' '.$tmpBookingHandler->tmpguest['surname'];
@@ -471,7 +471,7 @@ class j03020insertbooking
 									$rm = explode('^', $roomsRequested);
 									$rmuid = $rm[ 0 ];
 									$rates_uids[ ] = $rm[ 1 ];
-									$query = "SELECT room_bookings_uid FROM #__jomres_room_bookings WHERE `room_uid` = '".(int) $rmuid."' AND `date` = '".$roomBookedDate."'";
+									$query = "SELECT room_bookings_uid FROM #__castor_room_bookings WHERE `room_uid` = '".(int) $rmuid."' AND `date` = '".$roomBookedDate."'";
 									$result = doSelectSql($query);
 									if (!empty($result)) {
 										system_log('j03020insertbooking :: Failed to insert booking looks like the room has been double booked ');
@@ -513,21 +513,21 @@ class j03020insertbooking
 					//$mrConfig = getPropertySpecificSettings( $property_uid );
 				}
 
-				jr_import('jomres_contract_secret_key');
-				$jomres_contract_secret_key = new jomres_contract_secret_key();
-				$secret_key = $jomres_contract_secret_key->generate_secret_key();
+				jr_import('castor_contract_secret_key');
+				$castor_contract_secret_key = new castor_contract_secret_key();
+				$secret_key = $castor_contract_secret_key->generate_secret_key();
 
-				$query = "SELECT id FROM #__jomres_booking_data_archive WHERE tag = '".$cartnumber."'";
+				$query = "SELECT id FROM #__castor_booking_data_archive WHERE tag = '".$cartnumber."'";
 				$booking_data_archive_id = (int) doSelectSql($query, 1);
 
 				system_log('Referrer '.serialize($tmpBookingHandler->tmpbooking[ 'referrer' ]));
 
 				if (!isset($tmpBookingHandler->tmpbooking[ 'referrer' ]) || $tmpBookingHandler->tmpbooking[ 'referrer' ] == '') {
-					$tmpBookingHandler->tmpbooking[ 'referrer' ] = jr_gettext('_JOMRES_REFERRER_SYSTEM', '_JOMRES_REFERRER_SYSTEM', false);
+					$tmpBookingHandler->tmpbooking[ 'referrer' ] = jr_gettext('_CASTOR_REFERRER_SYSTEM', '_CASTOR_REFERRER_SYSTEM', false);
 				}
 
 				if (!$secret_key_payment) {
-					$query = "INSERT INTO #__jomres_contracts (
+					$query = "INSERT INTO #__castor_contracts (
 						`arrival`, 
 						`departure`, 
 						`rates_uid`, 
@@ -605,7 +605,7 @@ class j03020insertbooking
 					$contract_uid = doInsertSql($query, '');
 					system_log('Insert query '.$query);
 					if ($booking_data_archive_id > 0) { // Quick bookings will log a mysql error, but quick bookings don't use the booking data archive.
-						$query = 'UPDATE #__jomres_booking_data_archive SET contract_uid = '.$contract_uid.' WHERE id = '.$booking_data_archive_id;
+						$query = 'UPDATE #__castor_booking_data_archive SET contract_uid = '.$contract_uid.' WHERE id = '.$booking_data_archive_id;
 						doInsertSql($query, '');
 					}
 
@@ -645,24 +645,24 @@ class j03020insertbooking
 									$rm = explode('^', $roomsRequested);
 									$rmuid = $rm[ 0 ];
 									$rates_uids[ ] = $rm[ 1 ];
-									$query = "INSERT INTO #__jomres_room_bookings (`room_uid`,`date`,`contract_uid`,`internet_booking`,`reception_booking`,`property_uid`) VALUES ('".(int) $rmuid."','$roomBookedDate','".(int) $contract_uid."','".(int) $internetBooking."','".(int) $receptionBooking."','".(int) $property_uid."')";
+									$query = "INSERT INTO #__castor_room_bookings (`room_uid`,`date`,`contract_uid`,`internet_booking`,`reception_booking`,`property_uid`) VALUES ('".(int) $rmuid."','$roomBookedDate','".(int) $contract_uid."','".(int) $internetBooking."','".(int) $receptionBooking."','".(int) $property_uid."')";
 									if (!doInsertSql($query, '')) {
 										trigger_error('Failed to insert booking when inserting to room bookings table ', E_USER_ERROR);
 										$this->insertSuccessful = false;
 									}
-									jomres_audit(get_showtime('jomressession'), 'Booked room '.$cartnumber);
+									castor_audit(get_showtime('castorsession'), 'Booked room '.$cartnumber);
 								}
 							}
 						}
 
 						if ($thisJRUser->is_partner) {
-							$query = 'INSERT INTO #__jomres_partner_bookings (`contract_uid`,`partner_id`) VALUES ('.(int) $contract_uid.' , '.$thisJRUser->id.' ) ';
+							$query = 'INSERT INTO #__castor_partner_bookings (`contract_uid`,`partner_id`) VALUES ('.(int) $contract_uid.' , '.$thisJRUser->id.' ) ';
 							doInsertSql($query);
 						}
 
 						$rates_uids = array_unique($rates_uids);
 
-						jomres_audit($cartnumber, jr_gettext('_JOMRES_MR_AUDIT_BOOKED_ROOM', '_JOMRES_MR_AUDIT_BOOKED_ROOM', false));
+						castor_audit($cartnumber, jr_gettext('_CASTOR_MR_AUDIT_BOOKED_ROOM', '_CASTOR_MR_AUDIT_BOOKED_ROOM', false));
 					}
 				} else {
 					$contract_uid = (int) $tmpBookingHandler->getBookingFieldVal('approval_contract_uid');
@@ -672,7 +672,7 @@ class j03020insertbooking
 					}
 
 					//mark the secret key as used
-					$query = "UPDATE #__jomres_contracts SET secret_key_used = '1' $deposit_paid_clause WHERE contract_uid = '".$contract_uid."' ";
+					$query = "UPDATE #__castor_contracts SET secret_key_used = '1' $deposit_paid_clause WHERE contract_uid = '".$contract_uid."' ";
 					doInsertSql($query, '');
 					
 
@@ -684,11 +684,11 @@ class j03020insertbooking
 				}
 
 				// Update the contract with the number of bookings and number of no shows for this guest's email address. Doing it at this point means that this booking is not taken into account.
-				jr_import('jomres_syndicate_guests');
-				$jomres_syndicate_guests = new jomres_syndicate_guests();
-				$response = $jomres_syndicate_guests->get_booking_stats_for_guest($tmpBookingHandler->tmpguest['email']);
+				jr_import('castor_syndicate_guests');
+				$castor_syndicate_guests = new castor_syndicate_guests();
+				$response = $castor_syndicate_guests->get_booking_stats_for_guest($tmpBookingHandler->tmpguest['email']);
 					
-				$query = "UPDATE #__jomres_contracts SET network_stats  = '".json_encode($response)."' WHERE contract_uid = '".$contract_uid."' ";
+				$query = "UPDATE #__castor_contracts SET network_stats  = '".json_encode($response)."' WHERE contract_uid = '".$contract_uid."' ";
 				doInsertSql($query, '');
 				
 				$componentArgs = array();
@@ -726,7 +726,7 @@ class j03020insertbooking
 					$MiniComponents->triggerEvent('03200', $componentArgs); // post insert booking functionality
 				}
 
-				jomres_audit('Cart number '.$cartnumber, jr_gettext('_JOMRES_MR_AUDIT_BOOKED_ROOM', '_JOMRES_MR_AUDIT_BOOKED_ROOM', false));
+				castor_audit('Cart number '.$cartnumber, jr_gettext('_CASTOR_MR_AUDIT_BOOKED_ROOM', '_CASTOR_MR_AUDIT_BOOKED_ROOM', false));
 				$this->insertBookingEventValues[ 'cartnumber' ] = $cartnumber;
 				$this->insertBookingEventValues[ 'tempBookingDataList' ] = $tempBookingDataList;
 				$this->insertBookingEventValues[ 'guestDetails' ] = $guestDetails;
@@ -775,7 +775,7 @@ class j03020insertbooking
 			}
 
 			if (isset($tmpBookingHandler->tmpbooking[ 'gateway' ])) {
-				$query = "INSERT INTO #__jomcomp_notes (`contract_uid`,`note`,`timestamp`,`property_uid`) VALUES ('" . (int) $contract_uid . "','" . jr_gettext('_JOMRES_PAYMENT_METHOD_USED', '_JOMRES_PAYMENT_METHOD_USED', false)." ". $tmpBookingHandler->tmpbooking[ 'gateway' ] . "','".date("Y-m-d H-i-s")."','" . (int) $property_uid . "')";
+				$query = "INSERT INTO #__jomcomp_notes (`contract_uid`,`note`,`timestamp`,`property_uid`) VALUES ('" . (int) $contract_uid . "','" . jr_gettext('_CASTOR_PAYMENT_METHOD_USED', '_CASTOR_PAYMENT_METHOD_USED', false)." ". $tmpBookingHandler->tmpbooking[ 'gateway' ] . "','".date("Y-m-d H-i-s")."','" . (int) $property_uid . "')";
 				doInsertSql($query, "");
 			}
 			
@@ -789,16 +789,16 @@ class j03020insertbooking
 					$rm = explode('^', $roomsRequested);
 					$rmuids[] = $rm[ 0 ];
 				}
-				$query = 'SELECT room_uid, room_classes_uid, room_number, room_name FROM #__jomres_rooms WHERE room_uid IN ('.jomres_implode($rmuids).') ';
+				$query = 'SELECT room_uid, room_classes_uid, room_number, room_name FROM #__castor_rooms WHERE room_uid IN ('.castor_implode($rmuids).') ';
 				$result = doSelectSql($query);
 
-				$roomNote = jr_gettext('_JOMRES_COM_MR_VRCT_TAB_ROOM', '_JOMRES_COM_MR_VRCT_TAB_ROOM', false).' ';
+				$roomNote = jr_gettext('_CASTOR_COM_MR_VRCT_TAB_ROOM', '_CASTOR_COM_MR_VRCT_TAB_ROOM', false).' ';
 				foreach ($result as $r) {
 					if ($r->room_number != '') {
 						$roomNote .= $r->room_number.' - ';
 					}
 					if ($r->room_name != '') {
-						$roomNote .= jr_gettext('_JOMRES_CUSTOMTEXT_ROOMNAME_TITLE'.$r->room_uid, stripslashes($r->room_name), false).' - ';
+						$roomNote .= jr_gettext('_CASTOR_CUSTOMTEXT_ROOMNAME_TITLE'.$r->room_uid, stripslashes($r->room_name), false).' - ';
 					}
 
 					$roomNote .= $current_property_details->all_room_types[ (int) $r->room_classes_uid ]['room_class_abbv'];
@@ -814,8 +814,8 @@ class j03020insertbooking
 				$current_property_details->gather_data($property_uid);
 				$ptype_id = $current_property_details->ptype_id;
 
-				$jomres_custom_field_handler = jomres_singleton_abstract::getInstance('jomres_custom_field_handler');
-				$allCustomFields = $jomres_custom_field_handler->getAllCustomFieldsByPtypeId($ptype_id);
+				$castor_custom_field_handler = castor_singleton_abstract::getInstance('castor_custom_field_handler');
+				$allCustomFields = $castor_custom_field_handler->getAllCustomFieldsByPtypeId($ptype_id);
 
 				if (!empty($allCustomFields)) {
 					$note = '';
@@ -850,3 +850,4 @@ class j03020insertbooking
 		}
 	}
 }
+

@@ -1,4 +1,4 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 
 <h2 class="page-header">{PAGETITLE}</h2>
@@ -29,7 +29,7 @@
 		<patTemplate:tmpl name="rowsheader" type="simpleCondition" requiredVars="totalinlistplusone" unusedvars="nbsp">
 		<tr>
 			<th>
-				<input type="checkbox" name="toggle" value="" onclick="jomres_checkAll({TOTALINLISTPLUSONE});"/>
+				<input type="checkbox" name="toggle" value="" onclick="castor_checkAll({TOTALINLISTPLUSONE});"/>
 				Select all
 			</th>
 			<th>Room number/name</th>
@@ -44,7 +44,7 @@
 	</table>
 	<div class="form-actions">
 		<div class="col-md-10 col-md-offset-2">
-			{JOMRESTOOLBAR}
+			{CASTORTOOLBAR}
 		</div>
 	</div>
 	<input type="hidden" name="boxchecked" value="0">

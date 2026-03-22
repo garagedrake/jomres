@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,14 +35,14 @@ class j06005oauth_edit_client
 	 
 	function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			return;
 		}
 
 		$ePointFilepath=get_showtime('ePointFilepath');
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 		$available_scopes = array();
 		if (!$thisJRUser->userIsManager) {
 			$available_scopes = array ( "user");
@@ -52,11 +52,11 @@ class j06005oauth_edit_client
 			$available_scopes = array ( "user" , "manager" , "super" );
 		}
 
-		jr_import("jomres_oauth_scopes");
-		$scopes_class = new jomres_oauth_scopes($ePointFilepath);
+		jr_import("castor_oauth_scopes");
+		$scopes_class = new castor_oauth_scopes($ePointFilepath);
 		$output = array();
 		
-		$client_id = jomresGetParam($_REQUEST, 'client_id', "");
+		$client_id = castorGetParam($_REQUEST, 'client_id', "");
 		
 		$output['PAGETITLE']=jr_gettext('_OAUTH_APPS', '_OAUTH_APPS', false);
 		$output['_OAUTH_APIKEY']=jr_gettext('_OAUTH_APIKEY', '_OAUTH_APIKEY', false);
@@ -78,7 +78,7 @@ class j06005oauth_edit_client
 		$output['TOKEN'] = '';
 		if ($client_id != '') {
 			$rightnow = date('Y-m-d H:i:s', strtotime('now'));
-			$query = "SELECT access_token FROM #__jomres_oauth_access_tokens  WHERE 
+			$query = "SELECT access_token FROM #__castor_oauth_access_tokens  WHERE 
             	`client_id` = '".$client_id."' AND 
             	`user_id` = ".(int)$thisJRUser->id." AND
             	`expires` >  '".$rightnow."' ORDER BY `expires` DESC LIMIT 1 ";
@@ -86,7 +86,7 @@ class j06005oauth_edit_client
 			$output['TOKEN'] = doSelectSql($query, 1);
 		}
 
-		$query = "SELECT client_id , client_secret , scope , identifier , redirect_uri FROM #__jomres_oauth_clients WHERE client_id = '".$client_id."' AND user_id = ".(int)$thisJRUser->id . ' LIMIT 1 ';
+		$query = "SELECT client_id , client_secret , scope , identifier , redirect_uri FROM #__castor_oauth_clients WHERE client_id = '".$client_id."' AND user_id = ".(int)$thisJRUser->id . ' LIMIT 1 ';
 		$result = doSelectSql($query);
 
 		$client_scopes = array();
@@ -99,7 +99,7 @@ class j06005oauth_edit_client
 				$output['REDIRECT_URI']=$client->redirect_uri;
 
 				if ($output['REDIRECT_URI']=="") {
-					$output['REDIRECT_URI'] = jomresURL(JOMRES_SITEPAGE_URL.'&task=oauth');;
+					$output['REDIRECT_URI'] = castorURL(CASTOR_SITEPAGE_URL.'&task=oauth');;
 				}
 
 				if (trim($client->scope) != "") {
@@ -112,14 +112,14 @@ class j06005oauth_edit_client
 			}
 		} else {
 			$output['IDENTIFIER']="";
-			$output['CLIENT_ID']=generateJomresRandomString(15);
+			$output['CLIENT_ID']=generateCastorRandomString(15);
 			$output['CLIENT_SECRET'] =createNewAPIKey();
-			$output['REDIRECT_URI'] =get_showtime('live_site')."/".JOMRES_ROOT_DIRECTORY."/api/";
+			$output['REDIRECT_URI'] =get_showtime('live_site')."/".CASTOR_ROOT_DIRECTORY."/api/";
 		}
 
-		$output['AUTHORIZE_URL'] = JOMRES_SITEPAGE_URL_AJAX.'&task=oauth_isauthorised&response_type=token&client_id='.$output['CLIENT_ID'].'&redirect_uri='. $output['REDIRECT_URI'];
+		$output['AUTHORIZE_URL'] = CASTOR_SITEPAGE_URL_AJAX.'&task=oauth_isauthorised&response_type=token&client_id='.$output['CLIENT_ID'].'&redirect_uri='. $output['REDIRECT_URI'];
 
-		$output['TOKEN_REQUEST_URL'] = get_showtime('live_site').'/jomres/api/';
+		$output['TOKEN_REQUEST_URL'] = get_showtime('live_site').'/castor/api/';
 		
 		$rows=array();
 		foreach ($scopes_class->default_scopes as $category => $category_scopes) {
@@ -146,7 +146,7 @@ class j06005oauth_edit_client
 			if (count($scope_rows)>0) {
 				$po[]=$o;
 				$tmpl = new patTemplate();
-				$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+				$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 				$tmpl->readTemplatesFromInput('scope_categories.html');
 				$tmpl->addRows('pageoutput', $po);
 				$tmpl->addRows('rows', $scope_rows);
@@ -155,21 +155,21 @@ class j06005oauth_edit_client
 		}
 		
 		
-		$jrtbar = jomres_singleton_abstract::getInstance('jomres_toolbar');
+		$jrtbar = castor_singleton_abstract::getInstance('castor_toolbar');
 		$jrtb   = $jrtbar->startTable();
-		$jrtb .= $jrtbar->toolbarItem('cancel', jomresURL(JOMRES_SITEPAGE_URL . "&task=oauth"), '');
+		$jrtb .= $jrtbar->toolbarItem('cancel', castorURL(CASTOR_SITEPAGE_URL . "&task=oauth"), '');
 		$jrtb .= $jrtbar->toolbarItem('save', '', '', true, 'save_client');
 		if ($client_id != '') {
-			$jrtb .= $jrtbar->toolbarItem('delete', jomresURL(JOMRES_SITEPAGE_URL . "&task=delete_client&client_id=".$client_id."&no_html=1"), '');
-			$jrtb .= $jrtbar->toolbarItem('delete', jomresURL(JOMRES_SITEPAGE_URL . "&task=expire_tokens&client_id=".$client_id."&no_html=1"), jr_gettext('DELETE_TOKEN', 'DELETE_TOKEN', false));
+			$jrtb .= $jrtbar->toolbarItem('delete', castorURL(CASTOR_SITEPAGE_URL . "&task=delete_client&client_id=".$client_id."&no_html=1"), '');
+			$jrtb .= $jrtbar->toolbarItem('delete', castorURL(CASTOR_SITEPAGE_URL . "&task=expire_tokens&client_id=".$client_id."&no_html=1"), jr_gettext('DELETE_TOKEN', 'DELETE_TOKEN', false));
 		}
 
 		$jrtb .= $jrtbar->endTable();
-		$output[ 'JOMRESTOOLBAR' ] = $jrtb;
+		$output[ 'CASTORTOOLBAR' ] = $jrtb;
 		
 		$pageoutput[]=$output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 		$tmpl->readTemplatesFromInput('edit_client.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->addRows('rows', $rows);
@@ -182,3 +182,4 @@ class j06005oauth_edit_client
 		return null;
 	}
 }
+

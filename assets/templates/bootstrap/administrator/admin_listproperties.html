@@ -1,32 +1,32 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <script language="JavaScript" type="text/javascript">
 	<!--
-	jomresJquery(document).ready(function () {
+	castorJquery(document).ready(function () {
 		make_datatable('admin_listproperties', '{PAGETITLE}', '{LIVESITE}', '{AJAX_URL}');
 		column_ids = new Array(1,3,4,5,6,7,9,11,12,13,14);
 		dataTableSetHiddenColumns('admin_listproperties', column_ids);
 		
-		var $content = jomresJquery('#filter_properties').html();
-		jomresJquery('#jomres_admin_toolbar').html($content);
-		jomresJquery('#filter_properties').empty();
+		var $content = castorJquery('#filter_properties').html();
+		castorJquery('#castor_admin_toolbar').html($content);
+		castorJquery('#filter_properties').empty();
 		
-		if (jomresJquery('#jomres_admin_toolbar').html().trim() != '')
-			jomresJquery('#jomres_admin_toolbar').css("display", "block");
+		if (castorJquery('#castor_admin_toolbar').html().trim() != '')
+			castorJquery('#castor_admin_toolbar').css("display", "block");
 		});
 	
 	function savecrates(property_uid, crate_id) 
 		{
-		cmd = '{JOMRES_SITEPAGE_URL_ADMIN_AJAX}&task=savecrates_ajax&property_uid=' + property_uid + '&crate_id=' + crate_id;
-		jomresJquery.get(cmd, function (data) {
+		cmd = '{CASTOR_SITEPAGE_URL_ADMIN_AJAX}&task=savecrates_ajax&property_uid=' + property_uid + '&crate_id=' + crate_id;
+		castorJquery.get(cmd, function (data) {
 			//alert "OK"
 			});
 		}
 	
 	function setApproval(property_uid, approved) 
 		{
-		cmd = '{JOMRES_SITEPAGE_URL_ADMIN_AJAX}&task=ajax_list_properties_approve&property_uid=' + property_uid + '&approved=' + approved;
-		jomresJquery.get(cmd, function (data) {
+		cmd = '{CASTOR_SITEPAGE_URL_ADMIN_AJAX}&task=ajax_list_properties_approve&property_uid=' + property_uid + '&approved=' + approved;
+		castorJquery.get(cmd, function (data) {
 			//alert "OK"
 			});
 		}

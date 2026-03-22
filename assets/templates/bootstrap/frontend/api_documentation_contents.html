@@ -1,4 +1,4 @@
-	<section id="overview">
+﻿	<section id="overview">
 		<div class="jumbotron">
 			 <h1>The API is for:</h1>
 			<div class="row">
@@ -34,7 +34,7 @@
 		<pre class="prettyprint">
 $client_id = 'CLIENT-ID';
 $client_secret = 'CLIENT-SECRET';
-$server = '[LIVE_SITE]/jomres/api/';
+$server = '[LIVE_SITE]/castor/api/';
 
 $data=array(
 	'grant_type' => 'client_credentials' , 
@@ -65,7 +65,7 @@ $response = json_decode($token_request);
 		
 		<pre class="prettyprint">
 $token = $response->access_token;
-$server = '[LIVE_SITE]/jomres/api/';
+$server = '[LIVE_SITE]/castor/api/';
 $result = query_remote_server( $server , $token , "GET" , "favourites" );
 
 function query_remote_server( $server , $token , $method="GET" , $request ="" , $data=array(3) )
@@ -122,7 +122,7 @@ function query_remote_server( $server , $token , $method="GET" , $request ="" , 
 		<h1>Endpoints</h1>
 		<p>Calls to this API use an OAuth2 REST format request (DELETE , GET , POST & PUT ) and the endpoint is </p>
 		<pre class="prettyprint">
-[LIVE_SITE]/jomres/api/
+[LIVE_SITE]/castor/api/
 		</pre>
 
 	<section id="responses">
@@ -159,7 +159,7 @@ function query_remote_server( $server , $token , $method="GET" , $request ="" , 
 		<h1>Methods</h1>
 		<p>Methods are the actual things you can do once you have a valid access token.<p>
 		
-		<a href="https://api.jomres.net" target="_blank" class="btn btn-primary btn-lg">See all available Methods/Endpoints.</a>
+		<a href="https://api.castor.net" target="_blank" class="btn btn-primary btn-lg">See all available Methods/Endpoints.</a>
 	</section>
 	
 	<section id="example">
@@ -169,7 +169,7 @@ function query_remote_server( $server , $token , $method="GET" , $request ="" , 
 		<pre class="prettyprint">
 $client_id = 'CLIENT-ID';
 $client_secret = 'CLIENT-SECRET';
-$server = '[LIVE_SITE]/jomres/api/';
+$server = '[LIVE_SITE]/castor/api/';
 
 $data=array(
     'grant_type' => 'client_credentials' , 
@@ -300,4 +300,5 @@ function query_remote_server( $server , $token , $method="GET" , $request ="" , 
 		
 		[WEBSITE TERMS AND CONDITIONS]
 	</section>
+
 

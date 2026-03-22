@@ -1,7 +1,7 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
-	{JOMRES_POPUPURL_GLOBALVAR}
-	<div class="card mb-3 border-0" {jomres_script animation_library}>
+	{CASTOR_POPUPURL_GLOBALVAR}
+	<div class="card mb-3 border-0" {castor_script animation_library}>
 		<div class="image-container ">
 			<a href="{MOREINFORMATIONLINK}">
 				{PROPERTY_IMAGE_OR_SLIDESHOW}
@@ -59,18 +59,18 @@
 	</div>
 	<script>
         document.addEventListener('DOMContentLoaded', function(){
-            jomresJquery('#module_{RANDOM_IDENTIFIER}_popup').appendTo("body");
+            castorJquery('#module_{RANDOM_IDENTIFIER}_popup').appendTo("body");
         });
 	</script>
 	
 	<div class="modal fade" id="module_{RANDOM_IDENTIFIER}_popup"></div>
 	<div class="offcanvas offcanvas-start" style="width: 65%; " tabindex="-1" id="reviewsOffCanvas{RANDOM_IDENTIFIER}" aria-labelledby="offcanvasReviewsLabel{RANDOM_IDENTIFIER}">
 		<div class="offcanvas-header">
-			<h5 class="offcanvas-title" id="offcanvasReviewsLabel{RANDOM_IDENTIFIER}">{_JOMRES_REVIEWS}</h5>
+			<h5 class="offcanvas-title" id="offcanvasReviewsLabel{RANDOM_IDENTIFIER}">{_CASTOR_REVIEWS}</h5>
 			<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 		</div>
 		<div class="offcanvas-body">
-			{jomres_script show_property_reviews PROPERTY_UID={UID}}
+			{castor_script show_property_reviews PROPERTY_UID={UID}}
 		</div>
 	</div>
 </patTemplate:tmpl>

@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,18 +35,18 @@ class j06000show_shortlisted_properties
 	 
 	public function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = true;
 			$this->shortcode_data = array(
 				'task' => 'show_shortlisted_properties',
-				'info' => '_JOMRES_SHORTCODES_06000SHORTLIST',
+				'info' => '_CASTOR_SHORTCODES_06000SHORTLIST',
 				'arguments' => array()
 					);
 			return;
 		}
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
-		$tmpBookingHandler = jomres_singleton_abstract::getInstance('jomres_temp_booking_handler');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
+		$tmpBookingHandler = castor_singleton_abstract::getInstance('castor_temp_booking_handler');
 
 		$original_search_results = array();
 		if (isset($tmpBookingHandler->tmpsearch_data[ 'ajax_list_search_results' ])) {
@@ -81,7 +81,7 @@ class j06000show_shortlisted_properties
 			$MiniComponents->triggerEvent('01010', $componentArgs); // listPropertys
 			//$tmpBookingHandler->tmpsearch_data['ajax_list_search_results'] = $original_search_results;
 		} else {
-			echo jr_gettext('_JOMRES_NOTHINGINSHORTLIST', '_JOMRES_NOTHINGINSHORTLIST', false, false);
+			echo jr_gettext('_CASTOR_NOTHINGINSHORTLIST', '_CASTOR_NOTHINGINSHORTLIST', false, false);
 		}
 	}
 
@@ -89,7 +89,7 @@ class j06000show_shortlisted_properties
 	{
 		$output = array();
 
-		$output[ ] = jr_gettext('_JOMRES_NOTHINGINSHORTLIST', '_JOMRES_NOTHINGINSHORTLIST');
+		$output[ ] = jr_gettext('_CASTOR_NOTHINGINSHORTLIST', '_CASTOR_NOTHINGINSHORTLIST');
 
 		foreach ($output as $o) {
 			echo $o;
@@ -102,3 +102,4 @@ class j06000show_shortlisted_properties
 		return null;
 	}
 }
+

@@ -1,4 +1,4 @@
-The scripts in this file are not called directly, instead they are called by other Jomres scripts at differing stages of a run.
+﻿The scripts in this file are not called directly, instead they are called by other Castor scripts at differing stages of a run.
 
 
 00001 Set into place various functions that can be overriden, or for other bootstrapping purposes.  
@@ -9,7 +9,7 @@ The scripts in this file are not called directly, instead they are called by oth
 00006 Used for sanity checks.  
 
 00012 Currently used to build pathways for the host CMS to display. Joomla only is supported, primarily used to interface with routing functionality to build SEO friendly routes  
-00021 Used to insert Jomres specific css files into the system.  
+00021 Used to insert Castor specific css files into the system.  
 
 00035 These scripts are used to build tab contents in the property details pages. In Bootstrap 5 these are not much used, however the remain for lower versions of Bootstrap.
 
@@ -55,7 +55,7 @@ The next trigger numbers are used when building the property list/search results
 03383 Media centre uses these to determine images that already exist for specific resources.
 
 03500 Triggers scripts that can be used to add buttons to the reservation details/edit booking page
-03700 Called when saving account details. Gives plugins the option to parse saved data before it's saved to the database. Reason created : Twilio cannot send messages to invalid numbers, therefore parsing the $_REQUEST['mobile'] value, checking it and if necessary resetting it to empty if it cannot be validated will prevent Twilio throwing errors. From Jomres 10.5.4
+03700 Called when saving account details. Gives plugins the option to parse saved data before it's saved to the database. Reason created : Twilio cannot send messages to invalid numbers, therefore parsing the $_REQUEST['mobile'] value, checking it and if necessary resetting it to empty if it cannot be validated will prevent Twilio throwing errors. From Castor 10.5.4
 
 04901 This trigger is used when a new property is created, typically for sending welcome emails
 
@@ -64,7 +64,7 @@ The next trigger numbers are used when building the property list/search results
 05000 level scripts are generally used by the booking engine. A new booking engine is being planned and these will likely not be used in the future.
 05019 On booking editing, optional scripts are used to override the booking engine's default values
 
-Jomres includes Access Control functionality, however we find that a more simplistic approach suits the vast majority of users.  
+Castor includes Access Control functionality, however we find that a more simplistic approach suits the vast majority of users.  
  
 06000 These scripts are individual tasks that can called that do not require a user to be logged in. Some scripts like the cron scripts do demand that the system pass the CMS's secret to itself, this is to prevent spiders or other web services from calling these scripts at some point and bogging the system down with scheduled jobs. On the whole, however, the bulk of these scripts are used for displaying public/guest facing output.  
 06001 These tasks are for Reception level functionality.  
@@ -86,13 +86,13 @@ Jomres includes Access Control functionality, however we find that a more simpli
 
 
 
-08100 Parsers for Jomres Messaging System, allows for parsing of messages before they're saved. Performed before encryption. A 08100 script would need to import subject and message_body by doing  get_showtime('jms_message_subject') or get_showtime('jms_message_message_body') and after parsing set the same by doing set_showtime('jms_message_subject' , $parsed_result ); or set_showtime('jms_message_message_body' , $parsed_result );
+08100 Parsers for Castor Messaging System, allows for parsing of messages before they're saved. Performed before encryption. A 08100 script would need to import subject and message_body by doing  get_showtime('jms_message_subject') or get_showtime('jms_message_message_body') and after parsing set the same by doing set_showtime('jms_message_subject' , $parsed_result ); or set_showtime('jms_message_message_body' , $parsed_result );
 
-08200 Parsers for Jomres Messaging System, allows for parsing of messages before they're returned to the calling script. Performed after decryption. Same showtime variables and processes as used in the 08100 parsing method.
+08200 Parsers for Castor Messaging System, allows for parsing of messages before they're returned to the calling script. Performed after decryption. Same showtime variables and processes as used in the 08100 parsing method.
 
-08300 Parsers for Jomres Messaging System, allows for parsing of messages before they're returned to the calling script. Parsed before saving group name.
+08300 Parsers for Castor Messaging System, allows for parsing of messages before they're returned to the calling script. Parsed before saving group name.
 
-08400 Parsers for Jomres Messaging System, allows for parsing of messages before they're returned to the calling script. Parsed before returning group name.
+08400 Parsers for Castor Messaging System, allows for parsing of messages before they're returned to the calling script. Parsed before returning group name.
 
 
 09995 Creates the core menu items  
@@ -100,7 +100,7 @@ Jomres includes Access Control functionality, however we find that a more simpli
 
 99994 Post run scripts are run here, for example the Channel Manager functionality has a watcher for here, and webhooks are triggered at this point.
 
-99998 jomres feedback messages
+99998 castor feedback messages
 99999 Anything that needs to be done right at the end of a run.
 
 Administrator area
@@ -131,7 +131,7 @@ Administrator area
 19995 creates the admin core menu items  
 19997 builds the admin cpanel menu
 
-99998 jomres feedback messages
+99998 castor feedback messages
 
 Menu sections (Frontend)
 
@@ -168,3 +168,4 @@ Menu sections (Administrator)
 * 80 : Reports
 * 90 : Settings
 * 100 : Help
+

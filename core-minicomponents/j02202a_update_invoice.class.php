@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Add service to bill triggers 02202 which is used to update the invoice
 	 */
@@ -36,25 +36,25 @@ class j02202a_update_invoice
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 		$defaultProperty = getDefaultProperty();
-		$contractUid = intval(jomresGetParam($_POST, 'contractUid', 0));
-		$depositRef = getEscaped(jomresGetParam($_POST, 'depositRef', ''));
-		$payment_method = getEscaped(jomresGetParam($_POST, 'payment_method', ''));
-		$transaction_id = getEscaped(jomresGetParam($_POST, 'transaction_id', ''));
+		$contractUid = intval(castorGetParam($_POST, 'contractUid', 0));
+		$depositRef = getEscaped(castorGetParam($_POST, 'depositRef', ''));
+		$payment_method = getEscaped(castorGetParam($_POST, 'payment_method', ''));
+		$transaction_id = getEscaped(castorGetParam($_POST, 'transaction_id', ''));
 		
 		if ($contractUid > 0) {
 			// This is a security check because we don't have a property uid associated with invoices
-			$query = 'SELECT contract_uid,deposit_required FROM #__jomres_contracts WHERE contract_uid = '.$contractUid.' AND property_uid = '.$defaultProperty;
+			$query = 'SELECT contract_uid,deposit_required FROM #__castor_contracts WHERE contract_uid = '.$contractUid.' AND property_uid = '.$defaultProperty;
 			$result = doSelectSql($query);
 
 			if (count($result) == 1) {
-				$deposit_received = jomresGetParam($_POST, 'deposit_received', 0.00);
+				$deposit_received = castorGetParam($_POST, 'deposit_received', 0.00);
 
 				$today = outputDate(date('Y/m/d'));
 
@@ -64,7 +64,7 @@ class j02202a_update_invoice
 				$invoice->getInvoice();
 
 				$line_items = array('tax_code_id' => 0,
-										 'name' => jr_gettext('_JOMRES_MR_AUDIT_ENTEREDDEPOSIT', '_JOMRES_MR_AUDIT_ENTEREDDEPOSIT', false, false),
+										 'name' => jr_gettext('_CASTOR_MR_AUDIT_ENTEREDDEPOSIT', '_CASTOR_MR_AUDIT_ENTEREDDEPOSIT', false, false),
 										 'description' => '('.$today.' - Ref: '.$depositRef.')',
 										 'init_price' => 0 - $deposit_received,
 										 'init_qty' => 1,
@@ -93,3 +93,4 @@ class j02202a_update_invoice
 		return null;
 	}
 }
+

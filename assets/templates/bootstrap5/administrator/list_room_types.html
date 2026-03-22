@@ -1,4 +1,4 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <script type="text/javascript">
 	<!--
@@ -9,16 +9,16 @@
 </script>
 <h2 class="page-header">{PAGETITLE}</h2>
 {PROPERTY_TYPE_WARNING}
-<form action="{JOMRES_SITEPAGE_URL_ADMIN}" method="post" name="adminForm">
-	{JOMRESTOOLBAR}
+<form action="{CASTOR_SITEPAGE_URL_ADMIN}" method="post" name="adminForm">
+	{CASTORTOOLBAR}
 	<table id="list_room_types" width="100%" class="table table-striped">
 		<thead>
 		<tr>
 			<th>{COMMON_EDIT}</th>
-			<th><input type="checkbox" name="toggle" value="" onclick="jomres_checkAll({TOTALINLISTPLUSONE});"/> {COMMON_DELETE}</th>
+			<th><input type="checkbox" name="toggle" value="" onclick="castor_checkAll({TOTALINLISTPLUSONE});"/> {COMMON_DELETE}</th>
 			<th>{HRTTITLE}</th>
 			<!--<th class="hidden-phone">{HRTDESCRIPTION}</th>-->
-			<th class="hidden-phone">{HJOMRES_A_ICON}</th>
+			<th class="hidden-phone">{HCASTOR_A_ICON}</th>
 			<th class="hidden-phone">{HPTYPE_ASSIGNMENT}</th>
 		</tr>
 		</thead>
@@ -36,7 +36,7 @@
 		</tbody>
 	</table>
 	<input type="hidden" name="boxchecked" value="0">
-	<input type="hidden" name="option" value="com_jomres"/>
+	<input type="hidden" name="option" value="com_castor"/>
 	<input type="hidden" name="Itemid" value="{ITEMID}"/>
 	<input type="hidden" name="task" value="editGlobalroomTypes"/>
 	{CSRF_TOKEN}

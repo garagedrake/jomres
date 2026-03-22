@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,7 +35,7 @@ class j16000list_gateways
 	 
 	public function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -53,8 +53,8 @@ class j16000list_gateways
 		}
 
 		if (!empty($gateway_plugins)) {
-			$output[ '_JOMRES_COM_A_GATEWAY_ENABLED' ] = jr_gettext('_JOMRES_COM_A_GATEWAY_ENABLED', '_JOMRES_COM_A_GATEWAY_ENABLED', false);
-			$output[ 'TOUR_ID_TAB_GATEWAYS_TITLE' ] = jr_gettext('_JOMRES_COM_A_GATEWAYLIST', '_JOMRES_COM_A_GATEWAYLIST', false);
+			$output[ '_CASTOR_COM_A_GATEWAY_ENABLED' ] = jr_gettext('_CASTOR_COM_A_GATEWAY_ENABLED', '_CASTOR_COM_A_GATEWAY_ENABLED', false);
+			$output[ 'TOUR_ID_TAB_GATEWAYS_TITLE' ] = jr_gettext('_CASTOR_COM_A_GATEWAYLIST', '_CASTOR_COM_A_GATEWAYLIST', false);
 			$output[ 'GATEWAYS_INSTRUCTIONS' ] = jr_gettext('GATEWAYS_INSTRUCTIONS', 'GATEWAYS_INSTRUCTIONS', false);
 
 			$rows = array();
@@ -65,7 +65,7 @@ class j16000list_gateways
 			}
 			$global_gateway_settings = array();
 				
-			$query = "SELECT `plugin`,`setting`,`value` FROM #__jomres_pluginsettings WHERE `plugin` IN ( ".jomres_implode($gateway_names, false).' ) AND prid = 0';
+			$query = "SELECT `plugin`,`setting`,`value` FROM #__castor_pluginsettings WHERE `plugin` IN ( ".castor_implode($gateway_names, false).' ) AND prid = 0';
 			$plugin_settings = doSelectSql($query);
 
 			if (!empty($plugin_settings)) {
@@ -78,21 +78,21 @@ class j16000list_gateways
 				$r = array();
 				$gateway_name = $gateway['name'];
 				if (isset($global_gateway_settings[$gateway_name]['active']) && $global_gateway_settings[$gateway_name]['active'] == '1') {
-					$r['ACTIVE'] = jr_gettext('_JOMRES_COM_MR_YES', '_JOMRES_COM_MR_YES', false);
+					$r['ACTIVE'] = jr_gettext('_CASTOR_COM_MR_YES', '_CASTOR_COM_MR_YES', false);
 				} else {
-					$r['ACTIVE'] = jr_gettext('_JOMRES_COM_MR_NO', '_JOMRES_COM_MR_NO', false);
+					$r['ACTIVE'] = jr_gettext('_CASTOR_COM_MR_NO', '_CASTOR_COM_MR_NO', false);
 				}
 
 				$r['GATEWAY_NAME'] = $gateway['friendlyname'];
 
 				if (!using_bootstrap()) {
-					$editIcon = '<img src="'.JOMRES_IMAGES_RELPATH.'jomresimages/small/EditItem.png" border="0" alt="editicon" />';
+					$editIcon = '<img src="'.CASTOR_IMAGES_RELPATH.'castorimages/small/EditItem.png" border="0" alt="editicon" />';
 
-					$r['EDITLINK'] = '<a href="'.jomresUrl(JOMRES_SITEPAGE_URL_ADMIN.'&task=edit_gateway&plugin='.$gateway['name']).'">'.$editIcon.'</a>';
+					$r['EDITLINK'] = '<a href="'.castorUrl(CASTOR_SITEPAGE_URL_ADMIN.'&task=edit_gateway&plugin='.$gateway['name']).'">'.$editIcon.'</a>';
 				} else {
-					$toolbar = jomres_singleton_abstract::getInstance('jomresItemToolbar');
+					$toolbar = castor_singleton_abstract::getInstance('castorItemToolbar');
 					$toolbar->newToolbar();
-					$toolbar->addItem('fa fa-pencil-square-o', 'btn btn-info', '', jomresURL(JOMRES_SITEPAGE_URL_ADMIN.'&task=edit_gateway&plugin='.$gateway['name']), jr_gettext('COMMON_EDIT', 'COMMON_EDIT', false));
+					$toolbar->addItem('fa fa-pencil-square-o', 'btn btn-info', '', castorURL(CASTOR_SITEPAGE_URL_ADMIN.'&task=edit_gateway&plugin='.$gateway['name']), jr_gettext('COMMON_EDIT', 'COMMON_EDIT', false));
 
 					$r['EDITLINK'] = $toolbar->getToolbar();
 				}
@@ -102,13 +102,13 @@ class j16000list_gateways
 
 			$pageoutput[ ] = $output;
 			$tmpl = new patTemplate();
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 			$tmpl->readTemplatesFromInput('list_gateways.html');
 			$tmpl->addRows('pageoutput', $pageoutput);
 			$tmpl->addRows('rows', $rows);
 			$tmpl->displayParsedTemplate();
 		} else {
-			echo '<p class="alert alert-warning"> No administrator area gateways installed. Most payment gateways are configured by property managers in the <a href="'.JOMRES_SITEPAGE_URL_NOSEF.'&task=payment_gateways&from_admin=1" target="_blank">Payment gateway page</a>, therefore they will not show up on this page. Only gateways that have specific administrator area settings will appear here.</p>';
+			echo '<p class="alert alert-warning"> No administrator area gateways installed. Most payment gateways are configured by property managers in the <a href="'.CASTOR_SITEPAGE_URL_NOSEF.'&task=payment_gateways&from_admin=1" target="_blank">Payment gateway page</a>, therefore they will not show up on this page. Only gateways that have specific administrator area settings will appear here.</p>';
 		}
 	}
 
@@ -118,3 +118,4 @@ class j16000list_gateways
 		return null;
 	}
 }
+

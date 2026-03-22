@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,7 +35,7 @@ class j06000module_popup
 	 
 	public function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -44,9 +44,9 @@ class j06000module_popup
 
 		//add_gmaps_source();
 
-		$property_uid = (int) jomresGetParam($_REQUEST, 'id', 0);
+		$property_uid = (int) castorGetParam($_REQUEST, 'id', 0);
 		if ($property_uid == 0) {
-			$property_uid = (int) jomresGetParam($_REQUEST, 'property_uid', 0);
+			$property_uid = (int) castorGetParam($_REQUEST, 'property_uid', 0);
 		}
 
 		$mrConfig = getPropertySpecificSettings($property_uid);
@@ -54,7 +54,7 @@ class j06000module_popup
 		$result = '';
 		$output = array();
 
-		$current_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+		$current_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 
 		if ($property_uid > 0) {
 			/*property_header($property_uid, false);*/
@@ -64,8 +64,8 @@ class j06000module_popup
 			set_showtime('ptype_id', $current_property_details->ptype_id);
 
 			$output[ 'PROPERTY_UID' ] = $property_uid;
-			$output[ 'RANDOM_IDENTIFIER' ] = generateJomresRandomString(10);
-			$output[ 'MOREINFORMATION' ] = jr_gettext('_JOMRES_COM_A_CLICKFORMOREINFORMATION', '_JOMRES_COM_A_CLICKFORMOREINFORMATION', $editable = false, true);
+			$output[ 'RANDOM_IDENTIFIER' ] = generateCastorRandomString(10);
+			$output[ 'MOREINFORMATION' ] = jr_gettext('_CASTOR_COM_A_CLICKFORMOREINFORMATION', '_CASTOR_COM_A_CLICKFORMOREINFORMATION', $editable = false, true);
 			$output[ 'MOREINFORMATIONLINK' ] = get_property_details_url($property_uid);
 
 			//property description
@@ -95,16 +95,16 @@ class j06000module_popup
 			set_showtime("task", $this_task);*/
 
 			/*
-			$jomres_media_centre_images = jomres_singleton_abstract::getInstance( 'jomres_media_centre_images' );
-			$output[ 'IMAGELARGE' ]  = $property_deets[ 'LIVESITE' ] ."/jomres/assets/images/noimage.svg";
-			$output[ 'IMAGEMEDIUM' ] = $property_deets[ 'LIVESITE' ] ."/jomres/assets/images/noimage.svg";
-			$output[ 'IMAGETHUMB' ]  = $property_deets[ 'LIVESITE' ] ."/jomres/assets/images/noimage.svg";
-			$jomres_media_centre_images->get_images($propertys_uid, array('property'));
-			if ($jomres_media_centre_images->images['property'][0][0]['large'] != "")
+			$castor_media_centre_images = castor_singleton_abstract::getInstance( 'castor_media_centre_images' );
+			$output[ 'IMAGELARGE' ]  = $property_deets[ 'LIVESITE' ] ."/castor/assets/images/noimage.svg";
+			$output[ 'IMAGEMEDIUM' ] = $property_deets[ 'LIVESITE' ] ."/castor/assets/images/noimage.svg";
+			$output[ 'IMAGETHUMB' ]  = $property_deets[ 'LIVESITE' ] ."/castor/assets/images/noimage.svg";
+			$castor_media_centre_images->get_images($propertys_uid, array('property'));
+			if ($castor_media_centre_images->images['property'][0][0]['large'] != "")
 				{
-				$output[ 'IMAGELARGE' ]  = $jomres_media_centre_images->images['property'][0][0]['large'];
-				$output[ 'IMAGEMEDIUM' ] = $jomres_media_centre_images->images['property'][0][0]['medium'];
-				$output[ 'IMAGETHUMB' ]  = $jomres_media_centre_images->images['property'][0][0]['small'];
+				$output[ 'IMAGELARGE' ]  = $castor_media_centre_images->images['property'][0][0]['large'];
+				$output[ 'IMAGEMEDIUM' ] = $castor_media_centre_images->images['property'][0][0]['medium'];
+				$output[ 'IMAGETHUMB' ]  = $castor_media_centre_images->images['property'][0][0]['small'];
 				}
 			*/
 
@@ -114,7 +114,7 @@ class j06000module_popup
 
 			$pageoutput[] = $output;
 			$tmpl = new patTemplate();
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 			$tmpl->addRows('pageoutput', $pageoutput);
 			$tmpl->readTemplatesFromInput('module_popup_contents.html');
 
@@ -129,3 +129,4 @@ class j06000module_popup
 		return null;
 	}
 }
+

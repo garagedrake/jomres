@@ -1,15 +1,15 @@
-<?php
+﻿<?php
 /**
  * Core file
  *
- * @author Vince Wooll <sales@jomres.net>
- * @version Jomres 9.24.0
- * @package Jomres
+ * @author Vince Wooll <sales@castor.net>
+ * @version Castor 9.24.0
+ * @package Castor
  * @copyright	2005-2021 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly.
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly.
  **/
 ##################################################################
-defined( '_JOMRES_INITCHECK' ) or die( '' );
+defined( '_CASTOR_INITCHECK' ) or die( '' );
 ##################################################################
 
 

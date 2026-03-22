@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,7 +36,7 @@ class j06001show_network_stats_for_contract
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -45,13 +45,13 @@ class j06001show_network_stats_for_contract
 		
 		$this->retVals = '';
 		
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 		
 		if (isset($componentArgs['contract_uid'])) {
 			$contract_uid = (int)$componentArgs['contract_uid'];
 			$property_uid = $componentArgs['property_uid'];
 		} else {
-			$contract_uid = jomresGetParam($_REQUEST, 'contract_uid', 0);
+			$contract_uid = castorGetParam($_REQUEST, 'contract_uid', 0);
 			$property_uid = getDefaultProperty();
 		}
 
@@ -59,7 +59,7 @@ class j06001show_network_stats_for_contract
 			return;
 		}
 		
-		$current_contract_details = jomres_singleton_abstract::getInstance('basic_contract_details');
+		$current_contract_details = castor_singleton_abstract::getInstance('basic_contract_details');
 		$current_contract_details->gather_data($contract_uid, $property_uid);
 		
 		if (!array_key_exists($contract_uid, $current_contract_details->contract)) { // The contract uid is wrong. Was it for a different property?
@@ -71,7 +71,7 @@ class j06001show_network_stats_for_contract
 		}
 
 		if (isset($_REQUEST[ 'output_now' ])) {
-			$output_now = (bool) jomresGetParam($_REQUEST, 'output_now', 1);
+			$output_now = (bool) castorGetParam($_REQUEST, 'output_now', 1);
 		} elseif (isset($componentArgs[ 'output_now' ])) {
 			$output_now = (bool)$componentArgs[ 'output_now' ];
 		} else {
@@ -104,7 +104,7 @@ class j06001show_network_stats_for_contract
 
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 		$tmpl->readTemplatesFromInput('show_network_stats_for_contract.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$this->retVals = $tmpl->getParsedTemplate();
@@ -121,3 +121,4 @@ class j06001show_network_stats_for_contract
 		return $this->retVals;
 	}
 }
+

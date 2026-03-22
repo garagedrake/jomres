@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * If any properties found in a search result set offer discounts, then text is assembled and returned to 01010listproperties
 	 *
@@ -37,7 +37,7 @@ class j01011discounts
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = true;
 
@@ -54,7 +54,7 @@ class j01011discounts
 
 		$this->returnValue = array();
 
-		$allPropertiesConfig = jomres_singleton_abstract::getInstance('jomres_config_property_singleton');
+		$allPropertiesConfig = castor_singleton_abstract::getInstance('castor_config_property_singleton');
 
 		if (is_array($property_uids)) {
 			$relevant_properties = array();
@@ -93,7 +93,7 @@ class j01011discounts
 					$text .= ' '.$latestDate;
 					$text .= jr_gettext('_JOMCOMP_LASTMINUTE_PROPERTYLIST_POST', '_JOMCOMP_LASTMINUTE_PROPERTYLIST_POST', false, true);
 
-					$this->returnValue = array('LASTMINUTE' => $text, 'LASTMINUTECLASS' => 'jomres_message');
+					$this->returnValue = array('LASTMINUTE' => $text, 'LASTMINUTECLASS' => 'castor_message');
 				} elseif ($relevant_properties[ $property_uid ][ 'discount_type' ] == 'wisepriceactive') { // Using wiseprice calculations
 					$wisepricethreshold = $relevant_properties[ $property_uid ][ 'wisepricethreshold' ];
 					$wisepricediscount = $relevant_properties[ $property_uid ][ 'wiseprice75discount' ];
@@ -107,7 +107,7 @@ class j01011discounts
 					$text .= (float) $wisepricediscount.jr_gettext('_JOMCOMP_LASTMINUTE_ORMORE', '_JOMCOMP_LASTMINUTE_ORMORE', false, true);
 					$text .= ' '.$latestDate;
 					$text .= jr_gettext('_JOMCOMP_LASTMINUTE_PROPERTYLIST_POST', '_JOMCOMP_LASTMINUTE_PROPERTYLIST_POST', false, true);
-					$this->returnValue = array('LASTMINUTE' => $text, 'LASTMINUTECLASS' => 'jomres_message');
+					$this->returnValue = array('LASTMINUTE' => $text, 'LASTMINUTECLASS' => 'castor_message');
 				}
 			}
 			
@@ -127,3 +127,4 @@ class j01011discounts
 		return $this->returnValue;
 	}
 }
+

@@ -1,6 +1,6 @@
-<patTemplate:tmpl name="pageoutput">
+﻿<patTemplate:tmpl name="pageoutput">
 
-	</div> <!-- closes the jomres_content_area div -->
+	</div> <!-- closes the castor_content_area div -->
 
 <div id='ajax_loader' style="position: fixed; left: 50%; top: 50%; display: none; z-index:999">
     <i class="fa fa-spinner fa-spin fa-5x" aria-hidden="true"></i>
@@ -9,23 +9,23 @@
 <script type="text/javascript">
 	<!--
 	/* Switches the cursor to the waiting cursor whenever jquery's ajax functionality kicks in. Nice way to give the user some feedback that something's happening in a non-intrusive way */
-	jomresJquery(document).ready(function () {
-		jomresJquery("#loader").bind("ajaxSend",function () {
+	castorJquery(document).ready(function () {
+		castorJquery("#loader").bind("ajaxSend",function () {
 			document.getElementsByTagName("BODY")[0].style.cursor = 'wait';
-			jomresJquery(this).fadeIn();
+			castorJquery(this).fadeIn();
 		}).bind("ajaxStop",function () {
 					document.getElementsByTagName("BODY")[0].style.cursor = 'auto';
-					jomresJquery(this).fadeOut();
+					castorJquery(this).fadeOut();
 				}).bind("ajaxError", function () {
 					document.getElementsByTagName("BODY")[0].style.cursor = 'auto';
-					jomresJquery(this).fadeOut();
+					castorJquery(this).fadeOut();
 				});
 	});
 	//-->
 </script>
 
 <div id="loader" class="loader ui-corner-all" style="display:none;">
-	<!--<img id="img-loader" src="{JOMRES_IMAGES_RELPATH}ajax_animation/broken_circle.gif" alt="Loading"/>-->
+	<!--<img id="img-loader" src="{CASTOR_IMAGES_RELPATH}ajax_animation/broken_circle.gif" alt="Loading"/>-->
 </div>
 
 <style type="text/css">

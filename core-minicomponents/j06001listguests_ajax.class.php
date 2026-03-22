@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,24 +36,24 @@ class j06001listguests_ajax
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 		
-		jr_import('jomres_encryption');
-		$this->jomres_encryption = new jomres_encryption();
+		jr_import('castor_encryption');
+		$this->castor_encryption = new castor_encryption();
 		
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 		$defaultProperty = getDefaultProperty();
 
-		$basic_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+		$basic_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 		$basic_property_details->get_property_name_multi($thisJRUser->authorisedProperties);
 
-		$historic = (int) jomresGetParam($_GET, 'historic', '2');
-		$show_all = (int) jomresGetParam($_GET, 'show_all', '0');
+		$historic = (int) castorGetParam($_GET, 'historic', '2');
+		$show_all = (int) castorGetParam($_GET, 'show_all', '0');
 
 		$rows = array();
 
@@ -94,7 +94,7 @@ class j06001listguests_ajax
 		 * Prefilter
 		 */
 		if ($show_all == 1) {
-			$clause = 'WHERE a.property_uid IN ('.jomres_implode($thisJRUser->authorisedProperties).') ';
+			$clause = 'WHERE a.property_uid IN ('.castor_implode($thisJRUser->authorisedProperties).') ';
 		} else {
 			$clause = "WHERE a.property_uid = '".$defaultProperty."' ";
 		}
@@ -131,13 +131,13 @@ class j06001listguests_ajax
 						a.enc_vat_number, 
 						a.discount,
 						a.property_uid 
-					FROM #__jomres_guests a 
-						LEFT JOIN #__jomres_contracts b ON a.guests_uid = b.guest_uid "
+					FROM #__castor_guests a 
+						LEFT JOIN #__castor_contracts b ON a.guests_uid = b.guest_uid "
 					.$clause
 					.' GROUP BY a.guests_uid '
 					.$sOrder
 					.' '.$sLimit;
-		$jomresGuestsList = doSelectSql($query);
+		$castorGuestsList = doSelectSql($query);
 
 		/*
 		 * Total number of rows
@@ -172,7 +172,7 @@ class j06001listguests_ajax
 		 * on very large tables, and MySQL's regex functionality is very limited
 		 */
 		$filters = array();
-		$search = jomresGetParam($_GET, 'jr_search', array());
+		$search = castorGetParam($_GET, 'jr_search', array());
 		if (isset($search['value']) && $search['value'] != '') {
 			for ($i = 0; $i < $n; ++$i) {
 				$value = filter_var($search['value'], FILTER_SANITIZE_SPECIAL_CHARS);
@@ -181,7 +181,7 @@ class j06001listguests_ajax
 			$filters = array_unique($filters);
 		}
 
-		foreach ($jomresGuestsList as $g) {
+		foreach ($castorGuestsList as $g) {
 			$r = array();
 
 			$thisProperty = '';
@@ -190,36 +190,36 @@ class j06001listguests_ajax
 			}
 
 			if (!using_bootstrap()) {
-				$jrtbar = jomres_singleton_abstract::getInstance('jomres_toolbar');
+				$jrtbar = castor_singleton_abstract::getInstance('castor_toolbar');
 				$jrtb = $jrtbar->startTable();
-				$jrtb .= $jrtbar->toolbarItem('', jomresURL(JOMRES_SITEPAGE_URL.'&task=list_invoices&guest_id='.$g->guests_uid), jr_gettext('_JOMRES_MANAGER_SHOWINVOICES', '_JOMRES_MANAGER_SHOWINVOICES', false));
-				$jrtb .= $jrtbar->toolbarItem('', jomresURL(JOMRES_SITEPAGE_URL.'&task=list_bookings&guest_uid='.$g->guests_uid), jr_gettext('_JRPORTAL_CPANEL_LISTBOOKINGS', '_JRPORTAL_CPANEL_LISTBOOKINGS', false));
-				$jrtb .= $jrtbar->toolbarItem('edit', jomresURL(JOMRES_SITEPAGE_URL.'&task=edit_guest&id='.$g->guests_uid.$thisProperty), jr_gettext('COMMON_EDIT', 'COMMON_EDIT', false));
-				$jrtb .= $jrtbar->toolbarItem('delete', jomresURL(JOMRES_SITEPAGE_URL.'&task=delete_guest&id='.$g->guests_uid.$thisProperty), jr_gettext('COMMON_DELETE', 'COMMON_DELETE', false));
+				$jrtb .= $jrtbar->toolbarItem('', castorURL(CASTOR_SITEPAGE_URL.'&task=list_invoices&guest_id='.$g->guests_uid), jr_gettext('_CASTOR_MANAGER_SHOWINVOICES', '_CASTOR_MANAGER_SHOWINVOICES', false));
+				$jrtb .= $jrtbar->toolbarItem('', castorURL(CASTOR_SITEPAGE_URL.'&task=list_bookings&guest_uid='.$g->guests_uid), jr_gettext('_JRPORTAL_CPANEL_LISTBOOKINGS', '_JRPORTAL_CPANEL_LISTBOOKINGS', false));
+				$jrtb .= $jrtbar->toolbarItem('edit', castorURL(CASTOR_SITEPAGE_URL.'&task=edit_guest&id='.$g->guests_uid.$thisProperty), jr_gettext('COMMON_EDIT', 'COMMON_EDIT', false));
+				$jrtb .= $jrtbar->toolbarItem('delete', castorURL(CASTOR_SITEPAGE_URL.'&task=delete_guest&id='.$g->guests_uid.$thisProperty), jr_gettext('COMMON_DELETE', 'COMMON_DELETE', false));
 				$r[] = $jrtb .= $jrtbar->endTable();
 			} else {
-				$toolbar = jomres_singleton_abstract::getInstance('jomresItemToolbar');
+				$toolbar = castor_singleton_abstract::getInstance('castorItemToolbar');
 				$toolbar->newToolbar();
-				$toolbar->addItem('fa fa-pencil-square-o', 'btn btn-info', '', jomresURL(JOMRES_SITEPAGE_URL.'&task=edit_guest&id='.$g->guests_uid.$thisProperty), jr_gettext('COMMON_EDIT', 'COMMON_EDIT', false));
-				$toolbar->addSecondaryItem('fa fa-file-text', '', '', jomresURL(JOMRES_SITEPAGE_URL.'&task=list_invoices&guest_id='.$g->guests_uid), jr_gettext('_JOMRES_MANAGER_SHOWINVOICES', '_JOMRES_MANAGER_SHOWINVOICES', false));
-				$toolbar->addSecondaryItem('fa fa-address-book-o', '', '', jomresURL(JOMRES_SITEPAGE_URL.'&task=review_guest&guest_id='.$g->guests_uid), jr_gettext('GUEST_PROFILE_REVIEW_GUEST', 'GUEST_PROFILE_REVIEW_GUEST', false));
-				$toolbar->addSecondaryItem('fa fa-list', '', '', jomresURL(JOMRES_SITEPAGE_URL.'&task=list_bookings&guest_uid='.$g->guests_uid), jr_gettext('_JRPORTAL_CPANEL_LISTBOOKINGS', '_JRPORTAL_CPANEL_LISTBOOKINGS', false));
-				$toolbar->addSecondaryItem('fa fa-trash-o', '', '', jomresURL(JOMRES_SITEPAGE_URL.'&task=delete_guest&id='.$g->guests_uid.$thisProperty), jr_gettext('COMMON_DELETE', 'COMMON_DELETE', false));
+				$toolbar->addItem('fa fa-pencil-square-o', 'btn btn-info', '', castorURL(CASTOR_SITEPAGE_URL.'&task=edit_guest&id='.$g->guests_uid.$thisProperty), jr_gettext('COMMON_EDIT', 'COMMON_EDIT', false));
+				$toolbar->addSecondaryItem('fa fa-file-text', '', '', castorURL(CASTOR_SITEPAGE_URL.'&task=list_invoices&guest_id='.$g->guests_uid), jr_gettext('_CASTOR_MANAGER_SHOWINVOICES', '_CASTOR_MANAGER_SHOWINVOICES', false));
+				$toolbar->addSecondaryItem('fa fa-address-book-o', '', '', castorURL(CASTOR_SITEPAGE_URL.'&task=review_guest&guest_id='.$g->guests_uid), jr_gettext('GUEST_PROFILE_REVIEW_GUEST', 'GUEST_PROFILE_REVIEW_GUEST', false));
+				$toolbar->addSecondaryItem('fa fa-list', '', '', castorURL(CASTOR_SITEPAGE_URL.'&task=list_bookings&guest_uid='.$g->guests_uid), jr_gettext('_JRPORTAL_CPANEL_LISTBOOKINGS', '_JRPORTAL_CPANEL_LISTBOOKINGS', false));
+				$toolbar->addSecondaryItem('fa fa-trash-o', '', '', castorURL(CASTOR_SITEPAGE_URL.'&task=delete_guest&id='.$g->guests_uid.$thisProperty), jr_gettext('COMMON_DELETE', 'COMMON_DELETE', false));
 				$r[] = $toolbar->getToolbar();
 			}
 
-			$firstname		= $this->jomres_encryption->decrypt($g->enc_firstname);
-			$surname		= $this->jomres_encryption->decrypt($g->enc_surname);
-			$house			= $this->jomres_encryption->decrypt($g->enc_house);
-			$street			= $this->jomres_encryption->decrypt($g->enc_street);
-			$town			= $this->jomres_encryption->decrypt($g->enc_town);
-			$county			= jomres_decode(find_region_name($this->jomres_encryption->decrypt($g->enc_county)));
-			$postcode		= $this->jomres_encryption->decrypt($g->enc_postcode);
-			$country		= $this->jomres_encryption->decrypt($g->enc_country);
-			$tel_landline	= $this->jomres_encryption->decrypt($g->enc_tel_landline);
-			$tel_mobile		= $this->jomres_encryption->decrypt($g->enc_tel_mobile);
-			$email			= restore_task_specific_email_address($this->jomres_encryption->decrypt($g->enc_email));
-			$vat_number		= $this->jomres_encryption->decrypt($g->enc_vat_number);
+			$firstname		= $this->castor_encryption->decrypt($g->enc_firstname);
+			$surname		= $this->castor_encryption->decrypt($g->enc_surname);
+			$house			= $this->castor_encryption->decrypt($g->enc_house);
+			$street			= $this->castor_encryption->decrypt($g->enc_street);
+			$town			= $this->castor_encryption->decrypt($g->enc_town);
+			$county			= castor_decode(find_region_name($this->castor_encryption->decrypt($g->enc_county)));
+			$postcode		= $this->castor_encryption->decrypt($g->enc_postcode);
+			$country		= $this->castor_encryption->decrypt($g->enc_country);
+			$tel_landline	= $this->castor_encryption->decrypt($g->enc_tel_landline);
+			$tel_mobile		= $this->castor_encryption->decrypt($g->enc_tel_mobile);
+			$email			= restore_task_specific_email_address($this->castor_encryption->decrypt($g->enc_email));
+			$vat_number		= $this->castor_encryption->decrypt($g->enc_vat_number);
 			
 			$found = true;
 			
@@ -246,8 +246,8 @@ class j06001listguests_ajax
 			if ($found) {
 				$r[] = $g->guests_uid;
 				$r[] = $basic_property_details->property_names[$g->property_uid];
-				$r[] = '<a href="'.jomresUrl(JOMRES_SITEPAGE_URL.'&task=show_user_profile&cms_user_id='.$g->mos_userid).'" target="_blank">'.$firstname.'</a>';
-				$r[] = '<a href="'.jomresUrl(JOMRES_SITEPAGE_URL.'&task=show_user_profile&cms_user_id='.$g->mos_userid).'" target="_blank">'.$surname.'</a>';
+				$r[] = '<a href="'.castorUrl(CASTOR_SITEPAGE_URL.'&task=show_user_profile&cms_user_id='.$g->mos_userid).'" target="_blank">'.$firstname.'</a>';
+				$r[] = '<a href="'.castorUrl(CASTOR_SITEPAGE_URL.'&task=show_user_profile&cms_user_id='.$g->mos_userid).'" target="_blank">'.$surname.'</a>';
 				$r[] = $email;
 				$r[] = $house;
 				$r[] = $street;
@@ -277,3 +277,4 @@ class j06001listguests_ajax
 		return null;
 	}
 }
+

@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,15 +36,15 @@ class j06000show_property_rooms_slideshow
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = true;
 			$this->shortcode_data = array(
 				'task' => 'show_property_rooms_slideshow',
-				'info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_ROOMS_SLIDESHOW',
+				'info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_ROOMS_SLIDESHOW',
 				'arguments' => array(0 => array(
 						'argument' => 'property_uid',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_ROOMS_SLIDESHOW_ARG_PROPERTY_UID',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_ROOMS_SLIDESHOW_ARG_PROPERTY_UID',
 						'arg_example' => '1',
 						),
 					),
@@ -58,7 +58,7 @@ class j06000show_property_rooms_slideshow
 		if (isset($componentArgs[ 'property_uid' ])) {
 			$property_uid = (int)$componentArgs[ 'property_uid' ];
 		} else {
-			$property_uid = (int)jomresGetParam($_REQUEST, 'property_uid', 0);
+			$property_uid = (int)castorGetParam($_REQUEST, 'property_uid', 0);
 		}
 		
 		if ($property_uid == 0) {
@@ -75,22 +75,22 @@ class j06000show_property_rooms_slideshow
 			$output_now = true;
 		}
 
-		$jomres_media_centre_images = jomres_singleton_abstract::getInstance('jomres_media_centre_images');
+		$castor_media_centre_images = castor_singleton_abstract::getInstance('castor_media_centre_images');
 
 		$output = array();
 
-		$query = 'SELECT room_uid,room_classes_uid,propertys_uid,room_features_uid,room_name,room_number,room_floor,max_people FROM #__jomres_rooms WHERE propertys_uid = '.(int) $property_uid.' ORDER BY room_number,room_name';
+		$query = 'SELECT room_uid,room_classes_uid,propertys_uid,room_features_uid,room_name,room_number,room_floor,max_people FROM #__castor_rooms WHERE propertys_uid = '.(int) $property_uid.' ORDER BY room_number,room_name';
 		$roomList = doSelectSql($query);
 
 		if (!empty($roomList)) {
-			$jomres_media_centre_images->get_images($property_uid, array('rooms'));
+			$castor_media_centre_images->get_images($property_uid, array('rooms'));
 
 			$room_images = array();
 			$image_hashes = array();
 			foreach ($roomList as $room) {
 				$room_uid = $room->room_uid;
-				foreach ($jomres_media_centre_images->images['rooms'][$room_uid] as $image) {
-					if ($image['large'] != $jomres_media_centre_images->multi_query_images['noimage-large']) {
+				foreach ($castor_media_centre_images->images['rooms'][$room_uid] as $image) {
+					if ($image['large'] != $castor_media_centre_images->multi_query_images['noimage-large']) {
 						$hash = md5_file($image['large']);
 						if (!in_array($hash, $image_hashes)) {
 							$room_images[] = $image;
@@ -108,7 +108,7 @@ class j06000show_property_rooms_slideshow
 
 			$tmpl = new patTemplate();
 			$tmpl->addRows('pageoutput', $pageoutput);
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 			$tmpl->readTemplatesFromInput('show_property_rooms_slideshow.html');
 			$result = $tmpl->getParsedTemplate();
 
@@ -124,14 +124,14 @@ class j06000show_property_rooms_slideshow
 	{
 		$output = array();
 
-		$output[ ] = jr_gettext('_JOMRES_COM_A_BASICTEMPLATE_SHOWROOMS', '_JOMRES_COM_A_BASICTEMPLATE_SHOWROOMS');
-		$output[ ] = jr_gettext('_JOMRES_COM_A_BASICTEMPLATE_SHOWROOMS_TITLE', '_JOMRES_COM_A_BASICTEMPLATE_SHOWROOMS_TITLE');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_VRCT_ROOM_HEADER_NUMBER', '_JOMRES_COM_MR_VRCT_ROOM_HEADER_NUMBER');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_VRCT_ROOM_HEADER_TYPE', '_JOMRES_COM_MR_VRCT_ROOM_HEADER_TYPE');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_VRCT_ROOM_HEADER_NAME', '_JOMRES_COM_MR_VRCT_ROOM_HEADER_NAME');
-		$output[ ] = jr_gettext('_JOMRES_FRONT_AVAILABILITY', '_JOMRES_FRONT_AVAILABILITY');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_VRCT_ROOM_HEADER_FLOOR', '_JOMRES_COM_MR_VRCT_ROOM_HEADER_FLOOR');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_VRCT_ROOM_HEADER_MAXPEOPLE', '_JOMRES_COM_MR_VRCT_ROOM_HEADER_MAXPEOPLE');
+		$output[ ] = jr_gettext('_CASTOR_COM_A_BASICTEMPLATE_SHOWROOMS', '_CASTOR_COM_A_BASICTEMPLATE_SHOWROOMS');
+		$output[ ] = jr_gettext('_CASTOR_COM_A_BASICTEMPLATE_SHOWROOMS_TITLE', '_CASTOR_COM_A_BASICTEMPLATE_SHOWROOMS_TITLE');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_VRCT_ROOM_HEADER_NUMBER', '_CASTOR_COM_MR_VRCT_ROOM_HEADER_NUMBER');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_VRCT_ROOM_HEADER_TYPE', '_CASTOR_COM_MR_VRCT_ROOM_HEADER_TYPE');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_VRCT_ROOM_HEADER_NAME', '_CASTOR_COM_MR_VRCT_ROOM_HEADER_NAME');
+		$output[ ] = jr_gettext('_CASTOR_FRONT_AVAILABILITY', '_CASTOR_FRONT_AVAILABILITY');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_VRCT_ROOM_HEADER_FLOOR', '_CASTOR_COM_MR_VRCT_ROOM_HEADER_FLOOR');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_VRCT_ROOM_HEADER_MAXPEOPLE', '_CASTOR_COM_MR_VRCT_ROOM_HEADER_MAXPEOPLE');
 
 		foreach ($output as $o) {
 			echo $o;
@@ -150,3 +150,4 @@ class j06000show_property_rooms_slideshow
 		return $this->retVals;
 	}
 }
+

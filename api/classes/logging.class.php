@@ -1,14 +1,14 @@
-<?php
+﻿<?php
 /**
  *
- *  @package Jomres\Core\REST_API
+ *  @package Castor\Core\REST_API
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
@@ -26,7 +26,7 @@ use Monolog\Processor\WebProcessor;
 	 *
      * Allows logging via the Monolog library.
      *
-     * Started out as being intended just for REST API logging, but now is used throughout Jomres, not just API calls.
+     * Started out as being intended just for REST API logging, but now is used throughout Castor, not just API calls.
 	 *
 	 */
 
@@ -43,28 +43,28 @@ class logging
 
 	/**
 	*
-	* Uses monolog to log activity within Jomres
+	* Uses monolog to log activity within Castor
 	*
 	*/
     public static function log_message($message, $channel = 'Core', $level = 'DEBUG' , $further_info_dump = '')
     {
         $username = 'Unknown';
-        if (!defined('JOMRESCONFIG_ABSOLUTE_PATH')) { // For performance reasons the API doesn't include the rest of the framework unless called in an API Feature. As a result, we'll check here to see if a core system path is set. If it's not, we'll call configuration.php directly instead of using the framework to include it
+        if (!defined('CASTORCONFIG_ABSOLUTE_PATH')) { // For performance reasons the API doesn't include the rest of the framework unless called in an API Feature. As a result, we'll check here to see if a core system path is set. If it's not, we'll call configuration.php directly instead of using the framework to include it
             include '../configuration.php';
-            if (!defined('JOMRES_ROOT_DIRECTORY')) {
-                if (file_exists(dirname(__FILE__).'/../../jomres_root.php')) {
-                    require_once dirname(__FILE__).'/../../jomres_root.php';
+            if (!defined('CASTOR_ROOT_DIRECTORY')) {
+                if (file_exists(dirname(__FILE__).'/../../castor_root.php')) {
+                    require_once dirname(__FILE__).'/../../castor_root.php';
                 } else {
-                    define('JOMRES_ROOT_DIRECTORY', 'jomres');
+                    define('CASTOR_ROOT_DIRECTORY', 'castor');
                 }
             }
         } else {
-            $siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+            $siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
             $jrConfig = $siteConfig->get();
 
             if (!defined('AUTO_UPGRADE')) {
 				if (get_showtime('jr_user_ready')) {
-					$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+					$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 					if ($thisJRUser->username !== false) {
 						$username = $thisJRUser->username;
 					}
@@ -171,7 +171,7 @@ class logging
                 trim($jrConfig['syslog_port']) == ''
                 ) {
                 $syslogHandler = new SyslogHandler(
-                    'jomres',
+                    'castor',
                     LOG_USER
                     );
             } else {
@@ -248,3 +248,4 @@ class logging
 
     }
 }
+

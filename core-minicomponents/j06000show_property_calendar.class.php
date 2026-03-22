@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,26 +36,26 @@ class j06000show_property_calendar
 	public function __construct($componentArgs = null)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			$this->shortcode_data = array(
 				'task' => 'show_property_calendar',
-				'info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_CALENDAR',
+				'info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_CALENDAR',
 				'arguments' => array(
 					array(
 						'argument' => 'property_uid',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_CALENDAR_ARG_PROPERTY_UID',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_CALENDAR_ARG_PROPERTY_UID',
 						'arg_example' => '1',
 						),
 					array(
 						'argument' => 'months_to_show',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_CALENDAR_ARG_MONTHS_TO_SHOW',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_CALENDAR_ARG_MONTHS_TO_SHOW',
 						'arg_example' => '4',
 						),
 					array(
 						'argument' => 'show_just_month',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_CALENDAR_ARG_SHOW_JUST_MONTH',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_CALENDAR_ARG_SHOW_JUST_MONTH',
 						'arg_example' => '1',
 						),
 					),
@@ -66,7 +66,7 @@ class j06000show_property_calendar
 
 		$this->retVals = '';
 
-		$property_uid = (int) jomresGetParam($_REQUEST, 'property_uid', '');
+		$property_uid = (int) castorGetParam($_REQUEST, 'property_uid', '');
 		if (isset($componentArgs ['property_uid'])) {
 			$property_uid = (int) $componentArgs ['property_uid'];
 		}
@@ -89,7 +89,7 @@ class j06000show_property_calendar
 			$_REQUEST['show_just_month'] = false;
 		}
 
-		jomres_set_page_title( $property_uid ,  jr_gettext('_JOMRES_FRONT_AVAILABILITY', '_JOMRES_FRONT_AVAILABILITY', false) );
+		castor_set_page_title( $property_uid ,  jr_gettext('_CASTOR_FRONT_AVAILABILITY', '_CASTOR_FRONT_AVAILABILITY', false) );
 
 		if ($mrConfig[ 'is_real_estate_listing' ] == 0) {
 			if ($mrConfig[ 'singleRoomProperty' ] == 1) {
@@ -109,3 +109,4 @@ class j06000show_property_calendar
 		return $this->retVals;
 	}
 }
+

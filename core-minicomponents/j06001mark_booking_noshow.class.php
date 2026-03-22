@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,19 +36,19 @@ class j06001mark_booking_noshow
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = true;
 
 			return;
 		}
 
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 		if (!$thisJRUser->userIsManager) {
 			return;
 		}
 
-		$contract_uid = intval(jomresGetParam($_REQUEST, 'contract_uid', 0));
+		$contract_uid = intval(castorGetParam($_REQUEST, 'contract_uid', 0));
 
 		if ($contract_uid == 0) {
 			return;
@@ -56,7 +56,7 @@ class j06001mark_booking_noshow
 
 		$property_uid = getDefaultProperty();
 
-		$query = 'UPDATE  #__jomres_contracts  SET noshow_flag = 1 WHERE contract_uid = '.$contract_uid.' AND property_uid = '.(int) $property_uid;
+		$query = 'UPDATE  #__castor_contracts  SET noshow_flag = 1 WHERE contract_uid = '.$contract_uid.' AND property_uid = '.(int) $property_uid;
 
 		$result = doInsertSql($query, jr_gettext('BOOKING_NOSHOW_AUDIT_LOG', 'BOOKING_NOSHOW_AUDIT_LOG', false, false));
 
@@ -72,14 +72,14 @@ class j06001mark_booking_noshow
 		add_webhook_notification($webhook_notification);
 
 		addBookingNote($contract_uid, $property_uid, jr_gettext('BOOKING_NOSHOW_AUDIT_LOG', 'BOOKING_NOSHOW_AUDIT_LOG', false, false));
-		jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL.'&task=edit_booking&contract_uid='.$contract_uid), '');
+		castorRedirect(castorURL(CASTOR_SITEPAGE_URL.'&task=edit_booking&contract_uid='.$contract_uid), '');
 	}
 
 	public function touch_template_language()
 	{
 		$output = array();
 
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_EDITBOOKING_ADMIN_TITLE', '_JOMRES_COM_MR_EDITBOOKING_ADMIN_TITLE');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_EDITBOOKING_ADMIN_TITLE', '_CASTOR_COM_MR_EDITBOOKING_ADMIN_TITLE');
 
 		foreach ($output as $o) {
 			echo $o;
@@ -98,3 +98,4 @@ class j06001mark_booking_noshow
 		return null;
 	}
 }
+

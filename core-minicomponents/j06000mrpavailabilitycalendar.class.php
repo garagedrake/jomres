@@ -1,23 +1,23 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 
 use function \PHP81_BC\strftime;
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -38,17 +38,17 @@ class j06000mrpavailabilitycalendar
 	public function __construct($componentArgs = null)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = true;
 
 			return;
 		}
 		$mrConfig = getPropertySpecificSettings();
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 		$this->retVals = '';
-		$this->pop = jomresGetParam($_REQUEST, 'popup', 0);
+		$this->pop = castorGetParam($_REQUEST, 'popup', 0);
 		if ($this->pop == 1) {
 			/*property_header($property_uid);*/
 		}
@@ -69,7 +69,7 @@ class j06000mrpavailabilitycalendar
 		if (isset($mrConfig[ 'CalendarMonthsToShow' ])) {
 			$showFullYear = $mrConfig[ 'CalendarMonthsToShow' ];
 		}
-		$query = "SELECT room_uid FROM #__jomres_rooms WHERE propertys_uid = '".(int) $property_uid."'";
+		$query = "SELECT room_uid FROM #__castor_rooms WHERE propertys_uid = '".(int) $property_uid."'";
 		$this->numberOfRoomsInProperty = count(doSelectSql($query));
 
 		$this->colour_empty = '#6AFB92';
@@ -112,17 +112,17 @@ class j06000mrpavailabilitycalendar
 										';
 			if ($mrConfig[ 'visitorscanbookonline' ] == '1' && $this->showlinks && $jrConfig[ 'show_booking_form_in_property_details' ] != '1') {
 				$this->retVals .= '<tr>';
-				$this->retVals .= '<td colspan="6">'.jr_gettext('_JOMRES_FRONT_CALENDAR_CLICKDATES', '_JOMRES_FRONT_CALENDAR_CLICKDATES').'</td>';
+				$this->retVals .= '<td colspan="6">'.jr_gettext('_CASTOR_FRONT_CALENDAR_CLICKDATES', '_CASTOR_FRONT_CALENDAR_CLICKDATES').'</td>';
 				$this->retVals .= '</tr>';
 			}
 
 			$this->retVals .= '
 										<tr>
-											<td background-color="' .$this->colour_empty.'" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>'.jr_gettext('_JOMRES_AVLCAL_NOBOOKINGS', '_JOMRES_AVLCAL_NOBOOKINGS').'</td>
-											<td background-color="' .$this->colour_quarter.'" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>'.jr_gettext('_JOMRES_AVLCAL_QUARTER', '_JOMRES_AVLCAL_QUARTER').'</td>
-											<td background-color="' .$this->colour_half.'" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>'.jr_gettext('_JOMRES_AVLCAL_HALF', '_JOMRES_AVLCAL_HALF').'</td>
-											<td background-color="' .$this->colour_threequarter.'" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>'.jr_gettext('_JOMRES_AVLCAL_THREEQUARTER', '_JOMRES_AVLCAL_THREEQUARTER').'</td>
-											<td background-color="' .$this->colour_full.'" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>'.jr_gettext('_JOMRES_AVLCAL_FULLYBOOKED', '_JOMRES_AVLCAL_FULLYBOOKED').'</td>
+											<td background-color="' .$this->colour_empty.'" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>'.jr_gettext('_CASTOR_AVLCAL_NOBOOKINGS', '_CASTOR_AVLCAL_NOBOOKINGS').'</td>
+											<td background-color="' .$this->colour_quarter.'" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>'.jr_gettext('_CASTOR_AVLCAL_QUARTER', '_CASTOR_AVLCAL_QUARTER').'</td>
+											<td background-color="' .$this->colour_half.'" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>'.jr_gettext('_CASTOR_AVLCAL_HALF', '_CASTOR_AVLCAL_HALF').'</td>
+											<td background-color="' .$this->colour_threequarter.'" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>'.jr_gettext('_CASTOR_AVLCAL_THREEQUARTER', '_CASTOR_AVLCAL_THREEQUARTER').'</td>
+											<td background-color="' .$this->colour_full.'" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>'.jr_gettext('_CASTOR_AVLCAL_FULLYBOOKED', '_CASTOR_AVLCAL_FULLYBOOKED').'</td>
 										</tr>
 									</table>
 								</td>
@@ -163,7 +163,7 @@ class j06000mrpavailabilitycalendar
 			';
 		}
 
-		if ($jrConfig[ 'composite_property_details' ] != '1' || (jomresGetParam($_REQUEST, 'task', '') == 'dobooking') || $jrConfig[ 'is_single_property_installation' ] == '1' || $mrConfig[ 'showOnlyAvailabilityCalendar' ] == '1') {
+		if ($jrConfig[ 'composite_property_details' ] != '1' || (castorGetParam($_REQUEST, 'task', '') == 'dobooking') || $jrConfig[ 'is_single_property_installation' ] == '1' || $mrConfig[ 'showOnlyAvailabilityCalendar' ] == '1') {
 			echo $this->retVals;
 			unset($this->retVals);
 		}
@@ -172,18 +172,18 @@ class j06000mrpavailabilitycalendar
 	public function touch_template_language()
 	{
 		$output = array();
-		$output[ ] = jr_gettext('_JOMRES_AVLCAL_NOBOOKINGS', '_JOMRES_AVLCAL_NOBOOKINGS');
-		$output[ ] = jr_gettext('_JOMRES_AVLCAL_QUARTER', '_JOMRES_AVLCAL_QUARTER');
-		$output[ ] = jr_gettext('_JOMRES_AVLCAL_HALF', '_JOMRES_AVLCAL_HALF');
-		$output[ ] = jr_gettext('_JOMRES_AVLCAL_THREEQUARTER', '_JOMRES_AVLCAL_THREEQUARTER');
-		$output[ ] = jr_gettext('_JOMRES_AVLCAL_FULLYBOOKED', '_JOMRES_AVLCAL_FULLYBOOKED');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_WEEKDAYS_SUNDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_SUNDAY_ABBR');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_WEEKDAYS_MONDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_MONDAY_ABBR');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_WEEKDAYS_TUESDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_TUESDAY_ABBR');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_WEEKDAYS_WEDNESDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_WEDNESDAY_ABBR');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_WEEKDAYS_THURSDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_THURSDAY_ABBR');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_WEEKDAYS_FRIDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_FRIDAY_ABBR');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_WEEKDAYS_SATURDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_SATURDAY_ABBR');
+		$output[ ] = jr_gettext('_CASTOR_AVLCAL_NOBOOKINGS', '_CASTOR_AVLCAL_NOBOOKINGS');
+		$output[ ] = jr_gettext('_CASTOR_AVLCAL_QUARTER', '_CASTOR_AVLCAL_QUARTER');
+		$output[ ] = jr_gettext('_CASTOR_AVLCAL_HALF', '_CASTOR_AVLCAL_HALF');
+		$output[ ] = jr_gettext('_CASTOR_AVLCAL_THREEQUARTER', '_CASTOR_AVLCAL_THREEQUARTER');
+		$output[ ] = jr_gettext('_CASTOR_AVLCAL_FULLYBOOKED', '_CASTOR_AVLCAL_FULLYBOOKED');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_WEEKDAYS_SUNDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_SUNDAY_ABBR');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_WEEKDAYS_MONDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_MONDAY_ABBR');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_WEEKDAYS_TUESDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_TUESDAY_ABBR');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_WEEKDAYS_WEDNESDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_WEDNESDAY_ABBR');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_WEEKDAYS_THURSDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_THURSDAY_ABBR');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_WEEKDAYS_FRIDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_FRIDAY_ABBR');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_WEEKDAYS_SATURDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_SATURDAY_ABBR');
 
 		foreach ($output as $o) {
 			echo $o;
@@ -198,13 +198,13 @@ class j06000mrpavailabilitycalendar
 		// Submitted by: Whiddon James on Dec 01st 1999
 
 		$mrConfig = getPropertySpecificSettings();
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 
 		$showOutMonthDates = false;
 		$task = get_showtime('task');
-		$tar = jomresGetParam($_REQUEST, 'tar', 0);
-		$show_links = jomresGetParam($_REQUEST, 'sl', 1);
+		$tar = castorGetParam($_REQUEST, 'tar', 0);
+		$show_links = castorGetParam($_REQUEST, 'sl', 1);
 		if ($task == 'remoteavailability') {
 			$target = 'target="_blank"';
 		} else {
@@ -251,7 +251,7 @@ class j06000mrpavailabilitycalendar
 
 		$thisMonthName = getThisMonthName(date('n', $stdate), false);
 		if ($thisMonthName == '') {
-			$thisMonthName = jr_gettext('_JOMRES_CUSTOMTEXT_'.date('M', $stdate), strftime('%B', $stdate), false);
+			$thisMonthName = jr_gettext('_CASTOR_CUSTOMTEXT_'.date('M', $stdate), strftime('%B', $stdate), false);
 		}
 
 		$this->retVals .= "\n<table class=\"rescal\" cellspacing=\"0\">\n";
@@ -262,35 +262,35 @@ class j06000mrpavailabilitycalendar
 		}
 		if ($jrConfig[ 'calendarstartofweekday' ] == '1') {
 			$this->retVals .= "<tr class=\"availability_calendar_days\">\n<th width=\"$width\" height=\"$height\" valign=\"middle\" align=\"center\"><font face=\"$face\"
-				size=\"$size\">".jr_gettext('_JOMRES_COM_MR_WEEKDAYS_SUNDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_SUNDAY_ABBR')."</font></th>\n";
+				size=\"$size\">".jr_gettext('_CASTOR_COM_MR_WEEKDAYS_SUNDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_SUNDAY_ABBR')."</font></th>\n";
 			$this->retVals .= "<th width=\"$width\" height=\"$height\" valign=\"middle\" align=\"center\"><font face=\"$face\"
-				size=\"$size\">".jr_gettext('_JOMRES_COM_MR_WEEKDAYS_MONDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_MONDAY_ABBR')."</font></th>\n";
+				size=\"$size\">".jr_gettext('_CASTOR_COM_MR_WEEKDAYS_MONDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_MONDAY_ABBR')."</font></th>\n";
 			$this->retVals .= "<th width=\"$width\" height=\"$height\" valign=\"middle\" align=\"center\"><font face=\"$face\"
-				size=\"$size\">".jr_gettext('_JOMRES_COM_MR_WEEKDAYS_TUESDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_TUESDAY_ABBR')."</font></th>\n";
+				size=\"$size\">".jr_gettext('_CASTOR_COM_MR_WEEKDAYS_TUESDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_TUESDAY_ABBR')."</font></th>\n";
 			$this->retVals .= "<th width=\"$width\" height=\"$height\" valign=\"middle\" align=\"center\"><font face=\"$face\"
-				size=\"$size\">".jr_gettext('_JOMRES_COM_MR_WEEKDAYS_WEDNESDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_WEDNESDAY_ABBR')."</font></th>\n";
+				size=\"$size\">".jr_gettext('_CASTOR_COM_MR_WEEKDAYS_WEDNESDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_WEDNESDAY_ABBR')."</font></th>\n";
 			$this->retVals .= "<th width=\"$width\" height=\"$height\" valign=\"middle\" align=\"center\"><font face=\"$face\"
-				size=\"$size\">".jr_gettext('_JOMRES_COM_MR_WEEKDAYS_THURSDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_THURSDAY_ABBR')."</font></th>\n";
+				size=\"$size\">".jr_gettext('_CASTOR_COM_MR_WEEKDAYS_THURSDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_THURSDAY_ABBR')."</font></th>\n";
 			$this->retVals .= "<th width=\"$width\" height=\"$height\" valign=\"middle\" align=\"center\"><font face=\"$face\"
-				size=\"$size\">".jr_gettext('_JOMRES_COM_MR_WEEKDAYS_FRIDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_FRIDAY_ABBR')."</font></th>\n";
+				size=\"$size\">".jr_gettext('_CASTOR_COM_MR_WEEKDAYS_FRIDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_FRIDAY_ABBR')."</font></th>\n";
 			$this->retVals .= "<th width=\"$width\" height=\"$height\" valign=\"middle\" align=\"center\"><font face=\"$face\"
-				size=\"$size\">".jr_gettext('_JOMRES_COM_MR_WEEKDAYS_SATURDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_SATURDAY_ABBR')."</font></th>
+				size=\"$size\">".jr_gettext('_CASTOR_COM_MR_WEEKDAYS_SATURDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_SATURDAY_ABBR')."</font></th>
 				\n</tr>\n";
 		} else {
 			$this->retVals .= "<tr class=\"availability_calendar_days\">\n<th width=\"$width\" height=\"$height\" valign=\"middle\" align=\"center\"><font face=\"$face\"
-				size=\"$size\">".jr_gettext('_JOMRES_COM_MR_WEEKDAYS_MONDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_MONDAY_ABBR')."</font></th>\n";
+				size=\"$size\">".jr_gettext('_CASTOR_COM_MR_WEEKDAYS_MONDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_MONDAY_ABBR')."</font></th>\n";
 			$this->retVals .= "<th width=\"$width\" height=\"$height\" valign=\"middle\" align=\"center\"><font face=\"$face\"
-				size=\"$size\">".jr_gettext('_JOMRES_COM_MR_WEEKDAYS_TUESDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_TUESDAY_ABBR')."</font></th>\n";
+				size=\"$size\">".jr_gettext('_CASTOR_COM_MR_WEEKDAYS_TUESDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_TUESDAY_ABBR')."</font></th>\n";
 			$this->retVals .= "<th width=\"$width\" height=\"$height\" valign=\"middle\" align=\"center\"><font face=\"$face\"
-				size=\"$size\">".jr_gettext('_JOMRES_COM_MR_WEEKDAYS_WEDNESDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_WEDNESDAY_ABBR')."</font></th>\n";
+				size=\"$size\">".jr_gettext('_CASTOR_COM_MR_WEEKDAYS_WEDNESDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_WEDNESDAY_ABBR')."</font></th>\n";
 			$this->retVals .= "<th width=\"$width\" height=\"$height\" valign=\"middle\" align=\"center\"><font face=\"$face\"
-				size=\"$size\">".jr_gettext('_JOMRES_COM_MR_WEEKDAYS_THURSDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_THURSDAY_ABBR')."</font></th>\n";
+				size=\"$size\">".jr_gettext('_CASTOR_COM_MR_WEEKDAYS_THURSDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_THURSDAY_ABBR')."</font></th>\n";
 			$this->retVals .= "<th width=\"$width\" height=\"$height\" valign=\"middle\" align=\"center\"><font face=\"$face\"
-				size=\"$size\">".jr_gettext('_JOMRES_COM_MR_WEEKDAYS_FRIDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_FRIDAY_ABBR')."</font></th>\n";
+				size=\"$size\">".jr_gettext('_CASTOR_COM_MR_WEEKDAYS_FRIDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_FRIDAY_ABBR')."</font></th>\n";
 			$this->retVals .= "<th width=\"$width\" height=\"$height\" valign=\"middle\" align=\"center\"><font face=\"$face\"
-				size=\"$size\">".jr_gettext('_JOMRES_COM_MR_WEEKDAYS_SATURDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_SATURDAY_ABBR')."</font></th>\n";
+				size=\"$size\">".jr_gettext('_CASTOR_COM_MR_WEEKDAYS_SATURDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_SATURDAY_ABBR')."</font></th>\n";
 			$this->retVals .= "<th width=\"$width\" height=\"$height\" valign=\"middle\" align=\"center\"><font face=\"$face\"
-				size=\"$size\">".jr_gettext('_JOMRES_COM_MR_WEEKDAYS_SUNDAY_ABBR', '_JOMRES_COM_MR_WEEKDAYS_SUNDAY_ABBR')."</font></th>
+				size=\"$size\">".jr_gettext('_CASTOR_COM_MR_WEEKDAYS_SUNDAY_ABBR', '_CASTOR_COM_MR_WEEKDAYS_SUNDAY_ABBR')."</font></th>
 				\n</tr>\n";
 		}
 
@@ -310,7 +310,7 @@ class j06000mrpavailabilitycalendar
 			$currdate = mktime(0, 0, 0, date('m', $startdate), date('d', $startdate) + $i, date('Y', $startdate));
 		}
 
-		$query = "SELECT contract_uid,black_booking,`date` FROM #__jomres_room_bookings WHERE property_uid = '".(int) $property_uid."' AND `date` IN ( ".jomres_implode($sqlDates, false).' ) ';
+		$query = "SELECT contract_uid,black_booking,`date` FROM #__castor_room_bookings WHERE property_uid = '".(int) $property_uid."' AND `date` IN ( ".castor_implode($sqlDates, false).' ) ';
 		$roomList = doSelectSql($query);
 
 		foreach ($roomList as $cont) {
@@ -364,8 +364,8 @@ class j06000mrpavailabilitycalendar
 					$bgcolor = $datesArray[ date('Y/m/d', $currdate) ][ 'bgcolor' ];
 					$contract_uid = $datesArray[ date('Y/m/d', $currdate) ][ 'contract_uid' ];
 				}
-				$jomresCurrDate = date('Y/m/d', $currdate);
-				$dateElements = explode('/', $jomresCurrDate);
+				$castorCurrDate = date('Y/m/d', $currdate);
+				$dateElements = explode('/', $castorCurrDate);
 				$unixCurrDate = mktime(0, 0, 0, $dateElements[ 1 ], $dateElements[ 2 ], $dateElements[ 0 ]);
 
 				if ($currdate < $stdate) {
@@ -427,7 +427,7 @@ class j06000mrpavailabilitycalendar
 									$link .= '&remus='.$roomUid;
 								}
 								
-								$link = jomresValidateUrl($link);
+								$link = castorValidateUrl($link);
 								$thelink = '<a '.$target.' href="'.$link.'" class="rescal" rel="nofollow">'.date('j', $currdate).'</a>';
 								$this->retVals .= $thelink;
 							} else {
@@ -455,3 +455,4 @@ class j06000mrpavailabilitycalendar
 		return $this->retVals;
 	}
 }
+

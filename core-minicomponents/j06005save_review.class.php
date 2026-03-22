@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,13 +35,13 @@ class j06005save_review
 	 
 	public function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 
 		if (!isset($_GET[ 'property_uid' ])) {
@@ -50,36 +50,36 @@ class j06005save_review
 			$property_uid = (int) $_POST[ 'property_uid' ];
 		}
 
-		$rating_1 = (int) jomresGetParam($_POST, 'rating_1', 0);
-		$rating_2 = (int) jomresGetParam($_POST, 'rating_2', 0);
-		$rating_3 = (int) jomresGetParam($_POST, 'rating_3', 0);
-		$rating_4 = (int) jomresGetParam($_POST, 'rating_4', 0);
-		$rating_5 = (int) jomresGetParam($_POST, 'rating_5', 0);
-		$rating_6 = (int) jomresGetParam($_POST, 'rating_6', 0);
+		$rating_1 = (int) castorGetParam($_POST, 'rating_1', 0);
+		$rating_2 = (int) castorGetParam($_POST, 'rating_2', 0);
+		$rating_3 = (int) castorGetParam($_POST, 'rating_3', 0);
+		$rating_4 = (int) castorGetParam($_POST, 'rating_4', 0);
+		$rating_5 = (int) castorGetParam($_POST, 'rating_5', 0);
+		$rating_6 = (int) castorGetParam($_POST, 'rating_6', 0);
 		
-		$anonymise = (bool) jomresGetParam($_POST, 'anonymise', false);
+		$anonymise = (bool) castorGetParam($_POST, 'anonymise', false);
 
-		$review_title = jomresGetParam($_POST, 'review_title', '');
-		$review_description = jomresGetParam($_POST, 'review_description', '');
-		$pros = jomresGetParam($_POST, 'pros', '');
-		$cons = jomresGetParam($_POST, 'cons', '');
+		$review_title = castorGetParam($_POST, 'review_title', '');
+		$review_description = castorGetParam($_POST, 'review_description', '');
+		$pros = castorGetParam($_POST, 'pros', '');
+		$cons = castorGetParam($_POST, 'cons', '');
 
 		// We won't pass a message back, the only way the user will have got this far is if they've bypassed the javascript or don't have javascript enabled.
 		// Either way, they've bypassed the methods we've built to guide them through the submission process. We can still take a valid submission, but we won't take invalid ones.
 		if (($rating_1 < 1 || $rating_1 > 10) || ($rating_2 < 1 || $rating_2 > 10) || ($rating_3 < 1 || $rating_3 > 10) || ($rating_4 < 1 || $rating_4 > 10) || ($rating_5 < 1 || $rating_5 > 10) || ($rating_6 < 1 || $rating_6 > 10) || $review_title == '' || $review_description == '' || $pros == '') {
-			jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL.'&task=add_review&property_uid='.$property_uid), '');
+			castorRedirect(castorURL(CASTOR_SITEPAGE_URL.'&task=add_review&property_uid='.$property_uid), '');
 		}
 
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 		
-		$query = "SELECT enc_firstname , enc_surname , cms_user_id FROM #__jomres_guest_profile WHERE cms_user_id = ".(int)$thisJRUser->id;
+		$query = "SELECT enc_firstname , enc_surname , cms_user_id FROM #__castor_guest_profile WHERE cms_user_id = ".(int)$thisJRUser->id;
 		$guest_details = doSelectSql($query);
 		
-		jr_import('jomres_encryption');
-		$this->jomres_encryption = new jomres_encryption();
+		jr_import('castor_encryption');
+		$this->castor_encryption = new castor_encryption();
 		if (!empty($guest_details)) {
 			foreach ($guest_details as $guest) {
-				$guest_names = $this->jomres_encryption->decrypt($guest->enc_firstname)." ".$this->jomres_encryption->decrypt($guest->enc_surname);
+				$guest_names = $this->castor_encryption->decrypt($guest->enc_firstname)." ".$this->castor_encryption->decrypt($guest->enc_surname);
 			}
 		}
 		
@@ -102,8 +102,8 @@ class j06005save_review
 			$pageoutput = array();
 			$rows = array();
 
-			jr_import('jomres_reviews');
-			$Reviews = new jomres_reviews();
+			jr_import('castor_reviews');
+			$Reviews = new castor_reviews();
 			$Reviews->property_uid = $property_uid;
 
 			$this_user_can_review_this_property = $Reviews->this_user_can_review_this_property();
@@ -115,23 +115,23 @@ class j06005save_review
 				$Reviews->save_rating_detail($property_uid, $rating_id, $rating_1, $rating_2, $rating_3, $rating_4, $rating_5, $rating_6);
 
 				if ($jrConfig[ 'autopublish_reviews' ] == '1') {
-					$thanks = jr_gettext('_JOMRES_REVIEWS_THANKS_FOR_REVIEW', '_JOMRES_REVIEWS_THANKS_FOR_REVIEW', false, false);
+					$thanks = jr_gettext('_CASTOR_REVIEWS_THANKS_FOR_REVIEW', '_CASTOR_REVIEWS_THANKS_FOR_REVIEW', false, false);
 				} else {
-					$thanks = jr_gettext('_JOMRES_REVIEWS_THANKS_FOR_REVIEW_MODERATED', '_JOMRES_REVIEWS_THANKS_FOR_REVIEW_MODERATED', false, false);
+					$thanks = jr_gettext('_CASTOR_REVIEWS_THANKS_FOR_REVIEW_MODERATED', '_CASTOR_REVIEWS_THANKS_FOR_REVIEW_MODERATED', false, false);
 				}
 
 				$saveMessage = $thanks;
-				$jomres_messaging = jomres_singleton_abstract::getInstance('jomres_messages');
-				$jomres_messaging->set_message($saveMessage);
+				$castor_messaging = castor_singleton_abstract::getInstance('castor_messages');
+				$castor_messaging->set_message($saveMessage);
 
 				$property_name = getPropertyName($property_uid);
-				$subject = jr_gettext('JOMRES_NEWREVIEW_SUBJECT', 'JOMRES_NEWREVIEW_SUBJECT', false).' '.$property_name;
-				$message = jr_gettext('JOMRES_NEWREVIEW_MESSAGE', 'JOMRES_NEWREVIEW_MESSAGE', false).' '.$property_name.'  '.JOMRES_SITEPAGE_URL_ADMIN.'&task=view_property_reviews&property_uid='.(int) $property_uid.' <br/><br/>';
+				$subject = jr_gettext('CASTOR_NEWREVIEW_SUBJECT', 'CASTOR_NEWREVIEW_SUBJECT', false).' '.$property_name;
+				$message = jr_gettext('CASTOR_NEWREVIEW_MESSAGE', 'CASTOR_NEWREVIEW_MESSAGE', false).' '.$property_name.'  '.CASTOR_SITEPAGE_URL_ADMIN.'&task=view_property_reviews&property_uid='.(int) $property_uid.' <br/><br/>';
 				sendAdminEmail($subject, $message);
 
-				jomresRedirect(get_property_details_url($property_uid), '');
+				castorRedirect(get_property_details_url($property_uid), '');
 			} else {
-				echo jr_gettext('_JOMRES_REVIEWS_CANNOTREVIEW', '_JOMRES_REVIEWS_CANNOTREVIEW');
+				echo jr_gettext('_CASTOR_REVIEWS_CANNOTREVIEW', '_CASTOR_REVIEWS_CANNOTREVIEW');
 			}
 		}
 	}
@@ -141,3 +141,4 @@ class j06005save_review
 		return $this->retVals;
 	}
 }
+

@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,7 +35,7 @@ class j06005editor
 	 
 	public function __construct($componentArgs)
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -72,24 +72,24 @@ class j06005editor
 				h4: {
 					visible: true,
 					className: 'h4',
-					command: (jomresJquery.browser.msie || jomresJquery.browser.safari) ? 'formatBlock' : 'heading',
-					arguments: (jomresJquery.browser.msie || jomresJquery.browser.safari) ? '<h4>' : 'h4',
+					command: (castorJquery.browser.msie || castorJquery.browser.safari) ? 'formatBlock' : 'heading',
+					arguments: (castorJquery.browser.msie || castorJquery.browser.safari) ? '<h4>' : 'h4',
 					tags: ['h4'],
 					tooltip: 'Header 4'
 				},
 				h5: {
 					visible: true,
 					className: 'h5',
-					command: (jomresJquery.browser.msie || jomresJquery.browser.safari) ? 'formatBlock' : 'heading',
-					arguments: (jomresJquery.browser.msie || jomresJquery.browser.safari) ? '<h5>' : 'h5',
+					command: (castorJquery.browser.msie || castorJquery.browser.safari) ? 'formatBlock' : 'heading',
+					arguments: (castorJquery.browser.msie || castorJquery.browser.safari) ? '<h5>' : 'h5',
 					tags: ['h5'],
 					tooltip: 'Header 5'
 				},
 				h6: {
 					visible: true,
 					className: 'h6',
-					command: (jomresJquery.browser.msie || jomresJquery.browser.safari) ? 'formatBlock' : 'heading',
-					arguments: (jomresJquery.browser.msie || jomresJquery.browser.safari) ? '<h6>' : 'h6',
+					command: (castorJquery.browser.msie || castorJquery.browser.safari) ? 'formatBlock' : 'heading',
+					arguments: (castorJquery.browser.msie || castorJquery.browser.safari) ? '<h6>' : 'h6',
 					tags: ['h6'],
 					tooltip: 'Header 6'
 				},
@@ -115,11 +115,11 @@ class j06005editor
 				};
 			</script>
 			";
-			jomres_cmsspecific_addheaddata('css', get_showtime('live_site').'/'.JOMRES_ROOT_DIRECTORY.'/libraries/editor/', 'jquery.wysiwyg.css');
-			jomres_cmsspecific_addheaddata('javascript', get_showtime('live_site').'/'.JOMRES_ROOT_DIRECTORY.'/libraries/editor/', 'jquery.wysiwyg.js');
-			jomres_cmsspecific_addheaddata('javascript', get_showtime('live_site').'/'.JOMRES_ROOT_DIRECTORY.'/libraries/editor/', 'wysiwyg.link.js');
-			jomres_cmsspecific_addheaddata('javascript', get_showtime('live_site').'/'.JOMRES_ROOT_DIRECTORY.'/libraries/editor/', 'wysiwyg.table.js');
-			jomres_cmsspecific_addheaddata('javascript', get_showtime('live_site').'/'.JOMRES_ROOT_DIRECTORY.'/libraries/editor/', 'wysiwyg.i18n.js');
+			castor_cmsspecific_addheaddata('css', get_showtime('live_site').'/'.CASTOR_ROOT_DIRECTORY.'/libraries/editor/', 'jquery.wysiwyg.css');
+			castor_cmsspecific_addheaddata('javascript', get_showtime('live_site').'/'.CASTOR_ROOT_DIRECTORY.'/libraries/editor/', 'jquery.wysiwyg.js');
+			castor_cmsspecific_addheaddata('javascript', get_showtime('live_site').'/'.CASTOR_ROOT_DIRECTORY.'/libraries/editor/', 'wysiwyg.link.js');
+			castor_cmsspecific_addheaddata('javascript', get_showtime('live_site').'/'.CASTOR_ROOT_DIRECTORY.'/libraries/editor/', 'wysiwyg.table.js');
+			castor_cmsspecific_addheaddata('javascript', get_showtime('live_site').'/'.CASTOR_ROOT_DIRECTORY.'/libraries/editor/', 'wysiwyg.i18n.js');
 			switch (get_showtime('lang')) {
 				case 'cs-CZ':
 					$langfile = 'lang.cs.js';
@@ -172,15 +172,15 @@ class j06005editor
 				default:
 					$langfile = 'lang.en.js';
 			}
-			jomres_cmsspecific_addheaddata('javascript', get_showtime('live_site').'/'.JOMRES_ROOT_DIRECTORY.'/libraries/editor/i18n/', $langfile);
+			castor_cmsspecific_addheaddata('javascript', get_showtime('live_site').'/'.CASTOR_ROOT_DIRECTORY.'/libraries/editor/i18n/', $langfile);
 			define('REDACTED', 1);
 		}
 
 		$ret = '
 			<textarea id="editor_' .$componentArgs[ 'name' ].'" name="'.$componentArgs[ 'name' ].'" style="height: '.$componentArgs[ 'height' ].'px; width:95%" autocomplete=\'off\'>
 			</textarea><script type="text/javascript">
-				jomresJquery(document).ready(function() { jomresJquery(\'#editor_' .$componentArgs[ 'name' ].'\').wysiwyg({ controls: editor_settings });
-				jomresJquery(\'#editor_' .$componentArgs[ 'name' ].'\').wysiwyg("insertHtml", "'.$componentArgs[ 'content' ].'");
+				castorJquery(document).ready(function() { castorJquery(\'#editor_' .$componentArgs[ 'name' ].'\').wysiwyg({ controls: editor_settings });
+				castorJquery(\'#editor_' .$componentArgs[ 'name' ].'\').wysiwyg("insertHtml", "'.$componentArgs[ 'content' ].'");
 				});
 			</script>
 			<br/>
@@ -199,3 +199,4 @@ class j06005editor
 		return $this->ret_vals;
 	}
 }
+

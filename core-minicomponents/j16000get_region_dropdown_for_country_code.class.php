@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,15 +35,15 @@ class j16000get_region_dropdown_for_country_code
 	 
 	public function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
-		$countryCode = jomresGetParam($_REQUEST, 'country', '');
-		$currentRegion = jomresGetParam($_REQUEST, 'region', '');
-		$input_name = jomresGetParam($_REQUEST, 'input_name', '');
+		$countryCode = castorGetParam($_REQUEST, 'country', '');
+		$currentRegion = castorGetParam($_REQUEST, 'region', '');
+		$input_name = castorGetParam($_REQUEST, 'input_name', '');
 
 		if ($input_name == '') {
 			$input_name = 'region';
@@ -64,3 +64,4 @@ class j16000get_region_dropdown_for_country_code
 		return null;
 	}
 }
+

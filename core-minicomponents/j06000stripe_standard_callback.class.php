@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.2.2
+ *  @version Castor 10.2.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * 
 	 */
@@ -35,7 +35,7 @@ class j06000stripe_standard_callback
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -48,11 +48,11 @@ class j06000stripe_standard_callback
 
 		if (!isset($event_json->data->object->client_reference_id) || trim($event_json->data->object->client_reference_id) != '' ) {
 			$session_id = $event_json->data->object->client_reference_id;
-			$tmpBookingHandler =jomres_getSingleton('jomres_temp_booking_handler');
+			$tmpBookingHandler =castor_getSingleton('castor_temp_booking_handler');
 			$tmpBookingHandler->is_crawler = false; // The crawler library identifies Stripe as a crawler. If left as True, the temp booking handler will not attempt to pull the data from the database (for performance reasons), so we need to set this manually to false to ensure that the booking data is pulled from the database/session file
 			$tmpBookingHandler->initBookingSession( $session_id );
 
-			$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+			$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 			$jrConfig = $siteConfig->get();
 			$mrConfig = getPropertySpecificSettings((int)$tmpBookingHandler->tmpbooking['property_uid']);
 
@@ -63,7 +63,7 @@ class j06000stripe_standard_callback
 			}
 
 			$settingArray = [];
-			$query		= "SELECT setting,value FROM #__jomres_pluginsettings WHERE prid = ".(int)$tmpBookingHandler->tmpbooking['property_uid']." AND plugin = 'stripe_standard' ";
+			$query		= "SELECT setting,value FROM #__castor_pluginsettings WHERE prid = ".(int)$tmpBookingHandler->tmpbooking['property_uid']." AND plugin = 'stripe_standard' ";
 			$settingsList = doSelectSql( $query );
 			if ( count ($settingsList) > 0) {
 				foreach ( $settingsList as $set ) {
@@ -71,7 +71,7 @@ class j06000stripe_standard_callback
 				}
 			}
 
-			\Stripe\Stripe::setAppInfo("Jomres Stripe Standard", "1.0", "https://www.jomres.net");
+			\Stripe\Stripe::setAppInfo("Castor Stripe Standard", "1.0", "https://www.castor.net");
 
 			if ( !isset($settingArray[ 'test_mode' ]) || $settingArray[ 'test_mode' ] == '1' ) {
 				$secret_key = trim($settingArray[ 'test_secret_key' ]);
@@ -152,3 +152,4 @@ class j06000stripe_standard_callback
 		return null;
 	}
 }
+

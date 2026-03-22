@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace OAuth2\TokenType;
 
@@ -87,7 +87,7 @@ class Bearer implements TokenTypeInterface
             //$response->setStatusCode(401);
 			// Sod what https://datatracker.ietf.org/doc/html/rfc6750#section-3.1 says, some servers strip Bearer from the headers and the caller needs to be informed that bearer is missing and that the server's configuration might be responsible. I wasted altogether far too much time figuring this out.
 
-			$response->setError(401, 'invalid_request', 'No authentication is provided. Bearer missing from headers? Check https://www.jomres.net/manual/developers-guide-2/63-jomres-api/418-the-rest-api-test-fails ');
+			$response->setError(401, 'invalid_request', 'No authentication is provided. Bearer missing from headers? Check https://www.castor.net/manual/developers-guide-2/63-castor-api/418-the-rest-api-test-fails ');
 
             return null;
         }
@@ -131,3 +131,4 @@ class Bearer implements TokenTypeInterface
         return $request->query($this->config['token_param_name']);
     }
 }
+

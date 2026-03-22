@@ -1,25 +1,25 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 	<script type="text/javascript">
 		<!--
-		jomresJquery(document).ready(function () {
+		castorJquery(document).ready(function () {
 			make_datatable('list_pfeatures', '{PAGETITLE}', '{LIVESITE}');
 		});
 		//-->
 	</script>
 	<h2 class="page-header">{PAGETITLE}</h2>
 
-	<form action="{JOMRES_SITEPAGE_URL_ADMIN}" method="post" name="adminForm">
-		{JOMRESTOOLBAR}
+	<form action="{CASTOR_SITEPAGE_URL_ADMIN}" method="post" name="adminForm">
+		{CASTORTOOLBAR}
 		<table id="list_pfeatures" width="100%" class="table table-striped">
 			<thead>
 			<tr>
 				<th>{COMMON_EDIT}</th>
-				<th><input type="checkbox" name="toggle" value="" onclick="jomres_checkAll({TOTALINLISTPLUSONE});"/> {COMMON_DELETE}</th>
+				<th><input type="checkbox" name="toggle" value="" onclick="castor_checkAll({TOTALINLISTPLUSONE});"/> {COMMON_DELETE}</th>
 				<th>ID</th>
 				<th>{HPFEATURETITLE}</th>
 				<th class="hidden-phone">{HPFEATUREDESCRIPTION}</th>
-				<th class="hidden-phone">{HJOMRES_A_ICON}</th>
+				<th class="hidden-phone">{HCASTOR_A_ICON}</th>
 				<th class="hidden-phone">{HPROPERTY_TYPES}</th>
 				<th class="hidden-phone">{HCATEGORY}</th>
 				<th class="hidden-phone">{INCLUDEINFILTERS}</th>
@@ -42,7 +42,7 @@
 			</tbody>
 		</table>
 		<input type="hidden" name="boxchecked" value="0">
-		<input type="hidden" name="option" value="com_jomres"/>
+		<input type="hidden" name="option" value="com_castor"/>
 		<input type="hidden" name="task" value="editPfeature"/>
 		<input type="hidden" name="Itemid" value="{ITEMID}"/>
 		{CSRF_TOKEN}

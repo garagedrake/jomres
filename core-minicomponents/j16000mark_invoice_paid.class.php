@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,14 +36,14 @@ class j16000mark_invoice_paid
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		$invoice_id = intval(jomresGetParam($_REQUEST, 'id', 0));
+		$invoice_id = intval(castorGetParam($_REQUEST, 'id', 0));
 
 		if ($invoice_id == 0) {
 			return;
@@ -55,7 +55,7 @@ class j16000mark_invoice_paid
 		$invoice->getInvoice();
 
 		if ($invoice->raised_date <= '1970-01-01 00:00:01') {
-			jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL_ADMIN.'&task=view_invoice&id='.$invoice_id), 'You can`t mark an unissued invoice as paid.');
+			castorRedirect(castorURL(CASTOR_SITEPAGE_URL_ADMIN.'&task=view_invoice&id='.$invoice_id), 'You can`t mark an unissued invoice as paid.');
 		}
 
 		if ($invoice->subscription == '1') {
@@ -69,7 +69,7 @@ class j16000mark_invoice_paid
 
 		$invoice->mark_invoice_paid();
 
-		jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL_ADMIN.'&task=view_invoice&id='.$invoice_id), '');
+		castorRedirect(castorURL(CASTOR_SITEPAGE_URL_ADMIN.'&task=view_invoice&id='.$invoice_id), '');
 	}
 
 
@@ -78,3 +78,4 @@ class j16000mark_invoice_paid
 		return null;
 	}
 }
+

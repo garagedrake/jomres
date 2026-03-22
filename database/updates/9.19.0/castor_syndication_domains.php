@@ -1,0 +1,48 @@
+﻿<?php
+/**
+ * Core file.
+ *
+ * @author Vince Wooll <sales@castor.net>
+ *
+ *  @version Castor 10.7.2
+ *
+ * @copyright	2005-2023 Vince Wooll
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ **/
+
+// ################################################################
+defined('_CASTOR_INITCHECK') or die('');
+// ################################################################
+/**
+ *
+ * @package Castor\Core\Database
+ *
+ * Database modification during updates
+ *
+ **/
+/*
+Unapproval reasons
+	admin  // Admin blocked the domain, we will not retry it later
+	system // The system blocked the domain, perhaps because of connectivity problems, the system will try at a later date to connect to it (todo)
+*/
+
+$query = "
+CREATE TABLE IF NOT EXISTS `#__castor_syndication_domains` (
+	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`domain` text,
+	`api_url` text,
+	`date_added` datetime default NULL ,
+	`last_checked` datetime default NULL ,
+	`approved` BOOL NOT NULL DEFAULT '1',
+	`unapproval_reason` VARCHAR(12),
+	PRIMARY KEY(`id`)
+	)
+	ENGINE = InnoDB 
+	DEFAULT CHARSET = utf8mb4 
+	COLLATE = utf8mb4_unicode_ci;
+";
+
+if (!doInsertSql($query)) {
+	$this->setMessage('Error, unable to create the #__castor_invoice_pii_buyers table', 'danger');
+}
+

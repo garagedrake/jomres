@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <phpdoc>
-	<title><![CDATA[Jomres Core]]></title>
+	<title><![CDATA[Castor Core]]></title>
 	<parser>
 		<target>data/output</target>
 		<markers>
@@ -18,7 +18,7 @@
 		<target>data/output</target>
 	</transformer>
 	<files>
-		<directory>C:\wamp64\www\joomla_portal\jomres</directory>
+		<directory>C:\wamp64\www\joomla_portal\castor</directory>
 		<ignore>core-plugins\</ignore>
 		<ignore>libraries\node_modules</ignore>
 		<ignore>\libraries\vendor\</ignore>

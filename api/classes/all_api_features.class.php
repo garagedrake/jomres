@@ -1,22 +1,22 @@
-<?php
+﻿<?php
 /**
  *
- *  @package Jomres\Core\REST_API
+ *  @package Castor\Core\REST_API
  *
  * Finds all API feature scripts. 
  *
  * Additionally finds auth-free API features, which are scripts that can be called by any site visitor, they do not need to be authenticated. For example, a basic search and response wouldn't normally need to be authenticated, so there's no OAuth2 key pair required to call that REST API path. 
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  */
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 
 /**
@@ -42,8 +42,8 @@ class all_api_features
     {
         $this->api_feature_files = array();
 		$this->authentication_free_routes = array();
-        $this->get_all_api_features(JOMRES_API_JOMRES_ROOT.DIRECTORY_SEPARATOR.'core-plugins'.DIRECTORY_SEPARATOR);
-        $this->get_all_api_features(JOMRES_API_JOMRES_ROOT.DIRECTORY_SEPARATOR.'remote_plugins'.DIRECTORY_SEPARATOR);
+        $this->get_all_api_features(CASTOR_API_CASTOR_ROOT.DIRECTORY_SEPARATOR.'core-plugins'.DIRECTORY_SEPARATOR);
+        $this->get_all_api_features(CASTOR_API_CASTOR_ROOT.DIRECTORY_SEPARATOR.'remote_plugins'.DIRECTORY_SEPARATOR);
     }
 
 	/**
@@ -112,3 +112,4 @@ class all_api_features
         }
     }
 }
+

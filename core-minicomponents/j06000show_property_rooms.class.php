@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,15 +36,15 @@ class j06000show_property_rooms
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			$this->shortcode_data = array(
 				'task' => 'show_property_rooms',
-				'info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_ROOMS',
+				'info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_ROOMS',
 				'arguments' => array(0 => array(
 						'argument' => 'property_uid',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_ROOMS_ARG_PROPERTY_UID',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_ROOMS_ARG_PROPERTY_UID',
 						'arg_example' => '1',
 						),
 					),
@@ -54,13 +54,13 @@ class j06000show_property_rooms
 		}
 		$this->retVals = '';
 
-		jr_import('jomres_markdown');
-		$jomres_markdown = new jomres_markdown();
+		jr_import('castor_markdown');
+		$castor_markdown = new castor_markdown();
 		
 		if (isset($componentArgs[ 'property_uid' ])) {
 			$property_uid = (int)$componentArgs[ 'property_uid' ];
 		} else {
-			$property_uid = (int)jomresGetParam($_REQUEST, 'property_uid', 0);
+			$property_uid = (int)castorGetParam($_REQUEST, 'property_uid', 0);
 		}
 		
 		if ($property_uid == 0) {
@@ -88,16 +88,16 @@ class j06000show_property_rooms
 		//if ($output_now)
 		//	property_header( $property_uid );
 
-		$current_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+		$current_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 		$current_property_details->gather_data($property_uid);
 
-		$jomres_media_centre_images = jomres_singleton_abstract::getInstance('jomres_media_centre_images');
+		$castor_media_centre_images = castor_singleton_abstract::getInstance('castor_media_centre_images');
 
 		//get all room details
-		$basic_room_details = jomres_singleton_abstract::getInstance('basic_room_details');
+		$basic_room_details = castor_singleton_abstract::getInstance('basic_room_details');
 		$basic_room_details->get_all_rooms($property_uid);
 
-		jomres_set_page_title( $property_uid ,  jr_gettext('_JOMRES_COM_MR_QUICKRES_STEP2_TITLE', '_JOMRES_COM_MR_QUICKRES_STEP2_TITLE', false) );
+		castor_set_page_title( $property_uid ,  jr_gettext('_CASTOR_COM_MR_QUICKRES_STEP2_TITLE', '_CASTOR_COM_MR_QUICKRES_STEP2_TITLE', false) );
 
 		$mrConfig = getPropertySpecificSettings($property_uid);
 
@@ -105,16 +105,16 @@ class j06000show_property_rooms
 
 		if (!empty($basic_room_details->rooms)) {
 			//get room and room feature images
-			$jomres_media_centre_images->get_images($property_uid, array('rooms', 'room_features'));
+			$castor_media_centre_images->get_images($property_uid, array('rooms', 'room_features'));
 
 			$rows = array();
 
 			foreach ($basic_room_details->rooms as $room) {
 				if ($room['room_classes_uid'] == $room_classes_uid || $room_classes_uid == "*") {
 					$r = array();
-					$r[ 'HEADER_ROOMFLOOR' ] = jr_gettext('_JOMRES_COM_MR_VRCT_ROOM_HEADER_FLOOR', '_JOMRES_COM_MR_VRCT_ROOM_HEADER_FLOOR', false);
-					$r[ 'HEADER_MAXPEOPLE' ] = jr_gettext('_JOMRES_COM_MR_VRCT_ROOM_HEADER_MAXPEOPLE', '_JOMRES_COM_MR_VRCT_ROOM_HEADER_MAXPEOPLE', false);
-					$r[ 'AVLCALTITLE' ] = jr_gettext('_JOMRES_FRONT_AVAILABILITY', '_JOMRES_FRONT_AVAILABILITY', false, false);
+					$r[ 'HEADER_ROOMFLOOR' ] = jr_gettext('_CASTOR_COM_MR_VRCT_ROOM_HEADER_FLOOR', '_CASTOR_COM_MR_VRCT_ROOM_HEADER_FLOOR', false);
+					$r[ 'HEADER_MAXPEOPLE' ] = jr_gettext('_CASTOR_COM_MR_VRCT_ROOM_HEADER_MAXPEOPLE', '_CASTOR_COM_MR_VRCT_ROOM_HEADER_MAXPEOPLE', false);
+					$r[ 'AVLCALTITLE' ] = jr_gettext('_CASTOR_FRONT_AVAILABILITY', '_CASTOR_FRONT_AVAILABILITY', false, false);
 
 					$r[ 'ROOMNAME' ] = $room['room_name'];
 					$r[ 'ROOMNUMBER' ] = stripslashes($room['room_number']);
@@ -135,27 +135,27 @@ class j06000show_property_rooms
 							}
 						}
 					}
-					$r[ 'RANDOM_IDENTIFIER' ] = generateJomresRandomString(10);
+					$r[ 'RANDOM_IDENTIFIER' ] = generateCastorRandomString(10);
 
-					$r[ 'IMAGELARGE' ] = JOMRES_IMAGES_RELPATH.'noimage.svg';
-					$r[ 'IMAGEMEDIUM' ] = JOMRES_IMAGES_RELPATH.'noimage.svg';
-					$r[ 'IMAGETHUMB' ] = JOMRES_IMAGES_RELPATH.'noimage.svg';
+					$r[ 'IMAGELARGE' ] = CASTOR_IMAGES_RELPATH.'noimage.svg';
+					$r[ 'IMAGEMEDIUM' ] = CASTOR_IMAGES_RELPATH.'noimage.svg';
+					$r[ 'IMAGETHUMB' ] = CASTOR_IMAGES_RELPATH.'noimage.svg';
 
-					if (( isset($jomres_media_centre_images->images['rooms']) && $jomres_media_centre_images->images['rooms'][$room['room_uid']][0]['large'] != '' ) &&
-						isset($jomres_media_centre_images->images['rooms'][$room['room_uid']][0]['large']) &&
-						isset($jomres_media_centre_images->images['rooms'][$room['room_uid']][0]['medium']) &&
-						isset($jomres_media_centre_images->images['rooms'][$room['room_uid']][0]['small'])
+					if (( isset($castor_media_centre_images->images['rooms']) && $castor_media_centre_images->images['rooms'][$room['room_uid']][0]['large'] != '' ) &&
+						isset($castor_media_centre_images->images['rooms'][$room['room_uid']][0]['large']) &&
+						isset($castor_media_centre_images->images['rooms'][$room['room_uid']][0]['medium']) &&
+						isset($castor_media_centre_images->images['rooms'][$room['room_uid']][0]['small'])
 						
 					) {
-						$r[ 'IMAGELARGE' ] = $jomres_media_centre_images->images['rooms'][$room['room_uid']][0]['large'];
-						$r[ 'IMAGEMEDIUM' ] = $jomres_media_centre_images->images['rooms'][$room['room_uid']][0]['medium'];
-						$r[ 'IMAGETHUMB' ] = $jomres_media_centre_images->images['rooms'][$room['room_uid']][0]['small'];
+						$r[ 'IMAGELARGE' ] = $castor_media_centre_images->images['rooms'][$room['room_uid']][0]['large'];
+						$r[ 'IMAGEMEDIUM' ] = $castor_media_centre_images->images['rooms'][$room['room_uid']][0]['medium'];
+						$r[ 'IMAGETHUMB' ] = $castor_media_centre_images->images['rooms'][$room['room_uid']][0]['small'];
 					}
 
-					$r[ 'AVLCALLINK' ] = jomresURL(JOMRES_SITEPAGE_URL.'&task=show_property_room&id='.$room['room_uid']);
+					$r[ 'AVLCALLINK' ] = castorURL(CASTOR_SITEPAGE_URL.'&task=show_property_room&id='.$room['room_uid']);
 
 					$r[ 'TAGLINE' ] = $room['tagline'];
-					$r[ 'DESCRIPTION' ] = $jomres_markdown->get_markdown($room['description']);
+					$r[ 'DESCRIPTION' ] = $castor_markdown->get_markdown($room['description']);
 
 					$room_price_output = get_room_price_by_room_type_id($room['room_classes_uid'], $property_uid);
 					$r[ 'PRICE_PRICE' ]	 = $room_price_output[ 'PRICE_PRICE' ];
@@ -166,7 +166,7 @@ class j06000show_property_rooms
 					if ($mrConfig[ 'requireApproval' ] == '1') {
 						$r[ 'BOOKING_BUTTON_TEXT' ] = jr_gettext('_BOOKING_CALCQUOTE', '_BOOKING_CALCQUOTE', false);
 					} else {
-						$r[ 'BOOKING_BUTTON_TEXT' ] = jr_gettext('_JOMRES_FRONT_MR_MENU_BOOKAROOM', '_JOMRES_FRONT_MR_MENU_BOOKAROOM', false);
+						$r[ 'BOOKING_BUTTON_TEXT' ] = jr_gettext('_CASTOR_FRONT_MR_MENU_BOOKAROOM', '_CASTOR_FRONT_MR_MENU_BOOKAROOM', false);
 					}
 					$rows[ ] = $r;
 				}
@@ -177,7 +177,7 @@ class j06000show_property_rooms
 			$tmpl = new patTemplate();
 			$tmpl->addRows('pageoutput', $pageoutput);
 			$tmpl->addRows('rows', $rows);
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 			$tmpl->readTemplatesFromInput('show_rooms.html');
 			$result = $tmpl->getParsedTemplate();
 
@@ -195,3 +195,4 @@ class j06000show_property_rooms
 		return $this->retVals;
 	}
 }
+

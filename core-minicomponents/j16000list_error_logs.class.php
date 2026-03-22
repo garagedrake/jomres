@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,13 +36,13 @@ class j16000list_error_logs
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 
 		if (!isset($jrConfig['log_path']) || $jrConfig['log_path'] == '') {
@@ -84,9 +84,9 @@ class j16000list_error_logs
 
 		$output['TABLE_NAME'] = 'system_rows';
 
-		$output[ 'PAGETITLE' ] = jr_gettext('JOMRES_COM_A_AVAILABLELOGS', 'JOMRES_COM_A_AVAILABLELOGS', false);
-		$output[ '_JOMRES_ERROR_DEBUGGING_FILE' ] = jr_gettext('_JOMRES_ERROR_DEBUGGING_FILE', '_JOMRES_ERROR_DEBUGGING_FILE', false);
-		$output[ '_JOMRES_MR_AUDIT_LISTING_DATE' ] = jr_gettext('_JOMRES_MR_AUDIT_LISTING_DATE', '_JOMRES_MR_AUDIT_LISTING_DATE', false);
+		$output[ 'PAGETITLE' ] = jr_gettext('CASTOR_COM_A_AVAILABLELOGS', 'CASTOR_COM_A_AVAILABLELOGS', false);
+		$output[ '_CASTOR_ERROR_DEBUGGING_FILE' ] = jr_gettext('_CASTOR_ERROR_DEBUGGING_FILE', '_CASTOR_ERROR_DEBUGGING_FILE', false);
+		$output[ '_CASTOR_MR_AUDIT_LISTING_DATE' ] = jr_gettext('_CASTOR_MR_AUDIT_LISTING_DATE', '_CASTOR_MR_AUDIT_LISTING_DATE', false);
 
 		foreach ($system_log_files as $file) {
 			$r = array();
@@ -96,16 +96,16 @@ class j16000list_error_logs
 			$system_rows[ ] = $r;
 		}
 
-		$jrtbar = jomres_singleton_abstract::getInstance('jomres_toolbar');
+		$jrtbar = castor_singleton_abstract::getInstance('castor_toolbar');
 		$jrtb = $jrtbar->startTable();
-		$jrtb .= $jrtbar->toolbarItem('cancel', jomresURL(JOMRES_SITEPAGE_URL_ADMIN), '');
+		$jrtb .= $jrtbar->toolbarItem('cancel', castorURL(CASTOR_SITEPAGE_URL_ADMIN), '');
 
 		$jrtb .= $jrtbar->endTable();
-		$output[ 'JOMRESTOOLBAR' ] = $jrtb;
+		$output[ 'CASTORTOOLBAR' ] = $jrtb;
 
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 		$tmpl->readTemplatesFromInput('list_error_logs.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->addRows('rows', $system_rows);
@@ -114,9 +114,9 @@ class j16000list_error_logs
 		$output = array();
 		$pageoutput = array();
 
-		$output[ 'PAGETITLE' ] = jr_gettext('JOMRES_COM_A_AVAILABLELOGS', 'JOMRES_COM_A_AVAILABLELOGS', false);
-		$output[ '_JOMRES_ERROR_DEBUGGING_FILE' ] = jr_gettext('_JOMRES_ERROR_DEBUGGING_FILE', '_JOMRES_ERROR_DEBUGGING_FILE', false);
-		$output[ '_JOMRES_MR_AUDIT_LISTING_DATE' ] = jr_gettext('_JOMRES_MR_AUDIT_LISTING_DATE', '_JOMRES_MR_AUDIT_LISTING_DATE', false);
+		$output[ 'PAGETITLE' ] = jr_gettext('CASTOR_COM_A_AVAILABLELOGS', 'CASTOR_COM_A_AVAILABLELOGS', false);
+		$output[ '_CASTOR_ERROR_DEBUGGING_FILE' ] = jr_gettext('_CASTOR_ERROR_DEBUGGING_FILE', '_CASTOR_ERROR_DEBUGGING_FILE', false);
+		$output[ '_CASTOR_MR_AUDIT_LISTING_DATE' ] = jr_gettext('_CASTOR_MR_AUDIT_LISTING_DATE', '_CASTOR_MR_AUDIT_LISTING_DATE', false);
 
 		$output['TABLE_NAME'] = 'error_rows';
 
@@ -130,7 +130,7 @@ class j16000list_error_logs
 
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 		$tmpl->readTemplatesFromInput('list_error_logs.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->addRows('rows', $error_rows);
@@ -143,3 +143,4 @@ class j16000list_error_logs
 		return null;
 	}
 }
+

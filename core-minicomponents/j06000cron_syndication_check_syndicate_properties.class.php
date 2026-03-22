@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,37 +35,37 @@ class j06000cron_syndication_check_syndicate_properties
 	 
 	public function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		$query = "SELECT `id` FROM #__jomres_syndication_domains WHERE  approved = 0 ";
+		$query = "SELECT `id` FROM #__castor_syndication_domains WHERE  approved = 0 ";
 		$result = doSelectSql($query);
 		$disabled_domains = array();
 		if (!empty($result)) {
 			foreach ($result as $r) {
 				$disabled_domains[]=$r->id;
 			}
-			$query = 'SELECT id , `name` FROM #__jomres_syndication_properties WHERE syndication_domain_id IN ('.jomres_implode($disabled_domains).') AND approved = 1 ORDER BY `name` ';
+			$query = 'SELECT id , `name` FROM #__castor_syndication_properties WHERE syndication_domain_id IN ('.castor_implode($disabled_domains).') AND approved = 1 ORDER BY `name` ';
 			$trash_properties = doSelectSql($query);
 			$properties_to_disable = array();
 			if (!empty($trash_properties)) {
 				foreach ($trash_properties as $t) {
 					$properties_to_disable[]=$t->id;
 				}
-				$query = "UPDATE #__jomres_syndication_properties SET
+				$query = "UPDATE #__castor_syndication_properties SET
 					`last_checked` = '".date("Y-m-d H:i:s", strtotime("+1 year"))."' , 
 					`approved` = 0 , 
 					`unapproval_reason` = 'domain' 
-					WHERE id IN (".jomres_implode($properties_to_disable).")";
+					WHERE id IN (".castor_implode($properties_to_disable).")";
 				doInsertSql($query);
 			}
 		}
 
-		$query = "SELECT `id` , `domain` , `api_url` ,  `last_checked` , `approved` FROM #__jomres_syndication_domains WHERE  approved = 1 ORDER BY last_checked ASC";
+		$query = "SELECT `id` , `domain` , `api_url` ,  `last_checked` , `approved` FROM #__castor_syndication_domains WHERE  approved = 1 ORDER BY last_checked ASC";
 		$result = doSelectSql($query);
 
 		$now = date("Y-m-d H:i:s");
@@ -111,7 +111,7 @@ class j06000cron_syndication_check_syndicate_properties
 					$intervalInMinutes = abs($intervalInSeconds/60);
 
 					if ($intervalInMinutes > 60) {
-						$query = "SELECT id , syndication_domain_id , propertys_uid , thumbnail_location , view_property_url , `name` FROM #__jomres_syndication_properties WHERE last_checked  < (NOW() - INTERVAL 1 HOUR) AND approved = 1 AND syndication_domain_id = ".$r->id." ORDER BY last_checked LIMIT 10 ";
+						$query = "SELECT id , syndication_domain_id , propertys_uid , thumbnail_location , view_property_url , `name` FROM #__castor_syndication_properties WHERE last_checked  < (NOW() - INTERVAL 1 HOUR) AND approved = 1 AND syndication_domain_id = ".$r->id." ORDER BY last_checked LIMIT 10 ";
 						$local_properties = doSelectSql($query);
 
 						if (!empty($local_properties)) { // The get syndicate properties script will handle adding any new properties, so the only thing we need to do here is remove those that aren't in the remote properties array
@@ -119,7 +119,7 @@ class j06000cron_syndication_check_syndicate_properties
 							try {
 								foreach ($local_properties as $local_property) {
 									if (in_array(trim($local_property->name), $quickstart_property_names)) {
-										$query = "UPDATE #__jomres_syndication_properties SET
+										$query = "UPDATE #__castor_syndication_properties SET
 											`last_checked` = '".date("Y-m-d H:i:s", strtotime("+1 year"))."' , 
 											`approved` = 0 , 
 											`unapproval_reason` = 'quickstart' 
@@ -131,7 +131,7 @@ class j06000cron_syndication_check_syndicate_properties
 										$response = $client->request('GET', $local_property->view_property_url, ['connect_timeout' => 1 , 'verify' => false , 'http_errors' => false]);
 
 										if ((string)$response->getStatusCode() == "404" || (string)$response->getStatusCode() == "0") {
-											$query = "UPDATE  #__jomres_syndication_properties SET 
+											$query = "UPDATE  #__castor_syndication_properties SET 
 										`last_checked` = '".date("Y-m-d H:i:s", strtotime("+1 year"))."' ,
 										`approved` = 0 ,
 										`unapproval_reason` = '404'
@@ -140,14 +140,14 @@ class j06000cron_syndication_check_syndicate_properties
 										} else {
 											$thumbnail_exists = $this->check_thumbnail_exists($local_property->thumbnail_location);
 											if (!$thumbnail_exists) {
-												$query = "UPDATE #__jomres_syndication_properties SET
+												$query = "UPDATE #__castor_syndication_properties SET
 											`last_checked` = '".date("Y-m-d H:i:s", strtotime("+1 week"))."' , 
 											`approved` = 0 , 
 											`unapproval_reason` = 'thumbnail' 
 										WHERE id = ".(int)$local_property->id;
 												doInsertSql($query);
 											} else {
-												$query = "UPDATE #__jomres_syndication_properties SET `last_checked` = '".date("Y-m-d H:i:s", strtotime("+1 week"))."' WHERE id = ".(int)$local_property->id;
+												$query = "UPDATE #__castor_syndication_properties SET `last_checked` = '".date("Y-m-d H:i:s", strtotime("+1 week"))."' WHERE id = ".(int)$local_property->id;
 												doInsertSql($query);
 											}
 										}
@@ -161,14 +161,14 @@ class j06000cron_syndication_check_syndicate_properties
 								break;
 							} catch (GuzzleHttp\Exception\RequestException $e) {
 								if ((int)$r->approved == 1) { // Oops, it's stopped responding. We'll take it offline and check it again in an hour
-									$query = "UPDATE  #__jomres_syndication_domains SET 
+									$query = "UPDATE  #__castor_syndication_domains SET 
 									`last_checked` = '".date("Y-m-d H:i:s")."',
 									`approved` = 0 ,
 									`unapproval_reason` = 'system'
 									WHERE id = ".(int)$r->id;
 									doInsertSql($query);
 								} else { // It's still not responding
-									$query = "UPDATE  #__jomres_syndication_domains SET 
+									$query = "UPDATE  #__castor_syndication_domains SET 
 									`last_checked` = '".date("Y-m-d H:i:s")."'
 									WHERE id = ".(int)$r->id;
 									doInsertSql($query);
@@ -229,3 +229,4 @@ class j06000cron_syndication_check_syndicate_properties
 		return null;
 	}
 }
+

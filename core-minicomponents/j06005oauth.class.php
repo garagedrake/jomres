@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,25 +35,25 @@ class j06005oauth
 	 
 	function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			$this->shortcode_data = array (
 				"task" => "oauth",
-				"info" => "_JOMRES_SHORTCODES_06005API_CORE_CLIENT_ADMIN",
+				"info" => "_CASTOR_SHORTCODES_06005API_CORE_CLIENT_ADMIN",
 				"arguments" => array ()
 				);
 			return;
 		}
 
-		$jomres_gdpr_optin_consent = new jomres_gdpr_optin_consent();
-		if (!$jomres_gdpr_optin_consent->user_consents_to_storage()&& !isset($_REQUEST['skip_consent_form'])) {
+		$castor_gdpr_optin_consent = new castor_gdpr_optin_consent();
+		if (!$castor_gdpr_optin_consent->user_consents_to_storage()&& !isset($_REQUEST['skip_consent_form'])) {
 			echo $consent_form = $MiniComponents->specificEvent('06000', 'show_consent_form', array ('output_now' => false));
 			return;
 		}
 
 		$ePointFilepath=get_showtime('ePointFilepath');
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 
 		if (!$thisJRUser->userIsManager) {
 			$available_scopes = array ( "user");
@@ -63,9 +63,9 @@ class j06005oauth
 			$available_scopes = array ( "user" , "manager" , "super" );
 		}
 
-		$toolbar = jomres_singleton_abstract::getInstance('jomresItemToolbar');
-		jr_import("jomres_oauth_scopes");
-		$scopes_class = new jomres_oauth_scopes($ePointFilepath);
+		$toolbar = castor_singleton_abstract::getInstance('castorItemToolbar');
+		jr_import("castor_oauth_scopes");
+		$scopes_class = new castor_oauth_scopes($ePointFilepath);
 		$all_available_scopes = array();
 		foreach ($scopes_class->default_scopes as $category => $category_scopes) {
 			foreach ($category_scopes as $scope) {
@@ -116,7 +116,7 @@ class j06005oauth
 			$local_token_plugins = array();
 		}
 
-		$query = "SELECT client_id,scope,identifier FROM #__jomres_oauth_clients WHERE user_id = ".(int)$thisJRUser->id;
+		$query = "SELECT client_id,scope,identifier FROM #__castor_oauth_clients WHERE user_id = ".(int)$thisJRUser->id;
 		$result = doSelectSql($query);
 
 		if (count($result)>0) {
@@ -136,8 +136,8 @@ class j06005oauth
 					}
 					$r['SCOPE'] = rtrim(trim($r['SCOPE']), ",");
 					$toolbar->newToolbar();
-					$toolbar->addItem('fa fa-pencil-square-o', 'btn btn-info', '', jomresURL(JOMRES_SITEPAGE_URL .'&task=oauth_edit_client&client_id='.$r['CLIENT_ID']), jr_gettext('COMMON_VIEW', 'COMMON_VIEW', false));
-					$toolbar->addSecondaryItem('fa fa-trash', '', '', jomresURL(JOMRES_SITEPAGE_URL.'&task=delete_client&client_id='.$r['CLIENT_ID']), jr_gettext('COMMON_DELETE', 'COMMON_DELETE', false));
+					$toolbar->addItem('fa fa-pencil-square-o', 'btn btn-info', '', castorURL(CASTOR_SITEPAGE_URL .'&task=oauth_edit_client&client_id='.$r['CLIENT_ID']), jr_gettext('COMMON_VIEW', 'COMMON_VIEW', false));
+					$toolbar->addSecondaryItem('fa fa-trash', '', '', castorURL(CASTOR_SITEPAGE_URL.'&task=delete_client&client_id='.$r['CLIENT_ID']), jr_gettext('COMMON_DELETE', 'COMMON_DELETE', false));
 					$r['EDITLINK']=$toolbar->getToolbar();
 					
 					$rows[]=$r;
@@ -146,12 +146,12 @@ class j06005oauth
 		}
 			
 		$toolbar->newToolbar();
-		$toolbar->addItem('icon-edit', 'btn btn-info', '', jomresURL(JOMRES_SITEPAGE_URL . '&task=oauth_edit_client&client_id='), jr_gettext('COMMON_NEW', 'COMMON_NEW', false));
-		$output['JOMRESTOOLBAR']=$toolbar->getToolbar();
+		$toolbar->addItem('icon-edit', 'btn btn-info', '', castorURL(CASTOR_SITEPAGE_URL . '&task=oauth_edit_client&client_id='), jr_gettext('COMMON_NEW', 'COMMON_NEW', false));
+		$output['CASTORTOOLBAR']=$toolbar->getToolbar();
 		
 		$pageoutput[]=$output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 		$tmpl->readTemplatesFromInput('list_clients.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->addRows('rows', $rows);
@@ -165,3 +165,4 @@ class j06005oauth
 		return null;
 	}
 }
+

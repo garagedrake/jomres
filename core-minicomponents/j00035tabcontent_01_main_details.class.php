@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Used by j06000viewproperty.class.php to build tabs in the property details page. Builds main property details description template output.
 	 *
@@ -36,7 +36,7 @@ class j00035tabcontent_01_main_details
 	 
 	public function __construct($componentArgs)
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -52,7 +52,7 @@ class j00035tabcontent_01_main_details
 		$discount_output = array();
 
 		//property description
-		$output['HDESCRIPTION'] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_PROPDESCRIPTION', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_PROPDESCRIPTION', false);
+		$output['HDESCRIPTION'] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_PROPDESCRIPTION', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_PROPDESCRIPTION', false);
 		$output['DESCRIPTION'] = $MiniComponents->specificEvent('06000', 'show_property_description', array('output_now' => false, 'property_uid' => $property_uid));
 
 		//property features
@@ -110,12 +110,12 @@ class j00035tabcontent_01_main_details
 			$tmpl->addRows('discount_output', $discount_output);
 		}
 
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 		$tmpl->readTemplatesFromInput('tabcontent_01_main_details.html');
 
 		$parsedTemplate = $tmpl->getParsedTemplate();
 
-		$anchor = jomres_generate_tab_anchor($output[ 'HDESCRIPTION' ]);
+		$anchor = castor_generate_tab_anchor($output[ 'HDESCRIPTION' ]);
 		$tab = array('TAB_ANCHOR' => $anchor, 'TAB_TITLE' => $output[ 'HDESCRIPTION' ], 'TAB_CONTENT' => $parsedTemplate, 'TAB_ID' => 'tour_target_property_details_main_details');
 		$this->retVals = $tab;
 	}
@@ -131,3 +131,4 @@ class j00035tabcontent_01_main_details
 		return $this->retVals;
 	}
 }
+

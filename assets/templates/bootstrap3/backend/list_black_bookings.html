@@ -1,8 +1,8 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <script language="JavaScript" type="text/javascript">
 	<!--
-	jomresJquery(document).ready(function () {
+	castorJquery(document).ready(function () {
 		make_datatable('list_black_bookings', '{PAGETITLE}', '{LIVESITE}');
 	});
 	//-->
@@ -15,13 +15,13 @@
 
 <form method="post" name="adminForm">
 	<div class="well">
-		{JOMRESTOOLBAR}
+		{CASTORTOOLBAR}
 	</div>
 	<table width="100%" id="list_black_bookings" class="table table-striped">
 		<thead>
 			<tr>
 				<th>&nbsp;</th>
-				<th>{_JOMRES_COM_MR_VRCT_ROOM_LINKTEXT}</th>
+				<th>{_CASTOR_COM_MR_VRCT_ROOM_LINKTEXT}</th>
 				<th>{HSTART}</th>
 				<th>{HRESUMEDATE}</th>
 				<th>{HREASON}</th>

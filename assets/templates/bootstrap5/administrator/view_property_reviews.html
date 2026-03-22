@@ -1,4 +1,4 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 	<script type="text/javascript">
 		<!--
@@ -8,24 +8,24 @@
 
 		function publish_review(rating_id, state) {
 			div_name = '#publish_icon' + rating_id;
-			curr_img = jomresJquery(div_name).attr("src") == publish_image ? unpublish_image : publish_image;
+			curr_img = castorJquery(div_name).attr("src") == publish_image ? unpublish_image : publish_image;
 			if (curr_img == unpublish_image)
-				cmd = '{JOMRES_SITEPAGE_URL_ADMIN_AJAX}&task=review_publish&rating_id=' + rating_id + '&property_uid=' + property_uid + '&state=0';
+				cmd = '{CASTOR_SITEPAGE_URL_ADMIN_AJAX}&task=review_publish&rating_id=' + rating_id + '&property_uid=' + property_uid + '&state=0';
 			else
-				cmd = '{JOMRES_SITEPAGE_URL_ADMIN_AJAX}&task=review_publish&rating_id=' + rating_id + '&property_uid=' + property_uid +'&state=1';
-			jomresJquery.get(cmd, function (data) {
+				cmd = '{CASTOR_SITEPAGE_URL_ADMIN_AJAX}&task=review_publish&rating_id=' + rating_id + '&property_uid=' + property_uid +'&state=1';
+			castorJquery.get(cmd, function (data) {
 				if (data == 1) {
 
-					jomresJquery(div_name).attr("src", curr_img);
+					castorJquery(div_name).attr("src", curr_img);
 				}
 			});
 		}
 
 		function delete_review(rating_id) {
-			jomresJquery.get('{JOMRES_SITEPAGE_URL_ADMIN_AJAX}&task=review_delete&rating_id=' + rating_id + '&property_uid=' + property_uid , function (data) {
+			castorJquery.get('{CASTOR_SITEPAGE_URL_ADMIN_AJAX}&task=review_delete&rating_id=' + rating_id + '&property_uid=' + property_uid , function (data) {
 				if (data == 1) {
 					row_id = '#rating_id' + rating_id;
-					jomresJquery(row_id).fadeOut();
+					castorJquery(row_id).fadeOut();
 				}
 			});
 		}
@@ -36,21 +36,21 @@
 	</script>
 	<h2 class="page-header">{HPROPERTYNAME}: {PROPERTY_NAME}</h2>
 
-	<p>{_JOMRES_REVIEWS_REPORT_INSTRUCTIONS}</p>
+	<p>{_CASTOR_REVIEWS_REPORT_INSTRUCTIONS}</p>
 	<table id="view_property_reviews" width="100%" class="table table-striped">
 		<thead>
 		<tr>
 			<th class="hidden-phone">&nbsp;</th>
-			<th><!--{_JOMRES_REVIEWS_ADMIN_PUBLISHREVIEW}--></th>
-			<!--<th>{_JOMRES_REVIEWS_ADMIN_DELETEREVEIEW}</th>-->
-			<th>{_JOMRES_MR_AUDIT_LISTING_USER}</th>
-			<th class="hidden-phone">{_JOMRES_REVIEWS_SUBMITTEDDATE}</th>
-			<th>{_JOMRES_REVIEWS_TITLE}</th>
-			<th class="hidden-phone">{_JOMRES_REVIEWS_REVIEWBODY_SAID}</th>
-			<th class="hidden-phone">{_JOMRES_REVIEWS_PROS}</th>
-			<th class="hidden-phone">{_JOMRES_REVIEWS_CONS}</th>
-			<th class="hidden-phone">{_JOMRES_REVIEWS_RATING}</th>
-			<th class="hidden-phone">{_JOMRES_REVIEWS_REPORT_REVIEW_TITLE}</th>
+			<th><!--{_CASTOR_REVIEWS_ADMIN_PUBLISHREVIEW}--></th>
+			<!--<th>{_CASTOR_REVIEWS_ADMIN_DELETEREVEIEW}</th>-->
+			<th>{_CASTOR_MR_AUDIT_LISTING_USER}</th>
+			<th class="hidden-phone">{_CASTOR_REVIEWS_SUBMITTEDDATE}</th>
+			<th>{_CASTOR_REVIEWS_TITLE}</th>
+			<th class="hidden-phone">{_CASTOR_REVIEWS_REVIEWBODY_SAID}</th>
+			<th class="hidden-phone">{_CASTOR_REVIEWS_PROS}</th>
+			<th class="hidden-phone">{_CASTOR_REVIEWS_CONS}</th>
+			<th class="hidden-phone">{_CASTOR_REVIEWS_RATING}</th>
+			<th class="hidden-phone">{_CASTOR_REVIEWS_REPORT_REVIEW_TITLE}</th>
 		</tr>
 		</thead>
 		<tbody>

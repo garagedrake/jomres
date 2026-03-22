@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,19 +36,19 @@ class j06001mark_booking_invoice_pending
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 		if (!$thisJRUser->userIsManager) {
 			return;
 		}
 
-		$invoice_id = intval(jomresGetParam($_REQUEST, 'id', 0));
+		$invoice_id = intval(castorGetParam($_REQUEST, 'id', 0));
 
 		if ($invoice_id == 0) {
 			return;
@@ -56,7 +56,7 @@ class j06001mark_booking_invoice_pending
 
 		$property_uid = getDefaultProperty();
 
-		$query = 'SELECT contract_id FROM #__jomresportal_invoices WHERE id = '.$invoice_id.' AND property_uid = '.(int) $property_uid; // Need to associate the invoice id and the property uid. If we don't, then it could be a commission type invoice, which is not associated with a property uid and we don't want managers marking them as paid.
+		$query = 'SELECT contract_id FROM #__castorportal_invoices WHERE id = '.$invoice_id.' AND property_uid = '.(int) $property_uid; // Need to associate the invoice id and the property uid. If we don't, then it could be a commission type invoice, which is not associated with a property uid and we don't want managers marking them as paid.
 		$result = doSelectSql($query, 1);
 
 		if (!$result || (int) $result < 1) { //invoice could be a subscription or commission one, so contract id must be > 0
@@ -71,8 +71,8 @@ class j06001mark_booking_invoice_pending
 		$invoice->getInvoice();
 		$invoice->mark_invoice_pending();
 
-		addBookingNote($invoice->contract_id, $property_uid, jr_gettext('_JOMRES_INVOICE_MARKEDASPENDING', '_JOMRES_INVOICE_MARKEDASPENDING', false, false));
-		jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL.'&task=view_invoice&id='.$invoice_id), '');
+		addBookingNote($invoice->contract_id, $property_uid, jr_gettext('_CASTOR_INVOICE_MARKEDASPENDING', '_CASTOR_INVOICE_MARKEDASPENDING', false, false));
+		castorRedirect(castorURL(CASTOR_SITEPAGE_URL.'&task=view_invoice&id='.$invoice_id), '');
 	}
 
 
@@ -81,3 +81,4 @@ class j06001mark_booking_invoice_pending
 		return null;
 	}
 }
+

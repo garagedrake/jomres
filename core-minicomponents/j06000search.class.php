@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 	/**
 	 * Core file.
 	 *
-	 * @author Vince Wooll <sales@jomres.net>
+	 * @author Vince Wooll <sales@castor.net>
 	 *
-	  *  @version Jomres 10.7.2
+	  *  @version Castor 10.7.2
 	 *
 	 * @copyright	2005-2023 Vince Wooll
-	 * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+	 * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
 	 **/
 
 // ################################################################
-	defined('_JOMRES_INITCHECK') or die('');
+	defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -34,71 +34,71 @@ class j06000search
 
 	public function __construct($componentArgs)
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			$this->shortcode_data = array(
 				'task' => 'search',
-				'info' => '_JOMRES_SHORTCODES_06000SEARCH',
+				'info' => '_CASTOR_SHORTCODES_06000SEARCH',
 				'arguments' => array(
 					array(
 						'argument' => 'country',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SEARCH_ARG_COUNTRY',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SEARCH_ARG_COUNTRY',
 						'arg_example' => 'GB',
 					),
 					array(
 						'argument' => 'region',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SEARCH_ARG_REGION',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SEARCH_ARG_REGION',
 						'arg_example' => '1111',
 					),
 					array(
 						'argument' => 'town',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SEARCH_ARG_TOWN',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SEARCH_ARG_TOWN',
 						'arg_example' => 'Torquay',
 					),
 					array(
 						'argument' => 'feature_uids',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SEARCH_ARG_FEATURE_UIDS',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SEARCH_ARG_FEATURE_UIDS',
 						'arg_example' => '32',
 					),
 					array(
 						'argument' => 'room_type',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SEARCH_ARG_ROOM_TYPE',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SEARCH_ARG_ROOM_TYPE',
 						'arg_example' => '2',
 					),
 					array(
 						'argument' => 'ptype',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SEARCH_ARG_PTYPE',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SEARCH_ARG_PTYPE',
 						'arg_example' => '1',
 					),
 					array(
 						'argument' => 'priceranges',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SEARCH_ARG_PRICERANGES',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SEARCH_ARG_PRICERANGES',
 						'arg_example' => '100-200',
 					),
 					array(
 						'argument' => 'guestnumber',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SEARCH_ARG_GUESTNUMBER',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SEARCH_ARG_GUESTNUMBER',
 						'arg_example' => '1',
 					),
 					array(
 						'argument' => 'stars',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SEARCH_ARG_STARS',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SEARCH_ARG_STARS',
 						'arg_example' => '4',
 					),
 					array(
 						'argument' => 'arrivalDate',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SEARCH_ARG_ARRIVALDATE',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SEARCH_ARG_ARRIVALDATE',
 						'arg_example' => date('Y/m/d', strtotime(date('Y/m/d').'+1 day')),
 					),
 					array(
 						'argument' => 'departureDate',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SEARCH_ARG_DEPARTUREDATE',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SEARCH_ARG_DEPARTUREDATE',
 						'arg_example' => date('Y/m/d', strtotime(date('Y/m/d').'+2 days')),
 					),
 					array(
 						'argument' => 'cat_id',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SEARCH_ARG_CATEGORY',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SEARCH_ARG_CATEGORY',
 						'arg_example' => '1',
 					),
 				)
@@ -106,10 +106,10 @@ class j06000search
 			return;
 		}
 		$this->retVals = '';
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
-		$option = jomresGetParam($_REQUEST, 'option', '');
+		$option = castorGetParam($_REQUEST, 'option', '');
 
 		$data_only = false;
 		if (isset($_REQUEST[ 'dataonly' ])) {
@@ -123,7 +123,7 @@ class j06000search
 		$searchRestarted = false;
 		$showSearchOptions = true;
 
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 
 		if (isset($componentArgs[ 'doSearch' ])) {
 			$doSearch = $componentArgs[ 'doSearch' ];
@@ -134,13 +134,13 @@ class j06000search
 		if (isset($componentArgs[ 'calledByModule' ])) {
 			$calledByModule = $componentArgs[ 'calledByModule' ];
 		} else {
-			$calledByModule = jomresGetParam($_REQUEST, 'calledByModule', '');
+			$calledByModule = castorGetParam($_REQUEST, 'calledByModule', '');
 		}
 
 		if (!$includedInModule) {
 			$doSearch = true;
 		} else {
-			$tmpBookingHandler = jomres_singleton_abstract::getInstance('jomres_temp_booking_handler');
+			$tmpBookingHandler = castor_singleton_abstract::getInstance('castor_temp_booking_handler');
 			$tmpBookingHandler->initBookingSession();
 			$showSearchOptions = true;
 		}
@@ -153,7 +153,7 @@ class j06000search
 
 		$calledByModule = getEscaped($calledByModule);
 
-		$infoIcon = JOMRES_IMAGES_RELPATH.'information.png';
+		$infoIcon = CASTOR_IMAGES_RELPATH.'information.png';
 		if (isset($componentArgs['form_elements'])) {
 			$output = $componentArgs['form_elements']; // Allows calling scripts to add form elements that are then handed to the template without needing to make any other changes to this script
 		} else {
@@ -162,7 +162,7 @@ class j06000search
 
 		$pageoutput = array();
 		$showButton = false;
-		$searchAll = jr_gettext('_JOMRES_SEARCH_ALL', '_JOMRES_SEARCH_ALL', false, false);
+		$searchAll = jr_gettext('_CASTOR_SEARCH_ALL', '_CASTOR_SEARCH_ALL', false, false);
 
 		jr_import('jomSearch');
 
@@ -176,18 +176,18 @@ class j06000search
 		$searchOptions = $sch->searchOptions;
 
 		if (isset($componentArgs['template_file'])) {
-			$sch->templateFile = $componentArgs['template_file']; // Send a custom filename which is stored in the theme/com_jomres/html directory
+			$sch->templateFile = $componentArgs['template_file']; // Send a custom filename which is stored in the theme/com_castor/html directory
 		}
 
 
-		$h = '<input type="hidden" name="calledByModule" value="'.$sch->calledByModule.'"/><input type="hidden" name="Itemid" value="'.get_showtime('jomresItemid').'"/>';
+		$h = '<input type="hidden" name="calledByModule" value="'.$sch->calledByModule.'"/><input type="hidden" name="Itemid" value="'.get_showtime('castorItemid').'"/>';
 
 		if (this_cms_is_wordpress()) {
-			$h = '<input type="hidden" name="calledByModule" value="'.$sch->calledByModule.'"/><input type="hidden" name="page_id" value="'.get_showtime('jomresItemid').'"/>';
+			$h = '<input type="hidden" name="calledByModule" value="'.$sch->calledByModule.'"/><input type="hidden" name="page_id" value="'.get_showtime('castorItemid').'"/>';
 		}
 
 		$output[ 'HIDDEN' ] = $h;
-		$jomresSearchFormname = $sch->formname;
+		$castorSearchFormname = $sch->formname;
 		$searchOutput = $sch->searchOutput;
 		$featurecols = $sch->featurecols;
 
@@ -195,7 +195,7 @@ class j06000search
 
 		$unwanted = array('%', "'", '"');
 
-		$propertyname = jomresGetParam($_REQUEST, 'propertyname', '');
+		$propertyname = castorGetParam($_REQUEST, 'propertyname', '');
 
 		if ($propertyname != '') {
 			if ($propertyname == $searchAll) {
@@ -207,7 +207,7 @@ class j06000search
 			}
 		}
 
-		$country = jomresGetParam($_REQUEST, 'country', '');
+		$country = castorGetParam($_REQUEST, 'country', '');
 
 		if ($country != '') {
 			if ($country == $searchAll) {
@@ -219,7 +219,7 @@ class j06000search
 			}
 		}
 
-		$region = jomresGetParam($_REQUEST, 'region', '');
+		$region = castorGetParam($_REQUEST, 'region', '');
 
 		if ($region != '') {
 			if ($region == $searchAll) {
@@ -232,7 +232,7 @@ class j06000search
 			}
 		}
 
-		$town = jomresGetParam($_REQUEST, 'town', '');
+		$town = castorGetParam($_REQUEST, 'town', '');
 
 		if ($town != '') {
 			if ($town == $searchAll) {
@@ -246,7 +246,7 @@ class j06000search
 
 		if (!empty($_REQUEST[ 'description' ])) {
 			if ($_REQUEST[ 'description' ] != '') {
-				$sch->filter[ 'description' ] = jomresGetParam($_REQUEST, 'description', '');
+				$sch->filter[ 'description' ] = castorGetParam($_REQUEST, 'description', '');
 				$sch->filter[ 'description' ] = str_replace($unwanted, '', $sch->filter[ 'description' ]);
 			}
 		}
@@ -255,7 +255,7 @@ class j06000search
 			if ($_REQUEST[ 'feature_uids' ] == $searchAll) {
 				$sch->filter[ 'feature_uids' ] = '%';
 			} else {
-				$sch->filter[ 'feature_uids' ] = jomresGetParam($_REQUEST, 'feature_uids', array());
+				$sch->filter[ 'feature_uids' ] = castorGetParam($_REQUEST, 'feature_uids', array());
 			}
 		}
 
@@ -263,7 +263,7 @@ class j06000search
 			if ($_REQUEST[ 'room_type' ] == $searchAll) {
 				$sch->filter[ 'room_type' ] = '%';
 			} else {
-				$sch->filter[ 'room_type' ] = (int) jomresGetParam($_REQUEST, 'room_type', 0);
+				$sch->filter[ 'room_type' ] = (int) castorGetParam($_REQUEST, 'room_type', 0);
 			}
 		}
 
@@ -271,12 +271,12 @@ class j06000search
 			if ($_REQUEST[ 'ptype' ] == $searchAll) {
 				$sch->filter[ 'ptype' ] = '%';
 			} else {
-				$sch->filter[ 'ptype' ] = (int) jomresGetParam($_REQUEST, 'ptype', '');
+				$sch->filter[ 'ptype' ] = (int) castorGetParam($_REQUEST, 'ptype', '');
 			}
 		}
 
 		if (!empty($_REQUEST[ 'cat_id' ])) {
-			$cat_id = jomresGetParam($_REQUEST, 'cat_id', 0);
+			$cat_id = castorGetParam($_REQUEST, 'cat_id', 0);
 
 			if ($cat_id == 0) {
 				$sch->filter[ 'cat_id' ] = '%';
@@ -290,15 +290,15 @@ class j06000search
 			if ($_REQUEST[ 'priceranges' ] == $searchAll) {
 				$sch->filter[ 'priceranges' ] = '%';
 			} else {
-				$ranges = jomresGetParam($_REQUEST, 'priceranges', '');
+				$ranges = castorGetParam($_REQUEST, 'priceranges', '');
 				$rangeArr = explode('-', $ranges);
 				$sch->filter[ 'priceranges' ] = array('from' => (int) $rangeArr[ 0 ], 'to' => (int) $rangeArr[ 1 ], 'raw' => $ranges);
 			}
 		}
 
 		if (isset($_REQUEST[ 'pricerange_value_from' ]) && isset($_REQUEST[ 'pricerange_value_to' ] )) {
-			$rangefrom = jomresGetParam($_REQUEST, 'pricerange_value_from', 0);
-			$rangeto = jomresGetParam($_REQUEST, 'pricerange_value_to', 0);
+			$rangefrom = castorGetParam($_REQUEST, 'pricerange_value_from', 0);
+			$rangeto = castorGetParam($_REQUEST, 'pricerange_value_to', 0);
 			$sch->filter[ 'priceranges' ] = array('from' => (int)$rangefrom , 'to' => (int)$rangeto, 'raw' => [] );
 		}
 
@@ -307,7 +307,7 @@ class j06000search
 			if ($_REQUEST[ 'guestnumber' ] == $searchAll) {
 				$sch->filter[ 'guestnumber' ] = '%';
 			} else {
-				$sch->filter[ 'guestnumber' ] = (int) jomresGetParam($_REQUEST, 'guestnumber', '');
+				$sch->filter[ 'guestnumber' ] = (int) castorGetParam($_REQUEST, 'guestnumber', '');
 			}
 		}
 
@@ -315,7 +315,7 @@ class j06000search
 			if ($_REQUEST[ 'sleeps_adults' ] == $searchAll) {
 				$sch->filter[ 'sleeps_adults' ] = '%';
 			} else {
-				$sch->filter[ 'sleeps_adults' ] = (int) jomresGetParam($_REQUEST, 'sleeps_adults', '');
+				$sch->filter[ 'sleeps_adults' ] = (int) castorGetParam($_REQUEST, 'sleeps_adults', '');
 			}
 		}
 
@@ -323,7 +323,7 @@ class j06000search
 			if ($_REQUEST[ 'sleeps_children' ] == $searchAll) {
 				$sch->filter[ 'sleeps_children' ] = '%';
 			} else {
-				$sch->filter[ 'sleeps_children' ] = (int) jomresGetParam($_REQUEST, 'sleeps_children', '');
+				$sch->filter[ 'sleeps_children' ] = (int) castorGetParam($_REQUEST, 'sleeps_children', '');
 			}
 		}
 
@@ -336,12 +336,12 @@ class j06000search
 					$sch->filter[ 'stars' ][]  = (int) $v;
 				}
 
-				//$sch->filter[ 'stars' ] = (int) jomresGetParam($_REQUEST, 'stars', '');
+				//$sch->filter[ 'stars' ] = (int) castorGetParam($_REQUEST, 'stars', '');
 			}
 		}
 
-		if ($option == 'com_jomres' && ($propertyname != '' || $country != '' || $region != '' || $town != '')) {
-			jomres_cmsspecific_setmetadata('title', $metaTitle);
+		if ($option == 'com_castor' && ($propertyname != '' || $country != '' || $region != '' || $town != '')) {
+			castor_cmsspecific_setmetadata('title', $metaTitle);
 		}
 
 		if (!empty($_REQUEST[ 'arrivalDate' ]) && in_array('availability', $sch->searchOptions)) {
@@ -352,40 +352,40 @@ class j06000search
 		}
 
 
-		$output[ 'JOMRES_SEARCH_GEO_COUNTRYSEARCH' ] = jr_gettext('_JOMRES_SEARCH_GEO_COUNTRYSEARCH', '_JOMRES_SEARCH_GEO_COUNTRYSEARCH', false);
-		$output[ 'JOMRES_SEARCH_GEO_REGIONSEARCH' ] = jr_gettext('_JOMRES_SEARCH_GEO_REGIONSEARCH', '_JOMRES_SEARCH_GEO_REGIONSEARCH', false);
-		$output[ 'JOMRES_SEARCH_GEO_TOWNSEARCH' ] = jr_gettext('_JOMRES_SEARCH_GEO_TOWNSEARCH', '_JOMRES_SEARCH_GEO_TOWNSEARCH', false);
-		$output[ 'JOMRES_SEARCH_DESCRIPTION_INFO' ] = jr_gettext('_JOMRES_SEARCH_DESCRIPTION_INFO', '_JOMRES_SEARCH_DESCRIPTION_INFO', false);
-		$output[ 'JOMRES_SEARCH_DESCRIPTION_LABEL' ] = jr_gettext('_JOMRES_SEARCH_DESCRIPTION_LABEL', '_JOMRES_SEARCH_DESCRIPTION_LABEL', false);
-		$output[ 'JOMRES_SEARCH_FEATURE_INFO' ] = jr_gettext('_JOMRES_SEARCH_FEATURE_INFO', '_JOMRES_SEARCH_FEATURE_INFO', false);
-		$output[ 'JOMRES_SEARCH_RTYPES' ] = jr_gettext('_JOMRES_SEARCH_RTYPES', '_JOMRES_SEARCH_RTYPES', false);
-		$output[ 'JOMRES_SEARCH_AVL_INFO' ] = jr_gettext('_JOMRES_SEARCH_AVL_INFO', '_JOMRES_SEARCH_AVL_INFO', false);
-		$output[ 'HARRIVALDATE' ] = jr_gettext('_JOMRES_COM_MR_VIEWBOOKINGS_ARRIVAL', '_JOMRES_COM_MR_VIEWBOOKINGS_ARRIVAL', false);
-		$output[ 'HDEPARTUREDATE' ] = jr_gettext('_JOMRES_COM_MR_VIEWBOOKINGS_DEPARTURE', '_JOMRES_COM_MR_VIEWBOOKINGS_DEPARTURE', false);
-		$output[ 'JOMRES_SEARCH_PTYPES' ] = jr_gettext('_JOMRES_SEARCH_PTYPES', '_JOMRES_SEARCH_PTYPES', false);
-		$output[ 'JOMRES_SEARCH_CATEGORY' ] = jr_gettext('_JOMRES_HCATEGORY', '_JOMRES_HCATEGORY', false);
-		$output[ 'JOMRES_SEARCH_PRICERANGES' ] = jr_gettext('_JOMRES_SEARCH_PRICERANGES', '_JOMRES_SEARCH_PRICERANGES', false);
-		$output[ 'HGUESTNUMBER' ] = jr_gettext('_JOMRES_SEARCH_GUESTNUMBER', '_JOMRES_SEARCH_GUESTNUMBER', false);
-		$output[ 'HSTARS' ] = jr_gettext('_JOMRES_SEARCH_STARS', '_JOMRES_SEARCH_STARS', false);
+		$output[ 'CASTOR_SEARCH_GEO_COUNTRYSEARCH' ] = jr_gettext('_CASTOR_SEARCH_GEO_COUNTRYSEARCH', '_CASTOR_SEARCH_GEO_COUNTRYSEARCH', false);
+		$output[ 'CASTOR_SEARCH_GEO_REGIONSEARCH' ] = jr_gettext('_CASTOR_SEARCH_GEO_REGIONSEARCH', '_CASTOR_SEARCH_GEO_REGIONSEARCH', false);
+		$output[ 'CASTOR_SEARCH_GEO_TOWNSEARCH' ] = jr_gettext('_CASTOR_SEARCH_GEO_TOWNSEARCH', '_CASTOR_SEARCH_GEO_TOWNSEARCH', false);
+		$output[ 'CASTOR_SEARCH_DESCRIPTION_INFO' ] = jr_gettext('_CASTOR_SEARCH_DESCRIPTION_INFO', '_CASTOR_SEARCH_DESCRIPTION_INFO', false);
+		$output[ 'CASTOR_SEARCH_DESCRIPTION_LABEL' ] = jr_gettext('_CASTOR_SEARCH_DESCRIPTION_LABEL', '_CASTOR_SEARCH_DESCRIPTION_LABEL', false);
+		$output[ 'CASTOR_SEARCH_FEATURE_INFO' ] = jr_gettext('_CASTOR_SEARCH_FEATURE_INFO', '_CASTOR_SEARCH_FEATURE_INFO', false);
+		$output[ 'CASTOR_SEARCH_RTYPES' ] = jr_gettext('_CASTOR_SEARCH_RTYPES', '_CASTOR_SEARCH_RTYPES', false);
+		$output[ 'CASTOR_SEARCH_AVL_INFO' ] = jr_gettext('_CASTOR_SEARCH_AVL_INFO', '_CASTOR_SEARCH_AVL_INFO', false);
+		$output[ 'HARRIVALDATE' ] = jr_gettext('_CASTOR_COM_MR_VIEWBOOKINGS_ARRIVAL', '_CASTOR_COM_MR_VIEWBOOKINGS_ARRIVAL', false);
+		$output[ 'HDEPARTUREDATE' ] = jr_gettext('_CASTOR_COM_MR_VIEWBOOKINGS_DEPARTURE', '_CASTOR_COM_MR_VIEWBOOKINGS_DEPARTURE', false);
+		$output[ 'CASTOR_SEARCH_PTYPES' ] = jr_gettext('_CASTOR_SEARCH_PTYPES', '_CASTOR_SEARCH_PTYPES', false);
+		$output[ 'CASTOR_SEARCH_CATEGORY' ] = jr_gettext('_CASTOR_HCATEGORY', '_CASTOR_HCATEGORY', false);
+		$output[ 'CASTOR_SEARCH_PRICERANGES' ] = jr_gettext('_CASTOR_SEARCH_PRICERANGES', '_CASTOR_SEARCH_PRICERANGES', false);
+		$output[ 'HGUESTNUMBER' ] = jr_gettext('_CASTOR_SEARCH_GUESTNUMBER', '_CASTOR_SEARCH_GUESTNUMBER', false);
+		$output[ 'HSTARS' ] = jr_gettext('_CASTOR_SEARCH_STARS', '_CASTOR_SEARCH_STARS', false);
 		$output[ '_JRPORTAL_PROPERTIES_PROPERTYNAME' ] = jr_gettext('_JRPORTAL_PROPERTIES_PROPERTYNAME', '_JRPORTAL_PROPERTIES_PROPERTYNAME', false);
-		$output[ '_JOMRES_PROPERTY_HCATEGORIES' ] = jr_gettext('_JOMRES_PROPERTY_HCATEGORIES', '_JOMRES_PROPERTY_HCATEGORIES', false);
-		$output[ '_JOMRES_REVIEWS_RATING_2' ] = jr_gettext('_JOMRES_REVIEWS_RATING_2', '_JOMRES_REVIEWS_RATING_2', false);
-		$output[ '_JOMRES_COM_A_RESET' ] = jr_gettext('_JOMRES_COM_A_RESET', '_JOMRES_COM_A_RESET', false);
-		$output[ 'JOMRES_COM_A_ACCOMMODATES' ] = jr_gettext('JOMRES_COM_A_ACCOMMODATES', 'JOMRES_COM_A_ACCOMMODATES', false);
-		$output[ '_JOMRES_SEARCH_FORM_ADULTS' ] = jr_gettext('_JOMRES_SEARCH_FORM_ADULTS', '_JOMRES_SEARCH_FORM_ADULTS', false);
-		$output[ '_JOMRES_SEARCH_FORM_CHILDREN' ] = jr_gettext('_JOMRES_SEARCH_FORM_CHILDREN', '_JOMRES_SEARCH_FORM_CHILDREN', false);
-		$output[ '_JOMRES_SEARCH_FORM_WHERE_TO_GO' ] = jr_gettext('_JOMRES_SEARCH_FORM_WHERE_TO_GO', '_JOMRES_SEARCH_FORM_WHERE_TO_GO', false);
+		$output[ '_CASTOR_PROPERTY_HCATEGORIES' ] = jr_gettext('_CASTOR_PROPERTY_HCATEGORIES', '_CASTOR_PROPERTY_HCATEGORIES', false);
+		$output[ '_CASTOR_REVIEWS_RATING_2' ] = jr_gettext('_CASTOR_REVIEWS_RATING_2', '_CASTOR_REVIEWS_RATING_2', false);
+		$output[ '_CASTOR_COM_A_RESET' ] = jr_gettext('_CASTOR_COM_A_RESET', '_CASTOR_COM_A_RESET', false);
+		$output[ 'CASTOR_COM_A_ACCOMMODATES' ] = jr_gettext('CASTOR_COM_A_ACCOMMODATES', 'CASTOR_COM_A_ACCOMMODATES', false);
+		$output[ '_CASTOR_SEARCH_FORM_ADULTS' ] = jr_gettext('_CASTOR_SEARCH_FORM_ADULTS', '_CASTOR_SEARCH_FORM_ADULTS', false);
+		$output[ '_CASTOR_SEARCH_FORM_CHILDREN' ] = jr_gettext('_CASTOR_SEARCH_FORM_CHILDREN', '_CASTOR_SEARCH_FORM_CHILDREN', false);
+		$output[ '_CASTOR_SEARCH_FORM_WHERE_TO_GO' ] = jr_gettext('_CASTOR_SEARCH_FORM_WHERE_TO_GO', '_CASTOR_SEARCH_FORM_WHERE_TO_GO', false);
 
 
 
 
-		$output[ 'SUBMITURL' ] = jomresURL(JOMRES_SITEPAGE_URL_NOSEF);
-		$output[ 'FORMNAME' ] = $jomresSearchFormname;
+		$output[ 'SUBMITURL' ] = castorURL(CASTOR_SITEPAGE_URL_NOSEF);
+		$output[ 'FORMNAME' ] = $castorSearchFormname;
 
 		$output[ 'SELECTCOMBO_HIDDENDROPDOWNS_TOWN' ] = '';
 
 		if (!$data_only) {
-			if (jomres_bootstrap_version() == '5') {
+			if (castor_bootstrap_version() == '5') {
 				$select_css_class = 'form-select';
 			} else {
 				$select_css_class = 'inputbox search_dropdown';
@@ -406,18 +406,18 @@ class j06000search
 
 				if ($searchOutput[ 'propertyname' ] == 'dropdown') {
 					foreach ($sch->prep[ 'propertyname' ] as $property) {
-						$propertyname[ ] = jomresHTML::makeOption(jomres_decode($property[ 'pn' ]), jomres_decode($property[ 'pn' ]));
+						$propertyname[ ] = castorHTML::makeOption(castor_decode($property[ 'pn' ]), castor_decode($property[ 'pn' ]));
 					}
-					$output[ 'propertyname' ] = jomresHTML::selectList($propertyname, 'propertyname', ' class="'.$select_css_class.'" ', 'value', 'text', $selectOption);
+					$output[ 'propertyname' ] = castorHTML::selectList($propertyname, 'propertyname', ' class="'.$select_css_class.'" ', 'value', 'text', $selectOption);
 					$showButton = true;
 				} else {
 					$r = '';
 					foreach ($sch->prep[ 'propertyname' ] as $property) {
 						// you need to use special chars here otherwise the url will not work for non latin searches
 						$l = htmlspecialchars(get_property_details_url($property[ 'puid' ], 'sefsafe'));
-						$link = jomresURL($l);
-						$link = jomresValidateUrl($link);
-						$r .= '<a href="'.$link.'">'.jomres_decode($property[ 'pn' ]).'</a>&nbsp;';
+						$link = castorURL($l);
+						$link = castorValidateUrl($link);
+						$r .= '<a href="'.$link.'">'.castor_decode($property[ 'pn' ]).'</a>&nbsp;';
 						if ($sch->cols == '1') {
 							$r .= '<br>';
 						}
@@ -442,18 +442,18 @@ class j06000search
 
 				if ($searchOutput[ 'country' ] == 'dropdown') {
 					foreach ($sch->prep[ 'country' ] as $country) {
-						$countryArray[ ] = jomresHTML::makeOption($country[ 'countrycode' ], jomres_decode($country[ 'countryname' ]));
+						$countryArray[ ] = castorHTML::makeOption($country[ 'countrycode' ], castor_decode($country[ 'countryname' ]));
 					}
 
-					$output[ 'country' ] = jomresHTML::selectList($countryArray, 'country', ' class="'.$select_css_class.'" placeholder="'.$output[ 'JOMRES_SEARCH_GEO_COUNTRYSEARCH' ].'"', 'value', 'text', $selectOption);
+					$output[ 'country' ] = castorHTML::selectList($countryArray, 'country', ' class="'.$select_css_class.'" placeholder="'.$output[ 'CASTOR_SEARCH_GEO_COUNTRYSEARCH' ].'"', 'value', 'text', $selectOption);
 					$showButton = true;
 				} else {
 					$r = '';
 					foreach ($sch->prep[ 'country' ] as $country) {
-						$l = htmlspecialchars(JOMRES_SITEPAGE_URL.'&calledByModule='.$calledByModule.'&country='.$country[ 'countrycode' ]);
-						$link = jomresURL($l);
-						$link = jomresValidateUrl($link);
-						$r .= '<a href="'.$link.'">'.jomres_decode($country[ 'countryname' ]).'</a>&nbsp;';
+						$l = htmlspecialchars(CASTOR_SITEPAGE_URL.'&calledByModule='.$calledByModule.'&country='.$country[ 'countrycode' ]);
+						$link = castorURL($l);
+						$link = castorValidateUrl($link);
+						$r .= '<a href="'.$link.'">'.castor_decode($country[ 'countryname' ]).'</a>&nbsp;';
 						if ($sch->cols == '1') {
 							$r .= '<br>';
 						}
@@ -477,31 +477,31 @@ class j06000search
 
 				if ($searchOutput[ 'region' ] == 'dropdown') {
 					foreach ($sch->prep[ 'region' ] as $region) {
-						$t = str_replace('&#39;', "'", $region[ 'region' ]); // This is important. php will not pass back, eg Sant&#39;Antimo, it will only pass back Sant, therefore we need to convert the &#39; to a ' to be shown in the url. When jomresGetParam runs it'll convert the ' back to &#39; and the search will run successfully.
+						$t = str_replace('&#39;', "'", $region[ 'region' ]); // This is important. php will not pass back, eg Sant&#39;Antimo, it will only pass back Sant, therefore we need to convert the &#39; to a ' to be shown in the url. When castorGetParam runs it'll convert the ' back to &#39; and the search will run successfully.
 
 						if ($region['region'] == $searchAll || $t == '') {
 							$region_id = $sch->searchAll;
 							$region_name = $searchAll;
 						} else {
-							$region_id = find_region_id(jomres_cmsspecific_stringURLSafe($t));
+							$region_id = find_region_id(castor_cmsspecific_stringURLSafe($t));
 							$region_name = find_region_name($t);
 						}
 
-						$regionArray[ ] = jomresHTML::makeOption($region_id, jomres_decode($region_name));
+						$regionArray[ ] = castorHTML::makeOption($region_id, castor_decode($region_name));
 					}
-					$output[ 'region' ] = jomresHTML::selectList($regionArray, 'region', ' class="'.$select_css_class.'" placeholder="'.$output[ 'JOMRES_SEARCH_GEO_REGIONSEARCH' ].'"', 'value', 'text', $selectOption);
+					$output[ 'region' ] = castorHTML::selectList($regionArray, 'region', ' class="'.$select_css_class.'" placeholder="'.$output[ 'CASTOR_SEARCH_GEO_REGIONSEARCH' ].'"', 'value', 'text', $selectOption);
 
 					$showButton = true;
 				} else {
 					$r = '';
 					foreach ($sch->prep[ 'region' ] as $region) {
-						$t = str_replace('&#39;', "'", $region[ 'region' ]); // This is important. php will not pass back, eg Sant&#39;Antimo, it will only pass back Sant, therefore we need to convert the &#39; to a ' to be shown in the url. When jomresGetParam runs it'll convert the ' back to &#39; and the search will run successfully.
-						$region_id = find_region_id(jomres_cmsspecific_stringURLSafe($t));
+						$t = str_replace('&#39;', "'", $region[ 'region' ]); // This is important. php will not pass back, eg Sant&#39;Antimo, it will only pass back Sant, therefore we need to convert the &#39; to a ' to be shown in the url. When castorGetParam runs it'll convert the ' back to &#39; and the search will run successfully.
+						$region_id = find_region_id(castor_cmsspecific_stringURLSafe($t));
 						$region_name = find_region_name($t);
-						$l = htmlspecialchars(JOMRES_SITEPAGE_URL.'&calledByModule='.$calledByModule.'&region='.$region_id);
-						$link = jomresURL($l);
-						$link = jomresValidateUrl($link);
-						$r .= '<a href="'.$link.'">'.jomres_decode($region_name).'</a>&nbsp;';
+						$l = htmlspecialchars(CASTOR_SITEPAGE_URL.'&calledByModule='.$calledByModule.'&region='.$region_id);
+						$link = castorURL($l);
+						$link = castorValidateUrl($link);
+						$r .= '<a href="'.$link.'">'.castor_decode($region_name).'</a>&nbsp;';
 						if ($sch->cols == '1') {
 							$r .= '<br>';
 						}
@@ -525,19 +525,19 @@ class j06000search
 				}
 				if ($searchOutput[ 'town' ] == 'dropdown') {
 					foreach ($ta as $town) {
-						$t = str_replace('&#39;', "'", $town[ 'town' ]); // This is important. php will not pass back, eg Sant&#39;Antimo, it will only pass back Sant, therefore we need to convert the &#39; to a ' to be shown in the url. When jomresGetParam runs it'll convert the ' back to &#39; and the search will run successfully.
-						$townArray[ ] = jomresHTML::makeOption($town[ 'town' ], jomres_decode($t));
+						$t = str_replace('&#39;', "'", $town[ 'town' ]); // This is important. php will not pass back, eg Sant&#39;Antimo, it will only pass back Sant, therefore we need to convert the &#39; to a ' to be shown in the url. When castorGetParam runs it'll convert the ' back to &#39; and the search will run successfully.
+						$townArray[ ] = castorHTML::makeOption($town[ 'town' ], castor_decode($t));
 					}
-					$output[ 'town' ] = jomresHTML::selectList($townArray, 'town', ' class="'.$select_css_class.'" placeholder="'.$output[ 'JOMRES_SEARCH_GEO_TOWNSEARCH' ].'"', 'value', 'text', $selectOption);
+					$output[ 'town' ] = castorHTML::selectList($townArray, 'town', ' class="'.$select_css_class.'" placeholder="'.$output[ 'CASTOR_SEARCH_GEO_TOWNSEARCH' ].'"', 'value', 'text', $selectOption);
 					$showButton = true;
 				} else {
 					$r = '';
 					foreach ($ta as $town) {
-						$t = str_replace('&#39;', "'", $town[ 'town' ]); // This is important. php will not pass back, eg Sant&#39;Antimo, it will only pass back Sant, therefore we need to convert the &#39; to a ' to be shown in the url. When jomresGetParam runs it'll convert the ' back to &#39; and the search will run successfully.
-						$l = htmlspecialchars(JOMRES_SITEPAGE_URL.'&calledByModule='.$calledByModule.'&town='.$t);
-						$link = jomresURL($l);
-						$link = jomresValidateUrl($link);
-						$r .= '<a href="'.$link.'">'.jomres_decode($town[ 'town' ]).'</a>&nbsp;';
+						$t = str_replace('&#39;', "'", $town[ 'town' ]); // This is important. php will not pass back, eg Sant&#39;Antimo, it will only pass back Sant, therefore we need to convert the &#39; to a ' to be shown in the url. When castorGetParam runs it'll convert the ' back to &#39; and the search will run successfully.
+						$l = htmlspecialchars(CASTOR_SITEPAGE_URL.'&calledByModule='.$calledByModule.'&town='.$t);
+						$link = castorURL($l);
+						$link = castorValidateUrl($link);
+						$r .= '<a href="'.$link.'">'.castor_decode($town[ 'town' ]).'</a>&nbsp;';
 						if ($sch->cols == '1') {
 							$r .= '<br>';
 						}
@@ -551,12 +551,12 @@ class j06000search
 		// -------------------------------------------------------------------------------------------------------------------------------------------
 		if ($showSearchOptions) {
 			if (empty($sch->filter[ 'description' ])) {
-				$selectOption = $output[ 'JOMRES_SEARCH_DESCRIPTION_LABEL' ];
+				$selectOption = $output[ 'CASTOR_SEARCH_DESCRIPTION_LABEL' ];
 			} else {
 				$selectOption = $sch->filter[ 'description' ];
 			}
 			$showButton = true;
-			$output[ 'DESCRIPTION' ] = '<input class="form-control" type="text" name="description" value="'.$sch->filter[ 'description' ].'"  onfocus="if (this.value ==\''.$output[ 'JOMRES_SEARCH_DESCRIPTION_LABEL' ].'\') {this.value = \'\'}" />';
+			$output[ 'DESCRIPTION' ] = '<input class="form-control" type="text" name="description" value="'.$sch->filter[ 'description' ].'"  onfocus="if (this.value ==\''.$output[ 'CASTOR_SEARCH_DESCRIPTION_LABEL' ].'\') {this.value = \'\'}" />';
 		}
 		// -------------------------------------------------------------------------------------------------------------------------------------------
 		if ($showSearchOptions) {
@@ -569,10 +569,10 @@ class j06000search
 				}
 				if ($searchOutput[ 'feature_uids' ] == 'dropdown') {
 					foreach ($sch->prep[ 'features' ] as $feature) {
-						$feature_abbv = jr_gettext('_JOMRES_CUSTOMTEXT_FEATURES_ABBV'.(int) $feature[ 'id' ], jomres_decode($feature[ 'title' ]), false, false);
-						$featureArray[ ] = jomresHTML::makeOption($feature[ 'id' ], jomres_decode($feature_abbv));
+						$feature_abbv = jr_gettext('_CASTOR_CUSTOMTEXT_FEATURES_ABBV'.(int) $feature[ 'id' ], castor_decode($feature[ 'title' ]), false, false);
+						$featureArray[ ] = castorHTML::makeOption($feature[ 'id' ], castor_decode($feature_abbv));
 					}
-					$output[ 'feature' ] = jomresHTML::selectList($featureArray, 'feature_uids[]', ' class="'.$select_css_class.'" placeholder="'.$output[ 'JOMRES_SEARCH_FEATURE_INFO' ].'"', 'value', 'text', $selectOption);
+					$output[ 'feature' ] = castorHTML::selectList($featureArray, 'feature_uids[]', ' class="'.$select_css_class.'" placeholder="'.$output[ 'CASTOR_SEARCH_FEATURE_INFO' ].'"', 'value', 'text', $selectOption);
 				} else { // Show the features as javascript popup
 					$r = '';
 					$counter = 0;
@@ -587,10 +587,10 @@ class j06000search
 							}
 						}
 
-						$feature_abbv = jr_gettext('_JOMRES_CUSTOMTEXT_FEATURES_ABBV'.(int) $feature[ 'id' ], jomres_decode($feature[ 'title' ]), false, false);
-						$feature_desc = jr_gettext('_JOMRES_CUSTOMTEXT_FEATURES_DESC'.(int) $feature[ 'id' ], jomres_decode($feature[ 'description' ]), false, false);
+						$feature_abbv = jr_gettext('_CASTOR_CUSTOMTEXT_FEATURES_ABBV'.(int) $feature[ 'id' ], castor_decode($feature[ 'title' ]), false, false);
+						$feature_desc = jr_gettext('_CASTOR_CUSTOMTEXT_FEATURES_DESC'.(int) $feature[ 'id' ], castor_decode($feature[ 'description' ]), false, false);
 
-						$tmp = jomres_makeTooltip($feature_abbv, $feature_abbv, $feature_desc, $feature[ 'image' ], '', 'property_feature', array());
+						$tmp = castor_makeTooltip($feature_abbv, $feature_abbv, $feature_desc, $feature[ 'image' ], '', 'property_feature', array());
 
 						$rows[ ] = $r;
 						$r .= '<div style="float : left;" >'.$tmp.'<input type="checkbox" name="feature_uids[]" value="'.$pid.'" '.$ischecked.' /></div>';
@@ -615,17 +615,17 @@ class j06000search
 				}
 				if ($searchOutput[ 'room_type' ] == 'dropdown') {
 					foreach ($sch->prep[ 'rtypes' ] as $rtype) {
-						$roomClassAbbv = jr_gettext('_JOMRES_CUSTOMTEXT_ROOMTYPES_ABBV'.(int) $rtype[ 'id' ], jomres_decode($rtype[ 'title' ]), false, false);
-						$rtypeArray[ ] = jomresHTML::makeOption($rtype[ 'id' ], $roomClassAbbv);
+						$roomClassAbbv = jr_gettext('_CASTOR_CUSTOMTEXT_ROOMTYPES_ABBV'.(int) $rtype[ 'id' ], castor_decode($rtype[ 'title' ]), false, false);
+						$rtypeArray[ ] = castorHTML::makeOption($rtype[ 'id' ], $roomClassAbbv);
 					}
-					$output[ 'room_type' ] = jomresHTML::selectList($rtypeArray, 'room_type', ' class="'.$select_css_class.'" placeholder="'.$output[ 'JOMRES_SEARCH_RTYPES' ].'"', 'value', 'text', $selectOption);
+					$output[ 'room_type' ] = castorHTML::selectList($rtypeArray, 'room_type', ' class="'.$select_css_class.'" placeholder="'.$output[ 'CASTOR_SEARCH_RTYPES' ].'"', 'value', 'text', $selectOption);
 					$showButton = true;
 				} else {
 					foreach ($sch->prep[ 'rtypes' ] as $room_type) {
-						$roomClassAbbv = jr_gettext('_JOMRES_CUSTOMTEXT_ROOMTYPES_ABBV'.(int) $room_type[ 'id' ], jomres_decode($room_type[ 'title' ]), false, false);
-						$l = htmlspecialchars(JOMRES_SITEPAGE_URL.'&calledByModule='.$calledByModule.'&room_type='.$room_type[ 'id' ]);
-						$link = jomresURL($l);
-						$link = jomresValidateUrl($link);
+						$roomClassAbbv = jr_gettext('_CASTOR_CUSTOMTEXT_ROOMTYPES_ABBV'.(int) $room_type[ 'id' ], castor_decode($room_type[ 'title' ]), false, false);
+						$l = htmlspecialchars(CASTOR_SITEPAGE_URL.'&calledByModule='.$calledByModule.'&room_type='.$room_type[ 'id' ]);
+						$link = castorURL($l);
+						$link = castorValidateUrl($link);
 						$r .= '<a href="'.$link.'">'.$roomClassAbbv.'</a>&nbsp;';
 						if ($sch->cols == '1') {
 							$r .= '<br>';
@@ -648,20 +648,20 @@ class j06000search
 				}
 				if ($searchOutput[ 'ptype' ] == 'dropdown') {
 					foreach ($sch->prep[ 'ptypes' ] as $ptype) {
-						$ptypeAbbv = jr_gettext('_JOMRES_CUSTOMTEXT_PROPERTYTYPE'.$ptype[ 'id' ], jomres_decode($ptype[ 'ptype' ]), false, false);
+						$ptypeAbbv = jr_gettext('_CASTOR_CUSTOMTEXT_PROPERTYTYPE'.$ptype[ 'id' ], castor_decode($ptype[ 'ptype' ]), false, false);
 
-						$ptypeArray[ ] = jomresHTML::makeOption($ptype[ 'id' ], $ptypeAbbv);
+						$ptypeArray[ ] = castorHTML::makeOption($ptype[ 'id' ], $ptypeAbbv);
 					}
-					$output[ 'ptype' ] = jomresHTML::selectList($ptypeArray, 'ptype', '  class="'.$select_css_class.'" placeholder="'.$output[ 'JOMRES_SEARCH_PTYPES' ].'"', 'value', 'text', $selectOption);
+					$output[ 'ptype' ] = castorHTML::selectList($ptypeArray, 'ptype', '  class="'.$select_css_class.'" placeholder="'.$output[ 'CASTOR_SEARCH_PTYPES' ].'"', 'value', 'text', $selectOption);
 					$showButton = true;
 				} else {
 					$r = '';
 					foreach ($sch->prep[ 'ptypes' ] as $ptype) {
-						$ptypeAbbv = jr_gettext('_JOMRES_CUSTOMTEXT_PROPERTYTYPE'.$ptype[ 'id' ], jomres_decode($ptype[ 'ptype' ]), true, true);
+						$ptypeAbbv = jr_gettext('_CASTOR_CUSTOMTEXT_PROPERTYTYPE'.$ptype[ 'id' ], castor_decode($ptype[ 'ptype' ]), true, true);
 						//echo $ptypeAbbv;
-						$l = htmlspecialchars(JOMRES_SITEPAGE_URL.'&calledByModule='.$calledByModule.'&ptype='.$ptype[ 'id' ]);
-						$link = jomresURL($l);
-						$link = jomresValidateUrl($link);
+						$l = htmlspecialchars(CASTOR_SITEPAGE_URL.'&calledByModule='.$calledByModule.'&ptype='.$ptype[ 'id' ]);
+						$link = castorURL($l);
+						$link = castorValidateUrl($link);
 						$r .= '<a href="'.$link.'">'.$ptypeAbbv.'</a>';
 						if ($sch->cols == '1') {
 							$r .= '<br>';
@@ -685,9 +685,9 @@ class j06000search
 				}
 
 				foreach ($sch->prep[ 'categories' ] as $c) {
-					$categoriesArray[ ] = jomresHTML::makeOption($c[ 'id' ], $c[ 'title' ]);
+					$categoriesArray[ ] = castorHTML::makeOption($c[ 'id' ], $c[ 'title' ]);
 				}
-				$output[ 'categories' ] = jomresHTML::selectList($categoriesArray, 'cat_id', '  class="'.$select_css_class.'" placeholder="'.$output[ '_JOMRES_PROPERTY_HCATEGORIES' ].'"', 'value', 'text', $selectOption);
+				$output[ 'categories' ] = castorHTML::selectList($categoriesArray, 'cat_id', '  class="'.$select_css_class.'" placeholder="'.$output[ '_CASTOR_PROPERTY_HCATEGORIES' ].'"', 'value', 'text', $selectOption);
 				$showButton = true;
 			} else {
 				$output[ 'categories' ] = 'EMPTY';
@@ -704,9 +704,9 @@ class j06000search
 					$selectOption = $sch->filter[ 'priceranges' ][ 'raw' ];
 				}
 				foreach ($sch->prep[ 'priceranges' ] as $priceranges) {
-					$rangeArray[ ] = jomresHTML::makeOption($priceranges, $priceranges);
+					$rangeArray[ ] = castorHTML::makeOption($priceranges, $priceranges);
 				}
-				$output[ 'PRICERANGES' ] = jomresHTML::selectList($rangeArray, 'priceranges', '  class="'.$select_css_class.'" ', 'value', 'text', $selectOption);
+				$output[ 'PRICERANGES' ] = castorHTML::selectList($rangeArray, 'priceranges', '  class="'.$select_css_class.'" ', 'value', 'text', $selectOption);
 				$showButton = true;
 			}
 		}
@@ -730,9 +730,9 @@ class j06000search
 					$selectOption = $sch->filter[ 'guestnumber' ];
 				}
 				foreach ($sch->prep[ 'guestnumber' ] as $guestnumber) {
-					$guestnumberArray[ ] = jomresHTML::makeOption($guestnumber[ 'id' ], $guestnumber[ 'guestnumber' ]);
+					$guestnumberArray[ ] = castorHTML::makeOption($guestnumber[ 'id' ], $guestnumber[ 'guestnumber' ]);
 				}
-				$output[ 'guestnumber' ] = jomresHTML::selectList($guestnumberArray, 'guestnumber', '  class="'.$select_css_class.'" ', 'value', 'text', $selectOption);
+				$output[ 'guestnumber' ] = castorHTML::selectList($guestnumberArray, 'guestnumber', '  class="'.$select_css_class.'" ', 'value', 'text', $selectOption);
 				$showButton = true;
 			} else {
 				$output[ 'guestnumber' ] = 'EMPTY';
@@ -766,8 +766,8 @@ class j06000search
 			$output[ 'sleeps_adults_selected' ] = $sleeps_adults_selected;
 			$output[ 'sleeps_children_selected' ] = $sleeps_children_selected;
 
-			$output[ 'sleeps_adults_dropdown' ] = jomresHTML::integerSelectList(0, $output[ 'highest_adults' ], 1, 'sleeps_adults', '', $sleeps_adults_selected);
-			$output[ 'sleeps_children_dropdown' ] = jomresHTML::integerSelectList(0, $output[ 'highest_children' ], 1, 'sleeps_children', '', $sleeps_children_selected);
+			$output[ 'sleeps_adults_dropdown' ] = castorHTML::integerSelectList(0, $output[ 'highest_adults' ], 1, 'sleeps_adults', '', $sleeps_adults_selected);
+			$output[ 'sleeps_children_dropdown' ] = castorHTML::integerSelectList(0, $output[ 'highest_children' ], 1, 'sleeps_children', '', $sleeps_children_selected);
 		}
 
 		// -------------------------------------------------------------------------------------------------------------------------------------------
@@ -782,9 +782,9 @@ class j06000search
 				}
 
 				foreach ($sch->prep[ 'stars' ] as $stars) {
-					$starsArray[ ] = jomresHTML::makeOption($stars[ 'id' ], $stars[ 'stars' ]);
+					$starsArray[ ] = castorHTML::makeOption($stars[ 'id' ], $stars[ 'stars' ]);
 				}
-				$output[ 'stars' ] = jomresHTML::selectList($starsArray, 'stars', '  class="'.$select_css_class.'" ', 'value', 'text', $selectOption);
+				$output[ 'stars' ] = castorHTML::selectList($starsArray, 'stars', '  class="'.$select_css_class.'" ', 'value', 'text', $selectOption);
 				$showButton = true;
 			} else {
 				$output[ 'stars' ] = 'EMPTY';
@@ -813,7 +813,7 @@ class j06000search
 						}
 					}
 					if (count($links) == 1) {
-						jomresRedirect(jomresURL($links[0]), $saveMessage);
+						castorRedirect(castorURL($links[0]), $saveMessage);
 					} else {
 						$sch->jomSearch_propertyname();
 					}
@@ -871,16 +871,16 @@ class j06000search
 			}
 		}
 		if ($showButton == true) {
-			$output[ 'SEARCHBLURB' ] = jr_gettext('_JOMRES_FRONT_MR_SEARCH_HERE', '_JOMRES_FRONT_MR_SEARCH_HERE');
-			$output[ 'HSEARCH' ] = jr_gettext('_JOMRES_SEARCH_BUTTON', '_JOMRES_SEARCH_BUTTON', false);
+			$output[ 'SEARCHBLURB' ] = jr_gettext('_CASTOR_FRONT_MR_SEARCH_HERE', '_CASTOR_FRONT_MR_SEARCH_HERE');
+			$output[ 'HSEARCH' ] = jr_gettext('_CASTOR_SEARCH_BUTTON', '_CASTOR_SEARCH_BUTTON', false);
 
 			if (!using_bootstrap()) {
-				$output[ 'THEBUTTON' ] = '<input type="submit" name="send" value="'.jr_gettext('_JOMRES_SEARCH_BUTTON', '_JOMRES_SEARCH_BUTTON', false).'" class="button" />';
+				$output[ 'THEBUTTON' ] = '<input type="submit" name="send" value="'.jr_gettext('_CASTOR_SEARCH_BUTTON', '_CASTOR_SEARCH_BUTTON', false).'" class="button" />';
 			} else {
 				if (isset($_REQUEST['search_widget'])) {
-					$output[ 'THEBUTTON' ] = '<button type="submit" class="btn btn-primary btn-search-form" name="send" />'.jr_gettext('_JOMRES_SEARCH_BUTTON', '_JOMRES_SEARCH_BUTTON', false).'</button>';
+					$output[ 'THEBUTTON' ] = '<button type="submit" class="btn btn-primary btn-search-form" name="send" />'.jr_gettext('_CASTOR_SEARCH_BUTTON', '_CASTOR_SEARCH_BUTTON', false).'</button>';
 				} else {
-					$output[ 'THEBUTTON' ] = '<input type="submit" class="btn btn-primary btn-search-form" name="send" value="'.jr_gettext('_JOMRES_SEARCH_BUTTON', '_JOMRES_SEARCH_BUTTON', false).'" />';
+					$output[ 'THEBUTTON' ] = '<input type="submit" class="btn btn-primary btn-search-form" name="send" value="'.jr_gettext('_CASTOR_SEARCH_BUTTON', '_CASTOR_SEARCH_BUTTON', false).'" />';
 				}
 			}
 		}
@@ -924,3 +924,4 @@ class j06000search
 		return $this->retVals;
 	}
 }
+

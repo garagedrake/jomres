@@ -1,7 +1,7 @@
-<patTemplate:tmpl name="pageoutput" unusedvars="strip">
+﻿<patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <script type="text/javascript">
 <!--
-jomresJquery(document).ready(function() {
+castorJquery(document).ready(function() {
 	make_datatable('list_micromanage_tariffs','{PAGETITLE}','{LIVESITE}');
 } );
 //-->
@@ -9,10 +9,10 @@ jomresJquery(document).ready(function() {
 
 <h2 class="page-header">{PAGETITLE}</h2>
 <div class="well">
-	{JOMRESTOOLBAR}
+	{CASTORTOOLBAR}
 </div>
 
-<p class="alert alert-success">{_JOMRES_MICROMANAGE_MULTIPLE_TARIFFS_LIST_PAGE}</p>
+<p class="alert alert-success">{_CASTOR_MICROMANAGE_MULTIPLE_TARIFFS_LIST_PAGE}</p>
 
 <table width="100%" id="list_micromanage_tariffs" class="table table-striped">
 	<thead>

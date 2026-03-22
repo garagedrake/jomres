@@ -1,4 +1,4 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput">
 	<script type="text/javascript">
         {BOOKEDDATES}
@@ -7,7 +7,7 @@
         var mininterval = {MININTERVAL};
         var rel_path = "{RELPATH}";
         var livesite = "{SUBMITURL}";
-        var ajaxurl = "{JOMRES_SITEPAGE_URL_AJAX}";
+        var ajaxurl = "{CASTOR_SITEPAGE_URL_AJAX}";
 
         var validation_firstname = {VALIDATION_FIRSTNAME};
         var validation_surname = {VALIDATION_SURNAME};
@@ -21,7 +21,7 @@
         var validation_email = {VALIDATION_EMAIL};
 
         var show_extras = {SHOWEXTRAS};
-        var rooms_list_enabled = {JOMRES_ROOMSLISTENABLED};
+        var rooms_list_enabled = {CASTOR_ROOMSLISTENABLED};
 
         var error_class = "alert alert-danger";
         var highlight_class = "alert alert-warning";
@@ -42,7 +42,7 @@
 
         document.addEventListener('DOMContentLoaded', function(){
             {MODAL}
-            jomresJquery.jheartbeat.set({
+            castorJquery.jheartbeat.set({
                 url: ajaxurl + "&task=handlereq&no_html=1&field=heartbeat&property_uid={PROPERTYUID}",
                 delay: 30000
             });
@@ -50,18 +50,18 @@
         }, false);
 
         function open_booking_form() {
-            jomresJquery("#booking_form").dialog("open");
+            castorJquery("#booking_form").dialog("open");
         }
         ;
 
-        jomresJquery(function(){
-            jomresJquery("#country").change(function(){
+        castorJquery(function(){
+            castorJquery("#country").change(function(){
                 populateDiv("guest_region_div" , '<div class="spinner-border text-info" role="status">\n' +
                     '  <span class="visually-hidden">Loading...</span>\n' +
                     '</div>');
-                var selectedValue = jomresJquery(this).find(":selected").val();
+                var selectedValue = castorJquery(this).find(":selected").val();
                 clause = "&task=get_region_dropdown_for_country_code&country="+selectedValue;
-                jomresJquery.get(live_site_ajax + clause, function (data) {
+                castorJquery.get(live_site_ajax + clause, function (data) {
                     populateDiv("guest_region_div",data);
                 });
             });
@@ -95,12 +95,12 @@
 									<div class="input-group">{DEPARTUREDATE}</div>
 								</div>
 							</div>
-							<pattemplate:tmpl name="calendar_modal" type="simpleCondition" requiredvars="_jomres_com_a_avlcal">
+							<pattemplate:tmpl name="calendar_modal" type="simpleCondition" requiredvars="_castor_com_a_avlcal">
 								<div class="col-lg-4">
 									<div class="form-group">
-										<label class="col-form-label" for="departureDate">{_JOMRES_FRONT_MR_SUBMITBUTTON_CHECKAVAILABILITY}</label>
+										<label class="col-form-label" for="departureDate">{_CASTOR_FRONT_MR_SUBMITBUTTON_CHECKAVAILABILITY}</label>
 										<div class="input-group">
-											<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#availability_calendar_model">{_JOMRES_COM_A_AVLCAL}</button>
+											<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#availability_calendar_model">{_CASTOR_COM_A_AVLCAL}</button>
 										</div>
 									</div>
 								</div>
@@ -252,7 +252,7 @@
 							<div class="card-body">
 								<p><span id="staydays"></span> {ACCOMMODATION_NIGHTS} <span id="roompernight"></span> {ACCOMMODATION_PERROOM}</p>
 								<p><span id="totalinparty"></span> {BILLING_TOTALINPARTY}</p>
-								<p><span id="discount" class="jomres_message">&#xA0;</span>
+								<p><span id="discount" class="castor_message">&#xA0;</span>
 								</p>
 								<div class="row">
 									<div class="col-9">{ROOM_TOTAL_EX_TAX}</div>
@@ -265,7 +265,7 @@
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-9">{JOMRES_CHILDREN_BOOKING_FORM_LABEL}</div>
+									<div class="col-9">{CASTOR_CHILDREN_BOOKING_FORM_LABEL}</div>
 									<div class="col-3">	<span id="child_price"></span>
 									</div>
 								</div>
@@ -280,12 +280,12 @@
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-9">{JOMRES_CITY_TAX_HEADING}</div>
+									<div class="col-9">{CASTOR_CITY_TAX_HEADING}</div>
 									<div class="col-3">	<span id="city_tax"></span>
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-9">{JOMRES_CLEANING_FEE_HEADING}</div>
+									<div class="col-9">{CASTOR_CLEANING_FEE_HEADING}</div>
 									<div class="col-3">	<span id="cleaning_fee"></span>
 									</div>
 								</div>
@@ -324,7 +324,7 @@
 									</div>
 								</div>
 								<div class="row">
-									<div class="col-9">{_JOMRES_BOOKINGORM_ROOMTOTAL_BALANCE}</div>
+									<div class="col-9">{_CASTOR_BOOKINGORM_ROOMTOTAL_BALANCE}</div>
 									<div class="col-3">	<span id="balance"></span>
 									</div>
 								</div>
@@ -343,10 +343,10 @@
 										<!--<label class="col-form-label" for="coupon">{COUPON_TITLE}</label>-->
 										<input class="form-control ignore" size="25" type="text" name="coupon"
 											   id="coupon" value="{COUPON_CODE}" placeholder="{COUPON_TITLE}">
-										<div id="coupon_response" class="jomres_message form-text"></div>
+										<div id="coupon_response" class="castor_message form-text"></div>
 									</div>
 								</div>
-								<div class="card-footer">	<a class="btn btn-secondary" href="javascript:void(0);" onclick="getResponse(&apos;coupon&apos;,jomresJquery(&apos;#coupon&apos;).val())">{COUPON_BUTTON}</a>
+								<div class="card-footer">	<a class="btn btn-secondary" href="javascript:void(0);" onclick="getResponse(&apos;coupon&apos;,castorJquery(&apos;#coupon&apos;).val())">{COUPON_BUTTON}</a>
 								</div>
 							</div>
 						</pattemplate:tmpl>
@@ -370,9 +370,9 @@
 												   step="0.01">
 										</div>
 									</div>
-									<div id="override_response" class="jomres_message"></div>
+									<div id="override_response" class="castor_message"></div>
 								</div>
-								<div class="card-footer">	<a href="javascript:void(0);" onclick="getResponse_override(&apos;override&apos;,jomresJquery(&apos;#override_room_total&apos;).val()+&apos;^&apos;+jomresJquery(&apos;#override_deposit&apos;).val())"
+								<div class="card-footer">	<a href="javascript:void(0);" onclick="getResponse_override(&apos;override&apos;,castorJquery(&apos;#override_room_total&apos;).val()+&apos;^&apos;+castorJquery(&apos;#override_deposit&apos;).val())"
 																class="btn btn-secondary">{_JOMCOMP_AMEND_OVERRIDE_SAVE}</a>
 								</div>
 							</div>
@@ -395,7 +395,7 @@
 		<div class="modal-dialog modal-xl">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">{_JOMRES_COM_A_AVLCAL}</h5>
+					<h5 class="modal-title">{_CASTOR_COM_A_AVLCAL}</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">

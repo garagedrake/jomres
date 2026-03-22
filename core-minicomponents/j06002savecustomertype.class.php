@@ -1,15 +1,15 @@
-<?php
+﻿<?php
 /**
-* Jomres CMS Agnostic Plugin
-* @author Woollyinwales IT <sales@jomres.net>
- *  @version Jomres 10.7.2
-* @package Jomres
+* Castor CMS Agnostic Plugin
+* @author Woollyinwales IT <sales@castor.net>
+ *  @version Castor 10.7.2
+* @package Castor
  * @copyright	2005-2023 Vince Wooll
-* Jomres (tm) PHP files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project.
+* Castor (tm) PHP files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project.
 **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('Direct Access to this file is not allowed.');
+defined('_CASTOR_INITCHECK') or die('Direct Access to this file is not allowed.');
 // ################################################################
 	#[AllowDynamicProperties]
 class j06002savecustomertype
@@ -17,7 +17,7 @@ class j06002savecustomertype
 	function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents =jomres_getSingleton('mcHandler');
+		$MiniComponents =castor_getSingleton('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable=false;
 			return;
@@ -28,14 +28,14 @@ class j06002savecustomertype
 		jr_import('jrportal_guest_types');
 		$jrportal_guest_types = new jrportal_guest_types();
 		
-		$jrportal_guest_types->id				= (int)jomresGetParam($_POST, 'typeid', 0);
-		$jrportal_guest_types->type				= jomresGetParam($_POST, 'type', "");
-		$jrportal_guest_types->notes			= jomresGetParam($_POST, 'notes', "");
-		$jrportal_guest_types->maximum			= (int) jomresGetParam($_POST, 'maximum', 0);
-		$jrportal_guest_types->is_percentage	= (int)jomresGetParam($_POST, 'is_percentage', 0);
-		$jrportal_guest_types->is_child			= (int)jomresGetParam($_POST, 'is_child', 0) ;
-		$jrportal_guest_types->posneg			= (int) jomresGetParam($_POST, 'posneg', 0);
-		$jrportal_guest_types->variance			= (float)jomresGetParam($_POST, 'variance', 0.0);
+		$jrportal_guest_types->id				= (int)castorGetParam($_POST, 'typeid', 0);
+		$jrportal_guest_types->type				= castorGetParam($_POST, 'type', "");
+		$jrportal_guest_types->notes			= castorGetParam($_POST, 'notes', "");
+		$jrportal_guest_types->maximum			= (int) castorGetParam($_POST, 'maximum', 0);
+		$jrportal_guest_types->is_percentage	= (int)castorGetParam($_POST, 'is_percentage', 0);
+		$jrportal_guest_types->is_child			= (int)castorGetParam($_POST, 'is_child', 0) ;
+		$jrportal_guest_types->posneg			= (int) castorGetParam($_POST, 'posneg', 0);
+		$jrportal_guest_types->variance			= (float)castorGetParam($_POST, 'variance', 0.0);
 		$jrportal_guest_types->property_uid		= $defaultProperty;
 		
 		if ($jrportal_guest_types->id > 0) {
@@ -51,7 +51,7 @@ class j06002savecustomertype
 		$webhook_notification->data->property_uid	   	=  $defaultProperty;
 		add_webhook_notification($webhook_notification);
 
-		jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL."&task=listcustomertypes"), jr_gettext('_JOMRES_COM_MR_CUSTOMERTYPE_UPDATED', '_JOMRES_COM_MR_CUSTOMERTYPE_UPDATED', false));
+		castorRedirect(castorURL(CASTOR_SITEPAGE_URL."&task=listcustomertypes"), jr_gettext('_CASTOR_COM_MR_CUSTOMERTYPE_UPDATED', '_CASTOR_COM_MR_CUSTOMERTYPE_UPDATED', false));
 	}
 
 	// This must be included in every Event/Mini-component
@@ -60,3 +60,4 @@ class j06002savecustomertype
 		return null;
 	}
 }
+

@@ -1,29 +1,29 @@
-<?php
+﻿<?php
 /**
  *
- *  @package Jomres\Core\REST_API
+ *  @package Castor\Core\REST_API
  * Handles REST API messages
  *
- * Uses Oauth2 and Flight libraries to handle authentication and routing respectively. REST API functionality is provided by API features which are Jomres plugins, this functionality hands off calls to those API features through the routes.php script. 
+ * Uses Oauth2 and Flight libraries to handle authentication and routing respectively. REST API functionality is provided by API features which are Castor plugins, this functionality hands off calls to those API features through the routes.php script. 
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
  *
  *
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  */
 
 // create a log channel
 define('TRANSACTION_ID', time());
 
-define('JOMRES_API_CMS_ROOT', dirname(dirname(dirname(__FILE__))));
-define('JOMRES_API_JOMRES_ROOT', dirname(dirname(__FILE__)));
-define('JOMRES_CORE_API_ABSPATH', JOMRES_API_CMS_ROOT.DIRECTORY_SEPARATOR.'jomres'.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'jomres'.DIRECTORY_SEPARATOR.'api'.DIRECTORY_SEPARATOR);
-if (!defined('_JOMRES_INITCHECK')) {
-	define('_JOMRES_INITCHECK', 1);
+define('CASTOR_API_CMS_ROOT', dirname(dirname(dirname(__FILE__))));
+define('CASTOR_API_CASTOR_ROOT', dirname(dirname(__FILE__)));
+define('CASTOR_CORE_API_ABSPATH', CASTOR_API_CMS_ROOT.DIRECTORY_SEPARATOR.'castor'.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'castor'.DIRECTORY_SEPARATOR.'api'.DIRECTORY_SEPARATOR);
+if (!defined('_CASTOR_INITCHECK')) {
+	define('_CASTOR_INITCHECK', 1);
 }
 
 if (isset($_SERVER['HTTP_ORIGIN'])) {
@@ -45,29 +45,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 			
 date_default_timezone_set('UTC');
-require JOMRES_API_CMS_ROOT.DIRECTORY_SEPARATOR.'jomres'.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'packages'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'autoload.php';
+require CASTOR_API_CMS_ROOT.DIRECTORY_SEPARATOR.'castor'.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'packages'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'autoload.php';
 
 require 'classes/logging.class.php';
 require 'oauth/inc_configs.php';
 
-require_once(JOMRES_API_JOMRES_ROOT.DIRECTORY_SEPARATOR.'configuration.php');
+require_once(CASTOR_API_CASTOR_ROOT.DIRECTORY_SEPARATOR.'configuration.php');
 
-if (is_dir(JOMRES_API_CMS_ROOT.DIRECTORY_SEPARATOR.'wp-content'.DIRECTORY_SEPARATOR.'themes')) {
-    $templates_dir = JOMRES_API_CMS_ROOT.DIRECTORY_SEPARATOR.'wp-content'.DIRECTORY_SEPARATOR.'themes';
+if (is_dir(CASTOR_API_CMS_ROOT.DIRECTORY_SEPARATOR.'wp-content'.DIRECTORY_SEPARATOR.'themes')) {
+    $templates_dir = CASTOR_API_CMS_ROOT.DIRECTORY_SEPARATOR.'wp-content'.DIRECTORY_SEPARATOR.'themes';
 } else {
-    $templates_dir = JOMRES_API_CMS_ROOT.DIRECTORY_SEPARATOR.'templates';
+    $templates_dir = CASTOR_API_CMS_ROOT.DIRECTORY_SEPARATOR.'templates';
 }
 
 // We will try to find the template override directory. Because we can't call the CMS (for performance reasons) we'll have to do this the hard way. Disadvantage is that the overriding developer must ensure that there's only one instance of $target_pattern in the entire site, otherwise we'll get the wrong path. That's why the similar function in load_custom_functions goes to great lengths to call the CMS whever possible.
 $rii = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($templates_dir));
 
-$target_pattern = '/html/com_jomres/';
+$target_pattern = '/html/com_castor/';
 
 foreach ($rii as $file) {
     if ($file->isDir()){
         $path = $file->getPathname();
         if (strstr($path, $target_pattern)) {
-            define('JOMRES_OVERRIDE_PATH',substr($path,0,-2));
+            define('CASTOR_OVERRIDE_PATH',substr($path,0,-2));
             break;
         }
     }
@@ -86,7 +86,7 @@ if ($jrConfig['development_production'] == 'development') {
 }
 
 // Currently disabled as not setup right now to test this.
-/* require_once(JOMRES_API_JOMRES_ROOT.DIRECTORY_SEPARATOR.'configuration.php');
+/* require_once(CASTOR_API_CASTOR_ROOT.DIRECTORY_SEPARATOR.'configuration.php');
 if (!isset($jrConfig['api_force_ssl']))
 	$jrConfig['api_force_ssl'] = true;
 else
@@ -165,8 +165,8 @@ if (!PRODUCTION) {
 	error_reporting(E_ALL);
 }
 
-if (!defined('_JOMRES_INITCHECK')) {
-	define('_JOMRES_INITCHECK', 1);
+if (!defined('_CASTOR_INITCHECK')) {
+	define('_CASTOR_INITCHECK', 1);
 }
 
 require 'classes/validate_scope.class.php';
@@ -210,19 +210,19 @@ require 'put_method_handling.php';
 	
 	/**
 	 * 
-	 * Let's fire up the database. The Jomres framework, even though it is optimised, still carries an overhead therefore the REST API functionality does not demand that the framework be loaded. This means that it can be super quick, however in most instances the framework is used because it's a massive time-saver.
+	 * Let's fire up the database. The Castor framework, even though it is optimised, still carries an overhead therefore the REST API functionality does not demand that the framework be loaded. This means that it can be super quick, however in most instances the framework is used because it's a massive time-saver.
 	 *
 	 */
 
 try {
-	$dsn = 'mysql:dbname='.JOMRES_API_DB_NAME.';host='.JOMRES_API_DB_HOST;
+	$dsn = 'mysql:dbname='.CASTOR_API_DB_NAME.';host='.CASTOR_API_DB_HOST;
 	Flight::register(
 		'db',
 		'PDO',
 		array(
 			$dsn,
-			JOMRES_API_DB_USERNAME,
-			JOMRES_API_DB_PASSWORD,
+			CASTOR_API_DB_USERNAME,
+			CASTOR_API_DB_PASSWORD,
 			array(
 				PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
 				PDO::ATTR_EMULATE_PREPARES => false,
@@ -241,7 +241,7 @@ try {
 	}
 	Flight::set('user_id', $token['user_id']);
 	Flight::set('scopes', explode(',', $token['scope']));
-	Flight::set('dbprefix', JOMRES_API_DB_DB_PREFIX);
+	Flight::set('dbprefix', CASTOR_API_DB_DB_PREFIX);
 	Flight::set('features_files', $features_files);
 
 	require 'custom_methods.php';
@@ -267,3 +267,4 @@ try {
 	$backtrace = debug_backtrace();
 	logging::log_message(json_encode($response), 'API', 'ERROR');
 }
+

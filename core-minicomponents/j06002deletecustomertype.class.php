@@ -1,17 +1,17 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('Direct Access to this file is not allowed.');
+defined('_CASTOR_INITCHECK') or die('Direct Access to this file is not allowed.');
 // ################################################################
 	#[AllowDynamicProperties]
 class j06002deletecustomertype
@@ -19,7 +19,7 @@ class j06002deletecustomertype
 	function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable=false;
 			return;
@@ -27,7 +27,7 @@ class j06002deletecustomertype
 		
 		$defaultProperty = (int)getDefaultProperty();
 		
-		$id = (int)jomresGetParam($_REQUEST, 'id', 0);
+		$id = (int)castorGetParam($_REQUEST, 'id', 0);
 		
 		jr_import('jrportal_guest_types');
 		$jrportal_guest_types = new jrportal_guest_types();
@@ -43,7 +43,7 @@ class j06002deletecustomertype
 		$webhook_notification->data->property_uid	   	= $defaultProperty;
 		add_webhook_notification($webhook_notification);
 
-		jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL."&task=listcustomertypes"), jr_gettext('_JOMRES_MR_AUDIT_DELETE_CUSTOMERTYPE', '_JOMRES_MR_AUDIT_DELETE_CUSTOMERTYPE', false));
+		castorRedirect(castorURL(CASTOR_SITEPAGE_URL."&task=listcustomertypes"), jr_gettext('_CASTOR_MR_AUDIT_DELETE_CUSTOMERTYPE', '_CASTOR_MR_AUDIT_DELETE_CUSTOMERTYPE', false));
 	}
 
 	// This must be included in every Event/Mini-component
@@ -52,3 +52,4 @@ class j06002deletecustomertype
 		return null;
 	}
 }
+

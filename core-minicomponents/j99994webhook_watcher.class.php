@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('Direct Access to this file is not allowed.');
+defined('_CASTOR_INITCHECK') or die('Direct Access to this file is not allowed.');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,7 +35,7 @@ class j99994webhook_watcher
 	 
 	function __construct()
 	{
-		$MiniComponents =jomres_getSingleton('mcHandler');
+		$MiniComponents =castor_getSingleton('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable=false;
 			return;
@@ -51,7 +51,7 @@ class j99994webhook_watcher
 			$webhook_messages = array_unique($webhook_messages, SORT_REGULAR); // Remove duplicate objects
 		}
 
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 
 		if (get_showtime('task') == 'save_new_property') {
 			// We can rely on the JRUser object
@@ -71,7 +71,7 @@ class j99994webhook_watcher
 
 			logging::log_message("Webhook watcher start.", 'Webhooks', 'DEBUG');
 
-			if ($property_uid == 0 && !jomres_cmsspecific_areweinadminarea() ) {
+			if ($property_uid == 0 && !castor_cmsspecific_areweinadminarea() ) {
 				logging::log_message("Webhook watcher. Property uid not found. Returning. ", 'Webhooks', 'DEBUG');
 				return;
 			}
@@ -116,12 +116,12 @@ class j99994webhook_watcher
 		}
 
 		if (!empty($all_webhooks) && !empty($webhook_messages)) {
-			jr_import('jomres_sanity_check');
-			$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+			jr_import('castor_sanity_check');
+			$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 			foreach ($webhook_messages as $webhook) {
 				// Clear the CMF api cache directory
 				if (isset($webhook->data->property_uid) && $webhook->data->property_uid > 0) {
-					$temp_path = JOMRES_TEMP_ABSPATH."cmf_rest_api".JRDS.(int)$webhook->data->property_uid;
+					$temp_path = CASTOR_TEMP_ABSPATH."cmf_rest_api".JRDS.(int)$webhook->data->property_uid;
 					if (is_dir($temp_path)) {
 						emptyDir($temp_path);
 					}
@@ -131,7 +131,7 @@ class j99994webhook_watcher
 					if (isset($webhook->data->property_uid) && (int)$webhook->data->property_uid > 0) {
 						$webhook->data->manager_id = $manager_id;
 
-						$query = "INSERT INTO `#__jomres_webhook_events` (
+						$query = "INSERT INTO `#__castor_webhook_events` (
 						`property_uid` ,
 						`user_performing_action` ,
 						`channel_data` ,
@@ -150,19 +150,19 @@ class j99994webhook_watcher
 						doInsertSql($query);
 
 						// Rerun the sanity check and unpublish a property if required
-						$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+						$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 						$jrConfig = $siteConfig->get();
 						if (isset($jrConfig['automatic_unpublish_incomplete_properties']) && $jrConfig['automatic_unpublish_incomplete_properties'] == "1") {
-							$jomres_sanity_check = new jomres_sanity_check(true, $webhook->data->property_uid);
-							$jomres_sanity_check->do_sanity_checks(true);
-							$jomres_properties = jomres_singleton_abstract::getInstance('jomres_properties');
-							$jomres_properties->propertys_uid = $webhook->data->property_uid;
+							$castor_sanity_check = new castor_sanity_check(true, $webhook->data->property_uid);
+							$castor_sanity_check->do_sanity_checks(true);
+							$castor_properties = castor_singleton_abstract::getInstance('castor_properties');
+							$castor_properties->propertys_uid = $webhook->data->property_uid;
 
-							if (!empty($jomres_sanity_check->warnings_stack)) {
-								$jomres_properties->unpublish_property();
-								$jomres_sanity_check->mark_as_incomplete();
+							if (!empty($castor_sanity_check->warnings_stack)) {
+								$castor_properties->unpublish_property();
+								$castor_sanity_check->mark_as_incomplete();
 								if (isset($jrConfig['force_reapproval_on_automatic_unpublish']) && $jrConfig['force_reapproval_on_automatic_unpublish'] == "1") {
-									$jomres_properties->unapprove_property();
+									$castor_properties->unapprove_property();
 								}
 							}
 						} // End sanity checking
@@ -191,10 +191,10 @@ class j99994webhook_watcher
 						$MiniComponents->specificEvent('07310', $watcher_authmethod, $webhook);
 					}
 					
-					jr_import('jomres_deferred_tasks');
-					$jomres_deferred_tasks = new jomres_deferred_tasks();
-					$jomres_deferred_tasks->construct_background_message("07320", $watcher_authmethod, serialize($webhook));
-					$jomres_deferred_tasks->dispatch_mesage();
+					jr_import('castor_deferred_tasks');
+					$castor_deferred_tasks = new castor_deferred_tasks();
+					$castor_deferred_tasks->construct_background_message("07320", $watcher_authmethod, serialize($webhook));
+					$castor_deferred_tasks->dispatch_mesage();
 				}
 			}
 		} else {
@@ -208,3 +208,4 @@ class j99994webhook_watcher
 		return null;
 	}
 }
+

@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,7 +36,7 @@ class j16000edit_country
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -46,33 +46,33 @@ class j16000edit_country
 		$output = array();
 		$pageoutput = array();
 
-		$id = intval(jomresGetParam($_REQUEST, 'id', 0));
-		$jomres_countries = jomres_singleton_abstract::getInstance('jomres_countries');
-		$country = $jomres_countries->get_country_by_id($id);
+		$id = intval(castorGetParam($_REQUEST, 'id', 0));
+		$castor_countries = castor_singleton_abstract::getInstance('castor_countries');
+		$country = $castor_countries->get_country_by_id($id);
 
-		$output[ '_JOMRES_EDIT_COUNTRY_TITLE' ] = jr_gettext('_JOMRES_EDIT_COUNTRY_TITLE', '_JOMRES_EDIT_COUNTRY_TITLE', false);
-		$output[ '_JOMRES_EDIT_COUNTRY_ID' ] = jr_gettext('_JOMRES_EDIT_COUNTRY_ID', '_JOMRES_EDIT_COUNTRY_ID', false);
-		$output[ '_JOMRES_EDIT_COUNTRY_COUNTRYCODE' ] = jr_gettext('_JOMRES_EDIT_COUNTRY_COUNTRYCODE', '_JOMRES_EDIT_COUNTRY_COUNTRYCODE', false);
-		$output[ '_JOMRES_EDIT_COUNTRY_COUNTRYNAME' ] = jr_gettext('_JOMRES_EDIT_COUNTRY_COUNTRYNAME', '_JOMRES_EDIT_COUNTRY_COUNTRYNAME', false);
+		$output[ '_CASTOR_EDIT_COUNTRY_TITLE' ] = jr_gettext('_CASTOR_EDIT_COUNTRY_TITLE', '_CASTOR_EDIT_COUNTRY_TITLE', false);
+		$output[ '_CASTOR_EDIT_COUNTRY_ID' ] = jr_gettext('_CASTOR_EDIT_COUNTRY_ID', '_CASTOR_EDIT_COUNTRY_ID', false);
+		$output[ '_CASTOR_EDIT_COUNTRY_COUNTRYCODE' ] = jr_gettext('_CASTOR_EDIT_COUNTRY_COUNTRYCODE', '_CASTOR_EDIT_COUNTRY_COUNTRYCODE', false);
+		$output[ '_CASTOR_EDIT_COUNTRY_COUNTRYNAME' ] = jr_gettext('_CASTOR_EDIT_COUNTRY_COUNTRYNAME', '_CASTOR_EDIT_COUNTRY_COUNTRYNAME', false);
 
 		$output[ 'ID' ] = $country[ 'id' ];
 		$output[ 'COUNTRYCODE' ] = $country[ 'countrycode' ];
 		$output[ 'COUNTRYNAME' ] = $country[ 'countryname' ];
 
-		$jrtbar = jomres_singleton_abstract::getInstance('jomres_toolbar');
+		$jrtbar = castor_singleton_abstract::getInstance('castor_toolbar');
 		$jrtb = $jrtbar->startTable();
 
-		$jrtb .= $jrtbar->toolbarItem('cancel', JOMRES_SITEPAGE_URL_ADMIN.'&task=list_countries', '');
+		$jrtb .= $jrtbar->toolbarItem('cancel', CASTOR_SITEPAGE_URL_ADMIN.'&task=list_countries', '');
 		$jrtb .= $jrtbar->toolbarItem('save', '', '', true, 'save_country');
 		if ($id > 0) {
-			$jrtb .= $jrtbar->toolbarItem('delete', JOMRES_SITEPAGE_URL_ADMIN.'&task=delete_country&no_html=1&id='.$id, '');
+			$jrtb .= $jrtbar->toolbarItem('delete', CASTOR_SITEPAGE_URL_ADMIN.'&task=delete_country&no_html=1&id='.$id, '');
 		}
 		$jrtb .= $jrtbar->endTable();
-		$output[ 'JOMRESTOOLBAR' ] = $jrtb;
+		$output[ 'CASTORTOOLBAR' ] = $jrtb;
 
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 		$tmpl->readTemplatesFromInput('edit_country.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->displayParsedTemplate();
@@ -84,3 +84,4 @@ class j16000edit_country
 		return null;
 	}
 }
+

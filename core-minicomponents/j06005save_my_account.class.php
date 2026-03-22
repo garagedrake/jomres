@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,22 +36,22 @@ class j06005save_my_account
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 		
-		$jomres_gdpr_optin_consent = new jomres_gdpr_optin_consent();
-		if (!$jomres_gdpr_optin_consent->user_consents_to_storage()) {
-			jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL.'&task=opted_out&jr_redirect_url='.getCurrentUrl()), '');
+		$castor_gdpr_optin_consent = new castor_gdpr_optin_consent();
+		if (!$castor_gdpr_optin_consent->user_consents_to_storage()) {
+			castorRedirect(castorURL(CASTOR_SITEPAGE_URL.'&task=opted_out&jr_redirect_url='.getCurrentUrl()), '');
 		}
 
-		jr_import('jomres_encryption');
-		$this->jomres_encryption = new jomres_encryption();
+		jr_import('castor_encryption');
+		$this->castor_encryption = new castor_encryption();
 		
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 
 		if ($thisJRUser->id == 0) {
 			return false;
@@ -59,35 +59,35 @@ class j06005save_my_account
 
 		$MiniComponents->triggerEvent('03700', [] ); // Optional
 
-		$user_details = jomres_cmsspecific_getCMS_users_frontend_userdetails_by_id($thisJRUser->id);
+		$user_details = castor_cmsspecific_getCMS_users_frontend_userdetails_by_id($thisJRUser->id);
 
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 
-		$firstname = $this->jomres_encryption->encrypt((string) jomresGetParam($_REQUEST, 'firstname', ''));
-		$surname = $this->jomres_encryption->encrypt((string) jomresGetParam($_REQUEST, 'surname', ''));
-		$house = $this->jomres_encryption->encrypt((string) jomresGetParam($_REQUEST, 'house', ''));
-		$street = $this->jomres_encryption->encrypt((string) jomresGetParam($_REQUEST, 'street', ''));
-		$town = $this->jomres_encryption->encrypt((string) jomresGetParam($_REQUEST, 'town', ''));
-		$region = $this->jomres_encryption->encrypt((string) jomresGetParam($_REQUEST, 'region', ''));
-		$country = $this->jomres_encryption->encrypt((string) jomresGetParam($_REQUEST, 'guest_country', ''));
-		$postcode = $this->jomres_encryption->encrypt((string) jomresGetParam($_REQUEST, 'postcode', ''));
-		$landline = $this->jomres_encryption->encrypt((string) jomresGetParam($_REQUEST, 'landline', ''));
-		$mobile = $this->jomres_encryption->encrypt((string) jomresGetParam($_REQUEST, 'mobile', ''));
-		$fax = $this->jomres_encryption->encrypt((string) jomresGetParam($_REQUEST, 'fax', ''));
-		$email = $this->jomres_encryption->encrypt( (string)$user_details[ $thisJRUser->id ][ 'email' ] );
-		$preferences = $this->jomres_encryption->encrypt((string) jomresGetParam($_REQUEST, 'preferences', ''));
+		$firstname = $this->castor_encryption->encrypt((string) castorGetParam($_REQUEST, 'firstname', ''));
+		$surname = $this->castor_encryption->encrypt((string) castorGetParam($_REQUEST, 'surname', ''));
+		$house = $this->castor_encryption->encrypt((string) castorGetParam($_REQUEST, 'house', ''));
+		$street = $this->castor_encryption->encrypt((string) castorGetParam($_REQUEST, 'street', ''));
+		$town = $this->castor_encryption->encrypt((string) castorGetParam($_REQUEST, 'town', ''));
+		$region = $this->castor_encryption->encrypt((string) castorGetParam($_REQUEST, 'region', ''));
+		$country = $this->castor_encryption->encrypt((string) castorGetParam($_REQUEST, 'guest_country', ''));
+		$postcode = $this->castor_encryption->encrypt((string) castorGetParam($_REQUEST, 'postcode', ''));
+		$landline = $this->castor_encryption->encrypt((string) castorGetParam($_REQUEST, 'landline', ''));
+		$mobile = $this->castor_encryption->encrypt((string) castorGetParam($_REQUEST, 'mobile', ''));
+		$fax = $this->castor_encryption->encrypt((string) castorGetParam($_REQUEST, 'fax', ''));
+		$email = $this->castor_encryption->encrypt( (string)$user_details[ $thisJRUser->id ][ 'email' ] );
+		$preferences = $this->castor_encryption->encrypt((string) castorGetParam($_REQUEST, 'preferences', ''));
 		
-		$drivers_license = $this->jomres_encryption->encrypt((string) jomresGetParam($_REQUEST, 'drivers_license', ''));
-		$passport_number = $this->jomres_encryption->encrypt((string) jomresGetParam($_REQUEST, 'passport_number', ''));
-		$iban = $this->jomres_encryption->encrypt((string) jomresGetParam($_REQUEST, 'iban', ''));
+		$drivers_license = $this->castor_encryption->encrypt((string) castorGetParam($_REQUEST, 'drivers_license', ''));
+		$passport_number = $this->castor_encryption->encrypt((string) castorGetParam($_REQUEST, 'passport_number', ''));
+		$iban = $this->castor_encryption->encrypt((string) castorGetParam($_REQUEST, 'iban', ''));
 
-		$about_me = $this->convert_lessgreaterthans(jomresGetParam($_REQUEST, 'about_me', ''));
-		$about_me = $this->jomres_encryption->encrypt(strip_tags($about_me, '<p><br>'));
+		$about_me = $this->convert_lessgreaterthans(castorGetParam($_REQUEST, 'about_me', ''));
+		$about_me = $this->castor_encryption->encrypt(strip_tags($about_me, '<p><br>'));
 		
 		$vat_number = trim(filter_var($_REQUEST[ 'vat_number' ], FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-		$return_url = (string) jomresGetParam($_REQUEST, 'return_url', '');
-		$delete_image = (int)jomresGetParam($_REQUEST, 'delete', 0);
+		$return_url = (string) castorGetParam($_REQUEST, 'return_url', '');
+		$delete_image = (int)castorGetParam($_REQUEST, 'delete', 0);
 
 		$original_vat_number = $thisJRUser->vat_number;
 		$original_vat_number_validated = (int) $thisJRUser->vat_number_validated;
@@ -106,12 +106,12 @@ class j06005save_my_account
 		}
 
 		if (!$delete_image) {
-			$query = 'SELECT id FROM #__jomres_guest_profile WHERE cms_user_id = '.(int) $thisJRUser->id;
+			$query = 'SELECT id FROM #__castor_guest_profile WHERE cms_user_id = '.(int) $thisJRUser->id;
 			$result = doSelectSql($query);
 
 			// Whilst the profiles table might be empty, the guests table might not. We'll update the guests table as well as the profiles table, at the same time.
 			if ($thisJRUser->profile_id > 0) {
-				$query = "UPDATE #__jomres_guest_profile SET 
+				$query = "UPDATE #__castor_guest_profile SET 
 					`enc_firstname`='".$firstname."',
 					`enc_surname`='".$surname."',
 					`enc_house`='".$house."',
@@ -127,16 +127,16 @@ class j06005save_my_account
 					`enc_passport_number`='".$passport_number."',
 					`enc_iban`='".$iban."',
 					`enc_about_me`='".$about_me."',
-					`enc_vat_number`='".$this->jomres_encryption->encrypt($vat_number)."',
+					`enc_vat_number`='".$this->castor_encryption->encrypt($vat_number)."',
 					`enc_preferences`='".$preferences."',
 					`vat_number_validated`=$original_vat_number_validated 
 					WHERE cms_user_id = ".(int) $thisJRUser->id;
 					
-				if (!doInsertSql($query, jr_gettext('_JOMRES_MR_AUDIT_UPDATE_GUEST', '_JOMRES_MR_AUDIT_UPDATE_GUEST', false))) {
+				if (!doInsertSql($query, jr_gettext('_CASTOR_MR_AUDIT_UPDATE_GUEST', '_CASTOR_MR_AUDIT_UPDATE_GUEST', false))) {
 					trigger_error('Unable to update guest details, mysql db failure', E_USER_ERROR);
 				}
 
-				$query = "UPDATE #__jomres_guests SET 
+				$query = "UPDATE #__castor_guests SET 
 					`enc_firstname`='".$firstname."',
 					`enc_surname`='".$surname."',
 					`enc_house`='".$house."',
@@ -148,14 +148,14 @@ class j06005save_my_account
 					`enc_tel_landline`='".$landline."',
 					`enc_tel_mobile`='".$mobile."',
 					`enc_email`='".$email."',
-					`enc_vat_number`='".$this->jomres_encryption->encrypt($vat_number)."',
+					`enc_vat_number`='".$this->castor_encryption->encrypt($vat_number)."',
 					`enc_preferences`='".$preferences."',
 					`vat_number_validated`=$original_vat_number_validated 
 				WHERE mos_userid = ".(int) $thisJRUser->id;
 				
 				doInsertSql($query, '');
 			} else {
-				$query = "INSERT INTO #__jomres_guest_profile (
+				$query = "INSERT INTO #__castor_guest_profile (
 					`cms_user_id`,
 					`enc_firstname`,
 					`enc_surname`,
@@ -192,15 +192,15 @@ class j06005save_my_account
 					'$passport_number',
 					'$iban',
 					'$about_me',
-					'".$this->jomres_encryption->encrypt($vat_number)."',
+					'".$this->castor_encryption->encrypt($vat_number)."',
 					'$preferences',
 					0)";
 				
-				if (!doInsertSql($query, jr_gettext('_JOMRES_MR_AUDIT_INSERT_GUEST', '_JOMRES_MR_AUDIT_INSERT_GUEST', false))) {
+				if (!doInsertSql($query, jr_gettext('_CASTOR_MR_AUDIT_INSERT_GUEST', '_CASTOR_MR_AUDIT_INSERT_GUEST', false))) {
 					trigger_error('Unable to insert guest details, mysql db failure', E_USER_ERROR);
 				}
 
-				$query = "UPDATE #__jomres_guests SET 
+				$query = "UPDATE #__castor_guests SET 
 					`enc_firstname`='$firstname',
 					`enc_surname`='$surname',
 					`enc_house`='$house',
@@ -212,7 +212,7 @@ class j06005save_my_account
 					`enc_tel_landline`='$landline',
 					`enc_tel_mobile`='$mobile',
 					`enc_email`='$email',
-					`enc_vat_number`='".$this->jomres_encryption->encrypt($vat_number)."',
+					`enc_vat_number`='".$this->castor_encryption->encrypt($vat_number)."',
 					`vat_number_validated`=$original_vat_number_validated 
 					WHERE mos_userid = ".(int) $thisJRUser->id;
 				doInsertSql($query, '');
@@ -226,38 +226,38 @@ class j06005save_my_account
 			}
 		}
 		
-		if (!is_dir(JOMRES_IMAGELOCATION_ABSPATH.'userimages')) {
-			mkdir(JOMRES_IMAGELOCATION_ABSPATH.'userimages');
+		if (!is_dir(CASTOR_IMAGELOCATION_ABSPATH.'userimages')) {
+			mkdir(CASTOR_IMAGELOCATION_ABSPATH.'userimages');
 		}
 
-		if (!is_dir(JOMRES_IMAGELOCATION_ABSPATH.'userimages'.JRDS.$thisJRUser->id)) {
-			mkdir(JOMRES_IMAGELOCATION_ABSPATH.'userimages'.JRDS.$thisJRUser->id);
+		if (!is_dir(CASTOR_IMAGELOCATION_ABSPATH.'userimages'.JRDS.$thisJRUser->id)) {
+			mkdir(CASTOR_IMAGELOCATION_ABSPATH.'userimages'.JRDS.$thisJRUser->id);
 		}
 
 		//profile image
-		$abs_path = JOMRES_IMAGELOCATION_ABSPATH.'userimages'.JRDS.$thisJRUser->id.JRDS;
-		$rel_path = JOMRES_IMAGELOCATION_RELPATH.'userimages/'.$thisJRUser->id.'/';
+		$abs_path = CASTOR_IMAGELOCATION_ABSPATH.'userimages'.JRDS.$thisJRUser->id.JRDS;
+		$rel_path = CASTOR_IMAGELOCATION_RELPATH.'userimages/'.$thisJRUser->id.'/';
 
 
 		if ($delete_image) {
-			$jomres_media_centre_images = jomres_singleton_abstract::getInstance('jomres_media_centre_images');
+			$castor_media_centre_images = castor_singleton_abstract::getInstance('castor_media_centre_images');
 
-			$file_name = (string)jomresGetParam($_REQUEST, 'file', '');
+			$file_name = (string)castorGetParam($_REQUEST, 'file', '');
 			if ($file_name == '') {
-				jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL.'&task=edit_my_account'), '');
+				castorRedirect(castorURL(CASTOR_SITEPAGE_URL.'&task=edit_my_account'), '');
 			}
 			
 			//delete image from disk and db
-			if (!$jomres_media_centre_images->delete_image(0, 'userimages', $thisJRUser->id, $file_name, $abs_path, true)) {
-				jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL.'&task=edit_my_account'), "Boo, we couldn't delete it. I'm going to have a little cry in the corner now.");
+			if (!$castor_media_centre_images->delete_image(0, 'userimages', $thisJRUser->id, $file_name, $abs_path, true)) {
+				castorRedirect(castorURL(CASTOR_SITEPAGE_URL.'&task=edit_my_account'), "Boo, we couldn't delete it. I'm going to have a little cry in the corner now.");
 			} else {
-				jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL.'&task=edit_my_account'), "Yay, we'll deleted this sukka");
+				castorRedirect(castorURL(CASTOR_SITEPAGE_URL.'&task=edit_my_account'), "Yay, we'll deleted this sukka");
 			}
 		} else {
 			if (!empty($_FILES) && count($_FILES) == 1) { //we won`t allow more than one file to be uploaded
-				jr_import('jomres_media_centre_uploader');
+				jr_import('castor_media_centre_uploader');
 
-				$script_url = JOMRES_SITEPAGE_URL.'&task=save_my_account&delete=1&resource_type=userimages&resource_id='.$thisJRUser->id;
+				$script_url = CASTOR_SITEPAGE_URL.'&task=save_my_account&delete=1&resource_type=userimages&resource_id='.$thisJRUser->id;
 
 				$upload_handler = new UploadHandler(array(
 					//class params
@@ -281,7 +281,7 @@ class j06005save_my_account
 						)
 					),
 					'print_response' => false,
-					//jomres specific params, required for post upload processing
+					//castor specific params, required for post upload processing
 					'property_uid' => 0,
 					'resource_type' => 'userimages',
 					'resource_id' => $thisJRUser->id,
@@ -291,27 +291,27 @@ class j06005save_my_account
 		}
 
 		// Session update
-		$tmpBookingHandler = jomres_singleton_abstract::getInstance('jomres_temp_booking_handler');
+		$tmpBookingHandler = castor_singleton_abstract::getInstance('castor_temp_booking_handler');
 		
-		$tmpBookingHandler->updateGuestField('firstname', $this->jomres_encryption->decrypt($firstname));
-		$tmpBookingHandler->updateGuestField('surname', $this->jomres_encryption->decrypt($surname));
-		$tmpBookingHandler->updateGuestField('house', $this->jomres_encryption->decrypt($house));
-		$tmpBookingHandler->updateGuestField('street', $this->jomres_encryption->decrypt($street));
-		$tmpBookingHandler->updateGuestField('town', $this->jomres_encryption->decrypt($town));
-		$tmpBookingHandler->updateGuestField('region', $this->jomres_encryption->decrypt($region));
-		$tmpBookingHandler->updateGuestField('country', $this->jomres_encryption->decrypt($country));
-		$tmpBookingHandler->updateGuestField('postcode', $this->jomres_encryption->decrypt($postcode));
-		$tmpBookingHandler->updateGuestField('tel_landline', $this->jomres_encryption->decrypt($landline));
-		$tmpBookingHandler->updateGuestField('tel_mobile', $this->jomres_encryption->decrypt($mobile));
-		$tmpBookingHandler->updateGuestField('email', $this->jomres_encryption->decrypt($email));
+		$tmpBookingHandler->updateGuestField('firstname', $this->castor_encryption->decrypt($firstname));
+		$tmpBookingHandler->updateGuestField('surname', $this->castor_encryption->decrypt($surname));
+		$tmpBookingHandler->updateGuestField('house', $this->castor_encryption->decrypt($house));
+		$tmpBookingHandler->updateGuestField('street', $this->castor_encryption->decrypt($street));
+		$tmpBookingHandler->updateGuestField('town', $this->castor_encryption->decrypt($town));
+		$tmpBookingHandler->updateGuestField('region', $this->castor_encryption->decrypt($region));
+		$tmpBookingHandler->updateGuestField('country', $this->castor_encryption->decrypt($country));
+		$tmpBookingHandler->updateGuestField('postcode', $this->castor_encryption->decrypt($postcode));
+		$tmpBookingHandler->updateGuestField('tel_landline', $this->castor_encryption->decrypt($landline));
+		$tmpBookingHandler->updateGuestField('tel_mobile', $this->castor_encryption->decrypt($mobile));
+		$tmpBookingHandler->updateGuestField('email', $this->castor_encryption->decrypt($email));
 
 		$MiniComponents->triggerEvent('03710', [] ); // Optional
 
 		if ($return_url != '') {
 			$return_url = jr_base64url_decode($return_url);
-			jomresRedirect($return_url, '');
+			castorRedirect($return_url, '');
 		} else {
-			jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL.'&task=edit_my_account'), '');
+			castorRedirect(castorURL(CASTOR_SITEPAGE_URL.'&task=edit_my_account'), '');
 		}
 	}
 
@@ -329,3 +329,4 @@ class j06005save_my_account
 		return null;
 	}
 }
+

@@ -1,4 +1,4 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <script type="text/javascript">
 function navigate(lat, lng) {
@@ -45,7 +45,7 @@ function navigate(lat, lng) {
 				<div class="span10">
 					<h1 id="tour_target_property_header">{PROPERTY_NAME} <span>{STARS} {SUPERIOR}</span></h1>
 					<patTemplate:tmpl name="permit" type="simpleCondition" requiredVars="permit_number">
-						<p class="label label-info">{_JOMRES_PERMIT_NUMBER_TITLE} {PERMIT_NUMBER}</p>
+						<p class="label label-info">{_CASTOR_PERMIT_NUMBER_TITLE} {PERMIT_NUMBER}</p>
 					</patTemplate:tmpl>
 					<div class="row-fluid">
 						<div class="span8">
@@ -57,7 +57,7 @@ function navigate(lat, lng) {
 								<span class="visible-phone">
 									<br/>
 									<a href="tel:{TELEPHONE}" class="btn btn-success"><i class="fa fa-phone"></i>
-										{JOMRES_TAPTOCALL} {TELEPHONE}</a>
+										{CASTOR_TAPTOCALL} {TELEPHONE}</a>
 									<a href="whatsapp://send?phone={WHATSAPP_TELEPHONE}" class="btn btn-success"><i class="fa fa-whatsapp"></i></a>
 								</span>
 								

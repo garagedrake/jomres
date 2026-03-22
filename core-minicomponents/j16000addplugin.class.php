@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,25 +36,25 @@ class j16000addplugin
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 		
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 		
-		$this_jomres_version = explode('.', $jrConfig['version']);
+		$this_castor_version = explode('.', $jrConfig['version']);
 		
 		$debugging = false;
 		
-		if (!defined('JOMRES_INSTALLER')) {
-			define('JOMRES_INSTALLER', 1);
+		if (!defined('CASTOR_INSTALLER')) {
+			define('CASTOR_INSTALLER', 1);
 		}
 		
-		$thirdparty = jomresGetParam($_REQUEST, 'thirdparty', false);
+		$thirdparty = castorGetParam($_REQUEST, 'thirdparty', false);
 
 		if (!class_exists('ZipArchive')) {
 			$error_messsage[ 'ERROR' ] = 'Error, ZipArchive not available on this server. Please ask your hosts to rebuild PHP with --enable-zip';
@@ -62,12 +62,12 @@ class j16000addplugin
 
 			return;
 		}
-		$pluginName = jomresGetParam($_REQUEST, 'plugin', '');
+		$pluginName = castorGetParam($_REQUEST, 'plugin', '');
 		if (isset($componentArgs[ 'plugin' ])) {
 			$pluginName = $componentArgs[ 'plugin' ];
 		}
 
-		$autoupgrade = jomresGetParam($_REQUEST, 'autoupgrade', false);
+		$autoupgrade = castorGetParam($_REQUEST, 'autoupgrade', false);
 		if (isset($componentArgs[ 'autoupgrade' ])) {
 			$autoupgrade = $componentArgs[ 'autoupgrade' ];
 		}
@@ -91,13 +91,13 @@ class j16000addplugin
 			'release' => $v[2], );
 		$php_version = $vprts['major'].'.'.$vprts['minor'];
 
-		$key_validation = jomres_singleton_abstract::getInstance('jomres_check_support_key');
+		$key_validation = castor_singleton_abstract::getInstance('castor_check_support_key');
 		$key_validation->check_license_key(true); //only needed if we want to force a recheck
 		
 		$this->key_valid = $key_validation->key_valid;
 
 		if ($key_validation->is_trial_license == '1' && !extension_loaded('IonCube Loader')) {
-			jomresRedirect(JOMRES_SITEPAGE_URL_ADMIN.'&task=loader_wizard');
+			castorRedirect(CASTOR_SITEPAGE_URL_ADMIN.'&task=loader_wizard');
 		}
 
 		if (!$this->key_valid) {
@@ -129,9 +129,9 @@ class j16000addplugin
 		}
 
 		if ($thirdparty) {
-			$remote_pluginsDirPath = JOMRES_REMOTEPLUGINS_ABSPATH;
+			$remote_pluginsDirPath = CASTOR_REMOTEPLUGINS_ABSPATH;
 		} else {
-			$remote_pluginsDirPath = JOMRES_COREPLUGINS_ABSPATH;
+			$remote_pluginsDirPath = CASTOR_COREPLUGINS_ABSPATH;
 		}
 
 		if (strlen($pluginName) == 0 && !$thirdparty) {
@@ -155,28 +155,28 @@ class j16000addplugin
 		}
 
 		if (strlen($pluginName) > 0) {
-			if (is_dir(JOMRES_REMOTEPLUGINS_ABSPATH.$pluginName)) {
-				emptyDir(JOMRES_REMOTEPLUGINS_ABSPATH.$pluginName);
-				$progress_messages[ ] = array('MESSAGE' => 'Removing '.JOMRES_REMOTEPLUGINS_ABSPATH.$pluginName.'');
-				@rmdir(JOMRES_REMOTEPLUGINS_ABSPATH.$pluginName);
+			if (is_dir(CASTOR_REMOTEPLUGINS_ABSPATH.$pluginName)) {
+				emptyDir(CASTOR_REMOTEPLUGINS_ABSPATH.$pluginName);
+				$progress_messages[ ] = array('MESSAGE' => 'Removing '.CASTOR_REMOTEPLUGINS_ABSPATH.$pluginName.'');
+				@rmdir(CASTOR_REMOTEPLUGINS_ABSPATH.$pluginName);
 			}
-			if (is_dir(JOMRES_COREPLUGINS_ABSPATH.$pluginName)) {
-				emptyDir(JOMRES_COREPLUGINS_ABSPATH.$pluginName);
-				$progress_messages[ ] = array('MESSAGE' => 'Removing '.JOMRES_COREPLUGINS_ABSPATH.$pluginName.'');
-				@rmdir(JOMRES_COREPLUGINS_ABSPATH.$pluginName);
+			if (is_dir(CASTOR_COREPLUGINS_ABSPATH.$pluginName)) {
+				emptyDir(CASTOR_COREPLUGINS_ABSPATH.$pluginName);
+				$progress_messages[ ] = array('MESSAGE' => 'Removing '.CASTOR_COREPLUGINS_ABSPATH.$pluginName.'');
+				@rmdir(CASTOR_COREPLUGINS_ABSPATH.$pluginName);
 			}
 		}
 
-		if (!is_dir(JOMRESCONFIG_ABSOLUTE_PATH.JOMRES_ROOT_DIRECTORY.JRDS.'updates')) {
-			if (!mkdir(JOMRESCONFIG_ABSOLUTE_PATH.JOMRES_ROOT_DIRECTORY.JRDS.'updates')) {
-				$error_messsage[ 'ERROR' ] = "Couldn't make the folder ".JOMRESCONFIG_ABSOLUTE_PATH.JOMRES_ROOT_DIRECTORY.JRDS.'updates'.' so quitting.';
+		if (!is_dir(CASTORCONFIG_ABSOLUTE_PATH.CASTOR_ROOT_DIRECTORY.JRDS.'updates')) {
+			if (!mkdir(CASTORCONFIG_ABSOLUTE_PATH.CASTOR_ROOT_DIRECTORY.JRDS.'updates')) {
+				$error_messsage[ 'ERROR' ] = "Couldn't make the folder ".CASTORCONFIG_ABSOLUTE_PATH.CASTOR_ROOT_DIRECTORY.JRDS.'updates'.' so quitting.';
 				//echo $error_messsage[ 'ERROR' ];
 
 				return;
 			}
 		}
 
-		$updateDirPath = JOMRESCONFIG_ABSOLUTE_PATH.JOMRES_ROOT_DIRECTORY.JRDS.'updates'.JRDS.$pluginName.JRDS;
+		$updateDirPath = CASTORCONFIG_ABSOLUTE_PATH.CASTOR_ROOT_DIRECTORY.JRDS.'updates'.JRDS.$pluginName.JRDS;
 
 		if (is_dir($updateDirPath)) {
 			$progress_messages[ ] = array('MESSAGE' => 'Cleaning up '.$updateDirPath.' unpacked for a new installation of the plugin.');
@@ -275,8 +275,8 @@ class j16000addplugin
 					$p = '&plugin='.$pluginName;
 				}
 
-				$base_uri = 'http://plugins.jomres.net/';
-				$query_string = 'index.php?r=gp&cms='._JOMRES_DETECTED_CMS.'&vnw=1&key='.$key_to_send.$p.'&jomresver='.$jrConfig[ 'version' ].'&hostname='.get_showtime('live_site').'&php_version='.$php_version;
+				$base_uri = 'http://plugins.castor.net/';
+				$query_string = 'index.php?r=gp&cms='._CASTOR_DETECTED_CMS.'&vnw=1&key='.$key_to_send.$p.'&castorver='.$jrConfig[ 'version' ].'&hostname='.get_showtime('live_site').'&php_version='.$php_version;
 
 				$progress_messages[ ] = array('MESSAGE' => $base_uri.$query_string);
 				
@@ -292,8 +292,8 @@ class j16000addplugin
 					$response = $client->request('GET', $query_string, ['sink' => $file_handle]);
 					$content_type = $response->getHeader('Content-Type');
 				} catch (Exception $e) {
-					$jomres_user_feedback = jomres_singleton_abstract::getInstance('jomres_user_feedback');
-					$jomres_user_feedback->construct_message(array('message'=>"Could not download plugin $pluginName", 'css_class'=>'alert-danger alert-error'));
+					$castor_user_feedback = castor_singleton_abstract::getInstance('castor_user_feedback');
+					$castor_user_feedback->construct_message(array('message'=>"Could not download plugin $pluginName", 'css_class'=>'alert-danger alert-error'));
 				}
 
 				if ($content_type == 'text/html') {
@@ -301,14 +301,14 @@ class j16000addplugin
 					$pageoutput2 = array();
 					$returned_error = json_decode(file_get_contents($newfilename));
 
-					$output2['_JOMRES_ERROR'] = jr_gettext('_JOMRES_ERROR', '_JOMRES_ERROR', false, false);
+					$output2['_CASTOR_ERROR'] = jr_gettext('_CASTOR_ERROR', '_CASTOR_ERROR', false, false);
 					$output2['MESSAGE'] = filter_var($returned_error->message, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-					$output2['PLUGIN_MANAGER_LINK'] = JOMRES_SITEPAGE_URL_ADMIN.'&task=showplugins';
-					$output2['PLUGIN_MANAGER_TEXT'] = jr_gettext('_JOMRES_CUSTOMCODE_PLUGINMANAGER', '_JOMRES_CUSTOMCODE_PLUGINMANAGER', false, false);
+					$output2['PLUGIN_MANAGER_LINK'] = CASTOR_SITEPAGE_URL_ADMIN.'&task=showplugins';
+					$output2['PLUGIN_MANAGER_TEXT'] = jr_gettext('_CASTOR_CUSTOMCODE_PLUGINMANAGER', '_CASTOR_CUSTOMCODE_PLUGINMANAGER', false, false);
 					$pageoutput2[] = $output2;
 					$tmpl = new patTemplate();
 					$tmpl->addRows('pageoutput', $pageoutput2);
-					$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+					$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 					$tmpl->readTemplatesFromInput('plugin_manager_error.html');
 					$tmpl->displayParsedTemplate();
 
@@ -344,7 +344,7 @@ class j16000addplugin
 			if ($res === true) {
 				if (!$thirdparty) {
 					$zip->extractTo($updateDirPath.'unpacked');
-				} else { // Historically, plugins have been zipped differently than Jomres plugins, so we'll need to unzip the files in 3rd party plugins, then move them up one dir, rather than force plugin devs to change how their files are zipped.
+				} else { // Historically, plugins have been zipped differently than Castor plugins, so we'll need to unzip the files in 3rd party plugins, then move them up one dir, rather than force plugin devs to change how their files are zipped.
 					$zip->extractTo($updateDirPath.'unpacked');
 
 					// Identify directories
@@ -394,7 +394,7 @@ class j16000addplugin
 					} else {
 						$error_messsage[ 'ERROR' ] = " Failed dependencies check. Please ensure that you've installed the following plugins before attempting to install this one: ";
 						foreach ($info->dependencies as $d) {
-							$error_messsage[ 'ERROR' ] .= '<a href="'.JOMRES_SITEPAGE_URL_ADMIN.'&task=addplugin&no_html=1&plugin='.$d.'" target="_blank">'.$d.'</a>';
+							$error_messsage[ 'ERROR' ] .= '<a href="'.CASTOR_SITEPAGE_URL_ADMIN.'&task=addplugin&no_html=1&plugin='.$d.'" target="_blank">'.$d.'</a>';
 						}
 					}
 				}
@@ -422,15 +422,15 @@ class j16000addplugin
 				require_once $updateDirPath.'unpacked'.JRDS.'plugin_info.php';
 				$classname = 'plugin_info_'.$pluginName;
 				$plugin_class = new $classname();
-				$min_jomres_ver = explode('.', $plugin_class->data[ 'min_jomres_ver' ]);
-				if (count($min_jomres_ver) == 3 && count($this_jomres_version) == 3) {
-					$min_major_version = $min_jomres_ver[ 0 ];
-					$min_minor_version = $min_jomres_ver[ 1 ];
-					$min_revis_version = $min_jomres_ver[ 2 ];
+				$min_castor_ver = explode('.', $plugin_class->data[ 'min_castor_ver' ]);
+				if (count($min_castor_ver) == 3 && count($this_castor_version) == 3) {
+					$min_major_version = $min_castor_ver[ 0 ];
+					$min_minor_version = $min_castor_ver[ 1 ];
+					$min_revis_version = $min_castor_ver[ 2 ];
 
-					$current_major_version = $this_jomres_version[ 0 ];
-					$current_minor_version = $this_jomres_version[ 1 ];
-					$current_revis_version = $this_jomres_version[ 2 ];
+					$current_major_version = $this_castor_version[ 0 ];
+					$current_minor_version = $this_castor_version[ 1 ];
+					$current_revis_version = $this_castor_version[ 2 ];
 
 					$error = true;
 					if ($current_major_version >= $min_major_version && $current_minor_version >= $min_minor_version && $current_revis_version >= $min_revis_version) {
@@ -446,7 +446,7 @@ class j16000addplugin
 					}
 
 					if ($error) {
-						$error_messsage[ 'ERROR' ] = 'Error, this plugin requires at least version '.$plugin_class->data[ 'min_jomres_ver' ].' of Jomres';
+						$error_messsage[ 'ERROR' ] = 'Error, this plugin requires at least version '.$plugin_class->data[ 'min_castor_ver' ].' of Castor';
 						if ($autoupgrade) {
 							return false;
 						}
@@ -514,22 +514,22 @@ class j16000addplugin
 				$success = array();
 				if ($discovery_required) {
 					if ($plugin_class->data[ 'type' ] == 'widget') { // It's a wordpress widget
-						$output[ 'NEXT_STEP' ] = get_showtime('live_site').'/'.JOMRES_ADMINISTRATORDIRECTORY.'/plugins.php';
+						$output[ 'NEXT_STEP' ] = get_showtime('live_site').'/'.CASTOR_ADMINISTRATORDIRECTORY.'/plugins.php';
 						$success[ ] = array('MESSAGE' => 'Successfully installed the '.$pluginName.' plugin. The next button will take you to the Wordpress plugins page where you can activate the plugin.');
 					} else {
-						$output[ 'NEXT_STEP' ] = get_showtime('live_site').'/'.JOMRES_ADMINISTRATORDIRECTORY.'/index.php?option=com_installer&view=discover';
+						$output[ 'NEXT_STEP' ] = get_showtime('live_site').'/'.CASTOR_ADMINISTRATORDIRECTORY.'/index.php?option=com_installer&view=discover';
 						$success[ ] = array('MESSAGE' => 'Successfully installed the '.$pluginName." plugin. The next button will take you to the Extension Discovery page where you can finish the plugin's installation.");
 					}
 				} else {
-					$output[ 'NEXT_STEP' ] = JOMRES_SITEPAGE_URL_ADMIN.'&task=showplugins#'.$pluginName;
-					$success[ ] = array('MESSAGE' => 'Successfully installed the '.$pluginName.' plugin. The next page will take you back to the Jomres plugin manager.');
+					$output[ 'NEXT_STEP' ] = CASTOR_SITEPAGE_URL_ADMIN.'&task=showplugins#'.$pluginName;
+					$success[ ] = array('MESSAGE' => 'Successfully installed the '.$pluginName.' plugin. The next page will take you back to the Castor plugin manager.');
 				}
 			}
 
-			$registry = jomres_singleton_abstract::getInstance('minicomponent_registry');
+			$registry = castor_singleton_abstract::getInstance('minicomponent_registry');
 			$registry->regenerate_registry();
 
-			emptyDir(JOMRES_CACHE_ABSPATH);
+			emptyDir(CASTOR_CACHE_ABSPATH);
 
 			$pageoutput[ ] = $output;
 			$error_messages[ ] = $error_messsage;
@@ -542,7 +542,7 @@ class j16000addplugin
 			$tmpl->addRows('exclusions', $exclusions);
 			$tmpl->addRows('success', $success);
 
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 			$tmpl->readTemplatesFromInput('plugin_installation_result.html');
 			$tmpl->displayParsedTemplate();
 		} else {
@@ -556,3 +556,4 @@ class j16000addplugin
 		return null;
 	}
 }
+

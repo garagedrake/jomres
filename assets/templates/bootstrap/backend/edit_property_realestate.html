@@ -1,4 +1,4 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 	<style>
 	.REmail {
@@ -13,11 +13,11 @@
 
 	<script language="javascript">
 		<!--
-		jomresJquery(function(){
-			jomresJquery("#country").change(function(){
-				var selectedValue = jomresJquery(this).find(":selected").val();
+		castorJquery(function(){
+			castorJquery("#country").change(function(){
+				var selectedValue = castorJquery(this).find(":selected").val();
 				clause = "&task=get_region_dropdown_for_country_code&country="+selectedValue;
-				jomresJquery.get(live_site_ajax + clause, function (data) {
+				castorJquery.get(live_site_ajax + clause, function (data) {
 					populateDiv("property_region",data);
 					});
 				});
@@ -35,7 +35,7 @@
 <p class="alert alert-info">{CHANGECOUNTRYWARNING}</p>
 </patTemplate:tmpl>
 
-<form action="{JOMRES_SITEPAGE_URL_NOSEF}" method="post" name="adminForm" class="form-horizontal">
+<form action="{CASTOR_SITEPAGE_URL_NOSEF}" method="post" name="adminForm" class="form-horizontal">
 	<fieldset>
 		<div class="control-group">
 			<label class="control-label" for="xyz">{HCOUNTRY}</label>
@@ -166,21 +166,21 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label" for="metatitle">{_JOMRES_METATITLE}</label>
+			<label class="control-label" for="metatitle">{_CASTOR_METATITLE}</label>
 
 			<div class="controls">
 				<input class="inputbox" type="text" size="70" name="metatitle" value="{METATITLE}"/>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label" for="metadescription">{_JOMRES_METADESCRIPTION}</label>
+			<label class="control-label" for="metadescription">{_CASTOR_METADESCRIPTION}</label>
 
 			<div class="controls">
 				<input class="inputbox" type="text" size="70" name="metadescription" value="{METADESCRIPTION}"/>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label" for="metakeywords">{_JOMRES_METAKEYWORDS}</label>
+			<label class="control-label" for="metakeywords">{_CASTOR_METAKEYWORDS}</label>
 
 			<div class="controls">
 				<input class="inputbox" type="text" size="70" name="metakeywords" value="{METAKEYWORDS}"/>
@@ -195,7 +195,7 @@
 		</div>
 		</patTemplate:tmpl>
 		<div class="form-actions btn-toolbar">
-			{JOMRESTOOLBAR}
+			{CASTORTOOLBAR}
 		</div>
 	</fieldset>
 	<input type="hidden" name="property_uid" value="{PROPERTYUID}"/>

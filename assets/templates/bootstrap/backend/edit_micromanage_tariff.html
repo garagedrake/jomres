@@ -1,36 +1,36 @@
-<patTemplate:tmpl name="pageoutput" unusedvars="strip">
+﻿<patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <style>
 input[type=number] {
 -moz-appearance: textfield;
 }
 </style>
 <script>
-function jomres_micromanage_rate_picker(input_type)
+function castor_micromanage_rate_picker(input_type)
 	{
 	if (input_type == "mindaysinput")
 		picker_input = 'picker_mindays_value';
 	else
 		picker_input = 'picker_rate_value';
 	
-	from_value = jomresJquery('input[name=picker_from]').val();
-	to_value = jomresJquery('input[name=picker_to]').val();
-	new_rate = jomresJquery('#'+picker_input).val();
+	from_value = castorJquery('input[name=picker_from]').val();
+	to_value = castorJquery('input[name=picker_to]').val();
+	new_rate = castorJquery('#'+picker_input).val();
 
-	epoch_from = jomres_micromanage_picker_get_epoch(from_value);
-	epoch_to = jomres_micromanage_picker_get_epoch(to_value);
+	epoch_from = castor_micromanage_picker_get_epoch(from_value);
+	epoch_to = castor_micromanage_picker_get_epoch(to_value);
 	var i = epoch_from;
 	var r_colour = random_colour();
 	
 	while (i <= epoch_to)
 		{
-		jomresJquery("input[name='"+input_type+"["+i/1000+"]']").css("border","2px solid #"+r_colour);
-		jomresJquery("input[name='"+input_type+"["+i/1000+"]']").val(new_rate);
+		castorJquery("input[name='"+input_type+"["+i/1000+"]']").css("border","2px solid #"+r_colour);
+		castorJquery("input[name='"+input_type+"["+i/1000+"]']").val(new_rate);
 		tomorrow = new Date( i.getTime() + 86400000 ); 
 		i = tomorrow;
 		}
 	}
 
-function jomres_micromanage_picker_get_epoch(jsdate)
+function castor_micromanage_picker_get_epoch(jsdate)
 	{
 	dformat = "{DATE_FORMAT}";
 	var day=0
@@ -111,40 +111,40 @@ function select_all(obj)
 	text_val.select();
 	}
 	
-jomresJquery(function() {
-    jomresJquery('#interval_price_selector').change(function(){
-        if (jomresJquery(this).val() == "2") {
-            jomresJquery('.tariff_multi_input').hide();
-			jomresJquery('.mindays_multi_input').show();
+castorJquery(function() {
+    castorJquery('#interval_price_selector').change(function(){
+        if (castorJquery(this).val() == "2") {
+            castorJquery('.tariff_multi_input').hide();
+			castorJquery('.mindays_multi_input').show();
 			
-			jomresJquery('#manual_input_wrapper').removeClass("alert-success");
-			jomresJquery('#manual_input_wrapper').addClass("alert-error");
+			castorJquery('#manual_input_wrapper').removeClass("alert-success");
+			castorJquery('#manual_input_wrapper').addClass("alert-error");
         } else {
-            jomresJquery('.tariff_multi_input').show();
-			jomresJquery('.mindays_multi_input').hide();
-			jomresJquery('#manual_input_wrapper').removeClass("alert-error");
-			jomresJquery('#manual_input_wrapper').addClass("alert-success");
+            castorJquery('.tariff_multi_input').show();
+			castorJquery('.mindays_multi_input').hide();
+			castorJquery('#manual_input_wrapper').removeClass("alert-error");
+			castorJquery('#manual_input_wrapper').addClass("alert-success");
         }
     });
 });
 
 function set_mindays_by_dow(dow_class)
 	{
-	inputVal = jomresJquery("input[name='"+dow_class+"_mindays']").val();
-	jomresJquery('.'+dow_class+'_mindays').val(inputVal);
-	jomresJquery('.'+dow_class+'_mindays').css("border","1px solid red");
+	inputVal = castorJquery("input[name='"+dow_class+"_mindays']").val();
+	castorJquery('.'+dow_class+'_mindays').val(inputVal);
+	castorJquery('.'+dow_class+'_mindays').css("border","1px solid red");
 	}
 
 function set_rates_by_dow(dow_class)
 	{
-	inputVal = jomresJquery("input[name='"+dow_class+"_rates']").val();
-	jomresJquery('.'+dow_class+'_rates').val(inputVal);
-	jomresJquery('.'+dow_class+'_rates').css("border","1px solid red");
+	inputVal = castorJquery("input[name='"+dow_class+"_rates']").val();
+	castorJquery('.'+dow_class+'_rates').val(inputVal);
+	castorJquery('.'+dow_class+'_rates').css("border","1px solid red");
 	}
 
 </script>
-<h2 class="page-header">{_JOMRES_COM_MR_LISTTARIFF_LINKTEXT}</h2>
-<form action="{JOMRES_SITEPAGE_URL_NOSEF}" method="post" name="adminForm" class="form-horizontal"  autocomplete="off">
+<h2 class="page-header">{_CASTOR_COM_MR_LISTTARIFF_LINKTEXT}</h2>
+<form action="{CASTOR_SITEPAGE_URL_NOSEF}" method="post" name="adminForm" class="form-horizontal"  autocomplete="off">
 <fieldset>
 	<div class="control-group">
 	<label class="control-label" for="tarifftypename">{HTARIFFTITLE}</label>
@@ -238,20 +238,20 @@ function set_rates_by_dow(dow_class)
 
 
 
-<h2 class="page-header">{_JOMRES_MICROMANAGE_PICKERS_SELECTOR}</h2>
+<h2 class="page-header">{_CASTOR_MICROMANAGE_PICKERS_SELECTOR}</h2>
 <select id="interval_price_selector" autocomplete="off" class="input-large">
-	<option value="1">{_JOMRES_MICROMANAGE_SET_PRICES}</option>
-    <option value="2">{_JOMRES_MICROMANAGE_PICKER_SETMINDAYS}</option>
+	<option value="1">{_CASTOR_MICROMANAGE_SET_PRICES}</option>
+    <option value="2">{_CASTOR_MICROMANAGE_PICKER_SETMINDAYS}</option>
 </select>
-<div class="alert alert-info">{_JOMRES_MICROMANAGE_PICKERS_SELECTOR_INFO}</div>
+<div class="alert alert-info">{_CASTOR_MICROMANAGE_PICKERS_SELECTOR_INFO}</div>
 <div class="clearfix"></div>
 
 
-<h3 class="page-header tariff_multi_input">{_JOMRES_MICROMANAGE_PICKER_TYPE_DOW}</h3>
+<h3 class="page-header tariff_multi_input">{_CASTOR_MICROMANAGE_PICKER_TYPE_DOW}</h3>
 <div class="alert alert-info tariff_multi_input">{PICKER_DAYSOFWEEK}</div>
 
-<h3 class="page-header mindays_multi_input" style="display:none">{_JOMRES_MICROMANAGE_PICKER_BYDOW}</h3>
-<div class="alert alert-info mindays_multi_input" style="display:none">{_JOMRES_MICROMANAGE_PICKER_BYDOW_INFO}</div>
+<h3 class="page-header mindays_multi_input" style="display:none">{_CASTOR_MICROMANAGE_PICKER_BYDOW}</h3>
+<div class="alert alert-info mindays_multi_input" style="display:none">{_CASTOR_MICROMANAGE_PICKER_BYDOW_INFO}</div>
 
 <patTemplate:tmpl name="prefills" unusedvars="nbsp">
 	<div style="width:14.28%;" class="pull-left">
@@ -261,11 +261,11 @@ function set_rates_by_dow(dow_class)
 <div class="clearfix"></div>
 
 
-<h3 class="page-header tariff_multi_input">{_JOMRES_MICROMANAGE_PICKER_TYPE_INTERVAL_RATES}</h3>
-<h3 class="page-header mindays_multi_input" style="display:none">{_JOMRES_MICROMANAGE_PICKER_TYPE_INTERVAL_MINDAYS}</h3>
+<h3 class="page-header tariff_multi_input">{_CASTOR_MICROMANAGE_PICKER_TYPE_INTERVAL_RATES}</h3>
+<h3 class="page-header mindays_multi_input" style="display:none">{_CASTOR_MICROMANAGE_PICKER_TYPE_INTERVAL_MINDAYS}</h3>
 
-<div class="alert alert-info tariff_multi_input">{_JOMRES_MICROMANAGE_PICKER_INSTRUCTIONS_RATES}</div>
-<div class="alert alert-info mindays_multi_input" style="display:none">{_JOMRES_MICROMANAGE_PICKER_INSTRUCTIONS_MINDAYS}</div>
+<div class="alert alert-info tariff_multi_input">{_CASTOR_MICROMANAGE_PICKER_INSTRUCTIONS_RATES}</div>
+<div class="alert alert-info mindays_multi_input" style="display:none">{_CASTOR_MICROMANAGE_PICKER_INSTRUCTIONS_MINDAYS}</div>
 
 <fieldset>
 	<div class="control-group">
@@ -288,23 +288,23 @@ function set_rates_by_dow(dow_class)
 		</div> 
 	</div>
 	<div class="form-actions tariff_multi_input">
-		<input type="button" id="set_value" value="{PICKER_DATERANGES_SET}" onClick="jomres_micromanage_rate_picker('tariffinput')" class="btn btn-primary"/>
+		<input type="button" id="set_value" value="{PICKER_DATERANGES_SET}" onClick="castor_micromanage_rate_picker('tariffinput')" class="btn btn-primary"/>
 	</div>
 	
 	<div class="control-group mindays_multi_input" style="display:none">
-	<label class="control-label" for="picker_from">{_JOMRES_MICROMANAGE_PICKER_SETMINDAYS}</label>
+	<label class="control-label" for="picker_from">{_CASTOR_MICROMANAGE_PICKER_SETMINDAYS}</label>
 		<div class="controls">
 			<input type="text" class="input-mini" id="picker_mindays_value" value="1" />
 		</div> 
 	</div>
 	<div class="form-actions mindays_multi_input" style="display:none">
-		<input type="button" id="set_value" value="Set minimum days" onClick="jomres_micromanage_rate_picker('mindaysinput')" class="btn btn-primary"/>
+		<input type="button" id="set_value" value="Set minimum days" onClick="castor_micromanage_rate_picker('mindaysinput')" class="btn btn-primary"/>
 	</div>
 </fieldset>
 
 
-<div class="tariff_multi_input"><h3 class="page-header">{_JOMRES_MICROMANAGE_PICKERDROPDOWN_EDITPRICES}</h3></div>
-<div class="mindays_multi_input" style="display:none"><h3 class="page-header">{_JOMRES_MICROMANAGE_PICKERDROPDOWN_EDITMINDAYS}</h3></div>
+<div class="tariff_multi_input"><h3 class="page-header">{_CASTOR_MICROMANAGE_PICKERDROPDOWN_EDITPRICES}</h3></div>
+<div class="mindays_multi_input" style="display:none"><h3 class="page-header">{_CASTOR_MICROMANAGE_PICKERDROPDOWN_EDITMINDAYS}</h3></div>
 
 <div id="manual_input_wrapper" class="alert alert-success">
 <patTemplate:tmpl name="daterows" unusedvars="strip">
@@ -337,7 +337,7 @@ function set_rates_by_dow(dow_class)
 </div>
 
 <div class="form-actions">
-	{JOMRESTOOLBAR}
+	{CASTORTOOLBAR}
 </div>
 <input type="hidden" name="tarifftypeid" value="{TARIFFTYPEID}" />
 <input type="hidden" name="task" value="save_tariff_micromanage" />

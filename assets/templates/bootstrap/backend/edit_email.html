@@ -1,8 +1,8 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <h2 class="page-header">{PAGETITLE} - {EMAIL_TYPE}</h2>
 <p>{INSTRUCTIONS}</p>
-<form action="{JOMRES_SITEPAGE_URL_NOSEF}" method="post" name="adminForm" class="form-horizontal">
+<form action="{CASTOR_SITEPAGE_URL_NOSEF}" method="post" name="adminForm" class="form-horizontal">
 <div class="control-group">
 	<div class="control-label">
 		{HEMAIL_SUBJECT}
@@ -20,7 +20,7 @@
 	</div>
 </div>
 <div class="form-actions">
-	{JOMRESTOOLBAR}
+	{CASTORTOOLBAR}
 </div>
 <input type="hidden" name="email_type" value="{EMAIL_TYPE}" />
 <input type="hidden" name="task" value="save_email" />

@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,14 +36,14 @@ class j06000invoice_payment_receive
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 		request_log();
-		$payment_reference = intval(jomresGetParam($_REQUEST, 'payment_reference', 0));
+		$payment_reference = intval(castorGetParam($_REQUEST, 'payment_reference', 0));
 
 		jr_import('jrportal_payment_reference');
 		$jrportal_payment_reference = new jrportal_payment_reference();
@@ -73,9 +73,9 @@ class j06000invoice_payment_receive
 			$invoice->mark_invoice_paid();
 		}
 		if ($invoice->subscription == '1') {
-			jomresRedirect(JOMRES_SITEPAGE_URL_NOSEF.'&task=my_subscriptions');
+			castorRedirect(CASTOR_SITEPAGE_URL_NOSEF.'&task=my_subscriptions');
 		} else {
-			jomresRedirect(JOMRES_SITEPAGE_URL_NOSEF.'&task=list_invoices');
+			castorRedirect(CASTOR_SITEPAGE_URL_NOSEF.'&task=list_invoices');
 		}
 	}
 
@@ -85,3 +85,4 @@ class j06000invoice_payment_receive
 		return null;
 	}
 }
+

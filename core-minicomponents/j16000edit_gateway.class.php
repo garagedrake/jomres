@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,18 +36,18 @@ class j16000edit_gateway
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		$this->plugin = jomresGetParam($_REQUEST, 'plugin', '');
+		$this->plugin = castorGetParam($_REQUEST, 'plugin', '');
 
 		//$settings = get_plugin_settings($this->plugin); // Can't use get_plugin_settings here as you'll disappear down the recursion rabbithole.
 		$current_settings = array();
-		$query = "SELECT setting,value FROM #__jomres_pluginsettings WHERE prid = 0 AND plugin = '".$this->plugin."' ";
+		$query = "SELECT setting,value FROM #__castor_pluginsettings WHERE prid = 0 AND plugin = '".$this->plugin."' ";
 		$settingsList = doSelectSql($query);
 		foreach ($settingsList as $set) {
 			$current_settings[ $set->setting ] = $set->value;
@@ -58,7 +58,7 @@ class j16000edit_gateway
 		$settings = $MiniComponents->specificEvent('10510', $this->plugin);
 		$active['active'] = array(
 			'default' => '0',
-			'setting_title' => jr_gettext('_JOMRES_STATUS_ACTIVE', '_JOMRES_STATUS_ACTIVE'),
+			'setting_title' => jr_gettext('_CASTOR_STATUS_ACTIVE', '_CASTOR_STATUS_ACTIVE'),
 			'setting_description' => '',
 			'format' => 'boolean',
 			);
@@ -99,17 +99,17 @@ class j16000edit_gateway
 
 		$output['NOTES'] = $settings['notes'];
 
-		$jrtbar = jomres_singleton_abstract::getInstance('jomres_toolbar');
+		$jrtbar = castor_singleton_abstract::getInstance('castor_toolbar');
 		$jrtb = $jrtbar->startTable();
 
-		$jrtb .= $jrtbar->toolbarItem('cancel', JOMRES_SITEPAGE_URL_ADMIN.'&task=list_gateways', '');
+		$jrtb .= $jrtbar->toolbarItem('cancel', CASTOR_SITEPAGE_URL_ADMIN.'&task=list_gateways', '');
 		$jrtb .= $jrtbar->toolbarItem('save', '', '', true, 'save_gateway');
 		$jrtb .= $jrtbar->endTable();
-		$output[ 'JOMRESTOOLBAR' ] = $jrtb;
+		$output[ 'CASTORTOOLBAR' ] = $jrtb;
 
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 		$tmpl->readTemplatesFromInput('edit_gateway.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->addRows('snippets', $snippets);
@@ -119,7 +119,7 @@ class j16000edit_gateway
 		// Allows gateway developers to supply their own html if
 	public function get_snippet_html($key, $setting)
 	{
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 
 		$index = $key;
@@ -134,7 +134,7 @@ class j16000edit_gateway
 
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 		$tmpl->readTemplatesFromInput('edit_gateway_snippet_html.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 
@@ -155,7 +155,7 @@ class j16000edit_gateway
 
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 		$tmpl->readTemplatesFromInput('edit_gateway_snippet_area.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 
@@ -176,7 +176,7 @@ class j16000edit_gateway
 
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 		$tmpl->readTemplatesFromInput('edit_gateway_snippet_input.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 
@@ -187,7 +187,7 @@ class j16000edit_gateway
 	{
 		$index = $key;
 
-		$currency_codes = jomres_singleton_abstract::getInstance('currency_codes');
+		$currency_codes = castor_singleton_abstract::getInstance('currency_codes');
 		$currency_codes_dropdown = $currency_codes->makeCodesDropdown('', false, $index);
 
 		$output = array();
@@ -200,7 +200,7 @@ class j16000edit_gateway
 
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 		$tmpl->readTemplatesFromInput('edit_gateway_snippet_currencycode.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 
@@ -212,10 +212,10 @@ class j16000edit_gateway
 		$index = $key;
 
 		$yesno = array();
-		$yesno[] = jomresHTML::makeOption('0', jr_gettext('_JOMRES_COM_MR_NO', '_JOMRES_COM_MR_NO', false));
-		$yesno[] = jomresHTML::makeOption('1', jr_gettext('_JOMRES_COM_MR_YES', '_JOMRES_COM_MR_YES', false));
+		$yesno[] = castorHTML::makeOption('0', jr_gettext('_CASTOR_COM_MR_NO', '_CASTOR_COM_MR_NO', false));
+		$yesno[] = castorHTML::makeOption('1', jr_gettext('_CASTOR_COM_MR_YES', '_CASTOR_COM_MR_YES', false));
 
-		$input = jomresHTML::selectList($yesno, $index, '', 'value', 'text', $setting['default']);
+		$input = castorHTML::selectList($yesno, $index, '', 'value', 'text', $setting['default']);
 
 		$output = array();
 		$pageoutput = array();
@@ -227,7 +227,7 @@ class j16000edit_gateway
 
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 		$tmpl->readTemplatesFromInput('edit_gateway_snippet_bool.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 
@@ -241,10 +241,10 @@ class j16000edit_gateway
 
 			$options = array();
 			foreach ($setting['options'] as $selection => $text) {
-				$options[] = jomresHTML::makeOption($selection, $text);
+				$options[] = castorHTML::makeOption($selection, $text);
 			}
 
-			$input = jomresHTML::selectList($options, $index, '', 'value', 'text', $setting['default']);
+			$input = castorHTML::selectList($options, $index, '', 'value', 'text', $setting['default']);
 
 			$output = array();
 			$pageoutput = array();
@@ -256,7 +256,7 @@ class j16000edit_gateway
 
 			$pageoutput[ ] = $output;
 			$tmpl = new patTemplate();
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_ADMINISTRATOR);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_ADMINISTRATOR);
 			$tmpl->readTemplatesFromInput('edit_gateway_snippet_select.html');
 			$tmpl->addRows('pageoutput', $pageoutput);
 
@@ -270,3 +270,4 @@ class j16000edit_gateway
 		return null;
 	}
 }
+

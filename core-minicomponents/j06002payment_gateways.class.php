@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,7 +35,7 @@ class j06002payment_gateways
 	 
 	public function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -45,10 +45,10 @@ class j06002payment_gateways
 		$output = array();
 		$rows = array();
 
-		$output['_JOMRES_COM_A_GATEWAYLIST'] = jr_gettext('_JOMRES_COM_A_GATEWAYLIST', '_JOMRES_COM_A_GATEWAYLIST', false);
-		$output['_JOMRES_COM_A_GATEWAYLIST_INFO'] = jr_gettext('_JOMRES_COM_A_GATEWAYLIST_INFO', '_JOMRES_COM_A_GATEWAYLIST_INFO', false);
+		$output['_CASTOR_COM_A_GATEWAYLIST'] = jr_gettext('_CASTOR_COM_A_GATEWAYLIST', '_CASTOR_COM_A_GATEWAYLIST', false);
+		$output['_CASTOR_COM_A_GATEWAYLIST_INFO'] = jr_gettext('_CASTOR_COM_A_GATEWAYLIST_INFO', '_CASTOR_COM_A_GATEWAYLIST_INFO', false);
 
-		jomres_set_page_title( 0 ,  jr_gettext('_JOMRES_COM_A_GATEWAYLIST', '_JOMRES_COM_A_GATEWAYLIST', false) );
+		castor_set_page_title( 0 ,  jr_gettext('_CASTOR_COM_A_GATEWAYLIST', '_CASTOR_COM_A_GATEWAYLIST', false) );
 
 		jr_import("gateway_plugin_settings");
 		$plugin_settings = new gateway_plugin_settings();
@@ -67,38 +67,38 @@ class j06002payment_gateways
 			if ($plugin_settings->gateway_settings[$gateway_name]['override'] != '1') {
 				$r=array();
 
-				$r['TEST_MODE'] = jomres_badge( jr_gettext('_JOMRES_COM_MR_NO', '_JOMRES_COM_MR_NO', false) , 'success');
+				$r['TEST_MODE'] = castor_badge( jr_gettext('_CASTOR_COM_MR_NO', '_CASTOR_COM_MR_NO', false) , 'success');
 				if (isset($plugin_settings->gateway_settings[$gateway_name]['test_mode']) && $plugin_settings->gateway_settings[$gateway_name]['test_mode'] == "1" ) {
-					$r['TEST_MODE'] = jomres_badge( jr_gettext('_JOMRES_COM_MR_YES', '_JOMRES_COM_MR_YES', false) , 'warning');
+					$r['TEST_MODE'] = castor_badge( jr_gettext('_CASTOR_COM_MR_YES', '_CASTOR_COM_MR_YES', false) , 'warning');
 				}
 
-				$r['_JOMRES_COM_A_GATEWAYLIST_TEST_MODE_STR'] = jr_gettext('_JOMRES_COM_A_GATEWAYLIST_TEST_MODE_STR', '_JOMRES_COM_A_GATEWAYLIST_TEST_MODE_STR', false);
+				$r['_CASTOR_COM_A_GATEWAYLIST_TEST_MODE_STR'] = jr_gettext('_CASTOR_COM_A_GATEWAYLIST_TEST_MODE_STR', '_CASTOR_COM_A_GATEWAYLIST_TEST_MODE_STR', false);
 
-				$r['URL'] =jomresURL(JOMRES_SITEPAGE_URL.'&task=editGateway&plugin='.$gateway_name);
+				$r['URL'] =castorURL(CASTOR_SITEPAGE_URL.'&task=editGateway&plugin='.$gateway_name);
 				$r['GATEWAY_NAME'] = ucfirst( str_replace("_" , " " , $gateway_name));
 				$r['IMAGE'] = str_replace( [ '<IMG SRC="' , '" border="0">' ] , '' ,$gw['config_links'][ 'button' ]);
 				$r['LINK'] = $gw['config_links'][ 'link' ];
 				$r['_ADMIN_MENU_SECTIONS_SETTINGS'] = jr_gettext('_ADMIN_MENU_SECTIONS_SETTINGS', '_ADMIN_MENU_SECTIONS_SETTINGS', false);
 				if ($gw[ 'active' ] == "1") {
-					$r['ACTIVE'] = jomres_badge( jr_gettext('_JOMRES_COM_MR_YES', '_JOMRES_COM_MR_YES', false) , 'success');
+					$r['ACTIVE'] = castor_badge( jr_gettext('_CASTOR_COM_MR_YES', '_CASTOR_COM_MR_YES', false) , 'success');
 				} else {
-					$r['ACTIVE'] = jomres_badge(jr_gettext('_JOMRES_COM_MR_NO', '_JOMRES_COM_MR_NO', false) , 'danger');
+					$r['ACTIVE'] = castor_badge(jr_gettext('_CASTOR_COM_MR_NO', '_CASTOR_COM_MR_NO', false) , 'danger');
 				}
-				$r['_JOMRES_COM_A_GATEWAY_ENABLED'] = jr_gettext('_JOMRES_COM_A_GATEWAY_ENABLED', '_JOMRES_COM_A_GATEWAY_ENABLED', false);
+				$r['_CASTOR_COM_A_GATEWAY_ENABLED'] = jr_gettext('_CASTOR_COM_A_GATEWAY_ENABLED', '_CASTOR_COM_A_GATEWAY_ENABLED', false);
 
 
 				$rows[] = $r;
 			}
 		}
 
-		$output['_JOMRES_COM_A_GATEWAYLIST'] = jr_gettext('_JOMRES_COM_A_GATEWAYLIST', '_JOMRES_COM_A_GATEWAYLIST', false);
-		$output['_JOMRES_COM_A_GATEWAYLIST_INFO'] = jr_gettext('_JOMRES_COM_A_GATEWAYLIST_INFO', '_JOMRES_COM_A_GATEWAYLIST_INFO', false);
+		$output['_CASTOR_COM_A_GATEWAYLIST'] = jr_gettext('_CASTOR_COM_A_GATEWAYLIST', '_CASTOR_COM_A_GATEWAYLIST', false);
+		$output['_CASTOR_COM_A_GATEWAYLIST_INFO'] = jr_gettext('_CASTOR_COM_A_GATEWAYLIST_INFO', '_CASTOR_COM_A_GATEWAYLIST_INFO', false);
 
-		jomres_set_page_title( 0 ,  jr_gettext('_JOMRES_COM_A_GATEWAYLIST', '_JOMRES_COM_A_GATEWAYLIST', false) );
+		castor_set_page_title( 0 ,  jr_gettext('_CASTOR_COM_A_GATEWAYLIST', '_CASTOR_COM_A_GATEWAYLIST', false) );
 
 		$pageoutput[] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 		$tmpl->readTemplatesFromInput('payment_gateways.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->addRows('rows', $rows);
@@ -112,3 +112,4 @@ class j06002payment_gateways
 		return null;
 	}
 }
+

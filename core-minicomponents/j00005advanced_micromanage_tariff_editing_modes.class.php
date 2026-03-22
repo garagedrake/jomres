@@ -1,24 +1,24 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('Direct Access to this file is not allowed.');
+defined('_CASTOR_INITCHECK') or die('Direct Access to this file is not allowed.');
 // ################################################################
 	#[AllowDynamicProperties]
 class j00005advanced_micromanage_tariff_editing_modes
 {
 	function __construct()
 	{
-		$MiniComponents =jomres_getSingleton('mcHandler');
+		$MiniComponents =castor_getSingleton('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable=false;
 			return;
@@ -37,9 +37,9 @@ class j00005advanced_micromanage_tariff_editing_modes
 		if ($property_uid > 0) {
 			$mrConfig = getPropertySpecificSettings($property_uid);
 			
-			$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+			$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 			
-			$jomres_menu = jomres_singleton_abstract::getInstance('jomres_menu');
+			$castor_menu = castor_singleton_abstract::getInstance('castor_menu');
 
 			if ($mrConfig[ 'is_real_estate_listing' ] != '1' && $mrConfig['tariffmode'] != '0' && !get_showtime('is_jintour_property')) {
 				switch ($mrConfig['tariffmode']) {
@@ -60,18 +60,18 @@ class j00005advanced_micromanage_tariff_editing_modes
 					// There are some differences between J3 & J4 and the font awesome icons
 					$font_awesome_tariffs = 'fa-usd';
 
-				if (jomres_bootstrap_version() == '5') {
+				if (castor_bootstrap_version() == '5') {
 					$font_awesome_tariffs = 'fa-dollar-sign';
 				}
 
 				if ($thisJRUser->accesslevel >= 70) {
-					$jomres_menu->add_item(80, jr_gettext('_JOMRES_COM_MR_LISTTARIFF_TITLE', '_JOMRES_COM_MR_LISTTARIFF_TITLE', false), $task, $font_awesome_tariffs);
+					$castor_menu->add_item(80, jr_gettext('_CASTOR_COM_MR_LISTTARIFF_TITLE', '_CASTOR_COM_MR_LISTTARIFF_TITLE', false), $task, $font_awesome_tariffs);
 				}
 			}
 			
 			//remove the normal mode tariffs menu
-			if (($mrConfig['tariffmode'] != '0' || get_showtime('is_jintour_property')) && isset($jomres_menu->items['edit_tariffs_normal'])) {
-				unset($jomres_menu->items['edit_tariffs_normal']);
+			if (($mrConfig['tariffmode'] != '0' || get_showtime('is_jintour_property')) && isset($castor_menu->items['edit_tariffs_normal'])) {
+				unset($castor_menu->items['edit_tariffs_normal']);
 			}
 		}
 	}
@@ -82,3 +82,4 @@ class j00005advanced_micromanage_tariff_editing_modes
 		return null;
 	}
 }
+

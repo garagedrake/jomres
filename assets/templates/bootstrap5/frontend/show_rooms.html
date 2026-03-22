@@ -1,4 +1,4 @@
-<patTemplate:tmpl name="pageoutput" unusedvars="import">
+﻿<patTemplate:tmpl name="pageoutput" unusedvars="import">
 	<div class="row gy-2 card-group">
 		<patTemplate:tmpl name="rows">
 			<div class="col-md-12">
@@ -19,7 +19,7 @@
 									<p class="text-success ">{PRICE_PRE_TEXT} {PRICE_PRICE}</p>
 								</div>
 								<div class="col-6">
-									<a href="{AVLCALLINK}" class="btn btn-secondary m-1"><i class="fa fa-calendar"></i> {_JOMRES_COM_A_CLICKFORMOREINFORMATION}</a>
+									<a href="{AVLCALLINK}" class="btn btn-secondary m-1"><i class="fa fa-calendar"></i> {_CASTOR_COM_A_CLICKFORMOREINFORMATION}</a>
 									<a href="{BOOKING_LINK}" class="btn btn-primary m-1">{BOOKING_BUTTON_TEXT}</a>
 								</div>
 							</div>
@@ -46,7 +46,7 @@
 			
 			<script>
                 document.addEventListener('DOMContentLoaded', function(){
-                    jomresJquery('#modal_{RANDOM_IDENTIFIER}').appendTo("body");
+                    castorJquery('#modal_{RANDOM_IDENTIFIER}').appendTo("body");
                 });
 			</script>
 		</patTemplate:tmpl>

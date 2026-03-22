@@ -1,10 +1,10 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 	<script type="text/javascript">
 		<!--
 		function ResizeTableRows() {
 			// select tables by css class name using jquery
-			var tables = jomresJquery('.table');
+			var tables = castorJquery('.table');
 
 			// all tables should have the save number of rows, so just use the first one
 			var totalRows = tables[0].rows.length;
@@ -49,7 +49,7 @@
 			}
 		}
 		// runs automatically after this page has been loaded and rendered
-		jomresJquery(document).ready(function () {
+		castorJquery(document).ready(function () {
 			ResizeTableRows();
 		});
 		//-->
@@ -61,11 +61,11 @@
 		}
 	</style>
 
-	{JOMRES_POPUPURL_GLOBALVAR}
+	{CASTOR_POPUPURL_GLOBALVAR}
 
 	<div class="well">
 		<a href="{RETURN_TO_RESULTS_LINK}" class="btn btn-primary"><i class="fa fa-arrow-left"></i>
-			{_JOMRES_RETURN_TO_RESULTS}</a>
+			{_CASTOR_RETURN_TO_RESULTS}</a>
 	</div>
 	<div class="row">
 		<div class="col-md-3">
@@ -78,22 +78,22 @@
 					<th><!--Image--></th>
 				</tr>
 				<tr>
-					<th>{_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TOWN}</th>
+					<th>{_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TOWN}</th>
 				</tr>
 				<tr>
-					<th>{_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY}</th>
+					<th>{_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY}</th>
 				</tr>
 				<tr>
-					<th>{_JOMRES_FRONT_PTYPE}</th>
+					<th>{_CASTOR_FRONT_PTYPE}</th>
 				</tr>
 				<tr>
-					<th>{_JOMRES_SORTORDER_STARS}</th>
+					<th>{_CASTOR_SORTORDER_STARS}</th>
 				</tr>
 				<tr>
-					<th>{_JOMRES_TARIFFSFROM}</th>
+					<th>{_CASTOR_TARIFFSFROM}</th>
 				</tr>
 				<tr>
-					<th>{_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_MAPPINGLINK}</th>
+					<th>{_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_MAPPINGLINK}</th>
 				</tr>
 				<patTemplate:tmpl name="features" unusedvars="strip">
 					<tr class="{CLASS}">
@@ -150,7 +150,7 @@
 						<td><a href="{MOREINFORMATIONLINK}" class="btn btn-primary"><i class="fa fa-info"></i> {MOREINFORMATION}</a></td>
 					</tr>
 					<tr>
-						<td><a href="{REMOVE_LINK}" class="btn btn-danger"><i class="fa fa-times"></i> {_JOMRES_REMOVE}</a></td>
+						<td><a href="{REMOVE_LINK}" class="btn btn-danger"><i class="fa fa-times"></i> {_CASTOR_REMOVE}</a></td>
 					</tr>
 					</tbody>
 				</table>

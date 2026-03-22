@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * As Bootstrap evolves the font systems used change and names of icons can change too, so I am going to evolve how we show the property stars and going forward we will have a discreet pair of template files for showing stars. This makes it much easier for designers to change the star used without needing to dig into the code, which is an added benefit. Some designers may want to use updated versions of fontawesome, for example.
 	 *
@@ -38,31 +38,31 @@ class j06000show_property_stars
 	 
 	public function __construct($componentArgs)
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			$this->shortcode_data = array(
 				'task' => 'show_property_stars',
-				'info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_STARS',
+				'info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_STARS',
 				'arguments' => array(
 					0 => array(
 						'argument' => 'property_uid',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_STARS_SUMMARY_ARG_PROPERTY_UID',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_STARS_SUMMARY_ARG_PROPERTY_UID',
 						'arg_example' => '1',
 						),
 					1 => array(
 						'argument' => 'alt_stars_number',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_STARS_SUMMARY_ARG_ALT_STARS_NUMBER',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_STARS_SUMMARY_ARG_ALT_STARS_NUMBER',
 						'arg_example' => '5',
 					),
 					2 => array(
 						'argument' => 'alt_template_stars_path',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_STARS_SUMMARY_ARG_ALT_TEMPLATE_PATH',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_STARS_SUMMARY_ARG_ALT_TEMPLATE_PATH',
 						'arg_example' => '/xxx/yyy/',
 					),
 					3 => array(
 						'argument' => 'alt_template_stars_name',
-						'arg_info' => '_JOMRES_SHORTCODES_06000SHOW_PROPERTY_STARS_SUMMARY_ARG_ALT_TEMPLATE_NAME',
+						'arg_info' => '_CASTOR_SHORTCODES_06000SHOW_PROPERTY_STARS_SUMMARY_ARG_ALT_TEMPLATE_NAME',
 						'arg_example' => 'show_property_star.html',
 					)
 				)
@@ -72,7 +72,7 @@ class j06000show_property_stars
 
 		$this->retVals = '';
 
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 
 		if (isset($componentArgs[ 'output_now' ])) {
@@ -84,20 +84,20 @@ class j06000show_property_stars
 		if (isset($componentArgs[ 'property_uid' ])) {
 			$property_uid = (int)$componentArgs[ 'property_uid' ];
 		} else {
-			$property_uid = (int)jomresGetParam($_REQUEST, 'property_uid', 0);
+			$property_uid = (int)castorGetParam($_REQUEST, 'property_uid', 0);
 		}
 
 		if (isset($componentArgs[ 'alt_stars_number' ])) {
 			$alt_stars_number = (int)$componentArgs[ 'alt_stars_number' ];
 		} else {
 			if (isset($_REQUEST['alt_stars_number'])) {
-				$alt_stars_number = (int)jomresGetParam($_REQUEST, 'alt_stars_number', 0);
+				$alt_stars_number = (int)castorGetParam($_REQUEST, 'alt_stars_number', 0);
 			} else {
 				$alt_stars_number = 0;
 			}
 		}
 
-		$template_path = JOMRES_TEMPLATEPATH_FRONTEND;
+		$template_path = CASTOR_TEMPLATEPATH_FRONTEND;
 		if (isset($componentArgs[ 'alt_template_stars_path' ])) {
 			$template_path = (int)$componentArgs[ 'alt_template_stars_path' ];
 		}
@@ -106,7 +106,7 @@ class j06000show_property_stars
 			$template_name = (int)$componentArgs[ 'alt_template_stars_name' ];
 		} else {
 			if (isset($_REQUEST['alt_template_stars_name'])) {
-				$template_name = (int)jomresGetParam($_REQUEST, 'alt_template_stars_name', 0);
+				$template_name = (int)castorGetParam($_REQUEST, 'alt_template_stars_name', 0);
 			} else {
 				$template_name = 'show_property_star.html';
 			}
@@ -118,7 +118,7 @@ class j06000show_property_stars
 				if ($property_uid == 0) {
 					return;
 				} else {
-					$current_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+					$current_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 					$current_property_details->gather_data_multi([$property_uid]);
 					$number_of_stars = $current_property_details->multi_query_result[ $property_uid ]['stars'];
 				}
@@ -141,7 +141,7 @@ class j06000show_property_stars
 		$result = '';
 		if (!empty($stars)) {
 			$tmpl = new patTemplate();
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 			$tmpl->addRows('pageoutput', $stars);
 			$tmpl->readTemplatesFromInput('show_property_stars.html');
 			$result = $tmpl->getParsedTemplate();
@@ -160,3 +160,4 @@ class j06000show_property_stars
 		return $this->retVals;
 	}
 }
+

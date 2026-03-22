@@ -1,24 +1,24 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('Direct Access to this file is not allowed.');
+defined('_CASTOR_INITCHECK') or die('Direct Access to this file is not allowed.');
 // ################################################################
 	#[AllowDynamicProperties]
 /**
 #
  * Configuration panel for enhanced tariffs
  #
-* @package Jomres
+* @package Castor
 #
  */
 class j00501xtariffsenhanced
@@ -31,7 +31,7 @@ class j00501xtariffsenhanced
 	function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents =jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents =castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable=false;
 			return;
@@ -53,16 +53,16 @@ class j00501xtariffsenhanced
 			if (!isset($mrConfig['tariffsenhancedyearstoshow'])) {
 				$mrConfig['tariffsenhancedyearstoshow']=1;
 			}
-			$configurationPanel->startPanel(jr_gettext('JOMRES_COM_A_TARIFFMODE_TARIFFTYPES', 'JOMRES_COM_A_TARIFFMODE_TARIFFTYPES', false));
+			$configurationPanel->startPanel(jr_gettext('CASTOR_COM_A_TARIFFMODE_TARIFFTYPES', 'CASTOR_COM_A_TARIFFMODE_TARIFFTYPES', false));
 
-			$configurationPanel->setleft(jr_gettext("_JOMRES_TARIFFTYPES_MISCSETTINGS_DEFAULT", '_JOMRES_TARIFFTYPES_MISCSETTINGS_DEFAULT', false));
+			$configurationPanel->setleft(jr_gettext("_CASTOR_TARIFFTYPES_MISCSETTINGS_DEFAULT", '_CASTOR_TARIFFTYPES_MISCSETTINGS_DEFAULT', false));
 			$configurationPanel->setmiddle('<input type="number" class="inputbox form-control"  size="5" name="cfg_tariffsenhanceddefault" value="'.$mrConfig['tariffsenhanceddefault'].'" />');
-			$configurationPanel->setright(jr_gettext("_JOMRES_TARIFFTYPES_MISCSETTINGS_DEFAULT_DESC", '_JOMRES_TARIFFTYPES_MISCSETTINGS_DEFAULT_DESC', false));
+			$configurationPanel->setright(jr_gettext("_CASTOR_TARIFFTYPES_MISCSETTINGS_DEFAULT_DESC", '_CASTOR_TARIFFTYPES_MISCSETTINGS_DEFAULT_DESC', false));
 			$configurationPanel->insertSetting();
 
-			$configurationPanel->setleft(jr_gettext("_JOMRES_TARIFFTYPES_MISCSETTINGS_YEARSTOSHOW", '_JOMRES_TARIFFTYPES_MISCSETTINGS_YEARSTOSHOW', false));
+			$configurationPanel->setleft(jr_gettext("_CASTOR_TARIFFTYPES_MISCSETTINGS_YEARSTOSHOW", '_CASTOR_TARIFFTYPES_MISCSETTINGS_YEARSTOSHOW', false));
 			$configurationPanel->setmiddle('<input type="number" class="inputbox form-control"  size="5" name="cfg_tariffsenhancedyearstoshow" value="'.$mrConfig['tariffsenhancedyearstoshow'].'" />');
-			$configurationPanel->setright(jr_gettext("_JOMRES_TARIFFTYPES_MISCSETTINGS_YEARSTOSHOW_DESC", '_JOMRES_TARIFFTYPES_MISCSETTINGS_YEARSTOSHOW_DESC', false));
+			$configurationPanel->setright(jr_gettext("_CASTOR_TARIFFTYPES_MISCSETTINGS_YEARSTOSHOW_DESC", '_CASTOR_TARIFFTYPES_MISCSETTINGS_YEARSTOSHOW_DESC', false));
 			$configurationPanel->insertSetting();
 
 			$configurationPanel->endPanel();
@@ -82,3 +82,4 @@ class j00501xtariffsenhanced
 		return null;
 	}
 }
+

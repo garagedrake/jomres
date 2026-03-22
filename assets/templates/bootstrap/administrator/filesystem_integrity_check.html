@@ -1,8 +1,8 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="nbsp">
 	<script language="JavaScript" type="text/javascript">
 		<!--
-		jomresJquery(document).ready(function () {
+		castorJquery(document).ready(function () {
 			make_datatable('filesystem_integrity_check', '{PAGETITLE}', '{LIVESITE}');
 		});
 		//-->
@@ -22,7 +22,7 @@
 			<tbody>
 			<patTemplate:tmpl name="rows">
 				<tr class="alert {HASH_CLASS}">
-					<td><a href="https://github.com/WoollyinWalesIT/jomres/blob/task_updates/core-minicomponents/{FILENAME}" target="_blank"><i class="fa fa-link" aria-hidden="true"></i></a> {FILENAME}</td>
+					<td><a href="https://github.com/WoollyinWalesIT/castor/blob/task_updates/core-minicomponents/{FILENAME}" target="_blank"><i class="fa fa-link" aria-hidden="true"></i></a> {FILENAME}</td>
 					<!--<td>{LOCAL_HASH}</td>
 					<td>{HASH}</td>-->
 				</tr>

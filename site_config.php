@@ -1,15 +1,15 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 
 /**
  * Default Site Configuration settings
@@ -64,7 +64,7 @@ $jrConfig = array(
   'integratedSearch_guestnumber' => '1',
   'integratedSearch_stars' => '0',
   'showLangDropdown' => '0',
-  'useJomresMessaging' => '1',
+  'useCastorMessaging' => '1',
   'useSubscriptions' => '0',
   'useNewusers' => '0',
   'business_name' => 'XX Edit me in Site Configuration - Your company details XX',
@@ -128,9 +128,9 @@ $jrConfig = array(
   'default_long' => '-0.14317',
   'default_from_address' => '',
   'safe_mode' => '0',
-  'use_jomres_own_editor' => '0',
+  'use_castor_own_editor' => '0',
   'room_lock_timeout' => '3600',
-  'input_filtering' => 'weak', // When html editor is disabled then Jomres will switch to it's own markup editor, not the CMS's and the markup parser then needs this setting to be set to weak so that markup is displayed properly.
+  'input_filtering' => 'weak', // When html editor is disabled then Castor will switch to it's own markup editor, not the CMS's and the markup parser then needs this setting to be set to weak so that markup is displayed properly.
   'html_purifier_allowed_tags' => 'p[class],b,strong,a[href],i,em,img[src],ul,li,h1[class],table[width],table[border],tr,td,th,br',
   'inputs_allowing_html' => 'property_description property_checkin_times property_area_activities property_driving_directions property_airports property_othertransport property_policies_disclaimers email_text description room_description room_class_desc',
   'property_details_in_tabs' => '0',
@@ -195,11 +195,11 @@ $jrConfig = array(
   'amazon_s3_remove_local_copies' => '0',
   'amazon_s3_use_tls' => '0',
   'delete_all_data_on_uninstall' => '0',
-  'jomres_review_left' => '0',
+  'castor_review_left' => '0',
   'review_nag' => '1',
   'send_email_copies_to_site_admins' => '0',
   'optimize_images' => '0',
-  'jomres_db_version' => '0',
+  'castor_db_version' => '0',
   'api_token_lifetime' => '31536000',
   'secret_key_location' => '',
   'gdpr_booking_retention_period' => '365',
@@ -222,5 +222,6 @@ $jrConfig = array(
  //	'secret_setting_use_old_guest_types' => '1',
 	'secret_setting_show_management_view' => '0',
 );
+
 
 

@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,18 +35,18 @@ class j06000show_site_sidebar
 	 
 	public function __construct($componentArgs)
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			return;
 		}
 		$this->retVals = null;
 
-		if ((int)jomres_bootstrap_version() < 5) {
+		if ((int)castor_bootstrap_version() < 5) {
 			return '';
 		}
 
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 
 		if (!isset($componentArgs) || !isset($componentArgs['property_details_object'])) {
@@ -79,47 +79,47 @@ class j06000show_site_sidebar
 		$output['BUSINESS_REGION']      = find_region_name($jrConfig['business_region']);
 		$output['BUSINESS_COUNTRY']     = $jrConfig['business_country'];
 		$output['BUSINESS_POSTCODE']    = $jrConfig['business_postcode'];
-		$output['BUSINESS_TELEPHONE']   = jomres_decode($jrConfig['business_telephone']);
-		$output['BUSINESS_EMAIL']       = jomres_hide_email($jrConfig['business_email']);
+		$output['BUSINESS_TELEPHONE']   = castor_decode($jrConfig['business_telephone']);
+		$output['BUSINESS_EMAIL']       = castor_hide_email($jrConfig['business_email']);
 
 		
-		$output['_JOMRES_CUSTOMCODE_MENUCATEGORIES_LANGUAGES']	= jr_gettext('_JOMRES_CUSTOMCODE_MENUCATEGORIES_LANGUAGES', '_JOMRES_CUSTOMCODE_MENUCATEGORIES_LANGUAGES', false);
+		$output['_CASTOR_CUSTOMCODE_MENUCATEGORIES_LANGUAGES']	= jr_gettext('_CASTOR_CUSTOMCODE_MENUCATEGORIES_LANGUAGES', '_CASTOR_CUSTOMCODE_MENUCATEGORIES_LANGUAGES', false);
 		if ($jrConfig[ 'business_languages' ] != '') {
 			$business_languages = explode(",", $jrConfig[ 'business_languages' ]); // We won't ask admin to add quotes around languages, instead we'll do that ourselves
 			$output['BUSINESS_LANGUAGES'] = sprintf("%s", implode(" ", $business_languages));
 			;
 		}
 
-		$output['JOMRES_SITE_SIDEBAR_INSPIRATION']			= jr_gettext('JOMRES_SITE_SIDEBAR_INSPIRATION', 'JOMRES_SITE_SIDEBAR_INSPIRATION', false);
-		$output['JOMRES_SITE_SIDEBAR_INSPIRATION_BLURB']	= jr_gettext('JOMRES_SITE_SIDEBAR_INSPIRATION_BLURB', 'JOMRES_SITE_SIDEBAR_INSPIRATION_BLURB', false);
+		$output['CASTOR_SITE_SIDEBAR_INSPIRATION']			= jr_gettext('CASTOR_SITE_SIDEBAR_INSPIRATION', 'CASTOR_SITE_SIDEBAR_INSPIRATION', false);
+		$output['CASTOR_SITE_SIDEBAR_INSPIRATION_BLURB']	= jr_gettext('CASTOR_SITE_SIDEBAR_INSPIRATION_BLURB', 'CASTOR_SITE_SIDEBAR_INSPIRATION_BLURB', false);
 
 
-		$query = 'SELECT `propertys_uid`, `published` FROM #__jomres_propertys';
+		$query = 'SELECT `propertys_uid`, `published` FROM #__castor_propertys';
 		$result = doSelectSql($query);
 		$output['NUMBER_OF_PROPERTIES_IN_SYSTEM'] = count($result);
 
-		$query = 'SELECT `rating_id` FROM #__jomres_reviews_ratings';
+		$query = 'SELECT `rating_id` FROM #__castor_reviews_ratings';
 		$result = doSelectSql($query);
 		$output['NUMBER_OF_REVIEWS_IN_SYSTEM'] = count($result);
 
-		$output['JOMRES_SITE_SIDEBAR_HELP_TITLE']					= jr_gettext('JOMRES_SITE_SIDEBAR_HELP_TITLE', 'JOMRES_SITE_SIDEBAR_HELP_TITLE', false);
-		$output['JOMRES_SITE_SIDEBAR_HELP_BLURB']					= jr_gettext('JOMRES_SITE_SIDEBAR_HELP_BLURB', 'JOMRES_SITE_SIDEBAR_HELP_BLURB', false);
-		$output['JOMRES_SITE_SIDEBAR_WHY_TITLE']					= jr_gettext('JOMRES_SITE_SIDEBAR_WHY_TITLE', 'JOMRES_SITE_SIDEBAR_WHY_TITLE', false);
-		$output['JOMRES_SITE_SIDEBAR_WHY_BEST_RATES_TITLE']			= jr_gettext('JOMRES_SITE_SIDEBAR_WHY_BEST_RATES_TITLE', 'JOMRES_SITE_SIDEBAR_WHY_BEST_RATES_TITLE', false);
-		$output['JOMRES_SITE_SIDEBAR_WHY_BEST_RATES_BLURB1']		= jr_gettext('JOMRES_SITE_SIDEBAR_WHY_BEST_RATES_BLURB1', 'JOMRES_SITE_SIDEBAR_WHY_BEST_RATES_BLURB1', false);
-		$output['JOMRES_SITE_SIDEBAR_WHY_BEST_RATES_BLURB2']		= jr_gettext('JOMRES_SITE_SIDEBAR_WHY_BEST_RATES_BLURB2', 'JOMRES_SITE_SIDEBAR_WHY_BEST_RATES_BLURB2', false);
-		$output['JOMRES_SITE_SIDEBAR_WHY_LARGEST_TITLE']			= jr_gettext('JOMRES_SITE_SIDEBAR_WHY_LARGEST_TITLE', 'JOMRES_SITE_SIDEBAR_WHY_LARGEST_TITLE', false);
-		$output['JOMRES_SITE_SIDEBAR_WHY_LARGEST_NUMBER_HOTELS']	= jr_gettext('JOMRES_SITE_SIDEBAR_WHY_LARGEST_NUMBER_HOTELS', 'JOMRES_SITE_SIDEBAR_WHY_LARGEST_NUMBER_HOTELS', false);
-		$output['JOMRES_SITE_SIDEBAR_WHY_LARGEST_NUMBER_REVIEWS']	= jr_gettext('JOMRES_SITE_SIDEBAR_WHY_LARGEST_NUMBER_REVIEWS', 'JOMRES_SITE_SIDEBAR_WHY_LARGEST_NUMBER_REVIEWS', false);
-		$output['JOMRES_SITE_SIDEBAR_WHY_AVAILABLE_TITLE']			= jr_gettext('JOMRES_SITE_SIDEBAR_WHY_AVAILABLE_TITLE', 'JOMRES_SITE_SIDEBAR_WHY_AVAILABLE_TITLE', false);
-		$output['JOMRES_SITE_SIDEBAR_WHY_AVAILABLE_CONTACT']		= jr_gettext('JOMRES_SITE_SIDEBAR_WHY_AVAILABLE_CONTACT', 'JOMRES_SITE_SIDEBAR_WHY_AVAILABLE_CONTACT', false);
-		$output['JOMRES_SITE_SIDEBAR_WHY_AVAILABLE_SUPPORT']		= jr_gettext('JOMRES_SITE_SIDEBAR_WHY_AVAILABLE_SUPPORT', 'JOMRES_SITE_SIDEBAR_WHY_AVAILABLE_SUPPORT', false);
+		$output['CASTOR_SITE_SIDEBAR_HELP_TITLE']					= jr_gettext('CASTOR_SITE_SIDEBAR_HELP_TITLE', 'CASTOR_SITE_SIDEBAR_HELP_TITLE', false);
+		$output['CASTOR_SITE_SIDEBAR_HELP_BLURB']					= jr_gettext('CASTOR_SITE_SIDEBAR_HELP_BLURB', 'CASTOR_SITE_SIDEBAR_HELP_BLURB', false);
+		$output['CASTOR_SITE_SIDEBAR_WHY_TITLE']					= jr_gettext('CASTOR_SITE_SIDEBAR_WHY_TITLE', 'CASTOR_SITE_SIDEBAR_WHY_TITLE', false);
+		$output['CASTOR_SITE_SIDEBAR_WHY_BEST_RATES_TITLE']			= jr_gettext('CASTOR_SITE_SIDEBAR_WHY_BEST_RATES_TITLE', 'CASTOR_SITE_SIDEBAR_WHY_BEST_RATES_TITLE', false);
+		$output['CASTOR_SITE_SIDEBAR_WHY_BEST_RATES_BLURB1']		= jr_gettext('CASTOR_SITE_SIDEBAR_WHY_BEST_RATES_BLURB1', 'CASTOR_SITE_SIDEBAR_WHY_BEST_RATES_BLURB1', false);
+		$output['CASTOR_SITE_SIDEBAR_WHY_BEST_RATES_BLURB2']		= jr_gettext('CASTOR_SITE_SIDEBAR_WHY_BEST_RATES_BLURB2', 'CASTOR_SITE_SIDEBAR_WHY_BEST_RATES_BLURB2', false);
+		$output['CASTOR_SITE_SIDEBAR_WHY_LARGEST_TITLE']			= jr_gettext('CASTOR_SITE_SIDEBAR_WHY_LARGEST_TITLE', 'CASTOR_SITE_SIDEBAR_WHY_LARGEST_TITLE', false);
+		$output['CASTOR_SITE_SIDEBAR_WHY_LARGEST_NUMBER_HOTELS']	= jr_gettext('CASTOR_SITE_SIDEBAR_WHY_LARGEST_NUMBER_HOTELS', 'CASTOR_SITE_SIDEBAR_WHY_LARGEST_NUMBER_HOTELS', false);
+		$output['CASTOR_SITE_SIDEBAR_WHY_LARGEST_NUMBER_REVIEWS']	= jr_gettext('CASTOR_SITE_SIDEBAR_WHY_LARGEST_NUMBER_REVIEWS', 'CASTOR_SITE_SIDEBAR_WHY_LARGEST_NUMBER_REVIEWS', false);
+		$output['CASTOR_SITE_SIDEBAR_WHY_AVAILABLE_TITLE']			= jr_gettext('CASTOR_SITE_SIDEBAR_WHY_AVAILABLE_TITLE', 'CASTOR_SITE_SIDEBAR_WHY_AVAILABLE_TITLE', false);
+		$output['CASTOR_SITE_SIDEBAR_WHY_AVAILABLE_CONTACT']		= jr_gettext('CASTOR_SITE_SIDEBAR_WHY_AVAILABLE_CONTACT', 'CASTOR_SITE_SIDEBAR_WHY_AVAILABLE_CONTACT', false);
+		$output['CASTOR_SITE_SIDEBAR_WHY_AVAILABLE_SUPPORT']		= jr_gettext('CASTOR_SITE_SIDEBAR_WHY_AVAILABLE_SUPPORT', 'CASTOR_SITE_SIDEBAR_WHY_AVAILABLE_SUPPORT', false);
 
 		// Property uid of 0 to the contact form will send emails to the site owner's email address as configured in $jrConfig['business_email']
 		$output['CONTACT_FORM']										= $MiniComponents->specificEvent('06000', 'contactowner', ['property_uid' => 0 , 'noshownow' => true ]);
 
-		$output['JOMRES_SITE_SIDEBAR_WHY_SOCIAL_MEDIA']		= jr_gettext('JOMRES_SITE_SIDEBAR_WHY_SOCIAL_MEDIA', 'JOMRES_SITE_SIDEBAR_WHY_SOCIAL_MEDIA', false);
-		$output['JOMRES_SITE_SIDEBAR_WHY_SOCIAL_MEDIA_LEAD']		= jr_gettext('JOMRES_SITE_SIDEBAR_WHY_SOCIAL_MEDIA_LEAD', 'JOMRES_SITE_SIDEBAR_WHY_SOCIAL_MEDIA_LEAD', false);
+		$output['CASTOR_SITE_SIDEBAR_WHY_SOCIAL_MEDIA']		= jr_gettext('CASTOR_SITE_SIDEBAR_WHY_SOCIAL_MEDIA', 'CASTOR_SITE_SIDEBAR_WHY_SOCIAL_MEDIA', false);
+		$output['CASTOR_SITE_SIDEBAR_WHY_SOCIAL_MEDIA_LEAD']		= jr_gettext('CASTOR_SITE_SIDEBAR_WHY_SOCIAL_MEDIA_LEAD', 'CASTOR_SITE_SIDEBAR_WHY_SOCIAL_MEDIA_LEAD', false);
 
 
 		$social_media_facebook		= [];
@@ -137,7 +137,7 @@ class j06000show_site_sidebar
 				if ($key == 'social_media_whatsapp') {
 					$jrConfig[$key] = '359884339947';
 				} else {
-					$jrConfig[$key] = 'jomres';
+					$jrConfig[$key] = 'castor';
 				}
 			}
 		}
@@ -222,7 +222,7 @@ class j06000show_site_sidebar
 
 		$pageoutput[] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->addRows('social_media_facebook', $social_media_facebook);
@@ -550,3 +550,4 @@ class j06000show_site_sidebar
 
  *
  */
+

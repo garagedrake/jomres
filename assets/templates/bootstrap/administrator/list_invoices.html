@@ -1,18 +1,18 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <script language="javascript" type="text/javascript">
 	<!--
-	jomresJquery(document).ready(function () {
+	castorJquery(document).ready(function () {
 		make_datatable('admin_list_invoices', '{PAGETITLE}', '{LIVESITE}', '{AJAX_URL}');
 		column_ids = new Array(4,6);
 		dataTableSetHiddenColumns('admin_list_invoices', column_ids);
 		
-		var $content = jomresJquery('#filter_invoices').html();
-		jomresJquery('#jomres_admin_toolbar').html($content);
-		jomresJquery('#filter_invoices').empty();
+		var $content = castorJquery('#filter_invoices').html();
+		castorJquery('#castor_admin_toolbar').html($content);
+		castorJquery('#filter_invoices').empty();
 		
-		if (jomresJquery('#jomres_admin_toolbar').html().trim() != '')
-			jomresJquery('#jomres_admin_toolbar').css("display", "block");
+		if (castorJquery('#castor_admin_toolbar').html().trim() != '')
+			castorJquery('#castor_admin_toolbar').css("display", "block");
 	});
 	//-->
 </script>
@@ -20,7 +20,7 @@
 <h2 class="page-header">{PAGETITLE}</h2>
 
 <div id="filter_invoices">
-	<a href="#list_invoices_filters" role="button" data-toggle="modal" class="btn" onclick="jomresJquery('#ui-datepicker-div').appendTo('#list_invoices_filters');"><i class="icon-filter"></i> {HFILTER}</a>
+	<a href="#list_invoices_filters" role="button" data-toggle="modal" class="btn" onclick="castorJquery('#ui-datepicker-div').appendTo('#list_invoices_filters');"><i class="icon-filter"></i> {HFILTER}</a>
 </div>
 
 <table id="admin_list_invoices" class="table table-striped" width="100%">
@@ -47,7 +47,7 @@
 <span class="label label-red">{HUNPAID}</span>
 <span class="label label-black">{HCANCELLED}</span>
 
-<form action="{JOMRES_SITEPAGE_URL_ADMIN}&task=list_invoices" method="post" name="filterInvoices" class="form-horizontal">
+<form action="{CASTOR_SITEPAGE_URL_ADMIN}&task=list_invoices" method="post" name="filterInvoices" class="form-horizontal">
 <div id="list_invoices_filters" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>

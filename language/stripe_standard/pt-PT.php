@@ -1,17 +1,17 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- * @version Jomres 9.24.0
+ * @version Castor 9.24.0
  *
  * @copyright	2005-2021 Vince Wooll
  * Translated to pt-PT by Mario Oliveira, Camara de Lobos, Madeira Island, Portugal, 17Set2010 - www.marioliveira.net - Updated 21Jun2011 for ver 5.1
- * Jomres is currently available for use in all personal or commercial projects under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor is currently available for use in all personal or commercial projects under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 //#################################################################
-defined('_JOMRES_INITCHECK') or die('Direct Access to this file is not allowed.');
+defined('_CASTOR_INITCHECK') or die('Direct Access to this file is not allowed.');
 //#################################################################
 
 
@@ -40,4 +40,5 @@ defined('_JOMRES_INITCHECK') or die('Direct Access to this file is not allowed.'
 	jr_define('STRIPE_STANDARD_PAYMENT_FAILED',"Pagamento falhou!");
 	jr_define('STRIPE_STANDARD_PAYMENT_FAILED_BLURB',"Infelizmente não foi possível confirmar o pagamento. Por favor, volte ao formulário de reserva e tente novamente.");
 	jr_define('STRIPE_STANDARD_PAYMENT_FAILED_BUTTON',"Retornar ao formulário de reserva");
+
 

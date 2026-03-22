@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,19 +36,19 @@ class j06001dashboard_amendbooking_ajax
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		$property_uid = jomresGetParam($_GET, 'property_uid', 0);
+		$property_uid = castorGetParam($_GET, 'property_uid', 0);
 		if ($property_uid == 0) {
 			$property_uid = getDefaultProperty();
 		}
 
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 		if (!in_array($property_uid, $thisJRUser->authorisedProperties)) {
 			return;
 		}
@@ -60,14 +60,14 @@ class j06001dashboard_amendbooking_ajax
 
 		$amendSuccessful = false;
 
-		jr_import('jomres_generic_booking_amend');
-		$bkg = new jomres_generic_booking_amend();
+		jr_import('castor_generic_booking_amend');
+		$bkg = new castor_generic_booking_amend();
 
-		$event_id = jomresGetParam($_GET, 'event_id', '');
-		$room_uid = (int) jomresGetParam($_GET, 'room_uid', 0);
-		$new_room_uid = (int) jomresGetParam($_GET, 'new_room_uid', 0);
-		$contract_uid = (int) jomresGetParam($_GET, 'contract_uid', 0);
-		$this_contract_room_uids = jomresGetParam($_GET, 'this_contract_room_uids', array());
+		$event_id = castorGetParam($_GET, 'event_id', '');
+		$room_uid = (int) castorGetParam($_GET, 'room_uid', 0);
+		$new_room_uid = (int) castorGetParam($_GET, 'new_room_uid', 0);
+		$contract_uid = (int) castorGetParam($_GET, 'contract_uid', 0);
+		$this_contract_room_uids = castorGetParam($_GET, 'this_contract_room_uids', array());
 
 		//check if we have an event id, otherwise stop here
 		if ($event_id == '') {
@@ -83,13 +83,13 @@ class j06001dashboard_amendbooking_ajax
 		$bkg->new_room_uid = $new_room_uid;
 		$bkg->this_contract_room_uids = $this_contract_room_uids;
 		$bkg->note = '';
-		$bkg->arrival = date('Y/m/d', strtotime(jomresGetParam($_GET, 'event_start', '')));
-		$bkg->departure = date('Y/m/d', strtotime(jomresGetParam($_GET, 'event_end', '')));
+		$bkg->arrival = date('Y/m/d', strtotime(castorGetParam($_GET, 'event_start', '')));
+		$bkg->departure = date('Y/m/d', strtotime(castorGetParam($_GET, 'event_end', '')));
 
 		if ((int) $mrConfig[ 'wholeday_booking' ] == 1) {
-			$bkg->last_booked_date = date('Y/m/d', strtotime(jomresGetParam($_GET, 'event_end', '')));
+			$bkg->last_booked_date = date('Y/m/d', strtotime(castorGetParam($_GET, 'event_end', '')));
 		} else {
-			$bkg->last_booked_date = date('Y/m/d', strtotime(jomresGetParam($_GET, 'event_end', '').'-1 day'));
+			$bkg->last_booked_date = date('Y/m/d', strtotime(castorGetParam($_GET, 'event_end', '').'-1 day'));
 		}
 
 		$from = date('Y-m-d', strtotime($bkg->arrival)).'T12:00:00';
@@ -131,3 +131,4 @@ class j06001dashboard_amendbooking_ajax
 		return null;
 	}
 }
+

@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,17 +36,17 @@ class j06002edit_property
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = true;
 
 			return;
 		}
 
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 
 		$mrConfig = getPropertySpecificSettings();
 
@@ -65,11 +65,11 @@ class j06002edit_property
 		}
 
 		//get current property details
-		$current_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+		$current_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 		$current_property_details->gather_data($property_uid);
 		
 		//property types
-		$jomres_property_types = jomres_singleton_abstract::getInstance('jomres_property_types');
+		$castor_property_types = castor_singleton_abstract::getInstance('castor_property_types');
 
 		$output[ 'PROPERTY_NAME' ] = $current_property_details->property_name;
 		$output[ 'PROPERTY_STREET' ] = $current_property_details->property_street;
@@ -87,7 +87,7 @@ class j06002edit_property
 		$output[ 'PERMIT_NUMBER' ] = $current_property_details->permit_number;
 
 		//property region and country
-		$selectedCountry = jomresGetParam($_REQUEST, 'selectedCountry', '');
+		$selectedCountry = castorGetParam($_REQUEST, 'selectedCountry', '');
 		if ($selectedCountry == '') {
 			$selectedCountry = $current_property_details->property_country_code;
 		}
@@ -132,8 +132,8 @@ class j06002edit_property
 				
 				$response = $client->request('GET', $query_string)->getBody()->getContents();
 			} catch (Exception $e) {
-				$jomres_user_feedback = jomres_singleton_abstract::getInstance('jomres_user_feedback');
-				$jomres_user_feedback->construct_message(array('message'=>'Could not get map coordinates', 'css_class'=>'alert-danger alert-error'));
+				$castor_user_feedback = castor_singleton_abstract::getInstance('castor_user_feedback');
+				$castor_user_feedback->construct_message(array('message'=>'Could not get map coordinates', 'css_class'=>'alert-danger alert-error'));
 			}
 			
 			$decoded = json_decode($response);
@@ -176,12 +176,12 @@ class j06002edit_property
 			$output[ 'PROPERTY_OTHERTRANSPORT' ] = editorAreaText('property_othertransport', $current_property_details->property_othertransport, 'property_othertransport', $width, $height, $col, $row);
 			$output[ 'PROPERTY_POLICIES_DISCLAIMERS' ] = editorAreaText('property_policies_disclaimers', $property_policies_disclaimers, 'property_policies_disclaimers', $width, $height, $col, $row);
 		} else {
-			jomres_cmsspecific_addheaddata('javascript', JOMRES_NODE_MODULES_RELPATH.'simple-cmeditor/dist/', 'simplemde.min.js');
-			jomres_cmsspecific_addheaddata('css', JOMRES_NODE_MODULES_RELPATH.'simple-cmeditor/dist/', 'simplemde.min.css');
+			castor_cmsspecific_addheaddata('javascript', CASTOR_NODE_MODULES_RELPATH.'simple-cmeditor/dist/', 'simplemde.min.js');
+			castor_cmsspecific_addheaddata('css', CASTOR_NODE_MODULES_RELPATH.'simple-cmeditor/dist/', 'simplemde.min.css');
 			
 			$output['SIMPLEMDE_JAVASCRIPT'] = '
 				<script type="text/javascript">
-				jomresJquery(document).ready(function () {
+				castorJquery(document).ready(function () {
 					var buttons =  ["bold", "italic", "heading", "strikethrough" , "|" , "unordered-list" , "ordered-list" , "clean-block" , "image" , "table" , "horizontal-rule" , "|", "preview" ];
 					var simplemde = new SimpleMDE({ element: document.getElementById("property_description") ,toolbar: buttons, });
 					var simplemde = new SimpleMDE({ element: document.getElementById("property_checkin_times") ,toolbar: buttons, });
@@ -196,23 +196,23 @@ class j06002edit_property
 			
 			$output[ 'MARKDOWN_BUTTON' ] = $MiniComponents->specificEvent('06000', 'show_markdown_modal', array('output_now' => false));
 			
-			$output[ 'PROPERTY_DESCRIPTION' ] = '<textarea class="inputbox form-control" cols="70" rows="5" id="property_description" name="property_description">'.jomres_remove_HTML($current_property_details->property_description, '').'</textarea>';
-			$output[ 'PROPERTY_CHECKIN_TIMES' ] = '<textarea class="inputbox form-control" cols="70" rows="5" id="property_checkin_times" name="property_checkin_times">'.jomres_remove_HTML($current_property_details->property_checkin_times, '').'</textarea>';
-			$output[ 'PROPERTY_AREA_ACTIVITIES' ] = '<textarea class="inputbox form-control" cols="70" rows="5" id="property_area_activities" name="property_area_activities">'.jomres_remove_HTML($current_property_details->property_area_activities, '').'</textarea>';
-			$output[ 'PROPERTY_DRIVING_DIRECTIONS' ] = '<textarea class="inputbox form-control" cols="70" rows="5" id="property_driving_directions" name="property_driving_directions">'.jomres_remove_HTML($current_property_details->property_driving_directions, '').'</textarea>';
-			$output[ 'PROPERTY_AIRPORTS' ] = '<textarea class="inputbox form-control" cols="70" rows="5" id="property_airports" name="property_airports">'.jomres_remove_HTML($current_property_details->property_airports, '').'</textarea>';
-			$output[ 'PROPERTY_OTHERTRANSPORT' ] = '<textarea class="inputbox form-control" cols="70" rows="5" id="property_othertransport" name="property_othertransport">'.jomres_remove_HTML($current_property_details->property_othertransport, '').'</textarea>';
-			$output[ 'PROPERTY_POLICIES_DISCLAIMERS' ] = '<textarea class="inputbox form-control" cols="70" rows="5" id="property_policies_disclaimers" name="property_policies_disclaimers">'.jomres_remove_HTML($property_policies_disclaimers, '').'</textarea>';
+			$output[ 'PROPERTY_DESCRIPTION' ] = '<textarea class="inputbox form-control" cols="70" rows="5" id="property_description" name="property_description">'.castor_remove_HTML($current_property_details->property_description, '').'</textarea>';
+			$output[ 'PROPERTY_CHECKIN_TIMES' ] = '<textarea class="inputbox form-control" cols="70" rows="5" id="property_checkin_times" name="property_checkin_times">'.castor_remove_HTML($current_property_details->property_checkin_times, '').'</textarea>';
+			$output[ 'PROPERTY_AREA_ACTIVITIES' ] = '<textarea class="inputbox form-control" cols="70" rows="5" id="property_area_activities" name="property_area_activities">'.castor_remove_HTML($current_property_details->property_area_activities, '').'</textarea>';
+			$output[ 'PROPERTY_DRIVING_DIRECTIONS' ] = '<textarea class="inputbox form-control" cols="70" rows="5" id="property_driving_directions" name="property_driving_directions">'.castor_remove_HTML($current_property_details->property_driving_directions, '').'</textarea>';
+			$output[ 'PROPERTY_AIRPORTS' ] = '<textarea class="inputbox form-control" cols="70" rows="5" id="property_airports" name="property_airports">'.castor_remove_HTML($current_property_details->property_airports, '').'</textarea>';
+			$output[ 'PROPERTY_OTHERTRANSPORT' ] = '<textarea class="inputbox form-control" cols="70" rows="5" id="property_othertransport" name="property_othertransport">'.castor_remove_HTML($current_property_details->property_othertransport, '').'</textarea>';
+			$output[ 'PROPERTY_POLICIES_DISCLAIMERS' ] = '<textarea class="inputbox form-control" cols="70" rows="5" id="property_policies_disclaimers" name="property_policies_disclaimers">'.castor_remove_HTML($property_policies_disclaimers, '').'</textarea>';
 		}
 
 		//property type dropdown (extended version, with explanation about what will guests book in this property)
-		$output[ 'HPROPERTY_TYPE' ] = jr_gettext('_JOMRES_FRONT_PTYPE', '_JOMRES_FRONT_PTYPE');
-		$output[ 'PROPERTY_TYPE_DROPDOWN' ] = $jomres_property_types->getPropertyTypeDropdown($current_property_details->ptype_id, true);
+		$output[ 'HPROPERTY_TYPE' ] = jr_gettext('_CASTOR_FRONT_PTYPE', '_CASTOR_FRONT_PTYPE');
+		$output[ 'PROPERTY_TYPE_DROPDOWN' ] = $castor_property_types->getPropertyTypeDropdown($current_property_details->ptype_id, true);
 		
 		//property category dropdown
-		$jomres_property_categories = jomres_singleton_abstract::getInstance('jomres_property_categories');
-		$output[ 'PROPERTY_CATEGORIES_DROPDOWN' ] = $jomres_property_categories->getPropertyCategoriesDropdown($current_property_details->cat_id);
-		$output[ 'HCATEGORY' ] = jr_gettext('_JOMRES_HCATEGORY', '_JOMRES_HCATEGORY');
+		$castor_property_categories = castor_singleton_abstract::getInstance('castor_property_categories');
+		$output[ 'PROPERTY_CATEGORIES_DROPDOWN' ] = $castor_property_categories->getPropertyCategoriesDropdown($current_property_details->cat_id);
+		$output[ 'HCATEGORY' ] = jr_gettext('_CASTOR_HCATEGORY', '_CASTOR_HCATEGORY');
 
 		//property features
 		$propertyFeaturesArray = explode(',', $current_property_details->property_features);
@@ -229,7 +229,7 @@ class j06002edit_property
 					$r[ 'ischecked' ] = 'checked';
 				}
 
-				$r[ 'FEATURE' ] = jomres_makeTooltip($v['abbv'], $v['abbv'], $v['desc'], JOMRES_IMAGELOCATION_RELPATH.'pfeatures/'.$v['image'], '', 'property_feature', array());
+				$r[ 'FEATURE' ] = castor_makeTooltip($v['abbv'], $v['abbv'], $v['desc'], CASTOR_IMAGELOCATION_RELPATH.'pfeatures/'.$v['image'], '', 'property_feature', array());
 
 				$r['FEATURE_NAME'] = $v['abbv'];
 
@@ -250,9 +250,9 @@ class j06002edit_property
 			if (file_exists(JPATH_ADMINISTRATOR.JRDS.'components'.JRDS.'com_multisites'.JRDS.'helpers'.JRDS.'utils.php')) {
 				include_once JPATH_ADMINISTRATOR.JRDS.'components'.JRDS.'com_multisites'.JRDS.'helpers'.JRDS.'utils.php';
 				if (class_exists('MultisitesHelperUtils') && method_exists('MultisitesHelperUtils', 'getComboSiteIDs')) {
-					$comboSiteIDs = MultisitesHelperUtils::getComboSiteIDs($current_property_details->property_site_id, 'property_site_id', jr_gettext('_JOMRES_MULTISITES_SELECT_A_SITE', '_JOMRES_MULTISITES_SELECT_A_SITE', false, false));
+					$comboSiteIDs = MultisitesHelperUtils::getComboSiteIDs($current_property_details->property_site_id, 'property_site_id', jr_gettext('_CASTOR_MULTISITES_SELECT_A_SITE', '_CASTOR_MULTISITES_SELECT_A_SITE', false, false));
 					if (!empty($comboSiteIDs)) {
-						$multisites['LABEL'] = jr_gettext('_JOMRES_MULTISITES_MULTISITES_LABEL', '_JOMRES_MULTISITES_MULTISITES_LABEL');
+						$multisites['LABEL'] = jr_gettext('_CASTOR_MULTISITES_MULTISITES_LABEL', '_CASTOR_MULTISITES_MULTISITES_LABEL');
 						$multisites['MULTISITES_SELECT'] = $comboSiteIDs;
 						$multi = array($multisites);
 					}
@@ -265,80 +265,80 @@ class j06002edit_property
 		$output[ 'LONG' ] = str_replace($sanitised_lat_long_hyphes, "-", $output[ 'LONG' ]) ;
 			
 		//other language strings
-		$output[ 'PAGETITLE' ] = jr_gettext('_JOMRES_COM_MR_VRCT_TAB_PROPERTYS', '_JOMRES_COM_MR_VRCT_TAB_PROPERTYS');
-		$output[ '_JOMRES_REQUIREDFIELDS' ] = jr_gettext('_JOMRES_REQUIREDFIELDS', '_JOMRES_REQUIREDFIELDS');
-		$output[ 'HCOUNTRY' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY');
-		$output[ 'HREGION' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_REGION', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_REGION');
-		$output[ 'HNAME' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_NAME', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_NAME');
-		$output[ 'HSTREET' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_STREET', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_STREET');
-		$output[ 'HTOWN' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TOWN', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TOWN');
-		$output[ 'HPOSTCODE' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_POSTCODE', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_POSTCODE');
-		$output[ 'HTELEPHONE' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE');
-		$output[ 'HFAX' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_FAX', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_FAX', false);
-		$output[ 'HEMAIL' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_EMAIL', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_EMAIL');
-		$output[ 'HPRICE' ] = jr_gettext('_JOMRES_COM_MR_EXTRA_PRICE', '_JOMRES_COM_MR_EXTRA_PRICE');
-		$output[ 'HFEATURES' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_FEATURES', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_FEATURES');
-		$output[ 'HPROPDESCRIPTION' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_PROPDESCRIPTION', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_PROPDESCRIPTION');
-		$output[ 'HCHECKINTIMES' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_CHECKINTIMES', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_CHECKINTIMES');
-		$output[ 'HAREAACTIVITIES' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_AREAACTIVITIES', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_AREAACTIVITIES');
-		$output[ 'HDRIVINGDIRECTIONS' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_DRIVINGDIRECTIONS', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_DRIVINGDIRECTIONS');
-		$output[ 'HAIRPORTS' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_AIRPORTS', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_AIRPORTS');
-		$output[ 'HOTHERTRANSPORT' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_OTHERTRANSPORT', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_OTHERTRANSPORT');
-		$output[ 'HPOLICIESDISCLAIMERS' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_POLICIESDISCLAIMERS', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_POLICIESDISCLAIMERS');
-		$output[ '_JOMRES_METADESCRIPTION'] = jr_gettext('_JOMRES_METADESCRIPTION', '_JOMRES_METADESCRIPTION', false);
-		$output[ '_JOMRES_METAKEYWORDS' ] = jr_gettext('_JOMRES_METAKEYWORDS', '_JOMRES_METAKEYWORDS', false);
-		$output[ '_JOMRES_METATITLE' ] = jr_gettext('_JOMRES_METATITLE', '_JOMRES_METATITLE', false);
-		$output[ 'LATLONG_DESC' ] = jr_gettext('_JOMRES_LATLONG_DESC', '_JOMRES_LATLONG_DESC', false);
-		$output[ 'HLAT' ] = jr_gettext('_JOMRES_LAT', '_JOMRES_LAT', false);
-		$output[ 'HLONG' ] = jr_gettext('_JOMRES_LONG', '_JOMRES_LONG', false);
-		$output[ '_JOMRES_PERMIT_NUMBER_TITLE' ] = jr_gettext('_JOMRES_PERMIT_NUMBER_TITLE', '_JOMRES_PERMIT_NUMBER_TITLE', false);
-		$output[ '_JOMRES_PERMIT_NUMBER_DESCRIPTION' ] = jr_gettext('_JOMRES_PERMIT_NUMBER_DESCRIPTION', '_JOMRES_PERMIT_NUMBER_DESCRIPTION', false);
-		$output[ 'PROPERTY_TYPE_DROPDOWN_WARNING' ] = jr_gettext('_JOMRES_PTYPE_CHANGE_WARNING', '_JOMRES_PTYPE_CHANGE_WARNING', false);
+		$output[ 'PAGETITLE' ] = jr_gettext('_CASTOR_COM_MR_VRCT_TAB_PROPERTYS', '_CASTOR_COM_MR_VRCT_TAB_PROPERTYS');
+		$output[ '_CASTOR_REQUIREDFIELDS' ] = jr_gettext('_CASTOR_REQUIREDFIELDS', '_CASTOR_REQUIREDFIELDS');
+		$output[ 'HCOUNTRY' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY');
+		$output[ 'HREGION' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_REGION', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_REGION');
+		$output[ 'HNAME' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_NAME', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_NAME');
+		$output[ 'HSTREET' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_STREET', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_STREET');
+		$output[ 'HTOWN' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TOWN', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TOWN');
+		$output[ 'HPOSTCODE' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_POSTCODE', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_POSTCODE');
+		$output[ 'HTELEPHONE' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE');
+		$output[ 'HFAX' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_FAX', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_FAX', false);
+		$output[ 'HEMAIL' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_EMAIL', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_EMAIL');
+		$output[ 'HPRICE' ] = jr_gettext('_CASTOR_COM_MR_EXTRA_PRICE', '_CASTOR_COM_MR_EXTRA_PRICE');
+		$output[ 'HFEATURES' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_FEATURES', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_FEATURES');
+		$output[ 'HPROPDESCRIPTION' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_PROPDESCRIPTION', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_PROPDESCRIPTION');
+		$output[ 'HCHECKINTIMES' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_CHECKINTIMES', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_CHECKINTIMES');
+		$output[ 'HAREAACTIVITIES' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_AREAACTIVITIES', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_AREAACTIVITIES');
+		$output[ 'HDRIVINGDIRECTIONS' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_DRIVINGDIRECTIONS', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_DRIVINGDIRECTIONS');
+		$output[ 'HAIRPORTS' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_AIRPORTS', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_AIRPORTS');
+		$output[ 'HOTHERTRANSPORT' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_OTHERTRANSPORT', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_OTHERTRANSPORT');
+		$output[ 'HPOLICIESDISCLAIMERS' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_POLICIESDISCLAIMERS', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_POLICIESDISCLAIMERS');
+		$output[ '_CASTOR_METADESCRIPTION'] = jr_gettext('_CASTOR_METADESCRIPTION', '_CASTOR_METADESCRIPTION', false);
+		$output[ '_CASTOR_METAKEYWORDS' ] = jr_gettext('_CASTOR_METAKEYWORDS', '_CASTOR_METAKEYWORDS', false);
+		$output[ '_CASTOR_METATITLE' ] = jr_gettext('_CASTOR_METATITLE', '_CASTOR_METATITLE', false);
+		$output[ 'LATLONG_DESC' ] = jr_gettext('_CASTOR_LATLONG_DESC', '_CASTOR_LATLONG_DESC', false);
+		$output[ 'HLAT' ] = jr_gettext('_CASTOR_LAT', '_CASTOR_LAT', false);
+		$output[ 'HLONG' ] = jr_gettext('_CASTOR_LONG', '_CASTOR_LONG', false);
+		$output[ '_CASTOR_PERMIT_NUMBER_TITLE' ] = jr_gettext('_CASTOR_PERMIT_NUMBER_TITLE', '_CASTOR_PERMIT_NUMBER_TITLE', false);
+		$output[ '_CASTOR_PERMIT_NUMBER_DESCRIPTION' ] = jr_gettext('_CASTOR_PERMIT_NUMBER_DESCRIPTION', '_CASTOR_PERMIT_NUMBER_DESCRIPTION', false);
+		$output[ 'PROPERTY_TYPE_DROPDOWN_WARNING' ] = jr_gettext('_CASTOR_PTYPE_CHANGE_WARNING', '_CASTOR_PTYPE_CHANGE_WARNING', false);
 
 		if ($jrConfig[ 'limit_property_country' ] == '0') {
-			$change_country_warning[] = array('CHANGECOUNTRYWARNING' => jr_gettext('_JOMRES_EDITPROPERTY_SELECTCOUNTRY', '_JOMRES_EDITPROPERTY_SELECTCOUNTRY', false));
+			$change_country_warning[] = array('CHANGECOUNTRYWARNING' => jr_gettext('_CASTOR_EDITPROPERTY_SELECTCOUNTRY', '_CASTOR_EDITPROPERTY_SELECTCOUNTRY', false));
 		}
 
 		$stars = array();
-		if ($jomres_property_types->property_types[$current_property_details->ptype_id]['has_stars'] == 1) {
+		if ($castor_property_types->property_types[$current_property_details->ptype_id]['has_stars'] == 1) {
 			$s = array();
 			
-			$s[ 'HSTARS' ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_STARS', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_STARS');
+			$s[ 'HSTARS' ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_STARS', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_STARS');
 			//stars dropdown
 			for ($i = 0, $n = 7; $i <= $n; ++$i) {
-				$stars_arr[] = jomresHTML::makeOption($i, $i);
+				$stars_arr[] = castorHTML::makeOption($i, $i);
 			}
-			$s[ 'STARSDROPDOWN' ] = jomresHTML::selectList($stars_arr, 'stars', '', 'value', 'text', $current_property_details->stars);
+			$s[ 'STARSDROPDOWN' ] = castorHTML::selectList($stars_arr, 'stars', '', 'value', 'text', $current_property_details->stars);
 
 			//superior dropdown
 			$yesno = array();
-			$yesno[] = jomresHTML::makeOption('0', jr_gettext('_JOMRES_COM_MR_NO', '_JOMRES_COM_MR_NO', false));
-			$yesno[] = jomresHTML::makeOption('1', jr_gettext('_JOMRES_COM_MR_YES', '_JOMRES_COM_MR_YES', false));
-			$s[ 'SUPERIOR_DROPDOWN' ] = jomresHTML::selectList($yesno, 'superior', '', 'value', 'text', $current_property_details->superior);
-			$s[ 'HSUPERIOR' ] = jr_gettext('JOMRES_SUPERIOR', 'JOMRES_SUPERIOR');
+			$yesno[] = castorHTML::makeOption('0', jr_gettext('_CASTOR_COM_MR_NO', '_CASTOR_COM_MR_NO', false));
+			$yesno[] = castorHTML::makeOption('1', jr_gettext('_CASTOR_COM_MR_YES', '_CASTOR_COM_MR_YES', false));
+			$s[ 'SUPERIOR_DROPDOWN' ] = castorHTML::selectList($yesno, 'superior', '', 'value', 'text', $current_property_details->superior);
+			$s[ 'HSUPERIOR' ] = jr_gettext('CASTOR_SUPERIOR', 'CASTOR_SUPERIOR');
 			
 			$stars[] = $s;
 		}
 		
 		//toolbar
-		$jrtbar = jomres_singleton_abstract::getInstance('jomres_toolbar');
+		$jrtbar = castor_singleton_abstract::getInstance('castor_toolbar');
 		$jrtb = $jrtbar->startTable();
-		$jrtb .= $jrtbar->toolbarItem('cancel', jomresURL(JOMRES_SITEPAGE_URL), '');
+		$jrtb .= $jrtbar->toolbarItem('cancel', castorURL(CASTOR_SITEPAGE_URL), '');
 		if ($jrConfig[ 'allowHTMLeditor' ] != '2' && $jrConfig[ 'allowHTMLeditor' ] != '3') {
 			$jrtb .= $jrtbar->toolbarItem('save', '', '', true, 'save_property');
 		}
 		$jrtb .= $jrtbar->endTable();
-		$output[ 'JOMRESTOOLBAR' ] = $jrtb;
+		$output[ 'CASTORTOOLBAR' ] = $jrtb;
 
-		$output[ 'CANCEL_URL' ] = jomresURL(JOMRES_SITEPAGE_URL.'&task=cpanel');
+		$output[ 'CANCEL_URL' ] = castorURL(CASTOR_SITEPAGE_URL.'&task=cpanel');
 
 		//approval warning
-		$approval_warning[] = array('APPROVALWARNING' => jr_gettext('_JOMRES_EDITPROPERTY_APPROVAL_WARNING', '_JOMRES_EDITPROPERTY_APPROVAL_WARNING', false));
+		$approval_warning[] = array('APPROVALWARNING' => jr_gettext('_CASTOR_EDITPROPERTY_APPROVAL_WARNING', '_CASTOR_EDITPROPERTY_APPROVAL_WARNING', false));
 
 		//display template
 		$pageoutput[] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 
 		if ($mrConfig[ 'is_real_estate_listing' ] == 1) {
 			$tmpl->readTemplatesFromInput('edit_property_realestate.html');
@@ -368,30 +368,30 @@ class j06002edit_property
 	{
 		$output = array();
 
-		$output[ ] = jr_gettext('_JOMRES_FRONT_PTYPE', '_JOMRES_FRONT_PTYPE');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_REGION', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_REGION');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_NAME', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_NAME');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_STREET', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_STREET');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TOWN', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TOWN');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_POSTCODE', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_POSTCODE');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_FAX', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_FAX');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_EMAIL', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_EMAIL');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_STARS', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_STARS');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_FEATURES', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_FEATURES');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_PROPDESCRIPTION', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_PROPDESCRIPTION');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_CHECKINTIMES', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_CHECKINTIMES');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_AREAACTIVITIES', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_AREAACTIVITIES');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_DRIVINGDIRECTIONS', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_DRIVINGDIRECTIONS');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_AIRPORTS', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_AIRPORTS');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_OTHERTRANSPORT', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_OTHERTRANSPORT');
-		$output[ ] = jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_POLICIESDISCLAIMERS', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_POLICIESDISCLAIMERS');
-		$output[ ] = jr_gettext('_JOMRES_EDITPROPERTY_SELECTCOUNTRY', '_JOMRES_EDITPROPERTY_SELECTCOUNTRY');
-		$output[ ] = jr_gettext('_JOMRES_EDITPROPERTY_SAVEBEFOREUPLOAD', '_JOMRES_EDITPROPERTY_SAVEBEFOREUPLOAD');
-		$output[ ] = jr_gettext('_JOMRES_UPLOAD_IMAGE', '_JOMRES_UPLOAD_IMAGE');
-		$output[ ] = jr_gettext('_JOMRES_EDITPROPERTY_CONNOTDELETE1', '_JOMRES_EDITPROPERTY_CONNOTDELETE1');
-		$output[ ] = jr_gettext('_JOMRES_LATLONG_DESC', '_JOMRES_LATLONG_DESC');
+		$output[ ] = jr_gettext('_CASTOR_FRONT_PTYPE', '_CASTOR_FRONT_PTYPE');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_COUNTRY');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_REGION', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_REGION');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_NAME', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_NAME');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_STREET', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_STREET');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TOWN', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TOWN');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_POSTCODE', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_POSTCODE');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_FAX', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_FAX');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_EMAIL', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_EMAIL');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_STARS', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_STARS');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_FEATURES', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_FEATURES');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_PROPDESCRIPTION', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_PROPDESCRIPTION');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_CHECKINTIMES', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_CHECKINTIMES');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_AREAACTIVITIES', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_AREAACTIVITIES');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_DRIVINGDIRECTIONS', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_DRIVINGDIRECTIONS');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_AIRPORTS', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_AIRPORTS');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_OTHERTRANSPORT', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_OTHERTRANSPORT');
+		$output[ ] = jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_POLICIESDISCLAIMERS', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_POLICIESDISCLAIMERS');
+		$output[ ] = jr_gettext('_CASTOR_EDITPROPERTY_SELECTCOUNTRY', '_CASTOR_EDITPROPERTY_SELECTCOUNTRY');
+		$output[ ] = jr_gettext('_CASTOR_EDITPROPERTY_SAVEBEFOREUPLOAD', '_CASTOR_EDITPROPERTY_SAVEBEFOREUPLOAD');
+		$output[ ] = jr_gettext('_CASTOR_UPLOAD_IMAGE', '_CASTOR_UPLOAD_IMAGE');
+		$output[ ] = jr_gettext('_CASTOR_EDITPROPERTY_CONNOTDELETE1', '_CASTOR_EDITPROPERTY_CONNOTDELETE1');
+		$output[ ] = jr_gettext('_CASTOR_LATLONG_DESC', '_CASTOR_LATLONG_DESC');
 
 		foreach ($output as $o) {
 			echo $o;
@@ -405,3 +405,4 @@ class j06002edit_property
 		return null;
 	}
 }
+

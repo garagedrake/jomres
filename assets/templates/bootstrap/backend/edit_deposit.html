@@ -1,8 +1,8 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 	<h2 class="page-header">{PAGETITLE}</h2>
 
-	<form action="{JOMRES_SITEPAGE_URL_NOSEF}" method="post" name="adminForm" class="form-horizontal">
+	<form action="{CASTOR_SITEPAGE_URL_NOSEF}" method="post" name="adminForm" class="form-horizontal">
 		<fieldset>
 			<div class="control-group">
 				<label class="control-label" for="feature_description">{HBOOKINGNUMBER}</label>
@@ -33,7 +33,7 @@
 				</div>
 			</div>
 			<div class="control-group">
-				<label class="control-label" for="deposit_received">{_JOMRES_COM_MR_EB_PAYM_DEPOSIT_PAID_UPDATE}</label>
+				<label class="control-label" for="deposit_received">{_CASTOR_COM_MR_EB_PAYM_DEPOSIT_PAID_UPDATE}</label>
 
 				<div class="controls">
 					<input type="text" class="inputbox" size="18" name="deposit_received" value="{DEPOSITREQUIREDRAW}"/>
@@ -42,7 +42,7 @@
 			
 			
 			<div class="form-actions">
-				{JOMRESTOOLBAR}
+				{CASTORTOOLBAR}
 			</div>
 			<input type="hidden" name="contractUid" value="{CONTRACTUID}"/>
 			<input type="hidden" name="guestUid" value="{GUESTUID}"/>

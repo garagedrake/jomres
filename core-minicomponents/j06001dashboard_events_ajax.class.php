@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,7 +36,7 @@ class j06001dashboard_events_ajax
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -44,15 +44,15 @@ class j06001dashboard_events_ajax
 		}
 		$this->retVals = null;
 		
-		jr_import('jomres_encryption');
-		$jomres_encryption = new jomres_encryption();
+		jr_import('castor_encryption');
+		$castor_encryption = new castor_encryption();
 		
-		$property_uid = jomresGetParam($_GET, 'property_uid', 0);
+		$property_uid = castorGetParam($_GET, 'property_uid', 0);
 		if ($property_uid == 0) {
 			$property_uid = getDefaultProperty();
 		}
 
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 		if (!in_array($property_uid, $thisJRUser->authorisedProperties)) {
 			return;
 		}
@@ -73,7 +73,7 @@ class j06001dashboard_events_ajax
 		$guest_contacts = array();
 		$result = array();
 
-		if (jomres_bootstrap_version() > 4) {
+		if (castor_bootstrap_version() > 4) {
 			$img_pending = 'badge bg-info';
 			$img_arrivetoday = 'badge bg-primary';
 			$img_resident = 'badge bg-success';
@@ -95,8 +95,8 @@ class j06001dashboard_events_ajax
 
 
 
-		$from = jomresGetParam($_GET, 'start', '');
-		$to = jomresGetParam($_GET, 'end', '');
+		$from = castorGetParam($_GET, 'start', '');
+		$to = castorGetParam($_GET, 'end', '');
 
 		$from = date('Y/m/d', strtotime($from));
 		$to = date('Y/m/d', strtotime($to));
@@ -113,8 +113,8 @@ class j06001dashboard_events_ajax
 						a.tag,
 						b.room_uid,
 						b.black_booking 
-					FROM #__jomres_contracts a
-					LEFT JOIN #__jomres_room_bookings b ON a.contract_uid = b.contract_uid AND b.property_uid = '" .(int) $property_uid."' 
+					FROM #__castor_contracts a
+					LEFT JOIN #__castor_room_bookings b ON a.contract_uid = b.contract_uid AND b.property_uid = '" .(int) $property_uid."' 
 					WHERE ( a.property_uid = '" .(int) $property_uid."' AND a.cancelled != '1' ) 
 					AND ( 
 						 ( DATE_FORMAT('" .$from."', '%Y/%m/%d') 
@@ -148,7 +148,7 @@ class j06001dashboard_events_ajax
 			}
 
 			$all_black_booking_reasons = array();
-			$query = "SELECT `contract_uid` , `special_reqs` FROM #__jomres_contracts WHERE property_uid = " .(int) $property_uid ;
+			$query = "SELECT `contract_uid` , `special_reqs` FROM #__castor_contracts WHERE property_uid = " .(int) $property_uid ;
 			$notesList = doSelectSql($query);
 			if (!empty($notesList)) {
 				foreach ($notesList as $note) {
@@ -165,12 +165,12 @@ class j06001dashboard_events_ajax
 				$room_uids[$contract->contract_uid][] = $contract->room_uid;
 			}
 			if (!empty($guest_uids)) {
-				$query = 'SELECT guests_uid , enc_firstname , enc_surname , enc_tel_landline , enc_email  FROM #__jomres_guests WHERE guests_uid IN ('.jomres_implode($guest_uids).') ';
+				$query = 'SELECT guests_uid , enc_firstname , enc_surname , enc_tel_landline , enc_email  FROM #__castor_guests WHERE guests_uid IN ('.castor_implode($guest_uids).') ';
 				$guestsList = doSelectSql($query);
 
 				foreach ($guestsList as $g) {
-					$guests[$g->guests_uid] = ucfirst(jomres_decode($jomres_encryption->decrypt($g->enc_firstname))).' '.ucfirst(jomres_decode($jomres_encryption->decrypt($g->enc_surname)));
-					$guest_contacts[$g->guests_uid] = array ("telephone" => jomres_decode($jomres_encryption->decrypt($g->enc_tel_landline)) , "email" => restore_task_specific_email_address(jomres_decode($jomres_encryption->decrypt($g->enc_email))) );
+					$guests[$g->guests_uid] = ucfirst(castor_decode($castor_encryption->decrypt($g->enc_firstname))).' '.ucfirst(castor_decode($castor_encryption->decrypt($g->enc_surname)));
+					$guest_contacts[$g->guests_uid] = array ("telephone" => castor_decode($castor_encryption->decrypt($g->enc_tel_landline)) , "email" => restore_task_specific_email_address(castor_decode($castor_encryption->decrypt($g->enc_email))) );
 				}
 			}
 
@@ -187,9 +187,9 @@ class j06001dashboard_events_ajax
 
 				if (!is_channel_property($property_uid)) {
 					if ((int) $c->black_booking == 1) {
-						$url = JOMRES_SITEPAGE_URL_NOSEF.'&task=show_black_booking&contract_uid='.$c->contract_uid.'&thisProperty='.$property_uid;
+						$url = CASTOR_SITEPAGE_URL_NOSEF.'&task=show_black_booking&contract_uid='.$c->contract_uid.'&thisProperty='.$property_uid;
 					} else {
-						$url = JOMRES_SITEPAGE_URL_NOSEF.'&task=edit_booking&contract_uid='.$c->contract_uid.'&thisProperty='.$property_uid;
+						$url = CASTOR_SITEPAGE_URL_NOSEF.'&task=edit_booking&contract_uid='.$c->contract_uid.'&thisProperty='.$property_uid;
 					}
 				} else {
 					$url = '';
@@ -239,19 +239,19 @@ class j06001dashboard_events_ajax
 				if (isset($guests[$c->guest_uid]) && $guests[$c->guest_uid] != '') {
 					$title = $guests[$c->guest_uid];
 				} else {
-					$title = jr_gettext('_JOMRES_COM_AVLCAL_BLACK_KEY', '_JOMRES_COM_AVLCAL_BLACK_KEY', false);
+					$title = jr_gettext('_CASTOR_COM_AVLCAL_BLACK_KEY', '_CASTOR_COM_AVLCAL_BLACK_KEY', false);
 				}
 
 				$description = '';
 				if (isset($guests[$c->guest_uid]) && $guests[$c->guest_uid] != '') {
-					$description .= jr_gettext('_JOMRES_BOOKING_NUMBER', '_JOMRES_BOOKING_NUMBER', false).': '.$c->tag.'<br/>';
+					$description .= jr_gettext('_CASTOR_BOOKING_NUMBER', '_CASTOR_BOOKING_NUMBER', false).': '.$c->tag.'<br/>';
 				}
-				$description .= jr_gettext('_JOMRES_HFROM', '_JOMRES_HFROM', false).': '.outputDate($c->arrival).'<br/>';
-				$description .= jr_gettext('_JOMRES_HTO', '_JOMRES_HTO', false).': '.outputDate($c->departure).'<br/><br/>';
+				$description .= jr_gettext('_CASTOR_HFROM', '_CASTOR_HFROM', false).': '.outputDate($c->arrival).'<br/>';
+				$description .= jr_gettext('_CASTOR_HTO', '_CASTOR_HTO', false).': '.outputDate($c->departure).'<br/><br/>';
 				
 				if (isset($guest_contacts[$c->guest_uid])) {
-					$description .= jr_gettext('_JOMRES_COM_MR_EB_GUEST_JOMRES_EMAIL_EXPL', '_JOMRES_COM_MR_EB_GUEST_JOMRES_EMAIL_EXPL', false).': '.$guest_contacts[$c->guest_uid]['email'].'<br/>';
-					$description .= jr_gettext('_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE', '_JOMRES_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE', false).': '.$guest_contacts[$c->guest_uid]['telephone'].'';
+					$description .= jr_gettext('_CASTOR_COM_MR_EB_GUEST_CASTOR_EMAIL_EXPL', '_CASTOR_COM_MR_EB_GUEST_CASTOR_EMAIL_EXPL', false).': '.$guest_contacts[$c->guest_uid]['email'].'<br/>';
+					$description .= jr_gettext('_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE', '_CASTOR_COM_MR_VRCT_PROPERTY_HEADER_TELEPHONE', false).': '.$guest_contacts[$c->guest_uid]['telephone'].'';
 				}
 				
 				
@@ -302,3 +302,4 @@ class j06001dashboard_events_ajax
 		return $this->retVals;
 	}
 }
+

@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,7 +36,7 @@ class j06002child_policies
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -45,32 +45,32 @@ class j06002child_policies
 		
 		$property_uid = getDefaultProperty();
 
-		jr_import('jomres_child_policies');
-		$jomres_child_policies = new jomres_child_policies($property_uid);
+		jr_import('castor_child_policies');
+		$castor_child_policies = new castor_child_policies($property_uid);
 
-		$output[ 'JOMRES_POLICIES_CHILDREN' ] = jr_gettext('JOMRES_POLICIES_CHILDREN', 'JOMRES_POLICIES_CHILDREN', false);
-		$output[ 'JOMRES_POLICIES_CHILDREN_AGES_ALLOWED' ] = jr_gettext('JOMRES_POLICIES_CHILDREN_AGES_ALLOWED', 'JOMRES_POLICIES_CHILDREN_AGES_ALLOWED', false);
-		$output[ 'JOMRES_POLICIES_CHILDREN_CHILD_RATE_NEW' ] = jr_gettext('JOMRES_POLICIES_CHILDREN_CHILD_RATE_NEW', 'JOMRES_POLICIES_CHILDREN_CHILD_RATE_NEW', false);
-		$output[ 'JOMRES_POLICIES_CHILDREN_CHILD_RATE_AGE_FROM' ] = jr_gettext('JOMRES_POLICIES_CHILDREN_CHILD_RATE_AGE_FROM', 'JOMRES_POLICIES_CHILDREN_CHILD_RATE_AGE_FROM', false);
-		$output[ 'JOMRES_POLICIES_CHILDREN_CHILD_RATE_AGE_TO' ] = jr_gettext('JOMRES_POLICIES_CHILDREN_CHILD_RATE_AGE_TO', 'JOMRES_POLICIES_CHILDREN_CHILD_RATE_AGE_TO', false);
-		$output[ 'JOMRES_POLICIES_CHILDREN_CHILD_RATE_MODEL' ] = jr_gettext('JOMRES_POLICIES_CHILDREN_CHILD_RATE_MODEL', 'JOMRES_POLICIES_CHILDREN_CHILD_RATE_MODEL', false);
-		$output[ 'JOMRES_POLICIES_CHILDREN_CHILD_RATE_PRICE' ] = jr_gettext('JOMRES_POLICIES_CHILDREN_CHILD_RATE_PRICE', 'JOMRES_POLICIES_CHILDREN_CHILD_RATE_PRICE', false);
+		$output[ 'CASTOR_POLICIES_CHILDREN' ] = jr_gettext('CASTOR_POLICIES_CHILDREN', 'CASTOR_POLICIES_CHILDREN', false);
+		$output[ 'CASTOR_POLICIES_CHILDREN_AGES_ALLOWED' ] = jr_gettext('CASTOR_POLICIES_CHILDREN_AGES_ALLOWED', 'CASTOR_POLICIES_CHILDREN_AGES_ALLOWED', false);
+		$output[ 'CASTOR_POLICIES_CHILDREN_CHILD_RATE_NEW' ] = jr_gettext('CASTOR_POLICIES_CHILDREN_CHILD_RATE_NEW', 'CASTOR_POLICIES_CHILDREN_CHILD_RATE_NEW', false);
+		$output[ 'CASTOR_POLICIES_CHILDREN_CHILD_RATE_AGE_FROM' ] = jr_gettext('CASTOR_POLICIES_CHILDREN_CHILD_RATE_AGE_FROM', 'CASTOR_POLICIES_CHILDREN_CHILD_RATE_AGE_FROM', false);
+		$output[ 'CASTOR_POLICIES_CHILDREN_CHILD_RATE_AGE_TO' ] = jr_gettext('CASTOR_POLICIES_CHILDREN_CHILD_RATE_AGE_TO', 'CASTOR_POLICIES_CHILDREN_CHILD_RATE_AGE_TO', false);
+		$output[ 'CASTOR_POLICIES_CHILDREN_CHILD_RATE_MODEL' ] = jr_gettext('CASTOR_POLICIES_CHILDREN_CHILD_RATE_MODEL', 'CASTOR_POLICIES_CHILDREN_CHILD_RATE_MODEL', false);
+		$output[ 'CASTOR_POLICIES_CHILDREN_CHILD_RATE_PRICE' ] = jr_gettext('CASTOR_POLICIES_CHILDREN_CHILD_RATE_PRICE', 'CASTOR_POLICIES_CHILDREN_CHILD_RATE_PRICE', false);
 
-		$output[ 'CHILD_MIN_AGE' ] = jomresHTML::integerSelectList(0, 17, 1, 'child_min_age', '', $jomres_child_policies->child_policies['child_min_age'], '');
-		$output[ 'NEW_RATE_URL' ] = JOMRES_SITEPAGE_URL_NOSEF.'&task=edit_child_rate&id=0';
+		$output[ 'CHILD_MIN_AGE' ] = castorHTML::integerSelectList(0, 17, 1, 'child_min_age', '', $castor_child_policies->child_policies['child_min_age'], '');
+		$output[ 'NEW_RATE_URL' ] = CASTOR_SITEPAGE_URL_NOSEF.'&task=edit_child_rate&id=0';
 
-		jr_import('jomres_child_rates');
-		$jomres_child_rates = new jomres_child_rates($property_uid);
+		jr_import('castor_child_rates');
+		$castor_child_rates = new castor_child_rates($property_uid);
 
 		$rows = array();
-		if (!empty($jomres_child_rates->child_rates)) {
-			foreach ($jomres_child_rates->child_rates as $id => $child_rate) {
+		if (!empty($castor_child_rates->child_rates)) {
+			foreach ($castor_child_rates->child_rates as $id => $child_rate) {
 				$r = array();
 
-				$toolbar = jomres_singleton_abstract::getInstance('jomresItemToolbar');
+				$toolbar = castor_singleton_abstract::getInstance('castorItemToolbar');
 				$toolbar->newToolbar();
-				$toolbar->addItem('fa fa-pencil-square-o', 'btn btn-info', '', jomresURL(JOMRES_SITEPAGE_URL_NOSEF.'&task=edit_child_rate&id='.(int) $id), jr_gettext('COMMON_EDIT', 'COMMON_EDIT', false));
-				$toolbar->addSecondaryItem('fa fa-trash-o', '', '', jomresURL(JOMRES_SITEPAGE_URL_NOSEF.'&task=delete_child_rate&id='.(int) $id), jr_gettext('COMMON_DELETE', 'COMMON_DELETE', false));
+				$toolbar->addItem('fa fa-pencil-square-o', 'btn btn-info', '', castorURL(CASTOR_SITEPAGE_URL_NOSEF.'&task=edit_child_rate&id='.(int) $id), jr_gettext('COMMON_EDIT', 'COMMON_EDIT', false));
+				$toolbar->addSecondaryItem('fa fa-trash-o', '', '', castorURL(CASTOR_SITEPAGE_URL_NOSEF.'&task=delete_child_rate&id='.(int) $id), jr_gettext('COMMON_DELETE', 'COMMON_DELETE', false));
 
 				$r['EDITLINK'] = $toolbar->getToolbar();
 
@@ -79,27 +79,27 @@ class j06002child_policies
 				$r['PRICE'] = $child_rate['price'];
 
 				if ($child_rate['model'] == 'per_night') {
-					$r['MODEL'] = jr_gettext('JOMRES_POLICIES_CHILDREN_CHARGE_MODEL_PER_NIGHT', 'JOMRES_POLICIES_CHILDREN_CHARGE_MODEL_PER_NIGHT', false);
+					$r['MODEL'] = jr_gettext('CASTOR_POLICIES_CHILDREN_CHARGE_MODEL_PER_NIGHT', 'CASTOR_POLICIES_CHILDREN_CHARGE_MODEL_PER_NIGHT', false);
 				} else {
-					$r['MODEL'] = jr_gettext('JOMRES_POLICIES_CHILDREN_CHARGE_MODEL_PER_STAY', 'JOMRES_POLICIES_CHILDREN_CHARGE_MODEL_PER_STAY', false);
+					$r['MODEL'] = jr_gettext('CASTOR_POLICIES_CHILDREN_CHARGE_MODEL_PER_STAY', 'CASTOR_POLICIES_CHILDREN_CHARGE_MODEL_PER_STAY', false);
 				}
 
 				$rows[] = $r;
 			}
 		}
 
-		$jrtbar = jomres_singleton_abstract::getInstance('jomres_toolbar');
+		$jrtbar = castor_singleton_abstract::getInstance('castor_toolbar');
 		$jrtb = $jrtbar->startTable();
-		$image = $jrtbar->makeImageValid(JOMRES_IMAGES_RELPATH.'jomresimages/small/Save.png');
-		$link = JOMRES_SITEPAGE_URL;
-		$jrtb .= $jrtbar->toolbarItem('cancel', JOMRES_SITEPAGE_URL, '');
-		$jrtb .= $jrtbar->customToolbarItem('save_child_policies', $link, jr_gettext('_JOMRES_COM_MR_SAVE', '_JOMRES_COM_MR_SAVE', false), $submitOnClick = true, $submitTask = 'save_child_policies', $image);
+		$image = $jrtbar->makeImageValid(CASTOR_IMAGES_RELPATH.'castorimages/small/Save.png');
+		$link = CASTOR_SITEPAGE_URL;
+		$jrtb .= $jrtbar->toolbarItem('cancel', CASTOR_SITEPAGE_URL, '');
+		$jrtb .= $jrtbar->customToolbarItem('save_child_policies', $link, jr_gettext('_CASTOR_COM_MR_SAVE', '_CASTOR_COM_MR_SAVE', false), $submitOnClick = true, $submitTask = 'save_child_policies', $image);
 		$jrtb .= $jrtbar->endTable();
-		$output[ 'JOMRESTOOLBAR' ] = $jrtb;
+		$output[ 'CASTORTOOLBAR' ] = $jrtb;
 
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 		$tmpl->readTemplatesFromInput('child_policies.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->addRows('rows', $rows);
@@ -112,3 +112,4 @@ class j06002child_policies
 		return null;
 	}
 }
+

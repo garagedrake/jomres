@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,7 +36,7 @@ class j06002save_normalmode_tariffs
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -53,7 +53,7 @@ class j06002save_normalmode_tariffs
 			return;
 		}
 		
-		$basic_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+		$basic_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 		$basic_property_details->gather_data($defaultProperty);
 		
 		//rooms object
@@ -71,18 +71,18 @@ class j06002save_normalmode_tariffs
 			$jrportal_rates->property_uid 	= $defaultProperty;
 			
 			//rate details
-			$jrportal_rates->tarifftype_id 	= (int)jomresGetParam($_POST, 'tarifftypeid', 0);
-			$jrportal_rates->rates_uid 		= (int)jomresGetParam($_POST, 'rates_uid', 0);
-			$jrportal_rates->roomclass_uid 	= (int)jomresGetParam($_POST, 'roomtype', $jrportal_rates->rates_defaults['roomclass_uid']);
-			$jrportal_rates->maxpeople 		= (int)jomresGetParam($_POST, 'max_people', $jrportal_rates->rates_defaults['maxpeople']);
+			$jrportal_rates->tarifftype_id 	= (int)castorGetParam($_POST, 'tarifftypeid', 0);
+			$jrportal_rates->rates_uid 		= (int)castorGetParam($_POST, 'rates_uid', 0);
+			$jrportal_rates->roomclass_uid 	= (int)castorGetParam($_POST, 'roomtype', $jrportal_rates->rates_defaults['roomclass_uid']);
+			$jrportal_rates->maxpeople 		= (int)castorGetParam($_POST, 'max_people', $jrportal_rates->rates_defaults['maxpeople']);
 			$jrportal_rates->validfrom 		= date("Y/m/d");
 			$jrportal_rates->validto 		= date("Y/m/d", strtotime('+10 years'));
 			
-			$roomrateperday 				= jomresGetParam($_POST, 'roomrateperday', (float)$jrportal_rates->rates_defaults['roomrateperday']);
+			$roomrateperday 				= castorGetParam($_POST, 'roomrateperday', (float)$jrportal_rates->rates_defaults['roomrateperday']);
 			$jrportal_rates->roomrateperday = convert_entered_price_into_safe_float($roomrateperday);
 			
 			//room details
-			$jrportal_rooms->room_uid 		= (int)jomresGetParam($_POST, 'room_uid', 0);
+			$jrportal_rooms->room_uid 		= (int)castorGetParam($_POST, 'room_uid', 0);
 			$jrportal_rooms->room_classes_uid = $jrportal_rates->roomclass_uid;
 			$jrportal_rooms->max_people 	= $jrportal_rates->maxpeople;
 			
@@ -97,13 +97,13 @@ class j06002save_normalmode_tariffs
 			//we use save_rate_legacy only for advanced and normal tariff editing modes, micromanage uses save_rate()
 			$jrportal_rates->save_rate_legacy();
 		} else { //MRPs
-			$posted_number_of_rooms 	= jomresGetParam($_POST, 'numberofRooms', array());
-			$posted_existing_room_uids 	= jomresGetParam($_POST, 'existingrooms', array());
-			$posted_rates_uid 			= jomresGetParam($_POST, 'rates_uid', array());
-			$posted_tarifftype_id 		= jomresGetParam($_POST, 'tarifftypeid', array());
-			$posted_roomrateperday 		= jomresGetParam($_POST, 'roomrateperday', array());
-			$posted_max_people 			= jomresGetParam($_POST, 'max_people', array());
-			$posted_maxpeople_tariff 	= jomresGetParam($_POST, 'maxpeople_tariff', array());
+			$posted_number_of_rooms 	= castorGetParam($_POST, 'numberofRooms', array());
+			$posted_existing_room_uids 	= castorGetParam($_POST, 'existingrooms', array());
+			$posted_rates_uid 			= castorGetParam($_POST, 'rates_uid', array());
+			$posted_tarifftype_id 		= castorGetParam($_POST, 'tarifftypeid', array());
+			$posted_roomrateperday 		= castorGetParam($_POST, 'roomrateperday', array());
+			$posted_max_people 			= castorGetParam($_POST, 'max_people', array());
+			$posted_maxpeople_tariff 	= castorGetParam($_POST, 'maxpeople_tariff', array());
 			
 			//we`ll go through each room types assigned to this property, no need to parse possible junk data sent in the POST
 			foreach ($basic_property_details->this_property_room_classes as $k => $v) {
@@ -225,10 +225,10 @@ class j06002save_normalmode_tariffs
 			}
 		}
 		
-		$saveMessage = jr_gettext('_JOMRES_MR_AUDIT_UPDATE_TARIFF', '_JOMRES_MR_AUDIT_UPDATE_TARIFF', false);
+		$saveMessage = jr_gettext('_CASTOR_MR_AUDIT_UPDATE_TARIFF', '_CASTOR_MR_AUDIT_UPDATE_TARIFF', false);
 		
-		$jomres_messaging =jomres_singleton_abstract::getInstance('jomres_messages');
-		$jomres_messaging->set_message($saveMessage);
+		$castor_messaging =castor_singleton_abstract::getInstance('castor_messages');
+		$castor_messaging->set_message($saveMessage);
 
 		$webhook_notification						   	= new stdClass();
 		$webhook_notification->webhook_event			= 'property_state_change';
@@ -237,7 +237,7 @@ class j06002save_normalmode_tariffs
 		$webhook_notification->data->property_uid	   	= $defaultProperty;
 		add_webhook_notification($webhook_notification);
 
-		jomresRedirect(jomresURL(JOMRES_SITEPAGE_URL . "&task=edit_tariffs_normal"), $saveMessage);
+		castorRedirect(castorURL(CASTOR_SITEPAGE_URL . "&task=edit_tariffs_normal"), $saveMessage);
 	}
 
 
@@ -246,3 +246,4 @@ class j06002save_normalmode_tariffs
 		return null;
 	}
 }
+

@@ -1,17 +1,17 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('Direct Access to this file is not allowed.');
+defined('_CASTOR_INITCHECK') or die('Direct Access to this file is not allowed.');
 // ################################################################
 	#[AllowDynamicProperties]
 class j06002listcustomertypes
@@ -19,7 +19,7 @@ class j06002listcustomertypes
 	function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable=true;
 			return;
@@ -32,31 +32,31 @@ class j06002listcustomertypes
 		$mrConfig = getPropertySpecificSettings();
 
 		//get all guest types
-		$basic_guest_type_details = jomres_singleton_abstract::getInstance('basic_guest_type_details');
+		$basic_guest_type_details = castor_singleton_abstract::getInstance('basic_guest_type_details');
 		$basic_guest_type_details->get_all_guest_types($defaultProperty);
 		
-		//jomres item toolbar (bootstrap)
-		$toolbar = jomres_singleton_abstract::getInstance('jomresItemToolbar');
+		//castor item toolbar (bootstrap)
+		$toolbar = castor_singleton_abstract::getInstance('castorItemToolbar');
 		
 		//old toolbar used in jui templates
-		$jrtbar = jomres_singleton_abstract::getInstance('jomres_toolbar');
+		$jrtbar = castor_singleton_abstract::getInstance('castor_toolbar');
 		
 		$output 	= array();
 		$pageoutput = array();
 		$rows 		= array();
 
-		$output['PAGETITLE'] 		= jr_gettext('_JOMRES_CONFIG_VARIANCES_CUSTOMERTYPES', '_JOMRES_CONFIG_VARIANCES_CUSTOMERTYPES', false);
-		$output['HTYPE'] 			= jr_gettext('_JOMRES_VARIANCES_TYPE', '_JOMRES_VARIANCES_TYPE', false);
-		$output['HNOTES'] 			= jr_gettext('_JOMRES_VARIANCES_NOTES', '_JOMRES_VARIANCES_NOTES', false);
-		$output['HMAXIMUM'] 		= jr_gettext('_JOMRES_VARIANCES_MAXIMUM', '_JOMRES_VARIANCES_MAXIMUM', false);
-		$output['HISPERCENTAGE'] 	= jr_gettext('_JOMRES_VARIANCES_ISPERCENTAGE', '_JOMRES_VARIANCES_ISPERCENTAGE', false);
-		$output['HPOSNEG'] 			= jr_gettext('_JOMRES_VARIANCES_POSNEG', '_JOMRES_VARIANCES_POSNEG', false);
-		$output['HVARIANCE'] 		= jr_gettext('_JOMRES_VARIANCES_VARIANCE', '_JOMRES_VARIANCES_VARIANCE', false);
-		$output['HPUBLISHIMAGE'] 	= jr_gettext('_JOMRES_COM_MR_VRCT_PUBLISHED', '_JOMRES_COM_MR_VRCT_PUBLISHED', false);
-		$output['HORDER'] 			= jr_gettext('_JOMRES_ORDER', '_JOMRES_ORDER', false);
+		$output['PAGETITLE'] 		= jr_gettext('_CASTOR_CONFIG_VARIANCES_CUSTOMERTYPES', '_CASTOR_CONFIG_VARIANCES_CUSTOMERTYPES', false);
+		$output['HTYPE'] 			= jr_gettext('_CASTOR_VARIANCES_TYPE', '_CASTOR_VARIANCES_TYPE', false);
+		$output['HNOTES'] 			= jr_gettext('_CASTOR_VARIANCES_NOTES', '_CASTOR_VARIANCES_NOTES', false);
+		$output['HMAXIMUM'] 		= jr_gettext('_CASTOR_VARIANCES_MAXIMUM', '_CASTOR_VARIANCES_MAXIMUM', false);
+		$output['HISPERCENTAGE'] 	= jr_gettext('_CASTOR_VARIANCES_ISPERCENTAGE', '_CASTOR_VARIANCES_ISPERCENTAGE', false);
+		$output['HPOSNEG'] 			= jr_gettext('_CASTOR_VARIANCES_POSNEG', '_CASTOR_VARIANCES_POSNEG', false);
+		$output['HVARIANCE'] 		= jr_gettext('_CASTOR_VARIANCES_VARIANCE', '_CASTOR_VARIANCES_VARIANCE', false);
+		$output['HPUBLISHIMAGE'] 	= jr_gettext('_CASTOR_COM_MR_VRCT_PUBLISHED', '_CASTOR_COM_MR_VRCT_PUBLISHED', false);
+		$output['HORDER'] 			= jr_gettext('_CASTOR_ORDER', '_CASTOR_ORDER', false);
 		
-		$output['_JOMRES_GUESTTYPES_INSTRUCTIONS'] 			= jr_gettext('_JOMRES_GUESTTYPES_INSTRUCTIONS', '_JOMRES_GUESTTYPES_INSTRUCTIONS', false);
-		$output['_JOMRES_GUESTTYPES_INTRO'] 				= jr_gettext('_JOMRES_GUESTTYPES_INTRO', '_JOMRES_GUESTTYPES_INTRO', false);
+		$output['_CASTOR_GUESTTYPES_INSTRUCTIONS'] 			= jr_gettext('_CASTOR_GUESTTYPES_INSTRUCTIONS', '_CASTOR_GUESTTYPES_INSTRUCTIONS', false);
+		$output['_CASTOR_GUESTTYPES_INTRO'] 				= jr_gettext('_CASTOR_GUESTTYPES_INTRO', '_CASTOR_GUESTTYPES_INTRO', false);
 
 		foreach ($basic_guest_type_details->guest_types as $g) {
 			$r = array();
@@ -68,9 +68,9 @@ class j06002listcustomertypes
 			$r['MAXIMUM'] 	= $g['maximum'];
 			
 			if ($g['is_percentage'] == 1) {
-				$r['ISPERCENTAGE'] = jr_gettext('_JOMRES_COM_MR_YES', '_JOMRES_COM_MR_YES', false);
+				$r['ISPERCENTAGE'] = jr_gettext('_CASTOR_COM_MR_YES', '_CASTOR_COM_MR_YES', false);
 			} else {
-				$r['ISPERCENTAGE'] = jr_gettext('_JOMRES_COM_MR_NO', '_JOMRES_COM_MR_NO', false);
+				$r['ISPERCENTAGE'] = jr_gettext('_CASTOR_COM_MR_NO', '_CASTOR_COM_MR_NO', false);
 			}
 			
 			if ($g['posneg'] == 1) {
@@ -86,31 +86,31 @@ class j06002listcustomertypes
 			if (!using_bootstrap()) {
 				$jrtb  = $jrtbar->startTable();
 				
-				$jrtb .= $jrtbar->toolbarItem('edit', jomresURL(JOMRES_SITEPAGE_URL."&task=editcustomertype&id=".$g['id']), '');
+				$jrtb .= $jrtbar->toolbarItem('edit', castorURL(CASTOR_SITEPAGE_URL."&task=editcustomertype&id=".$g['id']), '');
 				if ($g['published'] == 0) {
-					$jrtb .= $jrtbar->toolbarItem('publish', jomresURL(JOMRES_SITEPAGE_URL."&task=publishcustomertype&id=".$g['id']), '');
+					$jrtb .= $jrtbar->toolbarItem('publish', castorURL(CASTOR_SITEPAGE_URL."&task=publishcustomertype&id=".$g['id']), '');
 				} else {
-					$jrtb .= $jrtbar->toolbarItem('unpublish', jomresURL(JOMRES_SITEPAGE_URL."&task=publishcustomertype&id=".$g['id']), '');
+					$jrtb .= $jrtbar->toolbarItem('unpublish', castorURL(CASTOR_SITEPAGE_URL."&task=publishcustomertype&id=".$g['id']), '');
 				}
-				$jrtb .= $jrtbar->toolbarItem('delete', jomresURL(JOMRES_SITEPAGE_URL."&task=deletecustomertype&id=".$g['id']), '');
+				$jrtb .= $jrtbar->toolbarItem('delete', castorURL(CASTOR_SITEPAGE_URL."&task=deletecustomertype&id=".$g['id']), '');
 				
 				$jrtb .= $jrtbar->endTable();
 				$r['EDITLINK'] = $jrtb;
 			}
 			
-			//bootstrap toolbar built with the jomresItemToolbar class
+			//bootstrap toolbar built with the castorItemToolbar class
 			$r['ITEM_TOOLBAR'] = '';
 			if (using_bootstrap()) {
 				$toolbar->newToolbar();
 				
 				if ($g['published'] == 0) {
-					$toolbar->addSecondaryItem('icon-cancel', '', '', jomresURL(JOMRES_SITEPAGE_URL . '&task=publishcustomertype' . '&id=' . $g['id']), jr_gettext('_JOMRES_COM_MR_VRCT_PUBLISH', '_JOMRES_COM_MR_VRCT_PUBLISH', false));
+					$toolbar->addSecondaryItem('icon-cancel', '', '', castorURL(CASTOR_SITEPAGE_URL . '&task=publishcustomertype' . '&id=' . $g['id']), jr_gettext('_CASTOR_COM_MR_VRCT_PUBLISH', '_CASTOR_COM_MR_VRCT_PUBLISH', false));
 				} else {
-					$toolbar->addSecondaryItem('icon-ok icon-white', '', '', jomresURL(JOMRES_SITEPAGE_URL . '&task=publishcustomertype' . '&id=' . $g['id']), jr_gettext('_JOMRES_COM_MR_VRCT_UNPUBLISH', '_JOMRES_COM_MR_VRCT_UNPUBLISH', false));
+					$toolbar->addSecondaryItem('icon-ok icon-white', '', '', castorURL(CASTOR_SITEPAGE_URL . '&task=publishcustomertype' . '&id=' . $g['id']), jr_gettext('_CASTOR_COM_MR_VRCT_UNPUBLISH', '_CASTOR_COM_MR_VRCT_UNPUBLISH', false));
 				}
 				
-				$toolbar->addItem('icon-edit', 'btn btn-info', '', jomresURL(JOMRES_SITEPAGE_URL . '&task=editcustomertype' . '&id=' . $g['id']), jr_gettext('COMMON_EDIT', 'COMMON_EDIT', false));
-				$toolbar->addSecondaryItem('icon-trash', '', '', jomresURL(JOMRES_SITEPAGE_URL . '&task=deletecustomertype' . '&id=' . $g['id']), jr_gettext('COMMON_DELETE', 'COMMON_DELETE', false));
+				$toolbar->addItem('icon-edit', 'btn btn-info', '', castorURL(CASTOR_SITEPAGE_URL . '&task=editcustomertype' . '&id=' . $g['id']), jr_gettext('COMMON_EDIT', 'COMMON_EDIT', false));
+				$toolbar->addSecondaryItem('icon-trash', '', '', castorURL(CASTOR_SITEPAGE_URL . '&task=deletecustomertype' . '&id=' . $g['id']), jr_gettext('COMMON_DELETE', 'COMMON_DELETE', false));
 				
 				$r['ITEM_TOOLBAR']=$toolbar->getToolbar();
 			}
@@ -125,16 +125,16 @@ class j06002listcustomertypes
 			$rows[]=$r;
 		}
 
-		$jrtbar = jomres_singleton_abstract::getInstance('jomres_toolbar');
+		$jrtbar = castor_singleton_abstract::getInstance('castor_toolbar');
 		$jrtb  = $jrtbar->startTable();
-		$jrtb .= $jrtbar->toolbarItem('new', jomresURL(JOMRES_SITEPAGE_URL."&task=editcustomertype"), '');
-		$jrtb .= $jrtbar->toolbarItem('save', '', jr_gettext('_JOMRES_ORDER', '_JOMRES_ORDER', false, true), true, 'savecustomertypeorder');
+		$jrtb .= $jrtbar->toolbarItem('new', castorURL(CASTOR_SITEPAGE_URL."&task=editcustomertype"), '');
+		$jrtb .= $jrtbar->toolbarItem('save', '', jr_gettext('_CASTOR_ORDER', '_CASTOR_ORDER', false, true), true, 'savecustomertypeorder');
 		$jrtb .= $jrtbar->endTable();
-		$output['JOMRESTOOLBAR']=$jrtb;
+		$output['CASTORTOOLBAR']=$jrtb;
 
 		$pageoutput[]=$output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 		$tmpl->readTemplatesFromInput('list_customertypes.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->addRows('rows', $rows);
@@ -146,19 +146,19 @@ class j06002listcustomertypes
 	{
 		$output=array();
 
-		$output[]		=jr_gettext('_JOMRES_CONFIG_VARIANCES_CUSTOMERTYPES', '_JOMRES_CONFIG_VARIANCES_CUSTOMERTYPES');
-		$output[]		=jr_gettext('_JOMRES_VARIANCES_TYPE', '_JOMRES_VARIANCES_TYPE');
-		$output[]		=jr_gettext('_JOMRES_VARIANCES_TYPE_TT', '_JOMRES_VARIANCES_TYPE_TT');
-		$output[]		=jr_gettext('_JOMRES_VARIANCES_NOTES', '_JOMRES_VARIANCES_NOTES');
-		$output[]		=jr_gettext('_JOMRES_VARIANCES_NOTES_TT', '_JOMRES_VARIANCES_NOTES_TT');
-		$output[]		=jr_gettext('_JOMRES_VARIANCES_MAXIMUM', '_JOMRES_VARIANCES_MAXIMUM');
-		$output[]		=jr_gettext('_JOMRES_VARIANCES_MAXIMUM_TT', '_JOMRES_VARIANCES_MAXIMUM_TT');
-		$output[]		=jr_gettext('_JOMRES_VARIANCES_ISPERCENTAGE', '_JOMRES_VARIANCES_ISPERCENTAGE');
-		$output[]		=jr_gettext('_JOMRES_VARIANCES_ISPERCENTAGE_TT', '_JOMRES_VARIANCES_ISPERCENTAGE_TT');
-		$output[]		=jr_gettext('_JOMRES_VARIANCES_POSNEG', '_JOMRES_VARIANCES_POSNEG');
-		$output[]		=jr_gettext('_JOMRES_VARIANCES_POSNEG_TT', '_JOMRES_VARIANCES_POSNEG_TT');
-		$output[]		=jr_gettext('_JOMRES_VARIANCES_VARIANCE', '_JOMRES_VARIANCES_VARIANCE');
-		$output[]		=jr_gettext('_JOMRES_VARIANCES_VARIANCE_TT', '_JOMRES_VARIANCES_VARIANCE_TT');
+		$output[]		=jr_gettext('_CASTOR_CONFIG_VARIANCES_CUSTOMERTYPES', '_CASTOR_CONFIG_VARIANCES_CUSTOMERTYPES');
+		$output[]		=jr_gettext('_CASTOR_VARIANCES_TYPE', '_CASTOR_VARIANCES_TYPE');
+		$output[]		=jr_gettext('_CASTOR_VARIANCES_TYPE_TT', '_CASTOR_VARIANCES_TYPE_TT');
+		$output[]		=jr_gettext('_CASTOR_VARIANCES_NOTES', '_CASTOR_VARIANCES_NOTES');
+		$output[]		=jr_gettext('_CASTOR_VARIANCES_NOTES_TT', '_CASTOR_VARIANCES_NOTES_TT');
+		$output[]		=jr_gettext('_CASTOR_VARIANCES_MAXIMUM', '_CASTOR_VARIANCES_MAXIMUM');
+		$output[]		=jr_gettext('_CASTOR_VARIANCES_MAXIMUM_TT', '_CASTOR_VARIANCES_MAXIMUM_TT');
+		$output[]		=jr_gettext('_CASTOR_VARIANCES_ISPERCENTAGE', '_CASTOR_VARIANCES_ISPERCENTAGE');
+		$output[]		=jr_gettext('_CASTOR_VARIANCES_ISPERCENTAGE_TT', '_CASTOR_VARIANCES_ISPERCENTAGE_TT');
+		$output[]		=jr_gettext('_CASTOR_VARIANCES_POSNEG', '_CASTOR_VARIANCES_POSNEG');
+		$output[]		=jr_gettext('_CASTOR_VARIANCES_POSNEG_TT', '_CASTOR_VARIANCES_POSNEG_TT');
+		$output[]		=jr_gettext('_CASTOR_VARIANCES_VARIANCE', '_CASTOR_VARIANCES_VARIANCE');
+		$output[]		=jr_gettext('_CASTOR_VARIANCES_VARIANCE_TT', '_CASTOR_VARIANCES_VARIANCE_TT');
 
 
 		foreach ($output as $o) {
@@ -173,3 +173,4 @@ class j06002listcustomertypes
 		return null;
 	}
 }
+

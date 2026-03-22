@@ -1,2 +1,3 @@
-jQuery.noConflict();
-var jomresJquery = jQuery.noConflict();
+﻿jQuery.noConflict();
+var castorJquery = jQuery.noConflict();
+

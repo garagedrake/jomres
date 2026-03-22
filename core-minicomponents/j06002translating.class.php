@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,14 +35,14 @@ class j06002translating
 	 
 	public function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
 
-		$custom_text = jomres_singleton_abstract::getInstance('custom_text');
+		$custom_text = castor_singleton_abstract::getInstance('custom_text');
 		if (!empty($custom_text->selected_languages)) {
 			$languages_to_offer = $custom_text->selected_languages;
 		} else {
@@ -101,7 +101,7 @@ class j06002translating
 
 						$pageoutput[] = $output;
 						$tmpl = new patTemplate();
-						$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+						$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 						$tmpl->readTemplatesFromInput('translating_section.html');
 						$tmpl->addRows('pageoutput', $pageoutput);
 						$tmpl->addRows('rows', $rows);
@@ -127,16 +127,16 @@ class j06002translating
 
 
 
-		$output['JOMRES_TRANSLATIONS_TITLE'] = jr_gettext('JOMRES_TRANSLATIONS_TITLE', 'JOMRES_TRANSLATIONS_TITLE', false);
-		$output['JOMRES_TRANSLATIONS_LEAD'] = jr_gettext('JOMRES_TRANSLATIONS_LEAD', 'JOMRES_TRANSLATIONS_LEAD', false);
-		$output['JOMRES_TARGET_LANGUAGE'] = jr_gettext('JOMRES_TARGET_LANGUAGE', 'JOMRES_TARGET_LANGUAGE', false);
+		$output['CASTOR_TRANSLATIONS_TITLE'] = jr_gettext('CASTOR_TRANSLATIONS_TITLE', 'CASTOR_TRANSLATIONS_TITLE', false);
+		$output['CASTOR_TRANSLATIONS_LEAD'] = jr_gettext('CASTOR_TRANSLATIONS_LEAD', 'CASTOR_TRANSLATIONS_LEAD', false);
+		$output['CASTOR_TARGET_LANGUAGE'] = jr_gettext('CASTOR_TARGET_LANGUAGE', 'CASTOR_TARGET_LANGUAGE', false);
 		$output['CURRENT_LANGUAGE'] = get_showtime('lang');
 
 		$output[ 'MARKDOWN_BUTTON' ] = $MiniComponents->specificEvent('06000', 'show_markdown_modal', array('output_now' => false));
 
 		$pageoutput[] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_BACKEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_BACKEND);
 		$tmpl->readTemplatesFromInput('translating.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->addRows('languages', $languages);
@@ -150,3 +150,4 @@ class j06002translating
 		return null;
 	}
 }
+

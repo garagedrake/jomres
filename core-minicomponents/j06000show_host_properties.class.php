@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 	/**
 	 * Core file.
 	 *
-	 * @author Vince Wooll <sales@jomres.net>
+	 * @author Vince Wooll <sales@castor.net>
 	 *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
 	 *
 	 * @copyright	2005-2023 Vince Wooll
-	 * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+	 * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
 	 **/
 
 // ################################################################
-	defined('_JOMRES_INITCHECK') or die('');
+	defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,21 +35,21 @@ class j06000show_host_properties
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			$this->shortcode_data = array(
 				'task' => 'show_host_properties',
-				'info' => '_JOMRES_SHORTCODES_06000VIEW_AGENT',
+				'info' => '_CASTOR_SHORTCODES_06000VIEW_AGENT',
 				'arguments' => array(
 					array(
 						'argument' => 'property_uid',
-						'arg_info' => '_JOMRES_SHORTCODES_06000VIEW_AGENT_ARG_PROPERTY_UID',
+						'arg_info' => '_CASTOR_SHORTCODES_06000VIEW_AGENT_ARG_PROPERTY_UID',
 						'arg_example' => '1',
 					),
 					array(
 						'argument' => 'id',
-						'arg_info' => '_JOMRES_SHORTCODES_06000VIEW_AGENT_ARG_ID',
+						'arg_info' => '_CASTOR_SHORTCODES_06000VIEW_AGENT_ARG_ID',
 						'arg_example' => '1',
 					),
 				),
@@ -65,14 +65,14 @@ class j06000show_host_properties
 		if (isset($componentArgs[ 'manager_id' ])) {
 			$manager_id = (int)$componentArgs[ 'manager_id' ];
 		} else {
-			$manager_id = (int)jomresGetParam($_REQUEST, 'manager_id', 0);
+			$manager_id = (int)castorGetParam($_REQUEST, 'manager_id', 0);
 		}
 
 		if ($manager_id == 0) {
 			return ;
 		}
 
-		$query = 'SELECT manager_uid , access_level  FROM #__jomres_managers WHERE userid  = '.(int) $manager_id;
+		$query = 'SELECT manager_uid , access_level  FROM #__castor_managers WHERE userid  = '.(int) $manager_id;
 		$result = doSelectSql($query, 2);
 		if (empty($result)) { // this id doesn't correspond to a manager in the system, progress no further
 			return;
@@ -83,7 +83,7 @@ class j06000show_host_properties
 		}
 
 		if (isset($_REQUEST[ 'output_now' ])) {
-			$output_now = (bool) jomresGetParam($_REQUEST, 'output_now', 1);
+			$output_now = (bool) castorGetParam($_REQUEST, 'output_now', 1);
 		} elseif (isset($componentArgs[ 'output_now' ])) {
 			$output_now = (bool)$componentArgs[ 'output_now' ];
 		} else {
@@ -111,10 +111,10 @@ class j06000show_host_properties
 			return;
 		}
 
-		$jomres_media_centre_images = jomres_singleton_abstract::getInstance('jomres_media_centre_images');
-		$images = $jomres_media_centre_images->get_images_multi($property_uids, array('property'));
+		$castor_media_centre_images = castor_singleton_abstract::getInstance('castor_media_centre_images');
+		$images = $castor_media_centre_images->get_images_multi($property_uids, array('property'));
 
-		$current_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+		$current_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 		$current_property_details->gather_data_multi($property_uids);
 
 		$rows = array();
@@ -155,7 +155,7 @@ class j06000show_host_properties
 			$tmpl->addRows('pageoutput', $pageoutput);
 			$tmpl->addRows('rows', $rows);
 			$tmpl->addRows('bs_5_rows', $bs_5_rows);
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 			$tmpl->readTemplatesFromInput('simple_property_list.html');
 			$this->retVals = $tmpl->getParsedTemplate();
 		}
@@ -172,3 +172,4 @@ class j06000show_host_properties
 		return $this->retVals;
 	}
 }
+

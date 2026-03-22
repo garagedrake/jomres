@@ -1,6 +1,6 @@
-<?PHP
+﻿<?PHP
 // ################################################################
-defined( '_JOMRES_INITCHECK' ) or die( '' );
+defined( '_CASTOR_INITCHECK' ) or die( '' );
 // ################################################################
 /**
  * patTemplate Template cache that stores data on filesystem
@@ -94,7 +94,7 @@ class patTemplate_TemplateCache_String extends patTemplate_TemplateCache
 	 */
 	function _getCachefileName( $key )
 		{
-		return JOMRESCONFIG_ABSOLUTE_PATH . JRDS . JOMRES_ROOT_DIRECTORY . '/' . $this->getParam( 'cacheFolder' ) . '/' . $this->getParam( 'prefix' ) . $key . '.cache';
+		return CASTORCONFIG_ABSOLUTE_PATH . JRDS . CASTOR_ROOT_DIRECTORY . '/' . $this->getParam( 'cacheFolder' ) . '/' . $this->getParam( 'prefix' ) . $key . '.cache';
 		}
 	}
 

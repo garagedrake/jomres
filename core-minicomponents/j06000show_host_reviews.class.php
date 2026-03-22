@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,20 +36,20 @@ class j06000show_host_reviews
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 		
-		jr_import('jomres_encryption');
-		$jomres_encryption = new jomres_encryption();
+		jr_import('castor_encryption');
+		$castor_encryption = new castor_encryption();
 		
 		$this->retVals = '';
 		
-		$cms_user_id = (int)jomresGetParam($_REQUEST, 'cms_user_id', 0);
+		$cms_user_id = (int)castorGetParam($_REQUEST, 'cms_user_id', 0);
 		
 		if (isset($componentArgs['cms_user_id']) && $cms_user_id == 0) {
 			$cms_user_id = $componentArgs['cms_user_id'];
@@ -62,7 +62,7 @@ class j06000show_host_reviews
 		}
 
 		if (isset($_REQUEST[ 'output_now' ])) {
-			$output_now = (bool) jomresGetParam($_REQUEST, 'output_now', 1);
+			$output_now = (bool) castorGetParam($_REQUEST, 'output_now', 1);
 		} elseif (isset($componentArgs[ 'output_now' ])) {
 			$output_now = (bool)$componentArgs[ 'output_now' ];
 		} else {
@@ -84,10 +84,10 @@ class j06000show_host_reviews
 			$property_uids[] = $property_id;
 		}
 
-		$jomres_media_centre_images = jomres_singleton_abstract::getInstance('jomres_media_centre_images');
-		$jomres_media_centre_images->get_images_multi($property_uids, array('property'));
-		$images = $jomres_media_centre_images->multi_query_images;
-		$current_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+		$castor_media_centre_images = castor_singleton_abstract::getInstance('castor_media_centre_images');
+		$castor_media_centre_images->get_images_multi($property_uids, array('property'));
+		$images = $castor_media_centre_images->multi_query_images;
+		$current_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 		$current_property_details->gather_data_multi($property_uids);
 
 		$rows = array();
@@ -122,7 +122,7 @@ class j06000show_host_reviews
 		$pageoutput[ ] = $output;
 
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 		$tmpl->readTemplatesFromInput('show_host_reviews.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->addRows('rows', $rows);
@@ -139,3 +139,4 @@ class j06000show_host_reviews
 		return $this->retVals;
 	}
 }
+

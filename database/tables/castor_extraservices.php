@@ -1,0 +1,44 @@
+﻿<?php
+/**
+ * Core file.
+ *
+ * @author Vince Wooll <sales@castor.net>
+ *
+ *  @version Castor 10.7.2
+ *
+ * @copyright	2005-2023 Vince Wooll
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ **/
+
+// ################################################################
+defined('_CASTOR_INITCHECK') or die('');
+// ################################################################
+/**
+ *
+ * @package Castor\Core\Database
+ *
+ * Database creation during installation
+ *
+ **/
+$query = "
+CREATE TABLE IF NOT EXISTS `#__castor_extraservices` (
+	`extraservice_uid` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`service_description` VARCHAR(255),
+	`service_value` VARCHAR(255),
+	`contract_uid` INT UNSIGNED NOT NULL DEFAULT 0,
+	`property_uid` INT UNSIGNED NOT NULL DEFAULT 0,
+	`tax_rate_val` DOUBLE(11,2) NOT NULL DEFAULT 0,
+	`tax_code` INT UNSIGNED NOT NULL DEFAULT 1,
+	`service_qty` DOUBLE(11,2) NOT NULL DEFAULT 1,
+	PRIMARY KEY	(`extraservice_uid`),
+	INDEX `contract_uid` (`contract_uid`)
+	)
+	ENGINE = InnoDB 
+	DEFAULT CHARSET = utf8mb4 
+	COLLATE = utf8mb4_unicode_ci;
+";
+
+if (!doInsertSql($query)) {
+	$this->setMessage('Error, unable to create the #__castor_extraservices table', 'danger');
+}
+

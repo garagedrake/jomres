@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -35,7 +35,7 @@ class j16000translate_locales
 	 
 	public function __construct()
 	{
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -44,26 +44,26 @@ class j16000translate_locales
 		if (!translation_user_check()) {
 			return;
 		}
-		echo '<h2>'.jr_gettext('_JOMRES_TOUCHTEMPLATES', '_JOMRES_TOUCHTEMPLATES', false).' - '.get_showtime('lang').'</h2><br/>';
+		echo '<h2>'.jr_gettext('_CASTOR_TOUCHTEMPLATES', '_CASTOR_TOUCHTEMPLATES', false).' - '.get_showtime('lang').'</h2><br/>';
 
 		$output = array();
 
-		$query = 'SELECT `id`, `countrycode`, `countryname` FROM #__jomres_countries ORDER BY countryname';
+		$query = 'SELECT `id`, `countrycode`, `countryname` FROM #__castor_countries ORDER BY countryname';
 		$countryList = doSelectSql($query);
 		if (!empty($countryList)) {
 			foreach ($countryList as $country) {
-				$output[] = jr_gettext('_JOMRES_CUSTOMTEXT_COUNTRIES_'.$country->id, $country->countryname);
+				$output[] = jr_gettext('_CASTOR_CUSTOMTEXT_COUNTRIES_'.$country->id, $country->countryname);
 			}
 		}
 
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 		if ($jrConfig[ 'region_names_are_translatable' ] == '1') {
-			$query = 'SELECT `id`, `countrycode`, `regionname` FROM #__jomres_regions ORDER BY countrycode, regionname';
+			$query = 'SELECT `id`, `countrycode`, `regionname` FROM #__castor_regions ORDER BY countrycode, regionname';
 			$regionList = doSelectSql($query);
 			if (!empty($regionList)) {
 				foreach ($regionList as $region) {
-					$output[] = jr_gettext('_JOMRES_CUSTOMTEXT_REGIONS_'.$region->id, $region->regionname);
+					$output[] = jr_gettext('_CASTOR_CUSTOMTEXT_REGIONS_'.$region->id, $region->regionname);
 				}
 			}
 		}
@@ -80,3 +80,4 @@ class j16000translate_locales
 		return null;
 	}
 }
+

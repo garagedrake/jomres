@@ -1,6 +1,6 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
-{JOMRES_POPUPURL_GLOBALVAR}
+{CASTOR_POPUPURL_GLOBALVAR}
 
 {HEADER}
 
@@ -13,7 +13,7 @@
 </patTemplate:comment>
 
 <patTemplate:tmpl name="property_details" unusedvars="strip">
-	<div class="jomres_property_list_propertywrapper photoview pull-left" id="{UID}">
+	<div class="castor_property_list_propertywrapper photoview pull-left" id="{UID}">
 		<div class="panel {BUDGET_BORDER_CLASS} {FEATURED_LISTINGS_CLASS}">
 			<div class="panel-heading">
 				<h4 class="photoview-ptitle"><a href="{MOREINFORMATIONLINK}">{PROP_NAME}</a></h4>
@@ -25,7 +25,7 @@
 					<p class="small photoview-paddress">{PROP_TOWN}, {PROP_REGION}, {PROP_COUNTRY}</p>
 
 					<div class="hidden-phone">
-						<input type="checkbox" name="compare" value="{UID}" autocomplete="off"/> {_JOMRES_COMPARE}
+						<input type="checkbox" name="compare" value="{UID}" autocomplete="off"/> {_CASTOR_COMPARE}
 					</div>
 				</div>
 				<div class="align-center photoview-image">
@@ -50,8 +50,8 @@
 	</div>
 
 	<script>
-	   jomresJquery(document).ready(function(){
-		 jomresJquery('#module_{RANDOM_IDENTIFIER}_popup').appendTo("body");
+	   castorJquery(document).ready(function(){
+		 castorJquery('#module_{RANDOM_IDENTIFIER}_popup').appendTo("body");
 		});
 	</script>
 	
@@ -62,7 +62,7 @@
 		</div>
 		<div class="modal-body">
 			<div style="padding:20px">
-				<img src="{JOMRES_IMAGES_RELPATH}ajax_animation/broken_circle.gif" alt="ajax_animation_image"/>
+				<img src="{CASTOR_IMAGES_RELPATH}ajax_animation/broken_circle.gif" alt="ajax_animation_image"/>
 			</div>
 		</div>
 	</div>
@@ -74,14 +74,14 @@
 		</div>
 		<div class="modal-body">
 			<div style="padding:20px">
-				<img src="{JOMRES_IMAGES_RELPATH}ajax_animation/broken_circle.gif" alt="ajax_animation_image"/>
+				<img src="{CASTOR_IMAGES_RELPATH}ajax_animation/broken_circle.gif" alt="ajax_animation_image"/>
 			</div>
 		</div>
 	</div>
 	
 	<script>
-	   jomresJquery(document).ready(function(){
-		 jomresJquery('#module_{RANDOM_IDENTIFIER}_popup', '#property_reviews{UID}').appendTo("body");
+	   castorJquery(document).ready(function(){
+		 castorJquery('#module_{RANDOM_IDENTIFIER}_popup', '#property_reviews{UID}').appendTo("body");
 		});
 	</script>
 
@@ -89,18 +89,18 @@
 		<div id="effect{UID}" class="quick-info ui-helper-hidden">
 			<div class="ui-widget-content ui-corner-all">
 				<div class="property-desc">{PROPERTYDESC}</div>
-				<div class="jomres_message property-desc">{LASTMINUTE}</div>
-				<div><strong>{_JOMRES_FRONT_ROOMTYPES}</strong></div>
+				<div class="castor_message property-desc">{LASTMINUTE}</div>
+				<div><strong>{_CASTOR_FRONT_ROOMTYPES}</strong></div>
 				<div>{ROOMTYPES}</div>
 				<div style="clear:both;"></div>
-				<div><strong>{_JOMRES_COM_MR_VRCT_ROOM_HEADER_FEATURES}</strong></div>
+				<div><strong>{_CASTOR_COM_MR_VRCT_ROOM_HEADER_FEATURES}</strong></div>
 				<div>{FEATURELIST}</div>
 				<div style="clear:both;"></div>
 				<div>&nbsp;</div>
-				<div><strong>{_JOMRES_REVIEWS}</strong></div>
-				<div><strong>{_JOMRES_REVIEWS_TOTAL_VOTES}</strong> {NUMBER_OF_REVIEWS}</div>
-				<div><strong>{_JOMRES_REVIEWS_AVERAGE_RATING}</strong>{AVERAGE_RATING}</div>
-				<a href="#property_reviews{UID}" ajax_task="show_property_reviews" data-toggle="modal" random_identifier="{UID}" property_name="{PROPERTYNAME}" property_uid="{UID}">{_JOMRES_REVIEWS_CLICKTOSHOW}</a>
+				<div><strong>{_CASTOR_REVIEWS}</strong></div>
+				<div><strong>{_CASTOR_REVIEWS_TOTAL_VOTES}</strong> {NUMBER_OF_REVIEWS}</div>
+				<div><strong>{_CASTOR_REVIEWS_AVERAGE_RATING}</strong>{AVERAGE_RATING}</div>
+				<a href="#property_reviews{UID}" ajax_task="show_property_reviews" data-toggle="modal" random_identifier="{UID}" property_name="{PROPERTYNAME}" property_uid="{UID}">{_CASTOR_REVIEWS_CLICKTOSHOW}</a>
 
 				<div>&nbsp;</div>
 				<div class="{LASTBOOKING_STYLE}">{LASTBOOKED}</div>

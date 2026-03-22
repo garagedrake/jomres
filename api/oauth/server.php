@@ -1,35 +1,35 @@
-<?php
+﻿<?php
 /**
  *
- *  @package Jomres\Core\REST_API
+ *  @package Castor\Core\REST_API
  *
  * Sets up the OAuth2 framework so that it can authenticate API key pairs
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  */
 
 
 
 	 
 $tables = array(
-    'client_table' => JOMRES_API_DB_DB_PREFIX.'jomres_oauth_clients',
-    'access_token_table' => JOMRES_API_DB_DB_PREFIX.'jomres_oauth_access_tokens',
-    'refresh_token_table' => JOMRES_API_DB_DB_PREFIX.'jomres_oauth_refresh_tokens',
-    'code_table' => JOMRES_API_DB_DB_PREFIX.'jomres_oauth_authorization_codes',
-    // 'user_table' => JOMRES_API_DB_DB_PREFIX.'jomres_oauth_users', // We don't use this
-    // 'jwt_table'  => JOMRES_API_DB_DB_PREFIX.'jomres_oauth_jwt',  // We don't use this
-    // 'jti_table'  => JOMRES_API_DB_DB_PREFIX.'jomres_oauth_jti', // We don't use this
-    'scope_table' => JOMRES_API_DB_DB_PREFIX.'jomres_oauth_scopes',  // We don't use this, but the OAuth2 class does
-    //'public_key_table'  => JOMRES_API_DB_DB_PREFIX.'oauth_public_keys', // We don't use this
+    'client_table' => CASTOR_API_DB_DB_PREFIX.'castor_oauth_clients',
+    'access_token_table' => CASTOR_API_DB_DB_PREFIX.'castor_oauth_access_tokens',
+    'refresh_token_table' => CASTOR_API_DB_DB_PREFIX.'castor_oauth_refresh_tokens',
+    'code_table' => CASTOR_API_DB_DB_PREFIX.'castor_oauth_authorization_codes',
+    // 'user_table' => CASTOR_API_DB_DB_PREFIX.'castor_oauth_users', // We don't use this
+    // 'jwt_table'  => CASTOR_API_DB_DB_PREFIX.'castor_oauth_jwt',  // We don't use this
+    // 'jti_table'  => CASTOR_API_DB_DB_PREFIX.'castor_oauth_jti', // We don't use this
+    'scope_table' => CASTOR_API_DB_DB_PREFIX.'castor_oauth_scopes',  // We don't use this, but the OAuth2 class does
+    //'public_key_table'  => CASTOR_API_DB_DB_PREFIX.'oauth_public_keys', // We don't use this
     );
 
 $existing_tables = array();
-$db = new PDO("mysql:dbname=$db;host=$host", JOMRES_API_DB_USERNAME, JOMRES_API_DB_PASSWORD);
+$db = new PDO("mysql:dbname=$db;host=$host", CASTOR_API_DB_USERNAME, CASTOR_API_DB_PASSWORD);
 $result = $db->query('show tables');
 while ($row = $result->fetch(PDO::FETCH_NUM)) {
     $existing_tables[] = $row[0];
@@ -75,7 +75,7 @@ OAuth2\Autoloader::register();
 	 *
 	 */
 
-$storage = new OAuth2\Storage\Pdo(array('dsn' => $dsn, 'username' => JOMRES_API_DB_USERNAME, 'password' => JOMRES_API_DB_PASSWORD), $tables);
+$storage = new OAuth2\Storage\Pdo(array('dsn' => $dsn, 'username' => CASTOR_API_DB_USERNAME, 'password' => CASTOR_API_DB_PASSWORD), $tables);
 
 	
 	/**
@@ -126,3 +126,4 @@ $server->addGrantType(new OAuth2\GrantType\ClientCredentials($storage));
 
 // Add the "Authorization Code" grant type (this is where the oauth magic happens)
 $server->addGrantType(new OAuth2\GrantType\AuthorizationCode($storage));
+

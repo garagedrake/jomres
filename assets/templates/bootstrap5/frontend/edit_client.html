@@ -1,11 +1,11 @@
-<patTemplate:tmpl name="pageoutput" unusedvars="strip">
+﻿<patTemplate:tmpl name="pageoutput" unusedvars="strip">
 
 <h2 class="page-header">{PAGETITLE}</h2>
 <p class="lead">{_OAUTH_CLIENT_ID_INFO}</p>
 
 <p>{_OAUTH_GRANT_TYPES}</p>
 
-<form action="{JOMRES_SITEPAGE_URL_NOSEF}" method="post" name="adminForm" class="form-horizontal g-3" role="form">
+<form action="{CASTOR_SITEPAGE_URL_NOSEF}" method="post" name="adminForm" class="form-horizontal g-3" role="form">
 
 <div class="form-group">
 	<label class="col-md-2 control-label" for="identifier">{_OAUTH_IDENTIFIER}</label>
@@ -19,7 +19,7 @@
 	<div class="col-md-10">
 		<div class="input-group">
 			<input id="client_id" name="client_id" type="text" value="{CLIENT_ID}" class="required form-control" readonly />
-			{jomres_script copy_button copy_button_id=client_id}
+			{castor_script copy_button copy_button_id=client_id}
 		</div>
 	</div>
 </div>
@@ -28,7 +28,7 @@
 	<div class="col-md-10">
 		<div class="input-group">
 			<input id="client_secret" name="client_secret" type="text" value="{CLIENT_SECRET}" class="required form-control" readonly/>
-			{jomres_script copy_button copy_button_id=client_secret}
+			{castor_script copy_button copy_button_id=client_secret}
 		</div>
 	</div>
 </div>
@@ -38,7 +38,7 @@
 	<div class="col-md-10">
 		<div class="input-group">
 			<input id="token" name="token" type="text" value="{TOKEN}" class="form-control" readonly />
-			{jomres_script copy_button copy_button_id=token}
+			{castor_script copy_button copy_button_id=token}
 		</div>
 		<div class="form-text">
 			{CLIENT_TOKEN_INFO}
@@ -55,7 +55,7 @@
 	<div class="col-md-10">
 		<div class="input-group">
 		<input id="nothing_again" name="nothing_again" type="text" value="{TOKEN_REQUEST_URL}" class="form-control" readonly />
-		{jomres_script copy_button copy_button_id=nothing_again}
+		{castor_script copy_button copy_button_id=nothing_again}
 	</div>
 </div>
 
@@ -64,7 +64,7 @@
 	<div class="col-md-10">
 		<div class="input-group ">
 			<input id="nothing" name="nothing" type="text" value="{AUTHORIZE_URL}" class="form-control" readonly />
-			{jomres_script copy_button copy_button_id=nothing}
+			{castor_script copy_button copy_button_id=nothing}
 		</div>
 		<div class="form-text">
 			{_OAUTH_IMPLICIT_NOTES}
@@ -81,7 +81,7 @@
 
 	<div class="form-actions fixed-bottom bg-light text-center pt-1 border-top border-success">
 		<div class="col-md-10 col-md-offset-2">
-			{JOMRESTOOLBAR}
+			{CASTORTOOLBAR}
 		</div>
 	</div>
 

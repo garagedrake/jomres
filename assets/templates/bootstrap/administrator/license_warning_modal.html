@@ -1,12 +1,12 @@
-
+﻿
 <patTemplate:tmpl name="pageoutput" unusedvars="strip">
 	<script type="text/javascript">
 		<!--
 		var license_valid = {LICENSE_VALID};
 		
-		jomresJquery(document).ready(function () {
+		castorJquery(document).ready(function () {
 			if (!license_valid) {
-				jomresJquery('#modal_license_not_valid').modal();
+				castorJquery('#modal_license_not_valid').modal();
 				}
 			});
 		
@@ -27,18 +27,18 @@
 				Unfortunately you don't have a valid license number saved, so you will not be able to download plugins or get support.
 			</p>
 			<p>
-				Plugins greatly extend the functionality of the system, and it's through sales of Download and Support licenses that we finance future development of Jomres.
+				Plugins greatly extend the functionality of the system, and it's through sales of Download and Support licenses that we finance future development of Castor.
 			</p>
 			<p>
-				If you would like to get access to any of the plugins listed in the Jomres plugin manager, or use our support service, we would ask that you <a href="https://license-server.jomres.net/order.php?cmd=products/licenses/list&product_id=13" target="_blank">consider purchasing a Download and Support license.</a>
+				If you would like to get access to any of the plugins listed in the Castor plugin manager, or use our support service, we would ask that you <a href="https://license-server.castor.net/order.php?cmd=products/licenses/list&product_id=13" target="_blank">consider purchasing a Download and Support license.</a>
 			</p>
 			<p>
-				If you do have a valid license key, please ensure that you have saved it in the <a href="{JOMRES_SITEPAGE_URL_ADMIN}&task=site_settings">Site Configuration -> Misc tab</a> <strong>Support key</strong> field.
+				If you do have a valid license key, please ensure that you have saved it in the <a href="{CASTOR_SITEPAGE_URL_ADMIN}&task=site_settings">Site Configuration -> Misc tab</a> <strong>Support key</strong> field.
 			</p>
 		</div>
 	</div>
 	<div class="modal-footer">
-		<a class="btn btn-success" href="https://license-server.jomres.net/order.php?cmd=products/licenses/list&product_id=13" target="_blank">Purchase a Download &amp; Support license now!</a>
+		<a class="btn btn-success" href="https://license-server.castor.net/order.php?cmd=products/licenses/list&product_id=13" target="_blank">Purchase a Download &amp; Support license now!</a>
 	</div>
 </div>
 </patTemplate:tmpl>

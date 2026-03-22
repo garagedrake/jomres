@@ -1,21 +1,21 @@
-<patTemplate:tmpl name="pageoutput" unusedvars="strip">
+﻿<patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <script type="text/javascript">
 <!--
-jomresJquery(document).ready(function () {
+castorJquery(document).ready(function () {
 	make_datatable('admin_list_countries', '{PAGETITLE}', '{LIVESITE}');
 });
 //-->
 </script>
-<h2 class="page-header">{_JOMRES_EDIT_COUNTRY_TITLE}</h2>
-{JOMRESTOOLBAR}
+<h2 class="page-header">{_CASTOR_EDIT_COUNTRY_TITLE}</h2>
+{CASTORTOOLBAR}
 
 <table id="admin_list_countries" width="100%" class="table table-striped">
 	<thead>
 	<tr>
 		<th>{COMMON_EDIT}</th>
-		<th>{_JOMRES_EDIT_COUNTRY_COUNTRYNAME}</th>
+		<th>{_CASTOR_EDIT_COUNTRY_COUNTRYNAME}</th>
 		<th>Flag</th>
-		<th>{_JOMRES_EDIT_COUNTRY_COUNTRYCODE}</th>
+		<th>{_CASTOR_EDIT_COUNTRY_COUNTRYCODE}</th>
 	</tr>
 	</thead>
 	<tbody>

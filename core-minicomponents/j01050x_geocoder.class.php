@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Returns google map template. Used by numerous scripts to provide mapping output.
 	 *
@@ -37,7 +37,7 @@ class j01050x_geocoder
 	public function __construct($componentArgs = null)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -46,7 +46,7 @@ class j01050x_geocoder
 		
 		$this->retVals ='';
 		
-		$siteConfig = jomres_singleton_abstract::getInstance('jomres_config_site_singleton');
+		$siteConfig = castor_singleton_abstract::getInstance('castor_config_site_singleton');
 		$jrConfig = $siteConfig->get();
 
 		if (trim($jrConfig['google_maps_api_key']) == '') {
@@ -74,7 +74,7 @@ class j01050x_geocoder
 		if ( file_exists($override_directory.'custom_map_style.style') ) {
 			$output['MAP_STYLE'] = file_get_contents($override_directory.'custom_map_style.style');
 		} else {
-			$output['MAP_STYLE'] = file_get_contents(JOMRES_ASSETS_ABSPATH.'map_styles'.JRDS.$jrConfig['map_style'].'.style');
+			$output['MAP_STYLE'] = file_get_contents(CASTOR_ASSETS_ABSPATH.'map_styles'.JRDS.$jrConfig['map_style'].'.style');
 		}
 
 		$output['ZOOMLEVEL'] = (int)$jrConfig['map_zoom'];
@@ -88,15 +88,15 @@ class j01050x_geocoder
 			$output[ 'DISABLE_UI' ] = 'disableDefaultUI: true,';
 		}
 
-		$output[ 'LATLONG_DESC' ] = jr_gettext('_JOMRES_LATLONG_DESC', '_JOMRES_LATLONG_DESC', false);
+		$output[ 'LATLONG_DESC' ] = jr_gettext('_CASTOR_LATLONG_DESC', '_CASTOR_LATLONG_DESC', false);
 
-		$task = jomresGetParam($_REQUEST, 'task', '');
-		$map_identifier = jomresGetParam($_REQUEST, 'map-identifier', '');
+		$task = castorGetParam($_REQUEST, 'task', '');
+		$map_identifier = castorGetParam($_REQUEST, 'map-identifier', '');
 
 		if ($map_identifier != '') {
 			$output[ 'RANDOM_IDENTIFIER' ] = $map_identifier;
 		} else {
-			$output[ 'RANDOM_IDENTIFIER' ] = generateJomresRandomString(10);
+			$output[ 'RANDOM_IDENTIFIER' ] = generateCastorRandomString(10);
 		}
 
 		$output[ 'MAP_WIDTH' ] = 300;
@@ -111,14 +111,14 @@ class j01050x_geocoder
 			$output[ 'LAT' ] = $jrConfig[ 'default_lat' ];
 			$output[ 'LONG' ] = $jrConfig[ 'default_long' ];
 		} else {
-			$current_property_details = jomres_singleton_abstract::getInstance('basic_property_details');
+			$current_property_details = castor_singleton_abstract::getInstance('basic_property_details');
 			$current_property_details->gather_data($property_uid);
 
-			$jomres_property_types = jomres_singleton_abstract::getInstance('jomres_property_types');
-			$jomres_property_types->get_property_type($current_property_details->ptype_id);
+			$castor_property_types = castor_singleton_abstract::getInstance('castor_property_types');
+			$castor_property_types->get_property_type($current_property_details->ptype_id);
 
-			if (isset($jomres_property_types->property_type['marker_image'])) {
-				$output[ 'marker_image'] = $jomres_property_types->property_type['marker_image'];
+			if (isset($castor_property_types->property_type['marker_image'])) {
+				$output[ 'marker_image'] = $castor_property_types->property_type['marker_image'];
 			}
 
 			$propertyData[ 'lat' ] = $current_property_details->multi_query_result[ $property_uid ][ 'lat' ];
@@ -204,8 +204,8 @@ class j01050x_geocoder
 			if (!defined('UPDATE_POSITION_FUNCTION_EXISTS')) {
 				define('UPDATE_POSITION_FUNCTION_EXISTS', 1);
 				$output[ 'UPDATEMARKERPOSITION' ] = "function updateMarkerPosition(latLng) {
-		jomresJquery('#lat').val(latLng.lat().toFixed(7));
-		jomresJquery('#lng').val(latLng.lng(5).toFixed(7));
+		castorJquery('#lat').val(latLng.lat().toFixed(7));
+		castorJquery('#lng').val(latLng.lng(5).toFixed(7));
 					}";
 			}
 		}
@@ -218,7 +218,7 @@ class j01050x_geocoder
 		
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 		$tmpl->readTemplatesFromInput('geocoder_latlong.html');
 		$tmpl->addRows('pageoutput', $pageoutput);
 
@@ -231,3 +231,4 @@ class j01050x_geocoder
 		return $this->retVals;
 	}
 }
+

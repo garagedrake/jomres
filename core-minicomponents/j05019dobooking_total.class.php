@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * Adds javascript and inputs to the booking form if this is a booking that is being amended, pertaining to overriding the booking total
 	 *
@@ -37,14 +37,14 @@ class j05019dobooking_total
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = true;
 
 			return;
 		}
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
-		$tmpBookingHandler = jomres_singleton_abstract::getInstance('jomres_temp_booking_handler');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
+		$tmpBookingHandler = castor_singleton_abstract::getInstance('castor_temp_booking_handler');
 		$this->returnValue = array();
 
 		if (!$thisJRUser->userIsManager) {
@@ -61,29 +61,29 @@ class j05019dobooking_total
 		$inputName = 'overtotal';
 		$defaultValue = '';
 		if (isset($tmpBookingHandler->tmpbooking[ 'override_contract_total' ]) && ($tmpBookingHandler->tmpbooking[ 'override_contract_total' ] != '')) {
-			$currfmt = jomres_singleton_abstract::getInstance('jomres_currency_format');
+			$currfmt = castor_singleton_abstract::getInstance('castor_currency_format');
 			$defaultValue = $currfmt->get_formatted($tmpBookingHandler->tmpbooking[ 'override_contract_total' ]);
 		}
 
 		$bookingFormInsert[ 'TOTAL_HEADER' ] = jr_gettext('_JOMCOMP_AMEND_OVERRIDE_TOTAL', '_JOMCOMP_AMEND_OVERRIDE_TOTAL');
-		$bookingFormInsert[ 'TOTAL_INPUT' ] = '<input class="inputbox" size="12" type="text" id="'.$inputName.'" value="'.$defaultValue.'" onChange="jomresAjax_'.$newTask.'(this.value)">';
+		$bookingFormInsert[ 'TOTAL_INPUT' ] = '<input class="inputbox" size="12" type="text" id="'.$inputName.'" value="'.$defaultValue.'" onChange="castorAjax_'.$newTask.'(this.value)">';
 		$bookingFormInsert[ 'TOTAL_AJAXSTRING' ] = '<script>
-			jomresJquery(document).ready(function() {
+			castorJquery(document).ready(function() {
 				/**
 				 * We show a simple loading indicator
-				 * using the jomresJquery ajax events
+				 * using the castorJquery ajax events
 				 */
 				});
 
-			function jomresAjax_' .$newTask.'(value){
+			function castorAjax_' .$newTask.'(value){
 				var params = {
-				option: "com_jomres",
+				option: "com_castor",
 				task: "' .$newTask.'",
 				no_html: "1",
 				' .$inputName.': value
 				};
 				var tosend = value;
-				jomresJquery.ajax({
+				castorJquery.ajax({
 				type: "GET",
 				url: "index.php",
 				async: false,
@@ -107,3 +107,4 @@ class j05019dobooking_total
 		return $this->returnValue;
 	}
 }
+

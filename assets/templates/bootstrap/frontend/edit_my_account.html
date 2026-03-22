@@ -1,16 +1,16 @@
-<patTemplate:tmpl name="pageoutput" unusedvars="strip">
+﻿<patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <script language="javascript" type="text/javascript">
 <!--
-jomresJquery(document).ready(function () {
-	jomresJquery("#guest_country").change(function(){
-		var selectedValue = jomresJquery(this).find(":selected").val();
+castorJquery(document).ready(function () {
+	castorJquery("#guest_country").change(function(){
+		var selectedValue = castorJquery(this).find(":selected").val();
 		clause = "&task=get_region_dropdown_for_country_code&country="+selectedValue;
-		jomresJquery.get(live_site_ajax + clause, function (data) {
+		castorJquery.get(live_site_ajax + clause, function (data) {
 			populateDiv("guest_region_div",data);
 			});
 		});
 
-	jomresJquery("#reviewForm").validate({
+	castorJquery("#reviewForm").validate({
 		rules: {
 			firstname: "required",
 			surname: "required",
@@ -21,13 +21,13 @@ jomresJquery(document).ready(function () {
 			region: "required",
 		},
 		messages: {
-			firstname: "{_JOMRES_BOOKINGFORM_MONITORING_REQUIRED_FIRSTNAME}",
-			surname: "{_JOMRES_BOOKINGFORM_MONITORING_REQUIRED_SURNAME}",
-			house: "{_JOMRES_BOOKINGFORM_MONITORING_REQUIRED_HOUSENO}",
-			street: "{_JOMRES_BOOKINGFORM_MONITORING_REQUIRED_STREET}",
-			postcode: "{_JOMRES_BOOKINGFORM_MONITORING_REQUIRED_POSTCODE}",
-			town: "{_JOMRES_BOOKINGFORM_MONITORING_REQUIRED_TOWN}",
-			region: "{_JOMRES_BOOKINGFORM_MONITORING_REQUIRED_REGION}",
+			firstname: "{_CASTOR_BOOKINGFORM_MONITORING_REQUIRED_FIRSTNAME}",
+			surname: "{_CASTOR_BOOKINGFORM_MONITORING_REQUIRED_SURNAME}",
+			house: "{_CASTOR_BOOKINGFORM_MONITORING_REQUIRED_HOUSENO}",
+			street: "{_CASTOR_BOOKINGFORM_MONITORING_REQUIRED_STREET}",
+			postcode: "{_CASTOR_BOOKINGFORM_MONITORING_REQUIRED_POSTCODE}",
+			town: "{_CASTOR_BOOKINGFORM_MONITORING_REQUIRED_TOWN}",
+			region: "{_CASTOR_BOOKINGFORM_MONITORING_REQUIRED_REGION}",
 		},
 		errorLabelContainer: "#messageBox",
 		wrapper: "p",
@@ -36,16 +36,16 @@ jomresJquery(document).ready(function () {
 		},
 	});
 	
-	jomresJquery.validator.setDefaults({
+	castorJquery.validator.setDefaults({
 		highlight: function (input) {
-			jomresJquery(input).addClass("alert alert-warning");
+			castorJquery(input).addClass("alert alert-warning");
 		},
 		unhighlight: function (input) {
-			jomresJquery(input).removeClass("alert alert-warning");
+			castorJquery(input).removeClass("alert alert-warning");
 		}
 	});
 	
-	jomresJquery("#messageBox").hide();
+	castorJquery("#messageBox").hide();
 });
 //-->
 </script>
@@ -55,7 +55,7 @@ jomresJquery(document).ready(function () {
 
 <p class="alert alert-info">{GUEST_PROFILE_INFORMATION}</p>
 
-<form action="{JOMRES_SITEPAGE_URL_NOSEF}" method="post" id="reviewForm" name="adminform" enctype="multipart/form-data" role="form" class="form-horizontal">
+<form action="{CASTOR_SITEPAGE_URL_NOSEF}" method="post" id="reviewForm" name="adminform" enctype="multipart/form-data" role="form" class="form-horizontal">
 	<fieldset>
 		<div class="alert alert-success">
 			<center><h3><i class="fa fa-users text-success" aria-hidden="true"></i></h3></center>
@@ -148,7 +148,7 @@ jomresJquery(document).ready(function () {
 			</div>
 			
 			<div class="control-group">
-				<label class="control-label" for="vat_number">{_JOMRES_COM_YOURBUSINESS_VATNO}</label>
+				<label class="control-label" for="vat_number">{_CASTOR_COM_YOURBUSINESS_VATNO}</label>
 				<div class="controls">
 					<input id="vat_number" name="vat_number" type="text" value="{VAT_NUMBER}"/>
 					<patTemplate:tmpl name="validation" type="simpleCondition" requiredVars="validation_class">
@@ -184,7 +184,7 @@ jomresJquery(document).ready(function () {
 			</div>
 
 			<div class="control-group">
-				<label class="control-label" for="preferences">{_JOMRES_COM_MR_EB_ROOM_BOOKINGSPECIALREQ}</label>
+				<label class="control-label" for="preferences">{_CASTOR_COM_MR_EB_ROOM_BOOKINGSPECIALREQ}</label>
 				<div class="controls">
 					<input id="text" name="preferences" type="preferences" value="{PREFERENCES}" class=" form-control" placeholder=""/><p class="help-block">{GUEST_PROFILE_PREFERENCES}</p>
 				</div>
@@ -195,7 +195,7 @@ jomresJquery(document).ready(function () {
 	<div class="form-actions">
 		<div class="span10 offset-2">
 			<button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> {COMMON_SUBMIT}</button>
-			<a href="{JOMRES_SITEPAGE_URL}" class="btn btn-default"><i class="fa fa-times"></i> {COMMON_CANCEL}</a>
+			<a href="{CASTOR_SITEPAGE_URL}" class="btn btn-default"><i class="fa fa-times"></i> {COMMON_CANCEL}</a>
 		</div>
 	</div>
 	<input type="hidden" name="no_html" value="1"/>

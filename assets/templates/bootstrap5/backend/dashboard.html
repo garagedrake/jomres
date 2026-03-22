@@ -1,4 +1,4 @@
-<patTemplate:tmpl name="pageoutput" unusedvars="strip">
+﻿<patTemplate:tmpl name="pageoutput" unusedvars="strip">
 <style type="text/css">
 /*Overrides*/
 .fc-toolbar {
@@ -87,9 +87,9 @@ a.fc-event, .fc-event-draggable {
 		var checkout_time = "00:00:00";
 		}
 	
-	jomresJquery('#jomres_dashboard{PROPERTY_UID}').block();
+	castorJquery('#castor_dashboard{PROPERTY_UID}').block();
 	
-	var calendar = jomresJquery('#jomres_dashboard{PROPERTY_UID}').fullCalendar({
+	var calendar = castorJquery('#castor_dashboard{PROPERTY_UID}').fullCalendar({
 		schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
 		lang: '{COMMON_LANG_SHORT}',
 		scrollTime: '00:00',
@@ -136,8 +136,8 @@ a.fc-event, .fc-event-draggable {
 		firstDay: '{FIRST_DAY_OF_WEEK}',
 		monthNames: ['{_JRPORTAL_MONTHS_LONG_0}','{_JRPORTAL_MONTHS_LONG_1}','{_JRPORTAL_MONTHS_LONG_2}','{_JRPORTAL_MONTHS_LONG_3}','{_JRPORTAL_MONTHS_LONG_4}','{_JRPORTAL_MONTHS_LONG_5}','{_JRPORTAL_MONTHS_LONG_6}','{_JRPORTAL_MONTHS_LONG_7}','{_JRPORTAL_MONTHS_LONG_8}','{_JRPORTAL_MONTHS_LONG_9}','{_JRPORTAL_MONTHS_LONG_10}','{_JRPORTAL_MONTHS_LONG_11}'],
 		monthNamesShort: ['{_JRPORTAL_MONTHS_SHORT_0}','{_JRPORTAL_MONTHS_SHORT_1}','{_JRPORTAL_MONTHS_SHORT_2}','{_JRPORTAL_MONTHS_SHORT_3}','{_JRPORTAL_MONTHS_SHORT_4}','{_JRPORTAL_MONTHS_SHORT_5}','{_JRPORTAL_MONTHS_SHORT_6}','{_JRPORTAL_MONTHS_SHORT_7}','{_JRPORTAL_MONTHS_SHORT_8}','{_JRPORTAL_MONTHS_SHORT_9}','{_JRPORTAL_MONTHS_SHORT_10}','{_JRPORTAL_MONTHS_SHORT_11}'],
-		dayNames: ['{_JOMRES_COM_MR_WEEKDAYS_SUNDAY}','{_JOMRES_COM_MR_WEEKDAYS_MONDAY}','{_JOMRES_COM_MR_WEEKDAYS_TUESDAY}','{_JOMRES_COM_MR_WEEKDAYS_WEDNESDAY}','{_JOMRES_COM_MR_WEEKDAYS_THURSDAY}','{_JOMRES_COM_MR_WEEKDAYS_FRIDAY}','{_JOMRES_COM_MR_WEEKDAYS_SATURDAY}'],
-		dayNamesShort: ['{_JOMRES_COM_MR_WEEKDAYS_SUNDAY_ABBR}','{_JOMRES_COM_MR_WEEKDAYS_MONDAY_ABBR}','{_JOMRES_COM_MR_WEEKDAYS_TUESDAY_ABBR}','{_JOMRES_COM_MR_WEEKDAYS_WEDNESDAY_ABBR}','{_JOMRES_COM_MR_WEEKDAYS_THURSDAY_ABBR}','{_JOMRES_COM_MR_WEEKDAYS_FRIDAY_ABBR}','{_JOMRES_COM_MR_WEEKDAYS_SATURDAY_ABBR}'],
+		dayNames: ['{_CASTOR_COM_MR_WEEKDAYS_SUNDAY}','{_CASTOR_COM_MR_WEEKDAYS_MONDAY}','{_CASTOR_COM_MR_WEEKDAYS_TUESDAY}','{_CASTOR_COM_MR_WEEKDAYS_WEDNESDAY}','{_CASTOR_COM_MR_WEEKDAYS_THURSDAY}','{_CASTOR_COM_MR_WEEKDAYS_FRIDAY}','{_CASTOR_COM_MR_WEEKDAYS_SATURDAY}'],
+		dayNamesShort: ['{_CASTOR_COM_MR_WEEKDAYS_SUNDAY_ABBR}','{_CASTOR_COM_MR_WEEKDAYS_MONDAY_ABBR}','{_CASTOR_COM_MR_WEEKDAYS_TUESDAY_ABBR}','{_CASTOR_COM_MR_WEEKDAYS_WEDNESDAY_ABBR}','{_CASTOR_COM_MR_WEEKDAYS_THURSDAY_ABBR}','{_CASTOR_COM_MR_WEEKDAYS_FRIDAY_ABBR}','{_CASTOR_COM_MR_WEEKDAYS_SATURDAY_ABBR}'],
 		editable: true,
 		selectable: true,
 		selectHelper: true,
@@ -154,8 +154,8 @@ a.fc-event, .fc-event-draggable {
 			timelineMonth: '{MONTH}'
 		},
 		select: function(start, end, jsEvent, view, resource) {
-			startMoment = jomresJquery.fullCalendar.moment(start);
-			endMoment = jomresJquery.fullCalendar.moment(end);
+			startMoment = castorJquery.fullCalendar.moment(start);
+			endMoment = castorJquery.fullCalendar.moment(end);
 			startDate = startMoment.format('YYYY/MM/DD');
 			endDate = endMoment.format('YYYY/MM/DD');
 			startTime = startMoment.format('HH:mm:SS');
@@ -185,27 +185,27 @@ a.fc-event, .fc-event-draggable {
 			mywhen = startDate + ' - ' + endDate;
 			
 			//reset modal form elements
-			jomresJquery('#blackBookingForm')[0].reset();
+			castorJquery('#blackBookingForm')[0].reset();
 			reset_booking_modal();
 			reset_region_dropdown();
 			reset_guest_details();
 			
 			//set the new hidden values
-			jomresJquery('#blackBookingModal #start').val(startDate);
-			jomresJquery('#blackBookingModal #end').val(endDate);
-			jomresJquery('#blackBookingModal #room_uid').val(resource.id);
-			jomresJquery('#blackBookingModal #allDay').val('');
-			jomresJquery('#blackBookingModal #when').text(mywhen);
-			jomresJquery('#blackBookingModal #where').text(resource.title);
+			castorJquery('#blackBookingModal #start').val(startDate);
+			castorJquery('#blackBookingModal #end').val(endDate);
+			castorJquery('#blackBookingModal #room_uid').val(resource.id);
+			castorJquery('#blackBookingModal #allDay').val('');
+			castorJquery('#blackBookingModal #when').text(mywhen);
+			castorJquery('#blackBookingModal #where').text(resource.title);
 			
 			//generate the new modal 
-			var modal = jomresJquery('#blackBookingModal').modal('show');
+			var modal = castorJquery('#blackBookingModal').modal('show');
 		},
 		resourceRender: function(resourceObj, labelTds, bodyTds) {
 			// this is triggered when the resource is rendered, just like eventRender
 		},
 		eventDrop: function( event, delta, revertFunc, jsEvent, ui, view ) {
-			jomresJquery(this).popover('hide');
+			castorJquery(this).popover('hide');
 			revertFunc();
 		},
 		eventRender: function( event, element, view ) {
@@ -221,13 +221,13 @@ a.fc-event, .fc-event-draggable {
 			});
 		},
 		eventMouseover: function ( event, jsEvent, view )  {
-			jomresJquery(this).popover('show');
+			castorJquery(this).popover('show');
 		},
 		eventMouseout: function ( event, jsEvent, view )  {
-			jomresJquery(this).popover('hide');
+			castorJquery(this).popover('hide');
 		},
 		eventDragStop: function ( event, jsEvent, ui, view ) {
-			var trashEl = jomresJquery('#jrCalendarTrash');
+			var trashEl = castorJquery('#jrCalendarTrash');
 			var ofs = trashEl.offset();
 
 			var x1 = ofs.left;
@@ -240,8 +240,8 @@ a.fc-event, .fc-event-draggable {
 				{
 				calendar.fullCalendar( 'removeEvents', event.id );
 
-				jomresJquery('#jomres_dashboard{PROPERTY_UID}').block();
-				jomresJquery.ajax({
+				castorJquery('#castor_dashboard{PROPERTY_UID}').block();
+				castorJquery.ajax({
 					type: 'GET',
 					url: live_site_ajax + '&task=dashboard_cancelbooking_ajax',
 					data: {
@@ -249,7 +249,7 @@ a.fc-event, .fc-event-draggable {
 						},
 					success: function(data)
 						{
-						var cancellation_status = JSON && JSON.parse(data) || jomresJquery.parseJSON(data);
+						var cancellation_status = JSON && JSON.parse(data) || castorJquery.parseJSON(data);
 						if (cancellation_status.insertStatus == 1)
 							{
 							calendar.fullCalendar( 'refetchEvents' );
@@ -258,18 +258,18 @@ a.fc-event, .fc-event-draggable {
 							{
 							alert( cancellation_status.insertMessage );
 							calendar.fullCalendar( 'refetchEvents' );
-							jomresJquery('#jomres_dashboard{PROPERTY_UID}').unblock();
+							castorJquery('#castor_dashboard{PROPERTY_UID}').unblock();
 							}
 						}
 					});
 				}
 		},
 		eventDrop: function ( event, delta, revertFunc, jsEvent, ui, view ) {
-			jomresJquery(this).popover('hide');
+			castorJquery(this).popover('hide');
 
-			eventStart = jomresJquery.fullCalendar.moment(event.start);
+			eventStart = castorJquery.fullCalendar.moment(event.start);
 			start = eventStart.format('YYYY/MM/DD');
-			eventEnd = jomresJquery.fullCalendar.moment(event.end);
+			eventEnd = castorJquery.fullCalendar.moment(event.end);
 			end = eventEnd.format('YYYY/MM/DD');
 			startTime = eventStart.format('HH:mm:SS');
 			endTime = eventEnd.format('HH:mm:SS');
@@ -297,8 +297,8 @@ a.fc-event, .fc-event-draggable {
 				end = eventEnd.format('YYYY/MM/DD');
 				}
 
-			jomresJquery('#jomres_dashboard{PROPERTY_UID}').block();
-			jomresJquery.ajax({
+			castorJquery('#castor_dashboard{PROPERTY_UID}').block();
+			castorJquery.ajax({
 				type: 'GET',
 				url: live_site_ajax + '&task=dashboard_amendbooking_ajax',
 				data: {
@@ -312,7 +312,7 @@ a.fc-event, .fc-event-draggable {
 					},
 				success: function(data)
 					{
-					var amend_status = JSON && JSON.parse(data) || jomresJquery.parseJSON(data);
+					var amend_status = JSON && JSON.parse(data) || castorJquery.parseJSON(data);
 					if (amend_status.insertStatus == 1)
 						{
 						event.id = amend_status.id;
@@ -329,17 +329,17 @@ a.fc-event, .fc-event-draggable {
 						{
 						alert( amend_status.insertMessage );
 						revertFunc();
-						jomresJquery('#jomres_dashboard{PROPERTY_UID}').unblock();
+						castorJquery('#castor_dashboard{PROPERTY_UID}').unblock();
 						}
 					}
 				});
 		},
 		eventResize: function ( event, delta, revertFunc, jsEvent, ui, view ) {
-			jomresJquery(this).popover('hide');
+			castorJquery(this).popover('hide');
 
-			eventStart = jomresJquery.fullCalendar.moment(event.start);
+			eventStart = castorJquery.fullCalendar.moment(event.start);
 			start = eventStart.format('YYYY/MM/DD');
-			eventEnd = jomresJquery.fullCalendar.moment(event.end);
+			eventEnd = castorJquery.fullCalendar.moment(event.end);
 			end = eventEnd.format('YYYY/MM/DD');
 			startTime = eventStart.format('HH:mm:SS');
 			endTime = eventEnd.format('HH:mm:SS');
@@ -367,8 +367,8 @@ a.fc-event, .fc-event-draggable {
 				end = eventEnd.format('YYYY/MM/DD');
 				}
 
-			jomresJquery('#jomres_dashboard{PROPERTY_UID}').block();
-			jomresJquery.ajax({
+			castorJquery('#castor_dashboard{PROPERTY_UID}').block();
+			castorJquery.ajax({
 				type: 'GET',
 				url: live_site_ajax + '&task=dashboard_amendbooking_ajax',
 				data: {
@@ -382,7 +382,7 @@ a.fc-event, .fc-event-draggable {
 					},
 				success: function(data)
 					{
-					var amend_status = JSON && JSON.parse(data) || jomresJquery.parseJSON(data);
+					var amend_status = JSON && JSON.parse(data) || castorJquery.parseJSON(data);
 					if (amend_status.insertStatus == 1)
 						{
 						event.id = amend_status.id;
@@ -399,7 +399,7 @@ a.fc-event, .fc-event-draggable {
 						{
 						alert( amend_status.insertMessage );
 						revertFunc();
-						jomresJquery('#jomres_dashboard{PROPERTY_UID}').unblock();
+						castorJquery('#castor_dashboard{PROPERTY_UID}').unblock();
 						}
 					}
 				});
@@ -407,60 +407,60 @@ a.fc-event, .fc-event-draggable {
 		loading: function( isLoading, view ) {
 			if (isLoading === false)
 				{ 
-				jomresJquery('#jomres_dashboard{PROPERTY_UID}').unblock();
+				castorJquery('#castor_dashboard{PROPERTY_UID}').unblock();
 				}
 		}
 	});
 
-jomresJquery('.btn-group button[data-calendar-nav]').each(function() {
-	var $this = jomresJquery(this);
+castorJquery('.btn-group button[data-calendar-nav]').each(function() {
+	var $this = castorJquery(this);
 	$this.click(function() {
-		jomresJquery("#jomres_dashboard{PROPERTY_UID}").fullCalendar($this.data('calendar-nav'));
-		var view = jomresJquery("#jomres_dashboard{PROPERTY_UID}").fullCalendar('getView');
-		jomresJquery('.jomres-dashboard h2 span').html(': ' + view.title);
+		castorJquery("#castor_dashboard{PROPERTY_UID}").fullCalendar($this.data('calendar-nav'));
+		var view = castorJquery("#castor_dashboard{PROPERTY_UID}").fullCalendar('getView');
+		castorJquery('.castor-dashboard h2 span').html(': ' + view.title);
 	});
 });
 
-jomresJquery('.btn-group button[data-calendar-view]').each(function() {
-	var $this = jomresJquery(this);
+castorJquery('.btn-group button[data-calendar-view]').each(function() {
+	var $this = castorJquery(this);
 	$this.click(function() {
-		jomresJquery("#jomres_dashboard{PROPERTY_UID}").fullCalendar('changeView',$this.data('calendar-view'));
-		jomresJquery('.btn-group button').removeClass('active');
-		jomresJquery('button[data-calendar-view="' + $this.data('calendar-view') + '"]').addClass('active');
-		var view = jomresJquery("#jomres_dashboard{PROPERTY_UID}").fullCalendar('getView');
-		jomresJquery('.jomres-dashboard h2 span').html(': ' + view.title);
+		castorJquery("#castor_dashboard{PROPERTY_UID}").fullCalendar('changeView',$this.data('calendar-view'));
+		castorJquery('.btn-group button').removeClass('active');
+		castorJquery('button[data-calendar-view="' + $this.data('calendar-view') + '"]').addClass('active');
+		var view = castorJquery("#castor_dashboard{PROPERTY_UID}").fullCalendar('getView');
+		castorJquery('.castor-dashboard h2 span').html(': ' + view.title);
 	});
 });
 /* Set the initial title */
-var view = jomresJquery("#jomres_dashboard{PROPERTY_UID}").fullCalendar('getView');
-jomresJquery('.jomres-dashboard h2 span').html(': ' + view.title);
+var view = castorJquery("#castor_dashboard{PROPERTY_UID}").fullCalendar('getView');
+castorJquery('.castor-dashboard h2 span').html(': ' + view.title);
 
 /* Set a timeout to refresh events every 5 minutes */
-setInterval(function(){jomresJquery("#jomres_dashboard{PROPERTY_UID}").fullCalendar( 'refetchEvents' )}, 60000);
+setInterval(function(){castorJquery("#castor_dashboard{PROPERTY_UID}").fullCalendar( 'refetchEvents' )}, 60000);
 
 /* Modal submit */
-jomresJquery("#blackBookingForm").submit(function(e) {
+castorJquery("#blackBookingForm").submit(function(e) {
 	e.preventDefault();
-	jomresJquery('#blackBookingForm #ajax_animation_image').removeClass("d-none");
-	jomresJquery('#blackBookingForm #modalForm').addClass("d-none");
-	jomresJquery('#blackBookingForm #blackBookingSubmitButton').addClass("d-none");
-	jomresJquery('#blackBookingForm #blackBookingRetryButton').addClass("d-none");
-	jomresJquery('#blackBookingForm #blackBookingCloseButton').removeClass("d-none").addClass("disabled");
-	jomresJquery.ajax({
+	castorJquery('#blackBookingForm #ajax_animation_image').removeClass("d-none");
+	castorJquery('#blackBookingForm #modalForm').addClass("d-none");
+	castorJquery('#blackBookingForm #blackBookingSubmitButton').addClass("d-none");
+	castorJquery('#blackBookingForm #blackBookingRetryButton').addClass("d-none");
+	castorJquery('#blackBookingForm #blackBookingCloseButton').removeClass("d-none").addClass("disabled");
+	castorJquery.ajax({
 		type: 'GET',
 		url: live_site_ajax + '&task=dashboard_insertbooking_ajax',
-		data: jomresJquery('#blackBookingForm').serialize(),
+		data: castorJquery('#blackBookingForm').serialize(),
 		success: function(data)
 			{
-			var new_event = JSON && JSON.parse(data) || jomresJquery.parseJSON(data);
+			var new_event = JSON && JSON.parse(data) || castorJquery.parseJSON(data);
 			if (new_event.insertStatus == 1)
 				{
 				insertMessage = '<p class="alert alert-success">' + new_event.insertMessage + '</p>';
-				jomresJquery('#blackBookingForm #ajax_animation_image').addClass("d-none");
-				jomresJquery('#blackBookingForm #modalMessage').html(insertMessage).removeClass("d-none");
-				jomresJquery('#blackBookingForm #blackBookingCloseButton').removeClass("disabled").html('<i class="icon-cancel"></i> {COMMON_CLOSE}');
+				castorJquery('#blackBookingForm #ajax_animation_image').addClass("d-none");
+				castorJquery('#blackBookingForm #modalMessage').html(insertMessage).removeClass("d-none");
+				castorJquery('#blackBookingForm #blackBookingCloseButton').removeClass("disabled").html('<i class="icon-cancel"></i> {COMMON_CLOSE}');
 				/* Render the new event */
-				jomresJquery("#jomres_dashboard{PROPERTY_UID}").fullCalendar('renderEvent',
+				castorJquery("#castor_dashboard{PROPERTY_UID}").fullCalendar('renderEvent',
 						{
 						id: new_event.id,
 						title: new_event.title,
@@ -480,56 +480,56 @@ jomresJquery("#blackBookingForm").submit(function(e) {
 			else
 				{
 				insertMessage = '<p class="alert alert-danger">' + new_event.insertMessage + '</p>';
-				jomresJquery('#blackBookingForm #modalMessage').html(insertMessage).removeClass("d-none");
-				jomresJquery('#blackBookingForm #modalForm').addClass("d-none");
-				jomresJquery('#blackBookingForm #ajax_animation_image').addClass("d-none");
-				jomresJquery('#blackBookingForm #blackBookingSubmitButton').addClass("d-none");
-				jomresJquery('#blackBookingForm #blackBookingRetryButton').removeClass("d-none");
-				jomresJquery('#blackBookingForm #blackBookingCloseButton').removeClass("disabled");
+				castorJquery('#blackBookingForm #modalMessage').html(insertMessage).removeClass("d-none");
+				castorJquery('#blackBookingForm #modalForm').addClass("d-none");
+				castorJquery('#blackBookingForm #ajax_animation_image').addClass("d-none");
+				castorJquery('#blackBookingForm #blackBookingSubmitButton').addClass("d-none");
+				castorJquery('#blackBookingForm #blackBookingRetryButton').removeClass("d-none");
+				castorJquery('#blackBookingForm #blackBookingCloseButton').removeClass("disabled");
 				}
 			}
 		});
 	});
 
-jomresJquery("#blackBookingForm #blackBookingRetryButton").on("click",function(e) {
+castorJquery("#blackBookingForm #blackBookingRetryButton").on("click",function(e) {
 	e.preventDefault();
 	reset_booking_modal();
 	});
 
-var d1 = jomresJquery.Deferred();
+var d1 = castorJquery.Deferred();
 
-jomresJquery(function(){
-	jomresJquery("#guest_country").change(function(){
+castorJquery(function(){
+	castorJquery("#guest_country").change(function(){
 		populateDiv("guest_region_div" , '<div class="spinner-border text-info" role="status">\n' +
 				'  <span class="visually-hidden">Loading...</span>\n' +
 				'</div>');
-		var selectedValue = jomresJquery(this).find(":selected").val();
+		var selectedValue = castorJquery(this).find(":selected").val();
 		clause = "&task=get_region_dropdown_for_country_code&country="+selectedValue;
-		d1 = jomresJquery.get(live_site_ajax + clause, function (data) {
+		d1 = castorJquery.get(live_site_ajax + clause, function (data) {
 			populateDiv("guest_region_div",data);
 			});
 		});
 	});
 
-jomresJquery(function(){
-	jomresJquery("#existingGuests").change(function(){
-		var selectedValue = jomresJquery(this).find(":selected").val();
+castorJquery(function(){
+	castorJquery("#existingGuests").change(function(){
+		var selectedValue = castorJquery(this).find(":selected").val();
 		clause = "&task=dashboard_get_guest_details_ajax&existing_id="+selectedValue;
-		jomresJquery.get(live_site_ajax + clause, function (data) {
-			var guestDeets = JSON && JSON.parse(data) || jomresJquery.parseJSON(data);
-			jomresJquery('#existing_id').val(guestDeets.existing_id);
-			jomresJquery('#mos_userid').val(guestDeets.mos_userid);
-			jomresJquery('#firstname').val(guestDeets.firstname);
-			jomresJquery('#surname').val(guestDeets.surname);
-			jomresJquery('#house').val(guestDeets.house);
-			jomresJquery('#street').val(guestDeets.street);
-			jomresJquery('#guest_country').val(guestDeets.country).trigger('change');
-			jomresJquery.when(d1).done(function() {jomresJquery('#region').val(guestDeets.county)});
-			jomresJquery('#town').val(guestDeets.town);
-			jomresJquery('#postcode').val(guestDeets.postcode);
-			jomresJquery('#landline').val(guestDeets.tel_landline);
-			jomresJquery('#mobile').val(guestDeets.tel_mobile);
-			jomresJquery('#email').val(guestDeets.email);
+		castorJquery.get(live_site_ajax + clause, function (data) {
+			var guestDeets = JSON && JSON.parse(data) || castorJquery.parseJSON(data);
+			castorJquery('#existing_id').val(guestDeets.existing_id);
+			castorJquery('#mos_userid').val(guestDeets.mos_userid);
+			castorJquery('#firstname').val(guestDeets.firstname);
+			castorJquery('#surname').val(guestDeets.surname);
+			castorJquery('#house').val(guestDeets.house);
+			castorJquery('#street').val(guestDeets.street);
+			castorJquery('#guest_country').val(guestDeets.country).trigger('change');
+			castorJquery.when(d1).done(function() {castorJquery('#region').val(guestDeets.county)});
+			castorJquery('#town').val(guestDeets.town);
+			castorJquery('#postcode').val(guestDeets.postcode);
+			castorJquery('#landline').val(guestDeets.tel_landline);
+			castorJquery('#mobile').val(guestDeets.tel_mobile);
+			castorJquery('#email').val(guestDeets.email);
 			
 			if (typeof guestDeets.email === 'undefined') {
 				reset_guest_details();
@@ -539,28 +539,28 @@ jomresJquery(function(){
 		});
 	});
 
-jomresJquery("#blackBookingForm").appendTo("body");
+castorJquery("#blackBookingForm").appendTo("body");
 });
 
 function reset_region_dropdown() {
 	populateDiv("guest_region_div" , '<div class="spinner-border text-info" role="status">\n' +
 			'  <span class="visually-hidden">Loading...</span>\n' +
 			'</div>');
-	var selectedCountry = jomresJquery('#blackBookingForm #guest_country').find(":selected").val();
+	var selectedCountry = castorJquery('#blackBookingForm #guest_country').find(":selected").val();
 	clause = "&task=get_region_dropdown_for_country_code&country="+selectedCountry;
-	jomresJquery.get(live_site_ajax + clause, function (data) {
+	castorJquery.get(live_site_ajax + clause, function (data) {
 		populateDiv("guest_region_div",data);
 		});
 	return true;
 }
 
 function reset_booking_modal() {
-	jomresJquery('#blackBookingModal #modalMessage').html("").addClass("d-none");
-	jomresJquery('#blackBookingForm #ajax_animation_image').addClass("d-none");
-	jomresJquery('#blackBookingForm #modalForm').removeClass("d-none");
-	jomresJquery('#blackBookingForm #blackBookingCloseButton').removeClass("d-none").html('<i class="icon-cancel"></i> {COMMON_CANCEL}');
-	jomresJquery('#blackBookingForm #blackBookingSubmitButton').removeClass("d-none");
-	jomresJquery('#blackBookingForm #blackBookingRetryButton').addClass("d-none");
+	castorJquery('#blackBookingModal #modalMessage').html("").addClass("d-none");
+	castorJquery('#blackBookingForm #ajax_animation_image').addClass("d-none");
+	castorJquery('#blackBookingForm #modalForm').removeClass("d-none");
+	castorJquery('#blackBookingForm #blackBookingCloseButton').removeClass("d-none").html('<i class="icon-cancel"></i> {COMMON_CANCEL}');
+	castorJquery('#blackBookingForm #blackBookingSubmitButton').removeClass("d-none");
+	castorJquery('#blackBookingForm #blackBookingRetryButton').addClass("d-none");
 	return true;
 }
 
@@ -574,23 +574,23 @@ function reset_guest_details() {
 		random_generated_guest_email_address = '';
 	}
 	
-	jomresJquery('#existing_id').val('');
-	jomresJquery('#mos_userid').val('');
-	jomresJquery('#firstname').val('');
-	jomresJquery('#surname').val('');
-	jomresJquery('#house').val('');
-	jomresJquery('#street').val('');
-	jomresJquery('#town').val('');
-	jomresJquery('#postcode').val('');
-	jomresJquery('#landline').val('');
-	jomresJquery('#mobile').val('');
-	jomresJquery('#email').val(random_generated_guest_email_address);
+	castorJquery('#existing_id').val('');
+	castorJquery('#mos_userid').val('');
+	castorJquery('#firstname').val('');
+	castorJquery('#surname').val('');
+	castorJquery('#house').val('');
+	castorJquery('#street').val('');
+	castorJquery('#town').val('');
+	castorJquery('#postcode').val('');
+	castorJquery('#landline').val('');
+	castorJquery('#mobile').val('');
+	castorJquery('#email').val(random_generated_guest_email_address);
 }
 
 function get_email_address_not_already_in_use() {
 	guest_email_address_account_name = Math.floor((Math.random() * 1000000) + 1);
 	var random_generated_email_address = guest_email_address_account_name+'{DEFAULT_EMAIL_DOMAIN}';
-	jomresJquery.ajax({
+	castorJquery.ajax({
 		type: 'GET',
 		async: true,
 		url: live_site_ajax + '&task=dashboard_email_check_ajax',
@@ -599,7 +599,7 @@ function get_email_address_not_already_in_use() {
 			},
 		success: function(data)
 			{
-			var response = JSON && JSON.parse(data) || jomresJquery.parseJSON(data);
+			var response = JSON && JSON.parse(data) || castorJquery.parseJSON(data);
 			if ( response.email_already_in_system == true ) {
 				random_generated_email_address = get_email_address_not_already_in_use();
 				}
@@ -610,7 +610,7 @@ function get_email_address_not_already_in_use() {
 
 </script>
 
-<div class="page-header jomres-dashboard">
+<div class="page-header castor-dashboard">
 	<h2>{PAGETITLE}<span></span></h2>
 </div>
 
@@ -633,7 +633,7 @@ function get_email_address_not_already_in_use() {
 	</div>
 </div>
 
-<div id="jomres_dashboard{PROPERTY_UID}"></div>
+<div id="castor_dashboard{PROPERTY_UID}"></div>
 
 <div class="footer navbar-fixed-bottom" style="bottom: 40px;">
 	<div class="row">
@@ -661,7 +661,7 @@ function get_email_address_not_already_in_use() {
 <br/>
 {OVERVIEW}
 
-<form action="{JOMRES_SITEPAGE_URL_AJAX}&task=dashboard_insertbooking_ajax" method="get" id="blackBookingForm" role="form">
+<form action="{CASTOR_SITEPAGE_URL_AJAX}&task=dashboard_insertbooking_ajax" method="get" id="blackBookingForm" role="form">
 <div id="blackBookingModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
@@ -781,20 +781,20 @@ function get_email_address_not_already_in_use() {
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
-								<label for="booking_note">{_JOMRES_VARIANCES_NOTES}</label>
-								<textarea class="form-control" id="booking_note" name="booking_note" rows="3" placeholder="{_JOMRES_VARIANCES_NOTES}"></textarea>
+								<label for="booking_note">{_CASTOR_VARIANCES_NOTES}</label>
+								<textarea class="form-control" id="booking_note" name="booking_note" rows="3" placeholder="{_CASTOR_VARIANCES_NOTES}"></textarea>
 							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-12">
 							<div>
-								<P class="alert alert-info">{_JOMRES_QUICKBOOKING_EMAIL_ADDRESS_NOTE}</p>
+								<P class="alert alert-info">{_CASTOR_QUICKBOOKING_EMAIL_ADDRESS_NOTE}</p>
 							</div>
 						</div>
 					</div>
 				</div>
-				<img src="{JOMRES_IMAGES_RELPATH}ajax_animation/broken_circle.gif" alt="ajax_animation_image" class="d-none" id="ajax_animation_image"/>
+				<img src="{CASTOR_IMAGES_RELPATH}ajax_animation/broken_circle.gif" alt="ajax_animation_image" class="d-none" id="ajax_animation_image"/>
 				<div id="modalMessage" class="hide">
 				</div>
 			</div>
@@ -809,3 +809,4 @@ function get_email_address_not_already_in_use() {
 </form>
 
 </patTemplate:tmpl>
+

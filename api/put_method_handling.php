@@ -1,14 +1,14 @@
-<?php
+﻿<?php
 /**
  *
- *  @package Jomres\Core\REST_API
+ *  @package Castor\Core\REST_API
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  */
 
  	
@@ -96,4 +96,5 @@ if ($_SERVER['REQUEST_METHOD']==="PUT") {
 		$GLOBALS['PUT'] = $data;
 	}
 }
+
 

@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,33 +36,33 @@ class j06000gdpr_my_data
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			$this->shortcode_data = array(
 				'task' => 'gdpr_my_data',
-				'info' => '_JOMRES_GDPR_MY_DATA',
+				'info' => '_CASTOR_GDPR_MY_DATA',
 				'arguments' => array()
 				);
 
 			return;
 		}
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
-		jr_import('jomres_gdpr_personal_information_collections');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
+		jr_import('castor_gdpr_personal_information_collections');
 		
 		if (!$thisJRUser->userIsRegistered) {
-			$jomres_gdpr_optin_consent = new jomres_gdpr_optin_consent();
-			$opted_in = $jomres_gdpr_optin_consent->user_consents_to_storage();
+			$castor_gdpr_optin_consent = new castor_gdpr_optin_consent();
+			$opted_in = $castor_gdpr_optin_consent->user_consents_to_storage();
 			
 			if ($opted_in) {
-					$result = array( "can_redact" => false , "reason" => jr_gettext('_JOMRES_GDPR_MY_RTBF_NOTREGISTERED_OPTEDIN', '_JOMRES_GDPR_MY_RTBF_NOTREGISTERED_OPTEDIN', false) );
+					$result = array( "can_redact" => false , "reason" => jr_gettext('_CASTOR_GDPR_MY_RTBF_NOTREGISTERED_OPTEDIN', '_CASTOR_GDPR_MY_RTBF_NOTREGISTERED_OPTEDIN', false) );
 			} else {
-				$result = array( "can_redact" => false , "reason" => jr_gettext('_JOMRES_GDPR_MY_RTBF_NOTREGISTERED_OPTEDOUT', '_JOMRES_GDPR_MY_RTBF_NOTREGISTERED_OPTEDOUT', false) );
+				$result = array( "can_redact" => false , "reason" => jr_gettext('_CASTOR_GDPR_MY_RTBF_NOTREGISTERED_OPTEDOUT', '_CASTOR_GDPR_MY_RTBF_NOTREGISTERED_OPTEDOUT', false) );
 			}
 		} else {
-				$jomres_gdpr_personal_information_collections = new jomres_gdpr_personal_information_collections();
-				$jomres_gdpr_personal_information_collections->set_id($thisJRUser->id);
-				$result = $jomres_gdpr_personal_information_collections->can_redact_this_cms_user();
+				$castor_gdpr_personal_information_collections = new castor_gdpr_personal_information_collections();
+				$castor_gdpr_personal_information_collections->set_id($thisJRUser->id);
+				$result = $castor_gdpr_personal_information_collections->can_redact_this_cms_user();
 		}
 		
 		$pageoutput = array();
@@ -71,13 +71,13 @@ class j06000gdpr_my_data
 			$output = array (
 				"MESSAGE" =>$result['response']['main'] ,
 				"NOTE" =>$result['response']['note'] ,
-				"_JOMRES_GDPR_MY_RTBF_FORGET_ME" => jr_gettext('_JOMRES_GDPR_MY_RTBF_FORGET_ME', '_JOMRES_GDPR_MY_RTBF_FORGET_ME', false) ,
-				"_JOMRES_GDPR_MY_RTBF_FORGET_ME_WARNING" => jr_gettext('_JOMRES_GDPR_MY_RTBF_FORGET_ME_WARNING', '_JOMRES_GDPR_MY_RTBF_FORGET_ME_WARNING', false)
+				"_CASTOR_GDPR_MY_RTBF_FORGET_ME" => jr_gettext('_CASTOR_GDPR_MY_RTBF_FORGET_ME', '_CASTOR_GDPR_MY_RTBF_FORGET_ME', false) ,
+				"_CASTOR_GDPR_MY_RTBF_FORGET_ME_WARNING" => jr_gettext('_CASTOR_GDPR_MY_RTBF_FORGET_ME_WARNING', '_CASTOR_GDPR_MY_RTBF_FORGET_ME_WARNING', false)
 			);
 			
 			$pageoutput[ ] = $output;
 			$tmpl = new patTemplate();
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 			$tmpl->addRows('pageoutput', $pageoutput);
 			$tmpl->readTemplatesFromInput('gdpr_my_data_can_redact.html');
 			$message = $tmpl->getParsedTemplate();
@@ -86,7 +86,7 @@ class j06000gdpr_my_data
 				"MESSAGE" =>$result['reason']);
 			$pageoutput[ ] = $output;
 			$tmpl = new patTemplate();
-			$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+			$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 			$tmpl->addRows('pageoutput', $pageoutput);
 			$tmpl->readTemplatesFromInput('gdpr_my_data_cannot_redact.html');
 			$message = $tmpl->getParsedTemplate();
@@ -96,20 +96,20 @@ class j06000gdpr_my_data
 		$output = array();
 		$pageoutput = array();
 		
-		$output['_JOMRES_GDPR_MY_DATA'] = jr_gettext('_JOMRES_GDPR_MY_DATA', '_JOMRES_GDPR_MY_DATA', false);
-		$output['_JOMRES_GDPR_MY_DATA_PRIVACY_NOTICE'] = jr_gettext('_JOMRES_GDPR_MY_DATA_PRIVACY_NOTICE', '_JOMRES_GDPR_MY_DATA_PRIVACY_NOTICE', false);
-		$output['_JOMRES_GDPR_MY_DATA_LEAD'] = jr_gettext('_JOMRES_GDPR_MY_DATA_LEAD', '_JOMRES_GDPR_MY_DATA_LEAD', false);
-		$output['_JOMRES_GDPR_MY_DATA_INTRO'] = jr_gettext('_JOMRES_GDPR_MY_DATA_INTRO', '_JOMRES_GDPR_MY_DATA_INTRO', false);
-		$output['_JOMRES_GDPR_MY_DATA_DOWNLOAD_TEXT'] = jr_gettext('_JOMRES_GDPR_MY_DATA_DOWNLOAD_TEXT', '_JOMRES_GDPR_MY_DATA_DOWNLOAD_TEXT', false);
-		$output['_JOMRES_GDPR_MY_DATA_DOWNLOAD_BUTTON'] = jr_gettext('_JOMRES_GDPR_MY_DATA_DOWNLOAD_BUTTON', '_JOMRES_GDPR_MY_DATA_DOWNLOAD_BUTTON', false);
-		$output['_JOMRES_GDPR_MY_RTBF_LEAD'] = jr_gettext('_JOMRES_GDPR_MY_RTBF_LEAD', '_JOMRES_GDPR_MY_RTBF_LEAD', false);
-		$output['_JOMRES_GDPR_MY_RTBF_INTRO'] = jr_gettext('_JOMRES_GDPR_MY_RTBF_INTRO', '_JOMRES_GDPR_MY_RTBF_INTRO', false);
+		$output['_CASTOR_GDPR_MY_DATA'] = jr_gettext('_CASTOR_GDPR_MY_DATA', '_CASTOR_GDPR_MY_DATA', false);
+		$output['_CASTOR_GDPR_MY_DATA_PRIVACY_NOTICE'] = jr_gettext('_CASTOR_GDPR_MY_DATA_PRIVACY_NOTICE', '_CASTOR_GDPR_MY_DATA_PRIVACY_NOTICE', false);
+		$output['_CASTOR_GDPR_MY_DATA_LEAD'] = jr_gettext('_CASTOR_GDPR_MY_DATA_LEAD', '_CASTOR_GDPR_MY_DATA_LEAD', false);
+		$output['_CASTOR_GDPR_MY_DATA_INTRO'] = jr_gettext('_CASTOR_GDPR_MY_DATA_INTRO', '_CASTOR_GDPR_MY_DATA_INTRO', false);
+		$output['_CASTOR_GDPR_MY_DATA_DOWNLOAD_TEXT'] = jr_gettext('_CASTOR_GDPR_MY_DATA_DOWNLOAD_TEXT', '_CASTOR_GDPR_MY_DATA_DOWNLOAD_TEXT', false);
+		$output['_CASTOR_GDPR_MY_DATA_DOWNLOAD_BUTTON'] = jr_gettext('_CASTOR_GDPR_MY_DATA_DOWNLOAD_BUTTON', '_CASTOR_GDPR_MY_DATA_DOWNLOAD_BUTTON', false);
+		$output['_CASTOR_GDPR_MY_RTBF_LEAD'] = jr_gettext('_CASTOR_GDPR_MY_RTBF_LEAD', '_CASTOR_GDPR_MY_RTBF_LEAD', false);
+		$output['_CASTOR_GDPR_MY_RTBF_INTRO'] = jr_gettext('_CASTOR_GDPR_MY_RTBF_INTRO', '_CASTOR_GDPR_MY_RTBF_INTRO', false);
 		$output['MESSAGE'] = $message;
 
 		
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 		$tmpl->addRows('pageoutput', $pageoutput);
 		$tmpl->readTemplatesFromInput('gdpr_my_data.html');
 		$tmpl->displayParsedTemplate();
@@ -121,3 +121,4 @@ class j06000gdpr_my_data
 		return null;
 	}
 }
+

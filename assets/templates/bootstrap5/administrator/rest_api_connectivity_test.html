@@ -1,4 +1,4 @@
-<patTemplate:tmpl name="pageoutput" unusedvars="strip">
+﻿<patTemplate:tmpl name="pageoutput" unusedvars="strip">
 	<script>
 		document.addEventListener("DOMContentLoaded", function() {
 			var inputs = document.querySelectorAll('[readonly]');
@@ -12,12 +12,12 @@
 			}
 		});
 	</script>
-<form action="{JOMRES_SITEPAGE_URL_ADMIN}" method="post" name="adminForm">
-{JOMRESTOOLBAR}
+<form action="{CASTOR_SITEPAGE_URL_ADMIN}" method="post" name="adminForm">
+{CASTORTOOLBAR}
 {CSRF_TOKEN}
 </form>
 
-<h2 class="page-header">{_JOMRES_REST_API_CONNECTIVITY_TEST}</h2>
+<h2 class="page-header">{_CASTOR_REST_API_CONNECTIVITY_TEST}</h2>
 
 	<fieldset>
 		<legend>{_OAUTH_APPS}</legend>
@@ -38,17 +38,17 @@
 		</form>
 	</fieldset>
 
-<p class="alert alert-info">{_JOMRES_REST_API_CONNECTIVITY_TEST_INFO}</p>
+<p class="alert alert-info">{_CASTOR_REST_API_CONNECTIVITY_TEST_INFO}</p>
 
 <p class="alert alert-{STATUS}">{TEST_RESULT}</p>
 
 	<div class="form-group">
-		{_JOMRES_REST_API_CONNECTIVITY_TEST_CALLED}
+		{_CASTOR_REST_API_CONNECTIVITY_TEST_CALLED}
 		<a href="{URL}" class="form-control" target="_blank">{URL}</a>
 	</div>
 	<hr/>
 	<div class="form-group">
-		{_JOMRES_REST_API_CONNECTIVITY_TEST_RESPONSE}
+		{_CASTOR_REST_API_CONNECTIVITY_TEST_RESPONSE}
 		<textarea class="form-control col-lg-9" rows="20">{RESPONSE}</textarea> 
 	</div>
 	

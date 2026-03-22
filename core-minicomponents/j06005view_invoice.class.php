@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,7 +36,7 @@ class j06005view_invoice
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -44,8 +44,8 @@ class j06005view_invoice
 		}
 
 		
-		$invoice_id = intval(jomresGetParam($_REQUEST, 'id', 0));
-		$popup = intval(jomresGetParam($_REQUEST, 'popup', 0));
+		$invoice_id = intval(castorGetParam($_REQUEST, 'id', 0));
+		$popup = intval(castorGetParam($_REQUEST, 'popup', 0));
 		$bypass_security_check = false;
 		$output_now = true;
 		$line_items_only = false;
@@ -69,7 +69,7 @@ class j06005view_invoice
 		if (isset($componentArgs['as_pdf'])) {
 			$as_pdf = (bool)$componentArgs['as_pdf'];
 		} elseif (isset($_REQUEST['as_pdf'])) {
-			$as_pdf = (bool)jomresGetParam($_REQUEST, 'as_pdf', false);
+			$as_pdf = (bool)castorGetParam($_REQUEST, 'as_pdf', false);
 		} else {
 			$as_pdf = false;
 		}
@@ -79,9 +79,9 @@ class j06005view_invoice
 			$line_items_only = $componentArgs['line_items_only'];
 		}
 
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 
-		$invoice = jomres_singleton_abstract::getInstance('basic_invoice_details');
+		$invoice = castor_singleton_abstract::getInstance('basic_invoice_details');
 		$invoice->gatherData($invoice_id);
 
 		if ($invoice->raised_date <= '1970-01-01 00:00:01') {
@@ -93,7 +93,7 @@ class j06005view_invoice
 			if ((int) $invoice->contract_id > 0) { // It's a booking invoice being viewed either by the guest or a property manager for the appropriate property
 				if ($thisJRUser->userIsManager) {
 					$property_uid = getDefaultProperty();
-					$query = 'SELECT contract_id FROM #__jomresportal_invoices WHERE id = '.$invoice->id.' AND property_uid = '.(int) $property_uid;
+					$query = 'SELECT contract_id FROM #__castorportal_invoices WHERE id = '.$invoice->id.' AND property_uid = '.(int) $property_uid;
 					$result = doSelectSql($query, 1);
 					if (!$result) {
 						trigger_error('Unable to view invoice, cannot corrolate id with property uid.', E_USER_ERROR);
@@ -101,7 +101,7 @@ class j06005view_invoice
 						return;
 					}
 				} else {
-					$query = 'SELECT id FROM #__jomresportal_invoices WHERE `cms_user_id`= '.(int) $thisJRUser->id.' AND `id` = '.(int) $invoice->id.' ';
+					$query = 'SELECT id FROM #__castorportal_invoices WHERE `cms_user_id`= '.(int) $thisJRUser->id.' AND `id` = '.(int) $invoice->id.' ';
 					$result = doSelectSql($query);
 					if (count($result) < 1 || count($result) > 1) {
 						trigger_error('Unable to view invoice, either invoice id not found, or invoice id tampered with.', E_USER_ERROR);
@@ -125,7 +125,7 @@ class j06005view_invoice
 		if ($invoice->invoice[$invoice_id]['subscription'] != "1" && $invoice->invoice[$invoice_id]['is_commission'] != "1") {
 			//get the contract details
 			//We won`t use the basic contract details here since it gets too much data for what we need
-			$query = 'SELECT guest_uid, tag, approved FROM #__jomres_contracts WHERE contract_uid = '.$invoice->contract_id.' AND property_uid = '.$invoice->property_uid;
+			$query = 'SELECT guest_uid, tag, approved FROM #__castor_contracts WHERE contract_uid = '.$invoice->contract_id.' AND property_uid = '.$invoice->property_uid;
 			$contractData = doSelectSql($query, 2);
 
 			if (!$contractData) {
@@ -133,19 +133,19 @@ class j06005view_invoice
 				return;
 			}
 
-			$current_contract_details = jomres_singleton_abstract::getInstance('basic_contract_details');
+			$current_contract_details = castor_singleton_abstract::getInstance('basic_contract_details');
 			$current_contract_details->gather_data($invoice->contract_id, $invoice->property_uid);
 
-			$output['_JOMRES_SEARCH_FORM_ADULTS'] = jr_gettext('_JOMRES_SEARCH_FORM_ADULTS', '_JOMRES_SEARCH_FORM_ADULTS');
+			$output['_CASTOR_SEARCH_FORM_ADULTS'] = jr_gettext('_CASTOR_SEARCH_FORM_ADULTS', '_CASTOR_SEARCH_FORM_ADULTS');
 			$output['ADULTS'] = $current_contract_details->contract[$invoice->contract_id]['contractdeets']['adults'];
-			$output['_JOMRES_SEARCH_FORM_CHILDREN'] = jr_gettext('_JOMRES_SEARCH_FORM_CHILDREN', '_JOMRES_SEARCH_FORM_CHILDREN');
+			$output['_CASTOR_SEARCH_FORM_CHILDREN'] = jr_gettext('_CASTOR_SEARCH_FORM_CHILDREN', '_CASTOR_SEARCH_FORM_CHILDREN');
 			$output['CHILDREN'] = $current_contract_details->contract[$invoice->contract_id]['contractdeets']['children'];
 
 		} else {
 			$contractData = array ('approved' => 1);
-			$output['_JOMRES_SEARCH_FORM_ADULTS'] = '';
+			$output['_CASTOR_SEARCH_FORM_ADULTS'] = '';
 			$output['ADULTS'] = '';
-			$output['_JOMRES_SEARCH_FORM_CHILDREN'] = '';
+			$output['_CASTOR_SEARCH_FORM_CHILDREN'] = '';
 			$output['CHILDREN'] = '';
 		}
 
@@ -154,11 +154,11 @@ class j06005view_invoice
 		$output[ 'CLIENT_DETAILS_TEMPLATE' ]	= $MiniComponents->specificEvent('06005', 'show_invoice_buyer', array('invoice_id' => $invoice_id));
 
 		if ($popup != 1) {
-			$output[ 'PRINTLINK' ] = JOMRES_SITEPAGE_URL_NOSEF.'&tmpl='.get_showtime('tmplcomponent').'&popup=1&task=view_invoice&id='.$invoice->id;
-			$output[ 'PRINTTEXT' ] = jr_gettext('_JOMRES_COM_INVOICE_PRINT', '_JOMRES_COM_INVOICE_PRINT', false);
+			$output[ 'PRINTLINK' ] = CASTOR_SITEPAGE_URL_NOSEF.'&tmpl='.get_showtime('tmplcomponent').'&popup=1&task=view_invoice&id='.$invoice->id;
+			$output[ 'PRINTTEXT' ] = jr_gettext('_CASTOR_COM_INVOICE_PRINT', '_CASTOR_COM_INVOICE_PRINT', false);
 		}
 
-		$output[ 'PAGETITLE' ] = jr_gettext('_JOMRES_COM_INVOICE_TITLE', '_JOMRES_COM_INVOICE_TITLE');
+		$output[ 'PAGETITLE' ] = jr_gettext('_CASTOR_COM_INVOICE_TITLE', '_CASTOR_COM_INVOICE_TITLE');
 		$output[ 'HINVOICE_TRANSACTIONS' ] = jr_gettext('_INVOICE_TRANSACTIONS', '_INVOICE_TRANSACTIONS');
 		$output[ 'HUSER' ] = jr_gettext('_JRPORTAL_INVOICES_USER', '_JRPORTAL_INVOICES_USER');
 		$output[ 'HSTATUS' ] = jr_gettext('_JRPORTAL_INVOICES_STATUS', '_JRPORTAL_INVOICES_STATUS');
@@ -166,13 +166,13 @@ class j06005view_invoice
 		$output[ 'HDUE' ] = jr_gettext('_JRPORTAL_INVOICES_DUE', '_JRPORTAL_INVOICES_DUE');
 		$output[ 'HINITTOTAL' ] = jr_gettext('_JRPORTAL_INVOICES_INITTOTAL', '_JRPORTAL_INVOICES_INITTOTAL');
 		$output[ 'HCURRENCYCODE' ] = jr_gettext('_JRPORTAL_INVOICES_CURRENCYCODE', '_JRPORTAL_INVOICES_CURRENCYCODE');
-		$output[ 'HINVOICENO' ] = jr_gettext('_JOMRES_INVOICE_NUMBER', '_JOMRES_INVOICE_NUMBER');
+		$output[ 'HINVOICENO' ] = jr_gettext('_CASTOR_INVOICE_NUMBER', '_CASTOR_INVOICE_NUMBER');
 		$output[ 'TRANSACTION_ID' ] = jr_gettext('TRANSACTION_IDS', 'TRANSACTION_IDS');
 		$output[ 'PAYMENT_METHOD' ] = jr_gettext('PAYMENT_METHOD', 'PAYMENT_METHOD');
-		$output[ '_JOMRES_BOOKING_NUMBER' ] = jr_gettext('_JOMRES_BOOKING_NUMBER', '_JOMRES_BOOKING_NUMBER');
+		$output[ '_CASTOR_BOOKING_NUMBER' ] = jr_gettext('_CASTOR_BOOKING_NUMBER', '_CASTOR_BOOKING_NUMBER');
 		
-		$output[ '_JOMRES_PDF_LINK' ] =  get_pdf_url();
-		$output[ '_JOMRES_PDF_BUTTON' ] = jr_gettext('_JOMRES_PDF_BUTTON', '_JOMRES_PDF_BUTTON');
+		$output[ '_CASTOR_PDF_LINK' ] =  get_pdf_url();
+		$output[ '_CASTOR_PDF_BUTTON' ] = jr_gettext('_CASTOR_PDF_BUTTON', '_CASTOR_PDF_BUTTON');
 
 		if (isset($contractData['tag'])) {
 			$output[ 'BOOKING_NUMBER' ] = $contractData['tag'];
@@ -183,20 +183,20 @@ class j06005view_invoice
 
 		$markaspaid_link = array();
 		if ($thisJRUser->userIsManager && (int) $invoice->property_uid > 0 && (int) $invoice->status != 1 && $contractData['approved'] == 1) {
-			$markaspaid = jr_gettext('_JOMRES_INVOICE_MARKASPAID', '_JOMRES_INVOICE_MARKASPAID', false);
-			$markaspaid_link[] = array('MARKASPAID_LINK' => JOMRES_SITEPAGE_URL_NOSEF.'&task=mark_booking_invoice_paid&no_html=1&id='.$invoice->id, 'MARKASPAID_TEXT' => $markaspaid);
+			$markaspaid = jr_gettext('_CASTOR_INVOICE_MARKASPAID', '_CASTOR_INVOICE_MARKASPAID', false);
+			$markaspaid_link[] = array('MARKASPAID_LINK' => CASTOR_SITEPAGE_URL_NOSEF.'&task=mark_booking_invoice_paid&no_html=1&id='.$invoice->id, 'MARKASPAID_TEXT' => $markaspaid);
 		}
 
 		$markaspending_link = array();
 		if ($thisJRUser->userIsManager && (int) $invoice->property_uid > 0 && (int) $invoice->status == 1) {
-			$markaspending = jr_gettext('_JOMRES_INVOICE_MARKASPENDING', '_JOMRES_INVOICE_MARKASPENDING', false);
-			$markaspending_link[] = array('MARKASPENDING_LINK' => JOMRES_SITEPAGE_URL_NOSEF.'&task=mark_booking_invoice_pending&no_html=1&id='.$invoice->id, 'MARKASPENDING_TEXT' => $markaspending);
+			$markaspending = jr_gettext('_CASTOR_INVOICE_MARKASPENDING', '_CASTOR_INVOICE_MARKASPENDING', false);
+			$markaspending_link[] = array('MARKASPENDING_LINK' => CASTOR_SITEPAGE_URL_NOSEF.'&task=mark_booking_invoice_pending&no_html=1&id='.$invoice->id, 'MARKASPENDING_TEXT' => $markaspending);
 		}
 
 		$viewbooking_link = array();
 		if ($thisJRUser->userIsManager && (int) $invoice->contract_id > 0) {
 			$viewbooking = jr_gettext('_JOMCOMP_MYUSER_VIEWBOOKING', '_JOMCOMP_MYUSER_VIEWBOOKING', false);
-			$viewbooking_link[] = array('VIEWBOOKING_LINK' => JOMRES_SITEPAGE_URL.'&task=edit_booking&contract_uid='.$invoice->contract_id, 'VIEWBOOKING_TEXT' => $viewbooking);
+			$viewbooking_link[] = array('VIEWBOOKING_LINK' => CASTOR_SITEPAGE_URL.'&task=edit_booking&contract_uid='.$invoice->contract_id, 'VIEWBOOKING_TEXT' => $viewbooking);
 		}
 
 		if (trim($invoice->invoice_number) == '') {
@@ -256,11 +256,11 @@ class j06005view_invoice
 		$output[ 'HLI_INIT_QTY' ] = jr_gettext('_JRPORTAL_INVOICES_LINEITEMS_INIT_QTY', '_JRPORTAL_INVOICES_LINEITEMS_INIT_QTY');
 		$output[ 'HLI_INIT_DISCOUNT' ] = jr_gettext('_JRPORTAL_INVOICES_LINEITEMS_INIT_DISCOUNT', '_JRPORTAL_INVOICES_LINEITEMS_INIT_DISCOUNT');
 		$output[ 'HLI_INIT_TOTAL' ] = jr_gettext('_JRPORTAL_INVOICES_LINEITEMS_INIT_TOTAL', '_JRPORTAL_INVOICES_LINEITEMS_INIT_TOTAL');
-		$output[ 'HLI_INIT_TOTAL_INCLUSIVE' ] = jr_gettext('_JOMRES_LINEITEM_TOTAL_INCLUDINGTAX', '_JOMRES_LINEITEM_TOTAL_INCLUDINGTAX');
+		$output[ 'HLI_INIT_TOTAL_INCLUSIVE' ] = jr_gettext('_CASTOR_LINEITEM_TOTAL_INCLUDINGTAX', '_CASTOR_LINEITEM_TOTAL_INCLUDINGTAX');
 		$output[ 'HLI_TAX_CODE' ] = jr_gettext('_JRPORTAL_INVOICES_LINEITEMS_TAX_CODE', '_JRPORTAL_INVOICES_LINEITEMS_TAX_CODE', false);
 		$output[ 'HLI_TAX_DESCRIPTION' ] = jr_gettext('_JRPORTAL_INVOICES_LINEITEMS_TAX_DESCRIPTION', '_JRPORTAL_INVOICES_LINEITEMS_TAX_DESCRIPTION');
 		$output[ 'HLI_TAX_RATE' ] = jr_gettext('_JRPORTAL_INVOICES_LINEITEMS_TAX_RATE', '_JRPORTAL_INVOICES_LINEITEMS_TAX_RATE');
-		$output[ 'HLI_TAX_AMOUNT' ] = jr_gettext('_JOMRES_COM_FRONT_ROOMTAX', '_JOMRES_COM_FRONT_ROOMTAX');
+		$output[ 'HLI_TAX_AMOUNT' ] = jr_gettext('_CASTOR_COM_FRONT_ROOMTAX', '_CASTOR_COM_FRONT_ROOMTAX');
 
 		$immediate_pay = array();
 		if ((int) $invoice->status == 3) {
@@ -317,9 +317,9 @@ class j06005view_invoice
 			}
 		}
 
-		$output[ 'JOMRES_GRANDTOTAL_TOTAL_TAX' ] = jr_gettext('JOMRES_GRANDTOTAL_TOTAL_TAX', 'JOMRES_GRANDTOTAL_TOTAL_TAX');
-		$output[ 'JOMRES_GRANDTOTAL_EX_TAX' ] = jr_gettext('JOMRES_GRANDTOTAL_EX_TAX', 'JOMRES_GRANDTOTAL_EX_TAX');
-		$output[ 'JOMRES_GRANDTOTAL_INC_TAX' ] = jr_gettext('JOMRES_GRANDTOTAL_INC_TAX', 'JOMRES_GRANDTOTAL_INC_TAX');
+		$output[ 'CASTOR_GRANDTOTAL_TOTAL_TAX' ] = jr_gettext('CASTOR_GRANDTOTAL_TOTAL_TAX', 'CASTOR_GRANDTOTAL_TOTAL_TAX');
+		$output[ 'CASTOR_GRANDTOTAL_EX_TAX' ] = jr_gettext('CASTOR_GRANDTOTAL_EX_TAX', 'CASTOR_GRANDTOTAL_EX_TAX');
+		$output[ 'CASTOR_GRANDTOTAL_INC_TAX' ] = jr_gettext('CASTOR_GRANDTOTAL_INC_TAX', 'CASTOR_GRANDTOTAL_INC_TAX');
 
 		$output[ 'GRAND_TOTAL_INC_TAX' ] = output_price($invoice->grand_total_inc_tax, $invoice->currencycode, false, true);
 		$output[ 'GRAND_TOTAL_EX_TAX' ] = output_price($invoice->grand_total_ex_tax, $invoice->currencycode, false, true);
@@ -327,29 +327,29 @@ class j06005view_invoice
 		$output[ 'OUTSTANDING_TOTAL' ] = output_price($invoice->balance, $invoice->currencycode, false, true);
 		
 		//invoice logo
-		$jomres_media_centre_images = jomres_singleton_abstract::getInstance('jomres_media_centre_images');
+		$castor_media_centre_images = castor_singleton_abstract::getInstance('castor_media_centre_images');
 		
-		$output[ 'LOGO' ] = $jomres_media_centre_images->multi_query_images [ 'noimage-small' ];
+		$output[ 'LOGO' ] = $castor_media_centre_images->multi_query_images [ 'noimage-small' ];
 		
 		//booking invoices
 		if ((int) $invoice->contract_id > 0) {
-			$jomres_media_centre_images->get_images($invoice->property_uid, array('property_logo'));
-			if (isset($jomres_media_centre_images->images ['property_logo'] [0])) {
-				foreach ($jomres_media_centre_images->images ['property_logo'] [0] as $image) {
+			$castor_media_centre_images->get_images($invoice->property_uid, array('property_logo'));
+			if (isset($castor_media_centre_images->images ['property_logo'] [0])) {
+				foreach ($castor_media_centre_images->images ['property_logo'] [0] as $image) {
 					$output[ 'LOGO' ] = $image['small'];
 				}
 			}
 		} else { //commission and subscription invoices
-			$jomres_media_centre_images->get_site_images('logo');
+			$castor_media_centre_images->get_site_images('logo');
 
-			foreach ($jomres_media_centre_images->site_images['logo'] as $image) {
+			foreach ($castor_media_centre_images->site_images['logo'] as $image) {
 				$output[ 'LOGO' ] = $image['small'];
 			}
 		}
 
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 
 		if ($popup == 1 && !$as_pdf) {
 			$tmpl->readTemplatesFromInput('printable_invoice.html');
@@ -386,8 +386,8 @@ class j06005view_invoice
 
 	public function touch_template_language()
 	{
-		$output[ ] = jr_gettext('_JOMRES_COM_INVOICE_PRINT', '_JOMRES_COM_INVOICE_PRINT');
-		$output[ ] = jr_gettext('_JOMRES_COM_INVOICE_TITLE', '_JOMRES_COM_INVOICE_TITLE');
+		$output[ ] = jr_gettext('_CASTOR_COM_INVOICE_PRINT', '_CASTOR_COM_INVOICE_PRINT');
+		$output[ ] = jr_gettext('_CASTOR_COM_INVOICE_TITLE', '_CASTOR_COM_INVOICE_TITLE');
 		$output[ ] = jr_gettext('_JRPORTAL_INVOICES_TITLE', '_JRPORTAL_INVOICES_TITLE');
 		$output[ ] = jr_gettext('_JRPORTAL_INVOICES_STATUS', '_JRPORTAL_INVOICES_STATUS');
 		$output[ ] = jr_gettext('_JRPORTAL_INVOICES_RAISED', '_JRPORTAL_INVOICES_RAISED');
@@ -395,7 +395,7 @@ class j06005view_invoice
 		$output[ ] = jr_gettext('_JRPORTAL_INVOICES_SUBSCRIPTION', '_JRPORTAL_INVOICES_SUBSCRIPTION');
 		$output[ ] = jr_gettext('_JRPORTAL_INVOICES_INITTOTAL', '_JRPORTAL_INVOICES_INITTOTAL');
 		$output[ ] = jr_gettext('_JRPORTAL_INVOICES_CURRENCYCODE', '_JRPORTAL_INVOICES_CURRENCYCODE');
-		$output[ ] = jr_gettext('_JOMRES_INVOICE_NUMBER', '_JOMRES_INVOICE_NUMBER');
+		$output[ ] = jr_gettext('_CASTOR_INVOICE_NUMBER', '_CASTOR_INVOICE_NUMBER');
 		$output[ ] = jr_gettext('_JRPORTAL_INVOICES_USER', '_JRPORTAL_INVOICES_USER');
 		$output[ ] = jr_gettext('_JRPORTAL_INVOICES_LINEITEMS', '_JRPORTAL_INVOICES_LINEITEMS');
 		$output[ ] = jr_gettext('_JRPORTAL_INVOICES_LINEITEMS_NAME', '_JRPORTAL_INVOICES_LINEITEMS_NAME');
@@ -412,8 +412,8 @@ class j06005view_invoice
 		$output[ ] = jr_gettext('_JRPORTAL_INVOICES_STATUS_PAID', '_JRPORTAL_INVOICES_STATUS_PAID');
 		$output[ ] = jr_gettext('_JRPORTAL_INVOICES_STATUS_CANCELLED', '_JRPORTAL_INVOICES_STATUS_CANCELLED');
 		$output[ ] = jr_gettext('_JRPORTAL_INVOICES_STATUS_PENDING', '_JRPORTAL_INVOICES_STATUS_PENDING');
-		$output[ ] = jr_gettext('_JOMRES_INVOICE_MARKASPAID', '_JOMRES_INVOICE_MARKASPAID');
-		$output[ ] = jr_gettext('_JOMRES_INVOICE_MARKEDASPAID', '_JOMRES_INVOICE_MARKEDASPAID');
+		$output[ ] = jr_gettext('_CASTOR_INVOICE_MARKASPAID', '_CASTOR_INVOICE_MARKASPAID');
+		$output[ ] = jr_gettext('_CASTOR_INVOICE_MARKEDASPAID', '_CASTOR_INVOICE_MARKEDASPAID');
 		$output[ ] = jr_gettext('_JOMCOMP_MYUSER_VIEWBOOKING', '_JOMCOMP_MYUSER_VIEWBOOKING');
 
 		foreach ($output as $o) {
@@ -428,3 +428,4 @@ class j06005view_invoice
 		return $this->retVals;
 	}
 }
+

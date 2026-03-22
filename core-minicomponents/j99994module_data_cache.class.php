@@ -1,17 +1,17 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- * @version Jomres 9.8.21
+ * @version Castor 9.8.21
  *
  * @copyright	2005-2017 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 class j99994module_data_cache
@@ -19,7 +19,7 @@ class j99994module_data_cache
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 			return;
@@ -53,7 +53,7 @@ class j99994module_data_cache
 						case 'property_updated':
 						case 'property_state_change':
 						case 'property_favourited':
-							$cache_dir = JOMRES_TEMP_ABSPATH.'get_property_module_data';
+							$cache_dir = CASTOR_TEMP_ABSPATH.'get_property_module_data';
 							if (!is_dir($cache_dir)) {
 								mkdir($cache_dir);
 							}
@@ -95,3 +95,4 @@ class j99994module_data_cache
 		return null;
 	}
 }
+

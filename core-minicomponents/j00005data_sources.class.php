@@ -1,15 +1,15 @@
-<?php
+﻿<?php
 /**
-* Jomres CMS Agnostic Plugin
-* @author Woollyinwales IT <sales@jomres.net>
-* @version Jomres 9
-* @package Jomres
+* Castor CMS Agnostic Plugin
+* @author Woollyinwales IT <sales@castor.net>
+* @version Castor 9
+* @package Castor
 * @copyright	2005-2015 Woollyinwales IT
-* Jomres (tm) PHP files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project.
+* Castor (tm) PHP files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project.
 **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('Direct Access to this file is not allowed.');
+defined('_CASTOR_INITCHECK') or die('Direct Access to this file is not allowed.');
 // ################################################################
 	#[AllowDynamicProperties]
 class j00005data_sources
@@ -17,7 +17,7 @@ class j00005data_sources
 	function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents =jomres_getSingleton('mcHandler');
+		$MiniComponents =castor_getSingleton('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable=false;
 			return;
@@ -32,12 +32,12 @@ class j00005data_sources
 		}
 
 
-		jr_import('jomres_data_source_maintainer');
-		$jomres_data_source_maintainer = new jomres_data_source_maintainer();
+		jr_import('castor_data_source_maintainer');
+		$castor_data_source_maintainer = new castor_data_source_maintainer();
 
 		//admin menu item
-		$jomres_menu = jomres_singleton_abstract::getInstance('jomres_menu');
-		$jomres_menu->add_admin_item(50, jr_gettext('DATA_SOURCES_TITLE', 'DATA_SOURCES_TITLE', false), $task = 'data_sources', 'fa-star');
+		$castor_menu = castor_singleton_abstract::getInstance('castor_menu');
+		$castor_menu->add_admin_item(50, jr_gettext('DATA_SOURCES_TITLE', 'DATA_SOURCES_TITLE', false), $task = 'data_sources', 'fa-star');
 
 		$manager_uid = 0;
 		$url = 'Data sources plugin'; // We don't need to set a url, the endpoint is local and it's handled locally
@@ -74,3 +74,4 @@ class j00005data_sources
 		return null;
 	}
 }
+

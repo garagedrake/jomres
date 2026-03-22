@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 * If the user is allowed the script resets the user's current property to the appropriate property uid and then redirects the user to the amend booking script.
 	 *
@@ -37,29 +37,29 @@ class j00100amendBooking
 	public function __construct()
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
 			return;
 		}
-		$thisJRUser = jomres_singleton_abstract::getInstance('jr_user');
+		$thisJRUser = castor_singleton_abstract::getInstance('jr_user');
 
 		if (!$thisJRUser->userIsManager) {
 			return;
 		}
 
 		if (isset($_REQUEST['thisProperty'])) {
-			jomresRedirect(get_booking_url((int)$_REQUEST['thisProperty']), '');
+			castorRedirect(get_booking_url((int)$_REQUEST['thisProperty']), '');
 		}
 
-		$selectedProperty = (int)jomresGetParam($_REQUEST, 'selectedProperty', 0);
+		$selectedProperty = (int)castorGetParam($_REQUEST, 'selectedProperty', 0);
 
 		if ($selectedProperty > 0 && in_array($selectedProperty, $thisJRUser->authorisedProperties)) {
 			if ($selectedProperty > 0 && $thisJRUser->currentproperty != $selectedProperty) {
 				$thisJRUser->set_currentproperty($selectedProperty);
 				$qString = $_SERVER[ 'QUERY_STRING' ];
-				jomresRedirect(jomresURL('index.php?'.$qString."&selectedProperty=$selectedProperty"));
+				castorRedirect(castorURL('index.php?'.$qString."&selectedProperty=$selectedProperty"));
 			}
 		}
 	}
@@ -70,3 +70,4 @@ class j00100amendBooking
 		return null;
 	}
 }
+

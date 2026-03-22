@@ -1,21 +1,21 @@
-<?php
+﻿<?php
 /**
  * Core file.
  *
- * @author Vince Wooll <sales@jomres.net>
+ * @author Vince Wooll <sales@castor.net>
  *
- *  @version Jomres 10.7.2
+ *  @version Castor 10.7.2
  *
  * @copyright	2005-2023 Vince Wooll
- * Jomres (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
+ * Castor (tm) PHP, CSS & Javascript files are released under both MIT and GPL2 licenses. This means that you can choose the license that best suits your project, and use it accordingly
  **/
 
 // ################################################################
-defined('_JOMRES_INITCHECK') or die('');
+defined('_CASTOR_INITCHECK') or die('');
 // ################################################################
 	#[AllowDynamicProperties]
 	/**
-	 * @package Jomres\Core\Minicomponents
+	 * @package Castor\Core\Minicomponents
 	 *
 	 *
 	 */
@@ -36,7 +36,7 @@ class j99998user_feedback
 	public function __construct($componentArgs)
 	{
 		// Must be in all minicomponents. Minicomponents with templates that can contain editable text should run $this->template_touch() else just return
-		$MiniComponents = jomres_singleton_abstract::getInstance('mcHandler');
+		$MiniComponents = castor_singleton_abstract::getInstance('mcHandler');
 		if ($MiniComponents->template_touch) {
 			$this->template_touchable = false;
 
@@ -49,28 +49,28 @@ class j99998user_feedback
 
 		$output = array();
 		
-		$jomres_messaging = jomres_singleton_abstract::getInstance('jomres_messages');
-		$messages = $jomres_messaging->get_messages();
+		$castor_messaging = castor_singleton_abstract::getInstance('castor_messages');
+		$messages = $castor_messaging->get_messages();
 		
-		$jomres_user_feedback = jomres_singleton_abstract::getInstance('jomres_user_feedback');
+		$castor_user_feedback = castor_singleton_abstract::getInstance('castor_user_feedback');
 
 		if (!empty($messages)) {
 			foreach ($messages as $msg) {
-				$jomres_user_feedback->construct_message(array('message'=>$msg['message'], 'css_class'=>$msg['class']));
+				$castor_user_feedback->construct_message(array('message'=>$msg['message'], 'css_class'=>$msg['class']));
 			}
 		}
 
 		//no need to run this if there are no feedback messages set
-		if (empty($jomres_user_feedback->user_feedback_messages)) {
+		if (empty($castor_user_feedback->user_feedback_messages)) {
 			return;
 		}
 
-		$output[ 'MESSAGES' ] = $jomres_user_feedback->get_messages();
+		$output[ 'MESSAGES' ] = $castor_user_feedback->get_messages();
 
 		$pageoutput[ ] = $output;
 		$tmpl = new patTemplate();
 		$tmpl->addRows('pageoutput', $pageoutput);
-		$tmpl->setRoot(JOMRES_TEMPLATEPATH_FRONTEND);
+		$tmpl->setRoot(CASTOR_TEMPLATEPATH_FRONTEND);
 		$tmpl->readTemplatesFromInput('user_feedback.html');
 		$tmpl->displayParsedTemplate();
 	}
@@ -81,3 +81,4 @@ class j99998user_feedback
 		return null;
 	}
 }
+
